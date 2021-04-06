@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rentering.Accounts.Application\Rentering.Accounts.Application.csproj" />
+    <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
+    <ProjectReference Include="..\Rentering.Accounts.Infra\Rentering.Accounts.Infra.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Application\Rentering.Contracts.Application.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Infra\Rentering.Contracts.Infra.csproj" />
+  </ItemGroup>
+
+</Project>
