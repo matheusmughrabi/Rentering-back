@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.78" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rentering.Common.Infra\Rentering.Common.Infra.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
