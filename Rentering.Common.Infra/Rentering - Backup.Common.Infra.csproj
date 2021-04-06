@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Scripts\Version_1.2.0\" />
-  </ItemGroup>
-
 </Project>
