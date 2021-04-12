@@ -1,10 +1,11 @@
-﻿using Rentering.Contracts.Domain.Enums;
+﻿using Rentering.Common.Shared.Entities;
+using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class RenterEntity
+    public class RenterEntity : Entity
     {
         public RenterEntity(
             int accountId,

@@ -2,6 +2,7 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -9,6 +10,13 @@ namespace Rentering.Contracts.Application.CommandHandlers
     public class RenterCommandHandlers : Notifiable,
         ICommandHandler<CreateRenterCommand>
     {
+        private readonly IRenterCUDRepository _renterCUDRepository;
+
+        public RenterCommandHandlers(IRenterCUDRepository renterCUDRepository)
+        {
+            _renterCUDRepository = renterCUDRepository;
+        }
+
         public ICommandResult Handle(CreateRenterCommand command)
         {
             var name = new NameValueObject(command.FirstName, command.LastName);
@@ -22,19 +30,36 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            //if (_userRepository.CheckIfAccountExists(command.AccountId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+                AddNotification("AccountId", "This Account does not exist");
 
-            //AddNotifications(userEntity.Notifications);
+            AddNotifications(renterEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            //_userRepository.CreateContractUserProfile(userEntity);
+            _renterCUDRepository.CreateRenter(renterEntity);
 
             var createdContractProfileUser = new CommandResult(true, "Profile created successfuly", new
             {
-                command.AccountId
+                command.AccountId,
+                command.FirstName,
+                command.LastName,
+                command.Nationality,
+                command.Ocupation,
+                command.MaritalStatus,
+                command.IdentityRG,
+                command.CPF,
+                command.Street,
+                command.Bairro,
+                command.Cidade,
+                command.CEP,
+                command.Estado,
+                command.SpouseFirstName,
+                command.SpouseLastName,
+                command.SpouseNationality,
+                command.SpouseIdentityRG,
+                command.SpouseCPF
             });
 
             return createdContractProfileUser;
