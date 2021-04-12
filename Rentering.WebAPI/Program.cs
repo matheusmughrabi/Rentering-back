@@ -18,3 +18,6 @@ namespace Rentering.WebAPI
                 });
     }
 }
+
+// Create Guarantor command, handler and tests
+// Create

@@ -2,14 +2,18 @@
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 {
-    public class RenterCUDRepository : IRenterCUDRepository
+    public class TenantCUDRepository : ITenantCUDRepository
     {
         private readonly RenteringDataContext _context;
 
-        public RenterCUDRepository(RenteringDataContext context)
+        public TenantCUDRepository(RenteringDataContext context)
         {
             _context = context;
         }
@@ -19,7 +23,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             throw new NotImplementedException();
         }
 
-        public void CreateRenter(RenterEntity renter)
+        public void CreateTenant(TenantEntity tenant)
         {
             throw new NotImplementedException();
         }
