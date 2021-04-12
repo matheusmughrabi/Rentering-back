@@ -7,17 +7,17 @@ using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
 {
-    public class RenterCommandHandlers : Notifiable,
-        ICommandHandler<CreateRenterCommand>
+    public class GuarantorHandlers : Notifiable,
+        ICommandHandler<CreateGuarantorCommand>
     {
-        private readonly IRenterCUDRepository _renterCUDRepository;
+        private readonly IGuarantorCUDRepository _guarantorCUDRepository;
 
-        public RenterCommandHandlers(IRenterCUDRepository renterCUDRepository)
+        public GuarantorHandlers(IGuarantorCUDRepository guarantorCUDRepository)
         {
-            _renterCUDRepository = renterCUDRepository;
+            _guarantorCUDRepository = guarantorCUDRepository;
         }
 
-        public ICommandResult Handle(CreateRenterCommand command)
+        public ICommandResult Handle(CreateGuarantorCommand command)
         {
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
@@ -27,20 +27,20 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(command.SpouseCPF);
 
-            var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
-                cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
+            var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
+                cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_guarantorCUDRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
-            AddNotifications(renterEntity.Notifications);
+            AddNotifications(guarantorEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _renterCUDRepository.CreateRenter(renterEntity);
+            _guarantorCUDRepository.CreateGuarantor(guarantorEntity);
 
-            var createdRenter = new CommandResult(true, "Renter created successfuly", new
+            var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
                 command.AccountId,
                 command.FirstName,
@@ -58,11 +58,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
                 command.SpouseFirstName,
                 command.SpouseLastName,
                 command.SpouseNationality,
+                command.SpouseOcupation,
                 command.SpouseIdentityRG,
                 command.SpouseCPF
             });
 
-            return createdRenter;
+            return createdGuarantor;
         }
     }
 }
