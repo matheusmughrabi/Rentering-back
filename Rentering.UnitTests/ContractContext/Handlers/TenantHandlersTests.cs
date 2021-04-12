@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 namespace Rentering.UnitTests.ContractContext.Handlers
 {
     [TestClass]
-    public class RenterHandlersTests
+    public class TenantHandlersTests
     {
-        private CreateRenterCommand _createRenterCommand;
+        private CreateTenantCommand _createTenantCommand;
 
         private int _accountId;
         private string _firstName;
@@ -35,6 +35,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         private string _spouseFirstName;
         private string _spouseLastName;
         private string _spouseNationality;
+        private string _spouseOcupation;
         private string _spouseIdentityRG;
         private string _spouseCPF;
 
@@ -46,9 +47,9 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         private IdentityRGValueObject spouseIdentityRG;
         private CPFValueObject spouseCPF;
 
-        private RenterEntity _renterEntity;
+        private TenantEntity _tenantEntity;
 
-        public RenterHandlersTests()
+        public TenantHandlersTests()
         {
             _accountId = 1;
             _firstName = "João";
@@ -66,12 +67,13 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             _spouseFirstName = "Maria";
             _spouseLastName = "Silva";
             _spouseNationality = "Brasileiro";
+            _spouseOcupation = "Desenvolvedora";
             _spouseIdentityRG = "34.254.880-3";
             _spouseCPF = "667.137.180-60";
 
-            _createRenterCommand = new CreateRenterCommand(_firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
-                _cpf, _street, _bairro, _cidade, _cep, _estado, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseIdentityRG, _spouseCPF);
-
+            _createTenantCommand = new CreateTenantCommand(_firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
+                _cpf, _street, _bairro, _cidade, _cep, _estado, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
+                _spouseIdentityRG, _spouseCPF);
 
             name = new NameValueObject("João", "Silva");
             identityRG = new IdentityRGValueObject("26.384.185-6");
@@ -81,33 +83,32 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             spouseIdentityRG = new IdentityRGValueObject("34.254.880-3");
             spouseCPF = new CPFValueObject("667.137.180-60");
 
-
-            _renterEntity = new RenterEntity(_accountId, name, _nationality, _ocupation, _maritalStatus, identityRG,
-                cpf, address, spouseName, _spouseNationality, spouseIdentityRG, spouseCPF);
+            _tenantEntity = new TenantEntity(_accountId, name, _nationality, _ocupation, _maritalStatus, identityRG,
+                cpf, address, spouseName, _spouseNationality, _spouseOcupation, spouseIdentityRG, spouseCPF);
         }
 
         [TestMethod]
-        public void ShouldNotCreateRenter_WhenAccountDoesNotExist()
+        public void ShouldNotCreateTenant_WhenAccountDoesNotExist()
         {
-            Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
-            mock.Setup(m => m.CreateRenter(_renterEntity));
+            Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+            mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
-            var result = createRenterHandler.Handle(_createRenterCommand);
+            var createTenantHandler = new TenantCommandHandlers(mock.Object);
+            var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(false, result.Success);
         }
 
         [TestMethod]
-        public void ShouldCreateRenter_WhenAccountExists()
+        public void ShouldCreateTenant_WhenAccountExists()
         {
-            Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
-            mock.Setup(m => m.CreateRenter(_renterEntity));
+            Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
+            mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
-            var result = createRenterHandler.Handle(_createRenterCommand);
+            var createTenantHandler = new TenantCommandHandlers(mock.Object);
+            var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(true, result.Success);
         }
