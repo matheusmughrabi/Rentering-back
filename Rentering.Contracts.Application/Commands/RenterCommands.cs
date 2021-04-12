@@ -1,11 +1,50 @@
 ﻿using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Domain.Enums;
-using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.Commands
 {
     public class CreateRenterCommand : ICommand
     {
+        public CreateRenterCommand(
+            int accountId, 
+            string firstName, 
+            string lastName, 
+            string nationality, 
+            string ocupation, 
+            e_MaritalStatus maritalStatus, 
+            string identityRG, 
+            string cpf, 
+            string street, 
+            string bairro, 
+            string cidade, 
+            string cep, 
+            string estado, 
+            string spouseFirstName, 
+            string spouseLastName, 
+            string spouseNationality, 
+            string spouseIdentityRG,
+            string spouseCPF)
+        {
+            AccountId = accountId;
+            FirstName = firstName;
+            LastName = lastName;
+            Nationality = nationality;
+            Ocupation = ocupation;
+            MaritalStatus = maritalStatus;
+            IdentityRG = identityRG;
+            CPF = cpf;
+            Street = street;
+            Bairro = bairro;
+            Cidade = cidade;
+            CEP = cep;
+            Estado = estado;
+            SpouseFirstName = spouseFirstName;
+            SpouseLastName = spouseLastName;
+            SpouseNationality = spouseNationality;
+            SpouseIdentityRG = spouseIdentityRG;
+            SpouseCPF = spouseCPF;
+        }
+
         public int AccountId { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
