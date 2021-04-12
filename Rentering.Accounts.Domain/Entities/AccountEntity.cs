@@ -4,7 +4,7 @@ using Rentering.Common.Shared.Entities;
 
 namespace Rentering.Accounts.Domain.Entities
 {
-    public class AccountEntity : BaseEntity
+    public class AccountEntity : Entity
     {
         public AccountEntity(NameValueObject name, EmailValueObject email, UsernameValueObject username,
             PasswordValueObject password = null, e_Roles? role = null, int? id = null)

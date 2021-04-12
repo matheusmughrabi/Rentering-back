@@ -4,7 +4,7 @@ using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class ContractEntity : BaseEntity
+    public class ContractEntity : Entity
     {
         public ContractEntity(
             string contractName,

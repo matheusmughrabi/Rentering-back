@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Scripts\Version_1.2.1\" />
     <Folder Include="Scripts\Version_1.2.0\" />
   </ItemGroup>
 

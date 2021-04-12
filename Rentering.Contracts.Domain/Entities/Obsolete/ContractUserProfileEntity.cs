@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class ContractUserProfileEntity : BaseEntity
+    public class ContractUserProfileEntity : Entity
     {
         public ContractUserProfileEntity(int accountId)
         {

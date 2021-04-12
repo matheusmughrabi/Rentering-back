@@ -74,7 +74,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var contractId = 1;
             var month = new DateTime(2000, 01, 01);
             var acceptPaymentCommand = new AcceptPaymentCommand(contractId, month);
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.ACCEPTED, TentantPaymentStatus.EXECUTED);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.ACCEPTED, e_TentantPaymentStatus.EXECUTED);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(acceptPaymentCommand.ContractId)).Returns(true);
@@ -94,7 +94,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var contractId = 1;
             var month = DateTime.Now;
 
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.NONE, TentantPaymentStatus.EXECUTED);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.EXECUTED);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(contractId)).Returns(true);
@@ -118,7 +118,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var month = DateTime.Now;
 
             var rejectPaymentCommand = new RejectPaymentCommand(1, new DateTime(2000, 02, 01));
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.REJECTED, TentantPaymentStatus.EXECUTED);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.REJECTED, e_TentantPaymentStatus.EXECUTED);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(rejectPaymentCommand.ContractId)).Returns(true);
@@ -138,7 +138,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var contractId = 1;
             var month = DateTime.Now;
 
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.NONE, TentantPaymentStatus.EXECUTED);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.EXECUTED);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(contractId)).Returns(true);
@@ -162,7 +162,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var month = DateTime.Now;
 
             var executePaymentCommand = new ExecutePaymentCommand(contractId, month);
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.NONE, TentantPaymentStatus.EXECUTED);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.EXECUTED);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(contractId)).Returns(true);
@@ -182,7 +182,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             var month = DateTime.Now;
 
             var executePaymentCommand = new ExecutePaymentCommand(contractId, month);
-            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, RenterPaymentStatus.NONE, TentantPaymentStatus.NONE);
+            var contractPaymentFromMockDb = new ContractPaymentEntity(contractId, month, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.NONE);
 
             Mock<IContractPaymentCUDRepository> mock = new Mock<IContractPaymentCUDRepository>();
             mock.Setup(m => m.CheckIfContractExists(contractId)).Returns(true);

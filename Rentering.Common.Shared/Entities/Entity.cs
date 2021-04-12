@@ -2,7 +2,7 @@
 
 namespace Rentering.Common.Shared.Entities
 {
-    public abstract class BaseEntity : Notifiable
+    public abstract class Entity : Notifiable
     {
         public int Id { get; private set; }
 
