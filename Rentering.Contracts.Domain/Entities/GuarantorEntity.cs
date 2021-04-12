@@ -7,6 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class GuarantorEntity : Entity
     {
         public GuarantorEntity(
+            int accountId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -18,9 +19,9 @@ namespace Rentering.Contracts.Domain.Entities
             string spouseNationality, 
             string spouseOcupation, 
             IdentityRGValueObject spouseIdentityRG,
-            CPFValueObject spouseCPF,
-            int accountId)
+            CPFValueObject spouseCPF)
         {
+            AccountId = accountId;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -33,9 +34,9 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseOcupation = spouseOcupation;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
-            AccountId = accountId;
         }
 
+        public int AccountId { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
@@ -48,6 +49,5 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseOcupation { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
-        public int AccountId { get; private set; }
     }
 }
