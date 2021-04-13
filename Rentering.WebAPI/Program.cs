@@ -20,9 +20,9 @@ namespace Rentering.WebAPI
 }
 
 // Create Guarantor command, handler, CUDrepository and tests OK
-// Alterar accounts para ter apenas email, username and password
-// Alterar BD accounts
-// Testar
+// Alterar accounts para ter apenas email, username and password OK
+// Alterar BD accounts OK
+// Testar OK
 
 // Criar tabelas Renter, Tenant e Guarantor
 // Criar stored procedures no padrão sp_NomeTabela_CUD/Query/Auth_NomeStoredProcedure
