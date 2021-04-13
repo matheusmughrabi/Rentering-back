@@ -24,9 +24,22 @@ namespace Rentering.WebAPI
 // Alterar BD accounts OK
 // Testar OK
 
-// Criar tabelas Renter, Tenant e Guarantor
-// Criar stored procedures no padrão sp_NomeTabela_CUD/Query/Auth_NomeStoredProcedure
+// Criar tabela Renter OK
+// Criar Stored Procedures Renter
+// Implementar Repositorios Renter
+// Testar
+
+// Criar tabela Tenant
+// Criar Stored Procedures Tenant
+// Implementar Repositorios Tenant
+// Testar
+
+// Criar tabela Guarantor
+// Criar Stored Procedures Guarantor
+// Implementar Repositorios Guarantor
 // Testar
 
 // Alterar nomes dos Stored Procedures para nomenclatura nova
 // Testar
+
+// Estudar versionamento do BD -> Talvez utilizar migration do Entity Framework e Dapper para acesso

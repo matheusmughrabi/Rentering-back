@@ -1,7 +1,10 @@
-﻿using Rentering.Common.Infra;
+﻿using Dapper;
+using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using System;
+using System.Data;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 {
@@ -16,12 +19,41 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 
         public bool CheckIfAccountExists(int accountId)
         {
-            throw new NotImplementedException();
+            var accountExists = _context.Connection.Query<bool>(
+                    "sp_Accounts_Util_CheckIfAccountExists",
+                    new { Id = accountId },
+                    commandType: CommandType.StoredProcedure
+                ).FirstOrDefault();
+
+            return accountExists;
         }
 
         public void CreateRenter(RenterEntity renter)
         {
-            throw new NotImplementedException();
+            _context.Connection.Execute("sp_Renters_CUD_CreateRenter",
+                    new
+                    {
+                        AccountId = renter.AccountId,
+                        FirstName = renter.Name.FirstName,
+                        LastName = renter.Name.LastName,
+                        Nationality = renter.Nationality,
+                        Ocupation = renter.Ocupation,
+                        MaritalStatus = renter.MaritalStatus,
+                        IdentityRG = renter.IdentityRG.IdentityRG,
+                        CPF = renter.CPF.CPF,
+                        Street = renter.Address.Street,
+                        Bairro = renter.Address.Bairro,
+                        Cidade = renter.Address.Cidade,
+                        CEP = renter.Address.CEP,
+                        Estado = renter.Address.Estado,
+                        SpouseFirstName = renter.SpouseFirstName.FirstName,
+                        SpouseLastName = renter.SpouseFirstName.LastName,
+                        SpouseNationality = renter.SpouseNationality,
+                        SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
+                        SpouseCPF = renter.SpouseCPF.CPF
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
         }
     }
 }
