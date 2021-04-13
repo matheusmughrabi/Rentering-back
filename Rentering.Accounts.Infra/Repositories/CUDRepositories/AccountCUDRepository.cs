@@ -43,7 +43,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
 
         public void CreateAccount(AccountEntity accountEntity)
         {
-            _context.Connection.Execute("spCreateAccount",
+            _context.Connection.Execute("sp_Accounts_CUD_CreateAccount",
                      new
                      {
                          accountEntity.Email.Email,
@@ -58,7 +58,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
         public AccountEntity GetAccountById(int id)
         {
             var accountFromDb = _context.Connection.Query<AccountFromDb>(
-                    "spGetAccountById",
+                    "sp_Accounts_CUD_GetAccountById",
                     new { Id = id },
                     commandType: CommandType.StoredProcedure
                 ).FirstOrDefault();
@@ -74,7 +74,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
 
         public void UpdateAccount(int id, AccountEntity accountEntity)
         {
-            _context.Connection.Execute("spUpdateAccount",
+            _context.Connection.Execute("sp_Accounts_CUD_UpdateAccount",
                     new
                     {
                         Id = id,
@@ -89,7 +89,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
 
         public void DeleteAccount(int id)
         {
-            _context.Connection.Execute("spDeleteAccount",
+            _context.Connection.Execute("sp_Accounts_CUD_DeleteAccount",
                     new { Id = id },
                     commandType: CommandType.StoredProcedure
                 );
@@ -98,7 +98,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
         public IEnumerable<AccountEntity> GetAllAccounts()
         {
             var accountsFromDb = _context.Connection.Query<AccountFromDb>(
-                     "spGetAllAccounts",
+                     "sp_Accounts_CUD_GetAllAccounts",
                      commandType: CommandType.StoredProcedure
                  );
 

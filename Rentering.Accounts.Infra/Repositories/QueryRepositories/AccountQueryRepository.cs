@@ -19,7 +19,7 @@ namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
         public GetAccountQueryResult GetAccountById(int id)
         {
             var accountQueryResult = _context.Connection.Query<GetAccountQueryResult>(
-                    "SELECT Id, FirstName, LastName, Email, Username, Role FROM RenteringUsers where Id = @Id",
+                    "SELECT Id, Email, Username, Role FROM RenteringUsers where Id = @Id",
                     new { Id = id }
                 ).FirstOrDefault();
 
@@ -29,7 +29,7 @@ namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
         public IEnumerable<GetAccountQueryResult> GetAccounts()
         {
             var accountsQueryResult = _context.Connection.Query<GetAccountQueryResult>(
-                    "SELECT Id, FirstName, LastName, Email, Username, Role FROM RenteringUsers");
+                    "SELECT Id, Email, Username, Role FROM RenteringUsers");
 
             return accountsQueryResult;
         }
