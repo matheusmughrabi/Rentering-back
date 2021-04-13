@@ -8,7 +8,8 @@ using Rentering.Contracts.Domain.ValueObjects;
 namespace Rentering.Contracts.Application.CommandHandlers
 {
     public class RenterCommandHandlers : Notifiable,
-        ICommandHandler<CreateRenterCommand>
+        ICommandHandler<CreateRenterCommand>,
+        ICommandHandler<DeleteRenterCommand>
     {
         private readonly IRenterCUDRepository _renterCUDRepository;
 
@@ -63,6 +64,18 @@ namespace Rentering.Contracts.Application.CommandHandlers
             });
 
             return createdRenter;
+        }
+
+        public ICommandResult Handle(DeleteRenterCommand command)
+        {
+            _renterCUDRepository.DeleteRenter(command.Id);
+
+            var deletedRenter = new CommandResult(true, "Renter deleted successfuly", new
+            {
+                RenterId = command.Id
+            });
+
+            return deletedRenter;
         }
     }
 }

@@ -108,3 +108,21 @@ BEGIN
 		Id = @Id
 END
 GO
+
+
+/****** Object:  StoredProcedure [dbo].[spGetAllAccounts]    Script Date: 13/04/2021 18:18:13 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]
+	@AccountId int
+AS
+BEGIN
+    SELECT [Id]
+	FROM Renters
+	WHERE [Id] = [AccountId]
+END
+GO

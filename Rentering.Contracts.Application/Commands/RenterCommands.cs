@@ -64,4 +64,15 @@ namespace Rentering.Contracts.Application.Commands
         public string SpouseIdentityRG { get; set; }
         public string SpouseCPF { get; set; }
     }
+
+    public class DeleteRenterCommand : ICommand
+    {
+        public DeleteRenterCommand(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; set; }
+    }
+
 }
