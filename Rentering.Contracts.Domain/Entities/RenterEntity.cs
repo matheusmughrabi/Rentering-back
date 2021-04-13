@@ -1,12 +1,14 @@
-﻿using Rentering.Contracts.Domain.Enums;
+﻿using Rentering.Common.Shared.Entities;
+using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class RenterEntity
+    public class RenterEntity : Entity
     {
         public RenterEntity(
+            int accountId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -17,9 +19,9 @@ namespace Rentering.Contracts.Domain.Entities
             NameValueObject spouseFirstName, 
             string spouseNationality,
             IdentityRGValueObject spouseIdentityRG, 
-            CPFValueObject spouseCPF,
-            int accountId)
+            CPFValueObject spouseCPF)
         {
+            AccountId = accountId;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -31,9 +33,9 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseNationality = spouseNationality;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
-            AccountId = accountId;
         }
 
+        public int AccountId { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
@@ -45,6 +47,6 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseNationality { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
-        public int AccountId { get; private set; }
+        
     }
 }
