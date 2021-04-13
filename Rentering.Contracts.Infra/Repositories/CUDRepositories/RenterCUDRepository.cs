@@ -55,5 +55,16 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     commandType: CommandType.StoredProcedure
                 );
         }
+
+        public void DeleteRenter(int renterId)
+        {
+            _context.Connection.Execute("sp_Renters_CUD_DeleteRenter",
+                    new 
+                    { 
+                        Id = renterId
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+        }
     }
 }

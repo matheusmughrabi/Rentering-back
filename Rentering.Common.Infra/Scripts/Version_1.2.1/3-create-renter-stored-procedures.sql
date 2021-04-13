@@ -88,3 +88,23 @@ BEGIN
     )
 END
 GO
+
+
+/****** Object:  StoredProcedure [dbo].[spDeleteContractUserProfile]    Script Date: 13/04/2021 17:40:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]
+	@Id INT
+AS
+BEGIN
+	DELETE FROM 
+		Renters
+	WHERE 
+		Id = @Id
+END
+GO

@@ -6,5 +6,6 @@ namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
     {
         bool CheckIfAccountExists(int accountId);
         void CreateRenter(RenterEntity renter);
+        void DeleteRenter(int renterId);
     }
 }
