@@ -46,8 +46,6 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
             _context.Connection.Execute("spCreateAccount",
                      new
                      {
-                         accountEntity.Name.FirstName,
-                         accountEntity.Name.LastName,
                          accountEntity.Email.Email,
                          accountEntity.Username.Username,
                          accountEntity.Password.Password,
@@ -65,12 +63,11 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
                     commandType: CommandType.StoredProcedure
                 ).FirstOrDefault();
 
-            var name = new NameValueObject(accountFromDb.FirstName, accountFromDb.LastName);
             var email = new EmailValueObject(accountFromDb.Email);
             var username = new UsernameValueObject(accountFromDb.Username);
             var password = new PasswordValueObject(accountFromDb.Password);
 
-            var accountEntity = new AccountEntity(name, email, username, password, accountFromDb.Role);
+            var accountEntity = new AccountEntity(email, username, password, accountFromDb.Role);
 
             return accountEntity;
         }
@@ -81,8 +78,6 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
                     new
                     {
                         Id = id,
-                        accountEntity.Name.FirstName,
-                        accountEntity.Name.LastName,
                         accountEntity.Email.Email,
                         accountEntity.Username.Username,
                         accountEntity.Password.Password,
@@ -110,12 +105,11 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
             var accountsEntities = new List<AccountEntity>();
             foreach (var accountFromDb in accountsFromDb)
             {
-                var name = new NameValueObject(accountFromDb.FirstName, accountFromDb.LastName);
                 var email = new EmailValueObject(accountFromDb.Email);
                 var username = new UsernameValueObject(accountFromDb.Username);
                 var password = new PasswordValueObject(accountFromDb.Password);
 
-                var accountEntity = new AccountEntity(name, email, username, password, accountFromDb.Role, accountFromDb.Id);
+                var accountEntity = new AccountEntity(email, username, password, accountFromDb.Role, accountFromDb.Id);
                 accountsEntities.Add(accountEntity);
             }
 

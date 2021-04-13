@@ -22,11 +22,10 @@ namespace Rentering.Accounts.Application.CommandHandlers
 
         public ICommandResult Handle(CreateAccountCommand command)
         {
-            var name = new NameValueObject(command.FirstName, command.LastName);
             var email = new EmailValueObject(command.Email);
             var username = new UsernameValueObject(command.Username);
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
-            var accountEntity = new AccountEntity(name, email, username, password);
+            var accountEntity = new AccountEntity(email, username, password);
 
             //if (_userRepository.CheckIfEmailExists(command.Email))
             //    AddNotification("Email", "This Email is already registered");
@@ -34,7 +33,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
             //if (_userRepository.CheckIfUsernameExists(command.Username))
             //    AddNotification("Username", "This Username is already registered");
 
-            AddNotifications(name.Notifications);
             AddNotifications(email.Notifications);
             AddNotifications(username.Notifications);
             AddNotifications(password.Notifications);
@@ -47,8 +45,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
 
             var createdUser = new CommandResult(true, "User created successfuly", new
             {
-                command.FirstName,
-                command.LastName,
                 command.Email,
                 command.Username,
                 accountEntity.Role
@@ -76,8 +72,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
 
             var adminRoleAssignedUser = new CommandResult(true, "Admin role assigned successfuly", new
             {
-                userEntityFromDb.Name.FirstName,
-                userEntityFromDb.Name.LastName,
                 userEntityFromDb.Email.Email,
                 userEntityFromDb.Username.Username,
                 userEntityFromDb.Role
@@ -104,8 +98,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
 
             var accountCommandResult = new CommandResult(true, "User retrieved", new
             {
-                accountFiltered.Name.FirstName,
-                accountFiltered.Name.LastName,
                 accountFiltered.Email.Email,
                 accountFiltered.Username.Username,
                 accountFiltered.Role

@@ -11,12 +11,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldNotChangeEmail_WhenInvalidEmailIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var invalidEmail = new EmailValueObject("meunovoemail");
             renter.ChangeEmail(invalidEmail);
@@ -27,12 +26,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldNotChangeEmail_WhenSameValidEmailIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var validEmail = new EmailValueObject("matheus@gmail.com");
             renter.ChangeEmail(validEmail);
@@ -43,12 +41,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldChangeEmail_WhenDifferentValidEmailIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var validEmail = new EmailValueObject("matheusnovo@gmail.com");
             renter.ChangeEmail(validEmail);
@@ -59,12 +56,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldNotChangeUsername_WhenInvalidUsernameIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var invalidUsername = new UsernameValueObject("ma");
             renter.ChangeUsername(invalidUsername);
@@ -75,12 +71,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldChangeUsername_WhenDifferentValidUsernameIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var validUsername = new UsernameValueObject("matheusnovo");
             renter.ChangeUsername(validUsername);
@@ -91,12 +86,11 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldChangeUsername_WhenSameValidUsernameIsPassed()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheus@gmail.com");
             var username = new UsernameValueObject("matheus");
             var password = new PasswordValueObject("123456", "123456");
 
-            var renter = new AccountEntity(name, email, username, password);
+            var renter = new AccountEntity(email, username, password);
 
             var validUsername = new UsernameValueObject("matheus");
             renter.ChangeUsername(validUsername);
@@ -107,10 +101,9 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldNotAssignAdminRole_WhenUserIsAlreadyAdmin()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheu@gmail.com");
             var username = new UsernameValueObject("matheus");
-            var accountEntity = new AccountEntity(name, email, username, role: e_Roles.Admin);
+            var accountEntity = new AccountEntity(email, username, role: e_Roles.Admin);
 
             accountEntity.AssignAdminRole();
 
@@ -120,10 +113,9 @@ namespace Rentering.UnitTests.AccountContext.Entities
         [TestMethod]
         public void ShouldAssignAdminRole_WhenUserIsNotAdminYet()
         {
-            var name = new NameValueObject("Matheus", "Campanini");
             var email = new EmailValueObject("matheu@gmail.com");
             var username = new UsernameValueObject("matheus");
-            var accountEntity = new AccountEntity(name, email, username, role: e_Roles.RegularUser);
+            var accountEntity = new AccountEntity(email, username, role: e_Roles.RegularUser);
 
             accountEntity.AssignAdminRole();
 

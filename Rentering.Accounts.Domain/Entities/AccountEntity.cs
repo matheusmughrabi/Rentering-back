@@ -6,10 +6,9 @@ namespace Rentering.Accounts.Domain.Entities
 {
     public class AccountEntity : Entity
     {
-        public AccountEntity(NameValueObject name, EmailValueObject email, UsernameValueObject username,
+        public AccountEntity(EmailValueObject email, UsernameValueObject username,
             PasswordValueObject password = null, e_Roles? role = null, int? id = null)
         {
-            Name = name;
             Email = email;
             Username = username;
             Password = password;
@@ -23,7 +22,6 @@ namespace Rentering.Accounts.Domain.Entities
                 Role = e_Roles.RegularUser;
         }
 
-        public NameValueObject Name { get; private set; }
         public EmailValueObject Email { get; private set; }
         public UsernameValueObject Username { get; private set; }
         public PasswordValueObject Password { get; private set; }

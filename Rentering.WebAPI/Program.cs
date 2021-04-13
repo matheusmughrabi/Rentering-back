@@ -19,7 +19,7 @@ namespace Rentering.WebAPI
     }
 }
 
-// Create Guarantor command, handler, CUDrepository and tests
+// Create Guarantor command, handler, CUDrepository and tests OK
 // Alterar accounts para ter apenas email, username and password
 // Alterar BD accounts
 // Testar
