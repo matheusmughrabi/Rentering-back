@@ -30,6 +30,16 @@ namespace Rentering.WebAPI
 // Criar Stored Procedures Renter OK
 // Implementar Repositorios Renter OK
 // Criar unit tests OK
+// Testar OK 
+// Merge com release-1.2.1
+
+
+// ====== NOVA BRANCH -> features/renter-add-validations======
+// Adicionar validações na entidade
+// Criar unit tests correspondentes para a entidade
+// Spouse atributos nao precisa se não for casado
+// Corrigir update para atualizar apenas campos de interesse do usuário
+// Criar unit testes
 // Testar
 // Merge com release-1.2.1
 
