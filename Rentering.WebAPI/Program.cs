@@ -24,22 +24,28 @@ namespace Rentering.WebAPI
 // Alterar BD accounts OK
 // Testar OK
 
+// ====== NOVA BRANCH -> features/modifies-account-entity (nome está errado)======
 // Criar tabela Renter OK
-// Criar Stored Procedures Renter
-// Implementar Repositorios Renter
+// Criar Stored Procedures Renter ON GOING
+// Implementar Repositorios Renter ON GOING
 // Testar
+// Merge com release-1.2.1
 
+// ====== NOVA BRANCH -> features/refactoring-repositories ======
+// Organizar BD, StoredProcedures, Versionamento BD
+// Testar
+// Merge com release-1.2.1
+
+// ====== NOVA BRANCH -> features/tenant-functionality ======
 // Criar tabela Tenant
 // Criar Stored Procedures Tenant
 // Implementar Repositorios Tenant
 // Testar
+// Merge com release-1.2.1
 
+// ====== NOVA BRANCH -> features/guarantor-functionality ======
 // Criar tabela Guarantor
 // Criar Stored Procedures Guarantor
 // Implementar Repositorios Guarantor
 // Testar
-
-// Alterar nomes dos Stored Procedures para nomenclatura nova
-// Testar
-
-// Estudar versionamento do BD -> Talvez utilizar migration do Entity Framework e Dapper para acesso
+// Merge com release-1.2.1

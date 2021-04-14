@@ -110,10 +110,9 @@ END
 GO
 
 
-/****** Object:  StoredProcedure [dbo].[spGetAllAccounts]    Script Date: 13/04/2021 18:18:13 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]    Script Date: 13/04/2021 18:29:15 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -123,6 +122,43 @@ AS
 BEGIN
     SELECT [Id]
 	FROM Renters
-	WHERE [Id] = [AccountId]
+	WHERE [AccountId] = [AccountId]
+END
+
+
+/****** Object:  StoredProcedure [dbo].[spGetAccountById]    Script Date: 13/04/2021 21:57:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]
+	@Id INT
+AS
+BEGIN
+    SELECT 
+		[AccountId],
+        [FirstName], 
+        [LastName],
+		[Nationality],
+		[Ocupation],
+		[MaritalStatus],
+		[IdentityRG],
+		[CPF],
+		[Street],
+		[Bairro],
+		[Cidade],
+		[CEP],
+		[Estado],
+		[SpouseFirstName],
+		[SpouseLastName],
+		[SpouseNationality],
+		[SpouseIdentityRG],
+		[SpouseCPF]
+	FROM 
+		Renters
+	WHERE 
+		[Id] = @Id;
 END
 GO
