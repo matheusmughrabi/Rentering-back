@@ -9,7 +9,9 @@ namespace Rentering.Contracts.Application.CommandHandlers
 {
     public class RenterCommandHandlers : Notifiable,
         ICommandHandler<CreateRenterCommand>,
+        ICommandHandler<UpdateRenterCommand>,
         ICommandHandler<DeleteRenterCommand>
+
     {
         private readonly IRenterCUDRepository _renterCUDRepository;
 
@@ -64,6 +66,53 @@ namespace Rentering.Contracts.Application.CommandHandlers
             });
 
             return createdRenter;
+        }
+
+        public ICommandResult Handle(UpdateRenterCommand command)
+        {
+            var name = new NameValueObject(command.FirstName, command.LastName);
+            var identityRG = new IdentityRGValueObject(command.IdentityRG);
+            var cpf = new CPFValueObject(command.CPF);
+            var address = new AddressValueObject(command.Street, command.Bairro, command.Cidade, command.CEP, command.Estado);
+            var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName);
+            var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
+            var spouseCPF = new CPFValueObject(command.SpouseCPF);
+
+            var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
+
+            if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+                AddNotification("AccountId", "This Account does not exist");
+
+            AddNotifications(renterEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _renterCUDRepository.UpdateRenter(command.Id, renterEntity);
+
+            var updatedRenter = new CommandResult(true, "Renter updated successfuly", new
+            {
+                command.AccountId,
+                command.FirstName,
+                command.LastName,
+                command.Nationality,
+                command.Ocupation,
+                command.MaritalStatus,
+                command.IdentityRG,
+                command.CPF,
+                command.Street,
+                command.Bairro,
+                command.Cidade,
+                command.CEP,
+                command.Estado,
+                command.SpouseFirstName,
+                command.SpouseLastName,
+                command.SpouseNationality,
+                command.SpouseIdentityRG,
+                command.SpouseCPF
+            });
+
+            return updatedRenter;
         }
 
         public ICommandResult Handle(DeleteRenterCommand command)

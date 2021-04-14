@@ -18,6 +18,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
     public class RenterHandlersTests
     {
         private CreateRenterCommand _createRenterCommand;
+        private UpdateRenterCommand _updateRenterCommand;
 
         private int _accountId;
         private string _firstName;
@@ -72,6 +73,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             _createRenterCommand = new CreateRenterCommand(_firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
                 _cpf, _street, _bairro, _cidade, _cep, _estado, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseIdentityRG, _spouseCPF);
 
+            var renterId = 1;
+            _updateRenterCommand = new UpdateRenterCommand(renterId, _firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
+                _cpf, _street, _bairro, _cidade, _cep, _estado, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseIdentityRG, _spouseCPF);
+
 
             name = new NameValueObject("João", "Silva");
             identityRG = new IdentityRGValueObject("26.384.185-6");
@@ -108,6 +113,32 @@ namespace Rentering.UnitTests.ContractContext.Handlers
 
             var createRenterHandler = new RenterCommandHandlers(mock.Object);
             var result = createRenterHandler.Handle(_createRenterCommand);
+
+            Assert.AreEqual(true, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldNotUpdateRenter_WhenAccountDoesNotExist()
+        {
+            Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
+            mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
+
+            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var result = createRenterHandler.Handle(_updateRenterCommand);
+
+            Assert.AreEqual(false, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldUpdateRenter_WhenAccountExists()
+        {
+            Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
+            mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
+
+            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var result = createRenterHandler.Handle(_updateRenterCommand);
 
             Assert.AreEqual(true, result.Success);
         }

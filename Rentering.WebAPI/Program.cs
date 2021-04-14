@@ -24,28 +24,48 @@ namespace Rentering.WebAPI
 // Alterar BD accounts OK
 // Testar OK
 
-// ====== NOVA BRANCH -> features/modifies-account-entity (nome está errado)======
+
+// ====== NOVA BRANCH -> features/renter-crud======
 // Criar tabela Renter OK
-// Criar Stored Procedures Renter ON GOING
-// Implementar Repositorios Renter ON GOING
+// Criar Stored Procedures Renter OK
+// Implementar Repositorios Renter OK
+// Criar unit tests OK
+// Testar OK 
+// Merge com release-1.2.1
+
+
+// ====== NOVA BRANCH -> features/renter-add-validations======
+// Adicionar validações na entidade
+// Criar unit tests correspondentes para a entidade
+// Spouse atributos nao precisa se não for casado
+// Corrigir update para atualizar apenas campos de interesse do usuário
+// Criar unit testes
 // Testar
 // Merge com release-1.2.1
+
 
 // ====== NOVA BRANCH -> features/refactoring-repositories ======
 // Organizar BD, StoredProcedures, Versionamento BD
 // Testar
 // Merge com release-1.2.1
 
+
 // ====== NOVA BRANCH -> features/tenant-functionality ======
+// Criar unit tests
 // Criar tabela Tenant
 // Criar Stored Procedures Tenant
 // Implementar Repositorios Tenant
 // Testar
 // Merge com release-1.2.1
 
+
 // ====== NOVA BRANCH -> features/guarantor-functionality ======
 // Criar tabela Guarantor
 // Criar Stored Procedures Guarantor
 // Implementar Repositorios Guarantor
 // Testar
+// Criar unit tests
 // Merge com release-1.2.1
+
+
+// ====== NOVA BRANCH -> features/estate-contracts ======
