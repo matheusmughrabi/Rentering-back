@@ -53,7 +53,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             var result = _renterQueryRepository.GetRenterProfilesOfCurrentUser(accountId);
 
             return Ok(result);
-        }        
+        }
 
         [HttpPost]
         [Route("v1/CreateRenter")]
@@ -69,6 +69,24 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             var handler = new RenterCommandHandlers(_renterCUDRepository);
             var result = handler.Handle(createRenterCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("v1/UpdateRenter")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CreateRenter([FromBody] UpdateRenterCommand updateRenterCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            updateRenterCommand.AccountId = accountId;
+
+            var handler = new RenterCommandHandlers(_renterCUDRepository);
+            var result = handler.Handle(updateRenterCommand);
 
             return Ok(result);
         }

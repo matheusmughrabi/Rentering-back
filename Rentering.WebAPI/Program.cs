@@ -24,7 +24,7 @@ namespace Rentering.WebAPI
 // Alterar BD accounts OK
 // Testar OK
 
-// ====== NOVA BRANCH -> features/modifies-account-entity (nome está errado)======
+// ====== NOVA BRANCH -> features/renter-crud======
 // Criar tabela Renter OK
 // Criar Stored Procedures Renter ON GOING
 // Implementar Repositorios Renter ON GOING

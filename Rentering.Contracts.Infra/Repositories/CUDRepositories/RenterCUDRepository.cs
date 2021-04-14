@@ -56,6 +56,35 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
+        public void UpdateRenter(int id, RenterEntity renter)
+        {
+            _context.Connection.Execute("sp_Renters_CUD_UpdateRenter",
+                    new
+                    {
+                        Id = id,
+                        AccountId = renter.AccountId,
+                        FirstName = renter.Name.FirstName,
+                        LastName = renter.Name.LastName,
+                        Nationality = renter.Nationality,
+                        Ocupation = renter.Ocupation,
+                        MaritalStatus = renter.MaritalStatus,
+                        IdentityRG = renter.IdentityRG.IdentityRG,
+                        CPF = renter.CPF.CPF,
+                        Street = renter.Address.Street,
+                        Bairro = renter.Address.Bairro,
+                        Cidade = renter.Address.Cidade,
+                        CEP = renter.Address.CEP,
+                        Estado = renter.Address.Estado,
+                        SpouseFirstName = renter.SpouseFirstName.FirstName,
+                        SpouseLastName = renter.SpouseFirstName.LastName,
+                        SpouseNationality = renter.SpouseNationality,
+                        SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
+                        SpouseCPF = renter.SpouseCPF.CPF
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+        }
+
         public void DeleteRenter(int renterId)
         {
             _context.Connection.Execute("sp_Renters_CUD_DeleteRenter",
