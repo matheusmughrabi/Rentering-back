@@ -76,12 +76,19 @@ namespace Rentering.WebAPI.Controllers.ContractContext
         [HttpPut]
         [Route("v1/UpdateRenter")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreateRenter([FromBody] UpdateRenterCommand updateRenterCommand)
+        public IActionResult UpdateRenter([FromBody] UpdateRenterCommand updateRenterCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
+
+            var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(accountId, updateRenterCommand.Id);
+            var authHandler = new AuthRenterHandlers(_authRenterService);
+            var authResult = authHandler.Handle(authContractCommand);
+
+            if (authResult.Success == false)
+                return Unauthorized(authResult);
 
             updateRenterCommand.AccountId = accountId;
 
@@ -90,8 +97,6 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             return Ok(result);
         }
-
-        // TODO - Update Renter Profile
 
         [HttpDelete]
         [Route("v1/DeleteRenter/{id}")]
