@@ -1,7 +1,6 @@
 ﻿using Rentering.Common.Shared.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
-using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Entities
 {

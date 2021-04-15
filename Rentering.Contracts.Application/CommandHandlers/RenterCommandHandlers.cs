@@ -36,6 +36,13 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
+            AddNotifications(name.Notifications);
+            AddNotifications(identityRG.Notifications);
+            AddNotifications(cpf.Notifications);
+            AddNotifications(address.Notifications);
+            AddNotifications(spouseName.Notifications);
+            AddNotifications(spouseIdentityRG.Notifications);
+            AddNotifications(spouseCPF.Notifications);
             AddNotifications(renterEntity.Notifications);
 
             if (Invalid)
@@ -83,6 +90,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
+            AddNotifications(name.Notifications);
+            AddNotifications(identityRG.Notifications);
+            AddNotifications(cpf.Notifications);
+            AddNotifications(address.Notifications);
+            AddNotifications(spouseName.Notifications);
+            AddNotifications(spouseIdentityRG.Notifications);
             AddNotifications(renterEntity.Notifications);
 
             if (Invalid)

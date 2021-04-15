@@ -19,22 +19,23 @@ namespace Rentering.WebAPI
     }
 }
 
+// ====== NOVA BRANCH -> features/accounts ======
 // Create Guarantor command, handler, CUDrepository and tests OK
 // Alterar accounts para ter apenas email, username and password OK
 // Alterar BD accounts OK
 // Testar OK
 
 
-// ====== NOVA BRANCH -> features/renter-crud======
+// ====== NOVA BRANCH -> features/renter-crud ======
 // Criar tabela Renter OK
 // Criar Stored Procedures Renter OK
 // Implementar Repositorios Renter OK
 // Criar unit tests OK
 // Testar OK 
-// Merge com release-1.2.1
+// Merge com release-1.2.1 OK
 
 
-// ====== NOVA BRANCH -> features/renter-add-validations======
+// ====== NOVA BRANCH -> features/renter-add-validations ======
 // Adicionar validações na entidade
 // Criar unit tests correspondentes para a entidade
 // Spouse atributos nao precisa se não for casado
