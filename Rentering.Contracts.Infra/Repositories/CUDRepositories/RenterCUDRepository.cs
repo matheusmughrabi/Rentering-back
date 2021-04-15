@@ -46,8 +46,8 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         Cidade = renter.Address.Cidade,
                         CEP = renter.Address.CEP,
                         Estado = renter.Address.Estado,
-                        SpouseFirstName = renter.SpouseFirstName.FirstName,
-                        SpouseLastName = renter.SpouseFirstName.LastName,
+                        SpouseFirstName = renter.SpouseName.FirstName,
+                        SpouseLastName = renter.SpouseName.LastName,
                         SpouseNationality = renter.SpouseNationality,
                         SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = renter.SpouseCPF.CPF
@@ -75,8 +75,8 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         Cidade = renter.Address.Cidade,
                         CEP = renter.Address.CEP,
                         Estado = renter.Address.Estado,
-                        SpouseFirstName = renter.SpouseFirstName.FirstName,
-                        SpouseLastName = renter.SpouseFirstName.LastName,
+                        SpouseFirstName = renter.SpouseName.FirstName,
+                        SpouseLastName = renter.SpouseName.LastName,
                         SpouseNationality = renter.SpouseNationality,
                         SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = renter.SpouseCPF.CPF

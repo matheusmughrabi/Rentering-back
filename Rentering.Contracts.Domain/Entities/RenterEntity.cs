@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG,
             CPFValueObject cpf, 
             AddressValueObject address,
-            NameValueObject spouseFirstName, 
+            NameValueObject spouseName, 
             string spouseNationality,
             IdentityRGValueObject spouseIdentityRG, 
             CPFValueObject spouseCPF)
@@ -28,7 +28,7 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRG = identityRG;
             CPF = cpf;
             Address = address;
-            SpouseFirstName = spouseFirstName;
+            SpouseName = spouseName;
             SpouseNationality = spouseNationality;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
@@ -42,7 +42,7 @@ namespace Rentering.Contracts.Domain.Entities
         public IdentityRGValueObject IdentityRG { get; private set; }
         public CPFValueObject CPF { get; private set; }
         public AddressValueObject Address { get; private set; }
-        public NameValueObject SpouseFirstName { get; private set; }
+        public NameValueObject SpouseName { get; private set; }
         public string SpouseNationality { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }

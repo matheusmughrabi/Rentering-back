@@ -12,11 +12,27 @@ namespace Rentering.Contracts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
+                .IsNotNull(FirstName, "FirstName", "FirstName cannot be null or empty")
+                .IsNotNull(LastName, "LastName", "LastName cannot be null or empty ")
+            );
+
+            if (FirstName != null)
+            {
+                AddNotifications(new ValidationContract()
+                .Requires()
                 .HasMinLen(FirstName, 3, "FirstName", "First Name must have at least 3 letters")
                 .HasMaxLen(FirstName, 40, "FirstName", "First Name must have less than 40 letters")
+                );
+            }
+
+            if (LastName != null)
+            {
+                AddNotifications(new ValidationContract()
+                .Requires()
                 .HasMinLen(LastName, 3, "LastName", "Last Name must have at least 3 letters")
                 .HasMaxLen(LastName, 40, "LastName", "Last Name must have less than 40 letters")
-            );
+                );
+            }
         }
 
         public string FirstName { get; private set; }
