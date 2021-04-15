@@ -46,6 +46,5 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseNationality { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
-        
     }
 }
