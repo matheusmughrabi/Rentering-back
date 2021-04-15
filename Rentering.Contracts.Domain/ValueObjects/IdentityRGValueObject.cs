@@ -4,7 +4,7 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class IdentityRGValueObject : BaseValueObject
     {
-        public IdentityRGValueObject(string identityRG)
+        public IdentityRGValueObject(string identityRG, bool identityRGRequired = true)
         {
             IdentityRG = identityRG;
         }

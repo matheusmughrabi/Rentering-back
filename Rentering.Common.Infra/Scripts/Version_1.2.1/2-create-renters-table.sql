@@ -1,4 +1,4 @@
-/****** Object:  Table [dbo].[Renters]    Script Date: 12/04/2021 23:05:22 ******/
+/****** Object:  Table [dbo].[Renters]    Script Date: 14/04/2021 22:35:48 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,11 +20,11 @@ CREATE TABLE [dbo].[Renters](
 	[Cidade] [nvarchar](50) NOT NULL,
 	[CEP] [nvarchar](50) NOT NULL,
 	[Estado] [nvarchar](50) NOT NULL,
-	[SpouseFirstName] [nvarchar](50) NOT NULL,
-	[SpouseLastName] [nvarchar](50) NOT NULL,
-	[SpouseNationality] [nvarchar](50) NOT NULL,
-	[SpouseIdentityRG] [nvarchar](50) NOT NULL,
-	[SpouseCPF] [nvarchar](50) NOT NULL,
+	[SpouseFirstName] [nvarchar](50) NULL,
+	[SpouseLastName] [nvarchar](50) NULL,
+	[SpouseNationality] [nvarchar](50) NULL,
+	[SpouseIdentityRG] [nvarchar](50) NULL,
+	[SpouseCPF] [nvarchar](50) NULL,
  CONSTRAINT [PK_Renters] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
