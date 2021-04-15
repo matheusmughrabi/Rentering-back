@@ -26,9 +26,9 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
             var cpf = new CPFValueObject(command.CPF);
             var address = new AddressValueObject(command.Street, command.Bairro, command.Cidade, command.CEP, command.Estado);
-            var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName);
-            var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
-            var spouseCPF = new CPFValueObject(command.SpouseCPF);
+            var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName, false, false);
+            var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
+            var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
             var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
@@ -80,10 +80,10 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
             var cpf = new CPFValueObject(command.CPF);
-            var address = new AddressValueObject(command.Street, command.Bairro, command.Cidade, command.CEP, command.Estado);
-            var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName);
-            var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
-            var spouseCPF = new CPFValueObject(command.SpouseCPF);
+            var address = new AddressValueObject(command.Street, command.Bairro, command.Cidade, command.CEP, command.Estado); 
+            var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName, false, false);
+            var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
+            var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
             var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
@@ -96,6 +96,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             AddNotifications(address.Notifications);
             AddNotifications(spouseName.Notifications);
             AddNotifications(spouseIdentityRG.Notifications);
+            AddNotifications(spouseCPF.Notifications);
             AddNotifications(renterEntity.Notifications);
 
             if (Invalid)

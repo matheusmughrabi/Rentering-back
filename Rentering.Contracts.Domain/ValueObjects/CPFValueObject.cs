@@ -5,14 +5,26 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class CPFValueObject : BaseValueObject
     {
-        public CPFValueObject(string cpf)
+        public CPFValueObject(string cpf, bool cpfRequired = true)
         {
             CPF = cpf;
 
-			AddNotifications(new ValidationContract()
+            if (cpfRequired)
+            {
+				AddNotifications(new ValidationContract()
+				.Requires()
+				.IsNotNull(CPF, "CPF", "CPF cannot be null or empty ")
+				);
+			}
+
+            if (cpf != null)
+            {
+				AddNotifications(new ValidationContract()
 				.Requires()
 				.IsTrue(IsCPF(cpf), "CPF", "Invalid CPF")
-			);
+				);
+			}
+			
 		}
 
         public string CPF { get; private set; }

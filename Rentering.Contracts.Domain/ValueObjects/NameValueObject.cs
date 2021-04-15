@@ -5,16 +5,43 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class NameValueObject : BaseValueObject
     {
-        public NameValueObject(string firstName, string lastName)
+        public NameValueObject(
+            string firstName, 
+            string lastName, 
+            bool firstNameRequired = true, 
+            bool lastNameRequired = true)
         {
             FirstName = firstName;
             LastName = lastName;
 
-            AddNotifications(new ValidationContract()
+            Validate(firstNameRequired, lastNameRequired);
+        }
+
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName}";
+        }
+
+        private void Validate(bool firstNameRequired, bool lastNameRequired)
+        {
+            if (firstNameRequired)
+            {
+                AddNotifications(new ValidationContract()
                 .Requires()
                 .IsNotNull(FirstName, "FirstName", "FirstName cannot be null or empty")
+                );
+            }
+
+            if (lastNameRequired)
+            {
+                AddNotifications(new ValidationContract()
+                .Requires()
                 .IsNotNull(LastName, "LastName", "LastName cannot be null or empty ")
-            );
+                );
+            }
 
             if (FirstName != null)
             {
@@ -33,14 +60,6 @@ namespace Rentering.Contracts.Domain.ValueObjects
                 .HasMaxLen(LastName, 40, "LastName", "Last Name must have less than 40 letters")
                 );
             }
-        }
-
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-
-        public override string ToString()
-        {
-            return $"{FirstName} {LastName}";
         }
     }
 }
