@@ -26,6 +26,7 @@ namespace Rentering.WebAPI
             services.RegisterRepositoriesAndServices();
             services.RegisterSwagger();
             services.RegisterAuthenticationAndAuthorization();
+            services.RegisterFluentMigrator();
 
             services.AddControllers();           
             services.AddCors();   
@@ -58,6 +59,8 @@ namespace Rentering.WebAPI
             {
                 endpoints.MapControllers();
             });
+
+            app.Migrate();
         }
     }
 }

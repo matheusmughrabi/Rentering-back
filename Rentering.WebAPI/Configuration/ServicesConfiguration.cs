@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentMigrator.Runner;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,6 +17,7 @@ using Rentering.Contracts.Infra.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Repositories.QueryRepositories;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Rentering.WebAPI.Configuration
@@ -45,6 +47,18 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
             services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();
+        }
+
+        public static void RegisterFluentMigrator(this IServiceCollection services)
+        {
+            services
+                .AddLogging(c => c.AddFluentMigratorConsole())
+                .AddFluentMigratorCore()
+                .ConfigureRunner(c => c
+                    .AddSqlServer2016()
+                    .WithGlobalConnectionString(DatabaseSettings.connectionString)
+                    .ScanIn(Assembly.GetExecutingAssembly()).For.All());
+
         }
 
         public static void RegisterSwagger(this IServiceCollection services)

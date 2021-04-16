@@ -43,6 +43,7 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/refactoring-repositories ======
+// Adicionar Fluent Migrator
 // Organizar BD, StoredProcedures, Versionamento BD
 // Testar
 // Merge com release-1.2.1
