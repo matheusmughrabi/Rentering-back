@@ -60,7 +60,7 @@ namespace Rentering.WebAPI
                 endpoints.MapControllers();
             });
 
-            app.Migrate();
+            //app.Migrate();
         }
     }
 }

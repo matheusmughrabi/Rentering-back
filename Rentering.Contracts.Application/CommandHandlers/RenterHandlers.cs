@@ -7,7 +7,7 @@ using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
 {
-    public class RenterCommandHandlers : Notifiable,
+    public class RenterHandlers : Notifiable,
         ICommandHandler<CreateRenterCommand>,
         ICommandHandler<UpdateRenterCommand>,
         ICommandHandler<DeleteRenterCommand>
@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
     {
         private readonly IRenterCUDRepository _renterCUDRepository;
 
-        public RenterCommandHandlers(IRenterCUDRepository renterCUDRepository)
+        public RenterHandlers(IRenterCUDRepository renterCUDRepository)
         {
             _renterCUDRepository = renterCUDRepository;
         }

@@ -98,7 +98,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
             mock.Setup(m => m.CreateRenter(_renterEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var createRenterHandler = new RenterHandlers(mock.Object);
             var result = createRenterHandler.Handle(_createRenterCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -111,7 +111,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
             mock.Setup(m => m.CreateRenter(_renterEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var createRenterHandler = new RenterHandlers(mock.Object);
             var result = createRenterHandler.Handle(_createRenterCommand);
 
             Assert.AreEqual(true, result.Success);
@@ -124,7 +124,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
             mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var createRenterHandler = new RenterHandlers(mock.Object);
             var result = createRenterHandler.Handle(_updateRenterCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -137,7 +137,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
             mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
 
-            var createRenterHandler = new RenterCommandHandlers(mock.Object);
+            var createRenterHandler = new RenterHandlers(mock.Object);
             var result = createRenterHandler.Handle(_updateRenterCommand);
 
             Assert.AreEqual(true, result.Success);
