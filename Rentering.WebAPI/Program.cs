@@ -57,9 +57,12 @@ namespace Rentering.WebAPI
 
 // ====== NOVA BRANCH -> features/check-if-account ======
 // Implementar checkIfAccounts OK
-// Criar UnitTests para handlers
-// Testar
-// Merge com release-1.2.1
+// Criar UnitTests para handlers OK
+// Testar OK
+// Merge com release-1.2.1 OK
+
+
+// ====== NOVA BRANCH -> features/general-improvements ======
 
 
 // ====== NOVA BRANCH -> features/tenant-functionality ======

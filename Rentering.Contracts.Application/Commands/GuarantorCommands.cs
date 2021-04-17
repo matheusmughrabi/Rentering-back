@@ -15,10 +15,10 @@ namespace Rentering.Contracts.Application.Commands
             string identityRG,
             string cpf,
             string street,
-            string bairro,
-            string cidade,
+            string neighborhood,
+            string city,
             string cep,
-            string estado,
+            e_BrazilStates state,
             string spouseFirstName,
             string spouseLastName,
             string spouseNationality,
@@ -34,10 +34,10 @@ namespace Rentering.Contracts.Application.Commands
             IdentityRG = identityRG;
             CPF = cpf;
             Street = street;
-            Bairro = bairro;
-            Cidade = cidade;
+            Neighborhood = neighborhood;
+            City = city;
             CEP = cep;
-            Estado = estado;
+            State = state;
             SpouseFirstName = spouseFirstName;
             SpouseLastName = spouseLastName;
             SpouseOcupation = spouseOcupation;
@@ -56,10 +56,10 @@ namespace Rentering.Contracts.Application.Commands
         public string IdentityRG { get; set; }
         public string CPF { get; set; }
         public string Street { get; set; }
-        public string Bairro { get; set; }
-        public string Cidade { get; set; }
+        public string Neighborhood { get; set; }
+        public string City { get; set; }
         public string CEP { get; set; }
-        public string Estado { get; set; }
+        public e_BrazilStates State { get; set; }
         public string SpouseFirstName { get; set; }
         public string SpouseLastName { get; set; }
         public string SpouseNationality { get; set; }

@@ -1,27 +1,28 @@
 ﻿using Rentering.Common.Shared.ValueObjects;
+using Rentering.Contracts.Domain.Enums;
 
 namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class AddressValueObject : BaseValueObject
     {
-        public AddressValueObject(string street, string bairro, string cidade, string cep, string estado)
+        public AddressValueObject(string street, string neighborhood, string city, string cep, e_BrazilStates state)
         {
             Street = street;
-            Bairro = bairro;
-            Cidade = cidade;
+            Neighborhood = neighborhood;
+            City = city;
             CEP = cep;
-            Estado = estado;
+            State = state;
         }
 
         public string Street { get; private set; }
-        public string Bairro { get; private set; }
-        public string Cidade { get; private set; }
+        public string Neighborhood { get; private set; }
+        public string City { get; private set; }
         public string CEP { get; private set; }
-        public string Estado { get; private set; }
+        public e_BrazilStates State { get; private set; }
 
         public override string ToString()
         {
-            return $"{Street} - {Bairro} - {Cidade} - {CEP} - {Estado}";
+            return $"{Street} - {Neighborhood} - {City} - {CEP} - {State}";
         }
     }
 }

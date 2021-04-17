@@ -8,7 +8,14 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            throw new NotImplementedException();
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAllAccounts]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_GetAllAccounts]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_CreateAccount]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_DeleteAccount]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_GetAccountById]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_UpdateAccount]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Util_CheckIfAccountExists]");
         }
 
         public override void Up()
@@ -91,8 +98,6 @@ namespace Rentering.WebAPI.Migrations
 
                         SET QUOTED_IDENTIFIER ON
                         GO
-
-
 
                         CREATE PROCEDURE [dbo].[sp_Accounts_CUD_DeleteAccount]
 	                        @Id INT

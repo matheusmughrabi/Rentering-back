@@ -13,10 +13,10 @@ namespace Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults
         public string IdentityRG { get; set; }
         public string CPF { get; set; }
         public string Street { get; set; }
-        public string Bairro { get; set; }
-        public string Cidade { get; set; }
+        public string Neighborhood { get; set; }
+        public string City { get; set; }
         public string CEP { get; set; }
-        public string Estado { get; set; }
+        public e_BrazilStates State { get; set; }
         public string SpouseFirstName { get; set; }
         public string SpouseLastName { get; set; }
         public string SpouseNationality { get; set; }

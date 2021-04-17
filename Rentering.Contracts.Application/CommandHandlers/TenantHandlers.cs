@@ -22,7 +22,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
             var cpf = new CPFValueObject(command.CPF);
-            var address = new AddressValueObject(command.Street, command.Bairro, command.Cidade, command.CEP, command.Estado);
+            var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
             var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName);
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(command.SpouseCPF);
@@ -51,10 +51,10 @@ namespace Rentering.Contracts.Application.CommandHandlers
                 command.IdentityRG,
                 command.CPF,
                 command.Street,
-                command.Bairro,
-                command.Cidade,
+                command.Neighborhood,
+                command.City,
                 command.CEP,
-                command.Estado,
+                command.State,
                 command.SpouseFirstName,
                 command.SpouseLastName,
                 command.SpouseNationality,
