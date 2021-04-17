@@ -50,15 +50,14 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/refactoring-namings ======
-// Corrigir commandHandlers nomes para Handlers
-// Revisão geral nomenclaturas
-// Testar
-// Merge com release-1.2.1
+// Corrigir commandHandlers nomes para Handlers OK
+// Testar OK
+// Merge com release-1.2.1 OK
 
 
 // ====== NOVA BRANCH -> features/check-if-account ======
-// Implementar checkIfAccounts
-// UnitTests
+// Implementar checkIfAccounts OK
+// Criar UnitTests para handlers
 // Testar
 // Merge com release-1.2.1
 

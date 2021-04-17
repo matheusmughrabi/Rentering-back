@@ -10,7 +10,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
 {
     public class AccountHandlers : Notifiable,
         ICommandHandler<CreateAccountCommand>,
-        ICommandHandler<LoginAccountCommand>,
         ICommandHandler<AssignAccountCommand>
     {
         private readonly IAccountCUDRepository _accountRepository;
@@ -27,11 +26,11 @@ namespace Rentering.Accounts.Application.CommandHandlers
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
             var accountEntity = new AccountEntity(email, username, password);
 
-            //if (_userRepository.CheckIfEmailExists(command.Email))
-            //    AddNotification("Email", "This Email is already registered");
+            if (_accountRepository.CheckIfEmailExists(command.Email))
+                AddNotification("Email", "This Email is already registered");
 
-            //if (_userRepository.CheckIfUsernameExists(command.Username))
-            //    AddNotification("Username", "This Username is already registered");
+            if (_accountRepository.CheckIfUsernameExists(command.Username))
+                AddNotification("Username", "This Username is already registered");
 
             AddNotifications(email.Notifications);
             AddNotifications(username.Notifications);
@@ -60,9 +59,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
 
             userEntityFromDb.AssignAdminRole();
 
-            //if (_userRepository.CheckIfUsernameExists(userEntityFromDb.Username.Username))
-            //    AddNotification("Username", "This Username is already registered");
-
             AddNotifications(userEntityFromDb.Notifications);
 
             if (Invalid)
@@ -78,32 +74,6 @@ namespace Rentering.Accounts.Application.CommandHandlers
             });
 
             return adminRoleAssignedUser;
-        }
-
-        public ICommandResult Handle(LoginAccountCommand command)
-        {
-            var accountEntitiesFromDb = _accountRepository.GetAllAccounts();
-
-            var accountFiltered = accountEntitiesFromDb
-                .Where(c => c.Username.Username == command.Username && c.Password.Password == command.Password)
-                .FirstOrDefault();
-
-            //if (_userRepository.CheckIfUsernameExists(userEntityFromDb.Username.Username))
-            //    AddNotification("Username", "This Username is already registered");
-
-            AddNotifications(accountFiltered.Notifications);
-
-            if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
-
-            var accountCommandResult = new CommandResult(true, "User retrieved", new
-            {
-                accountFiltered.Email.Email,
-                accountFiltered.Username.Username,
-                accountFiltered.Role
-            });
-
-            return accountCommandResult;
         }
     }
 }
