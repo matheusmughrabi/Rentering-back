@@ -28,10 +28,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         private string _identityRG;
         private string _cpf;
         private string _street;
-        private string _bairro;
-        private string _cidade;
+        private string _neighborhood;
+        private string _city;
         private string _cep;
-        private string _estado;
+        private e_BrazilStates _state;
         private string _spouseFirstName;
         private string _spouseLastName;
         private string _spouseNationality;
@@ -60,10 +60,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             _identityRG = "26.384.185-6";
             _cpf = "729.533.620-61";
             _street = "Dom Pedro";
-            _bairro = "Vila Nova";
-            _cidade = "São Paulo";
+            _neighborhood = "Vila Nova";
+            _city = "São Paulo";
             _cep = "08032-200";
-            _estado = "SP";
+            _state = e_BrazilStates.SP;
             _spouseFirstName = "Maria";
             _spouseLastName = "Silva";
             _spouseNationality = "Brasileiro";
@@ -72,13 +72,13 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             _spouseCPF = "667.137.180-60";
 
             _createGuarantorCommand = new CreateGuarantorCommand(_firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
-                _cpf, _street, _bairro, _cidade, _cep, _estado, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
+                _cpf, _street, _neighborhood, _city, _cep, _state, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
                 _spouseIdentityRG, _spouseCPF);
 
             name = new NameValueObject("João", "Silva");
             identityRG = new IdentityRGValueObject("26.384.185-6");
             cpf = new CPFValueObject("729.533.620-61");
-            address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", "SP");
+            address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", _state);
             spouseName = new NameValueObject("Maria", "Silva");
             spouseIdentityRG = new IdentityRGValueObject("34.254.880-3");
             spouseCPF = new CPFValueObject("667.137.180-60");

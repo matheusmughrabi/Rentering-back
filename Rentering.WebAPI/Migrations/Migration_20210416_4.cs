@@ -8,8 +8,13 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            throw new NotImplementedException();
-        }
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]");
+		}
 
         public override void Up()
         {
@@ -46,10 +51,10 @@ namespace Rentering.WebAPI.Migrations
 							@IdentityRG NVARCHAR(50),
 							@CPF NVARCHAR(50),
 							@Street NVARCHAR(50),
-							@Bairro NVARCHAR(50),
-							@Cidade NVARCHAR(50),
+							@Neighborhood NVARCHAR(50),
+							@City NVARCHAR(50),
 							@CEP NVARCHAR(50),
-							@Estado NVARCHAR(50),
+							@State INT,
 							@SpouseFirstName NVARCHAR(50),
 							@SpouseLastName NVARCHAR(50),
 							@SpouseNationality NVARCHAR(50),
@@ -67,10 +72,10 @@ namespace Rentering.WebAPI.Migrations
 								[IdentityRG],
 								[CPF],
 								[Street],
-								[Bairro],
-								[Cidade],
+								[Neighborhood],
+								[City],
 								[CEP],
-								[Estado],
+								[State],
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],
@@ -86,10 +91,10 @@ namespace Rentering.WebAPI.Migrations
 								@IdentityRG,
 								@CPF,
 								@Street,
-								@Bairro,
-								@Cidade,
+								@Neighborhood,
+								@City,
 								@CEP,
-								@Estado,
+								@State,
 								@SpouseFirstName,
 								@SpouseLastName,
 								@SpouseNationality,
@@ -135,10 +140,10 @@ namespace Rentering.WebAPI.Migrations
 							@IdentityRG NVARCHAR(50),
 							@CPF NVARCHAR(50),
 							@Street NVARCHAR(50),
-							@Bairro NVARCHAR(50),
-							@Cidade NVARCHAR(50),
+							@Neighborhood NVARCHAR(50),
+							@City NVARCHAR(50),
 							@CEP NVARCHAR(50),
-							@Estado NVARCHAR(50),
+							@State INT,
 							@SpouseFirstName NVARCHAR(50),
 							@SpouseLastName NVARCHAR(50),
 							@SpouseNationality NVARCHAR(50),
@@ -158,10 +163,10 @@ namespace Rentering.WebAPI.Migrations
 								[IdentityRG] = @IdentityRG,
 								[CPF] = @CPF,
 								[Street] = @Street,
-								[Bairro] = @Bairro,
-								[Cidade] = @Cidade,
+								[Neighborhood] = @Neighborhood,
+								[City] = @City,
 								[CEP] = @CEP,
-								[Estado] = @Estado,
+								[State] = @State,
 								[SpouseFirstName] = @SpouseFirstName,
 								[SpouseLastName] = @SpouseLastName,
 								[SpouseNationality] = @SpouseNationality,
@@ -193,10 +198,10 @@ namespace Rentering.WebAPI.Migrations
 								[IdentityRG],
 								[CPF],
 								[Street],
-								[Bairro],
-								[Cidade],
+								[Neighborhood],
+								[City],
 								[CEP],
-								[Estado],
+								[State],
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],
@@ -229,10 +234,10 @@ namespace Rentering.WebAPI.Migrations
 								[IdentityRG],
 								[CPF],
 								[Street],
-								[Bairro],
-								[Cidade],
+								[Neighborhood],
+								[City],
 								[CEP],
-								[Estado],
+								[State],
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],

@@ -8,7 +8,8 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            throw new NotImplementedException();
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Util_CheckIfEmailExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Util_CheckIfUsernameExists]");
         }
 
         public override void Up()
