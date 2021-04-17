@@ -3,6 +3,7 @@ using Rentering.Accounts.Application.QueryResults;
 using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Common.Infra;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
@@ -19,7 +20,7 @@ namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
         public GetAccountQueryResult GetAccountById(int id)
         {
             var accountQueryResult = _context.Connection.Query<GetAccountQueryResult>(
-                    "SELECT Id, Email, Username, Role FROM RenteringUsers where Id = @Id",
+                    "sp_Accounts_Query_GetAllAccounts",
                     new { Id = id }
                 ).FirstOrDefault();
 
@@ -28,10 +29,11 @@ namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
 
         public IEnumerable<GetAccountQueryResult> GetAccounts()
         {
-            var accountsQueryResult = _context.Connection.Query<GetAccountQueryResult>(
-                    "SELECT Id, Email, Username, Role FROM RenteringUsers");
+            var accountsFromDb = _context.Connection.Query<GetAccountQueryResult>(
+                    "sp_Accounts_Query_GetAllAccounts",
+                    commandType: CommandType.StoredProcedure);
 
-            return accountsQueryResult;
+            return accountsFromDb;
         }
     }
 }
