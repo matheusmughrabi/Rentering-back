@@ -35,7 +35,7 @@ namespace Rentering.WebAPI.Migrations
                 .WithColumn("SpouseFirstName").AsString().Nullable()
                 .WithColumn("SpouseLastName").AsString().Nullable()
                 .WithColumn("SpouseNationality").AsString().Nullable()
-                .WithColumn("SpouseRG").AsString().Nullable()
+                .WithColumn("SpouseIdentityRG").AsString().Nullable()
                 .WithColumn("SpouseCPF").AsString().Nullable();
         }
     }
