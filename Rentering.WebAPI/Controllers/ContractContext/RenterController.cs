@@ -67,7 +67,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             createRenterCommand.AccountId = accountId;
 
-            var handler = new RenterCommandHandlers(_renterCUDRepository);
+            var handler = new RenterHandlers(_renterCUDRepository);
             var result = handler.Handle(createRenterCommand);
 
             return Ok(result);
@@ -92,7 +92,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             updateRenterCommand.AccountId = accountId;
 
-            var handler = new RenterCommandHandlers(_renterCUDRepository);
+            var handler = new RenterHandlers(_renterCUDRepository);
             var result = handler.Handle(updateRenterCommand);
 
             return Ok(result);
@@ -115,7 +115,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            var handler = new RenterCommandHandlers(_renterCUDRepository);
+            var handler = new RenterHandlers(_renterCUDRepository);
             var result = handler.Handle(deleteContractCommand);
 
             return Ok(result);

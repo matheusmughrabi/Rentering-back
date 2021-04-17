@@ -94,7 +94,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
             mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createTenantHandler = new TenantCommandHandlers(mock.Object);
+            var createTenantHandler = new TenantHandlers(mock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -107,7 +107,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
             mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createTenantHandler = new TenantCommandHandlers(mock.Object);
+            var createTenantHandler = new TenantHandlers(mock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(true, result.Success);

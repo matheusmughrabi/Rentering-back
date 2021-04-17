@@ -7,12 +7,12 @@ using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
 {
-    public class TenantCommandHandlers : Notifiable,
+    public class TenantHandlers : Notifiable,
         ICommandHandler<CreateTenantCommand>
     {
         private readonly ITenantCUDRepository _tenantCUDRepository;
 
-        public TenantCommandHandlers(ITenantCUDRepository tenantCUDRepository)
+        public TenantHandlers(ITenantCUDRepository tenantCUDRepository)
         {
             _tenantCUDRepository = tenantCUDRepository;
         }
