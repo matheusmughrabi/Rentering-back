@@ -19,27 +19,27 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        //public bool CheckIfEmailExists(string email)
-        //{
-        //    var emailExists = _context.Connection.Query<bool>(
-        //             "spCheckIfEmailExists",
-        //             new { Email = email },
-        //             commandType: CommandType.StoredProcedure
-        //         ).FirstOrDefault();
+        public bool CheckIfEmailExists(string email)
+        {
+            var emailExists = _context.Connection.Query<bool>(
+                     "sp_Accounts_Util_CheckIfEmailExists",
+                     new { Email = email },
+                     commandType: CommandType.StoredProcedure
+                 ).FirstOrDefault();
 
-        //    return emailExists;
-        //}
+            return emailExists;
+        }
 
-        //public bool CheckIfUsernameExists(string username)
-        //{
-        //    var documentExists = _context.Connection.Query<bool>(
-        //            "spCheckIfUsernameExists",
-        //            new { Username = username },
-        //            commandType: CommandType.StoredProcedure
-        //        ).FirstOrDefault();
+        public bool CheckIfUsernameExists(string username)
+        {
+            var documentExists = _context.Connection.Query<bool>(
+                    "sp_Accounts_Util_CheckIfUsernameExists",
+                    new { Username = username },
+                    commandType: CommandType.StoredProcedure
+                ).FirstOrDefault();
 
-        //    return documentExists;
-        //}
+            return documentExists;
+        }
 
         public void CreateAccount(AccountEntity accountEntity)
         {

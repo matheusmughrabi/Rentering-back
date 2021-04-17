@@ -27,11 +27,11 @@ namespace Rentering.Accounts.Application.CommandHandlers
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
             var accountEntity = new AccountEntity(email, username, password);
 
-            //if (_userRepository.CheckIfEmailExists(command.Email))
-            //    AddNotification("Email", "This Email is already registered");
+            if (_accountRepository.CheckIfEmailExists(command.Email))
+                AddNotification("Email", "This Email is already registered");
 
-            //if (_userRepository.CheckIfUsernameExists(command.Username))
-            //    AddNotification("Username", "This Username is already registered");
+            if (_accountRepository.CheckIfUsernameExists(command.Username))
+                AddNotification("Username", "This Username is already registered");
 
             AddNotifications(email.Notifications);
             AddNotifications(username.Notifications);
