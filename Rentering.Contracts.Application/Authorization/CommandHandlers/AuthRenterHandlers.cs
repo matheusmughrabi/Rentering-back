@@ -2,7 +2,6 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Domain.Services;
-using System;
 
 namespace Rentering.Contracts.Application.Authorization.CommandHandlers
 {

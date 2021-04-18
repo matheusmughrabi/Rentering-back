@@ -2,10 +2,6 @@
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 {
@@ -24,6 +20,16 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         }
 
         public void CreateTenant(TenantEntity tenant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateTenant(int id, TenantEntity tenant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTenant(int id)
         {
             throw new NotImplementedException();
         }

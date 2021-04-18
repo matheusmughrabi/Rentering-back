@@ -63,9 +63,14 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/general-improvements ======
+// Nomenclaturas OK
+// Migrationg OK
+// Testar OK
+// Merge com release-1.2.1 OK
 
 
 // ====== NOVA BRANCH -> features/tenant-functionality ======
+// Criar handlers
 // Criar unit tests
 // Criar tabela Tenant
 // Criar Stored Procedures Tenant
@@ -75,6 +80,8 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/guarantor-functionality ======
+// Criar handlers
+// Criar unit tests
 // Criar tabela Guarantor
 // Criar Stored Procedures Guarantor
 // Implementar Repositorios Guarantor

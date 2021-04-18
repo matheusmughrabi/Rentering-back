@@ -6,11 +6,6 @@ using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentering.UnitTests.ContractContext.Handlers
 {
@@ -18,7 +13,9 @@ namespace Rentering.UnitTests.ContractContext.Handlers
     public class TenantHandlersTests
     {
         private CreateTenantCommand _createTenantCommand;
+        private UpdateTenantCommand _updateTenantCommand;
 
+        private int _id;
         private int _accountId;
         private string _firstName;
         private string _lastName;
@@ -51,6 +48,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
 
         public TenantHandlersTests()
         {
+            _id = 1;
             _accountId = 1;
             _firstName = "João";
             _lastName = "Silva";
@@ -75,13 +73,17 @@ namespace Rentering.UnitTests.ContractContext.Handlers
                 _cpf, _street, _neighborhood, _city, _cep, _state, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
                 _spouseIdentityRG, _spouseCPF);
 
-            name = new NameValueObject("João", "Silva");
-            identityRG = new IdentityRGValueObject("26.384.185-6");
-            cpf = new CPFValueObject("729.533.620-61");
-            address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", _state);
-            spouseName = new NameValueObject("Maria", "Silva");
-            spouseIdentityRG = new IdentityRGValueObject("34.254.880-3");
-            spouseCPF = new CPFValueObject("667.137.180-60");
+            _updateTenantCommand = new UpdateTenantCommand(_id, _firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
+                _cpf, _street, _neighborhood, _city, _cep, _state, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
+                _spouseIdentityRG, _spouseCPF);
+
+            name = new NameValueObject(_createTenantCommand.FirstName, _createTenantCommand.LastName);
+            identityRG = new IdentityRGValueObject(_createTenantCommand.IdentityRG);
+            cpf = new CPFValueObject(_createTenantCommand.CPF);
+            address = new AddressValueObject(_createTenantCommand.Street, _createTenantCommand.Neighborhood, _createTenantCommand.City, _createTenantCommand.CEP, _createTenantCommand.State);
+            spouseName = new NameValueObject(_createTenantCommand.SpouseFirstName, _createTenantCommand.SpouseLastName);
+            spouseIdentityRG = new IdentityRGValueObject(_createTenantCommand.SpouseIdentityRG);
+            spouseCPF = new CPFValueObject(_createTenantCommand.CPF);
 
             _tenantEntity = new TenantEntity(_accountId, name, _nationality, _ocupation, _maritalStatus, identityRG,
                 cpf, address, spouseName, _spouseNationality, _spouseOcupation, spouseIdentityRG, spouseCPF);
@@ -109,6 +111,32 @@ namespace Rentering.UnitTests.ContractContext.Handlers
 
             var createTenantHandler = new TenantHandlers(mock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
+
+            Assert.AreEqual(true, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldNotUpdateTenant_WhenAccountDoesNotExist()
+        {
+            Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+            mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
+
+            var createTenantHandler = new TenantHandlers(mock.Object);
+            var result = createTenantHandler.Handle(_updateTenantCommand);
+
+            Assert.AreEqual(false, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldUpdateTenant_WhenAccountExists()
+        {
+            Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
+            mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
+
+            var createTenantHandler = new TenantHandlers(mock.Object);
+            var result = createTenantHandler.Handle(_updateTenantCommand);
 
             Assert.AreEqual(true, result.Success);
         }
