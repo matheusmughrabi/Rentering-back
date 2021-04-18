@@ -1,9 +1,4 @@
 ﻿using Rentering.Contracts.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
 {
@@ -11,5 +6,7 @@ namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
     {
         bool CheckIfAccountExists(int accountId);
         void CreateTenant(TenantEntity tenant);
+        void UpdateTenant(int id, TenantEntity tenant);
+        void DeleteTenant(int id);
     }
 }

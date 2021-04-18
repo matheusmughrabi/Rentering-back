@@ -13,7 +13,7 @@ namespace Rentering.Contracts.Infra.Services
             _authRenterRepository = authRenterRepository;
         }
 
-        public bool IsCurrentUserRenterProfileOwner(int accountId, int renterProfileId)
+        public bool IsCurrentUserTheOwnerOfRenterProfile(int accountId, int renterProfileId)
         {
             var renterProfilesOfTheCurrentUser = _authRenterRepository.GetRenterProfilesOfTheCurrentUser(accountId);
 

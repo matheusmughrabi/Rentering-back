@@ -12,108 +12,108 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RenterController : RenteringBaseController
+    public class TenantController : ControllerBase
     {
-        private readonly IRenterCUDRepository _renterCUDRepository;
-        private readonly IRenterQueryRepository _renterQueryRepository;
-        private readonly IAuthRenterService _authRenterService;
+        private readonly ITenantCUDRepository _tenantCUDRepository;
+        private readonly ITenantQueryRepository _tenantQueryRepository;
+        private readonly IAuthTenantService _authTenantService;
 
-        public RenterController(
-            IRenterCUDRepository renterCUDRepository, 
-            IRenterQueryRepository renterQueryRepository, 
-            IAuthRenterService authRenterService)
+        public TenantController(
+            ITenantCUDRepository tenantCUDRepository,
+            ITenantQueryRepository tenantQueryRepository,
+            IAuthTenantService authTenantService)
         {
-            _renterCUDRepository = renterCUDRepository;
-            _renterQueryRepository = renterQueryRepository;
-            _authRenterService = authRenterService;
+            _tenantCUDRepository = tenantCUDRepository;
+            _tenantQueryRepository = tenantQueryRepository;
+            _authTenantService = authTenantService;
         }
 
         [HttpGet]
-        [Route("v1/Renters/{id}")]
+        [Route("v1/Tenants/{id}")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetRenterById(int id)
+        public IActionResult GetTenantById(int id)
         {
-            var result = _renterQueryRepository.GetRenterById(id);
+            var result = _tenantQueryRepository.GetTenantById(id);
 
             return Ok(result);
         }
 
         [HttpGet]
-        [Route("v1/Renters")]
+        [Route("v1/Tenants")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetRenterProfilesOfCurrentUser()
+        public IActionResult GetTenantProfilesOfCurrentUser()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _renterQueryRepository.GetRenterProfilesOfCurrentUser(accountId);
+            var result = _tenantQueryRepository.GetTenantProfilesOfCurrentUser(accountId);
 
             return Ok(result);
         }
 
         [HttpPost]
-        [Route("v1/CreateRenter")]
+        [Route("v1/CreateTenant")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreateRenter([FromBody] CreateRenterCommand createRenterCommand)
+        public IActionResult CreateTenant([FromBody] CreateTenantCommand createTenantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            createRenterCommand.AccountId = accountId;
+            createTenantCommand.AccountId = accountId;
 
-            var handler = new RenterHandlers(_renterCUDRepository);
-            var result = handler.Handle(createRenterCommand);
+            var handler = new TenantHandlers(_tenantCUDRepository);
+            var result = handler.Handle(createTenantCommand);
 
             return Ok(result);
         }
 
         [HttpPut]
-        [Route("v1/UpdateRenter")]
+        [Route("v1/UpdateTenant")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult UpdateRenter([FromBody] UpdateRenterCommand updateRenterCommand)
+        public IActionResult UpdateTenant([FromBody] UpdateTenantCommand updateTenantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(accountId, updateRenterCommand.Id);
-            var authHandler = new AuthRenterHandlers(_authRenterService);
+            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(accountId, updateTenantCommand.Id);
+            var authHandler = new AuthTenantHandlers(_authTenantService);
             var authResult = authHandler.Handle(authContractCommand);
 
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            updateRenterCommand.AccountId = accountId;
+            updateTenantCommand.AccountId = accountId;
 
-            var handler = new RenterHandlers(_renterCUDRepository);
-            var result = handler.Handle(updateRenterCommand);
+            var handler = new TenantHandlers(_tenantCUDRepository);
+            var result = handler.Handle(updateTenantCommand);
 
             return Ok(result);
         }
 
         [HttpDelete]
-        [Route("v1/DeleteRenter")]
+        [Route("v1/DeleteTenant")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult Delete([FromBody] DeleteRenterCommand deleteTenantCommand)
+        public IActionResult DeleteTenant([FromBody] DeleteTenantCommand deleteTenantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int authenticatedUserId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
-            var authHandler = new AuthRenterHandlers(_authRenterService);
+            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
+            var authHandler = new AuthTenantHandlers(_authTenantService);
             var authResult = authHandler.Handle(authContractCommand);
 
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            var handler = new RenterHandlers(_renterCUDRepository);
+            var handler = new TenantHandlers(_tenantCUDRepository);
             var result = handler.Handle(deleteTenantCommand);
 
             return Ok(result);

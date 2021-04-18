@@ -7,19 +7,19 @@ using System.Data;
 
 namespace Rentering.Contracts.Infra.Repositories.AuthRepositories
 {
-    public class RenterAuthRepository : IRenterAuthRepository
+    public class TenantAuthRepository : ITenantAuthRepository
     {
         private readonly RenteringDataContext _context;
 
-        public RenterAuthRepository(RenteringDataContext context)
+        public TenantAuthRepository(RenteringDataContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<AuthRenterProfilesOfTheCurrentUserQueryResults> GetRenterProfilesOfTheCurrentUser(int accountId)
+        public IEnumerable<AuthTenantProfilesOfTheCurrentUserQueryResults> GetTenantProfilesOfTheCurrentUser(int accountId)
         {
-            var rentersFromDb = _context.Connection.Query<AuthRenterProfilesOfTheCurrentUserQueryResults>(
-                    "sp_Renters_Auth_GetRentersIdsOfAccount",
+            var rentersFromDb = _context.Connection.Query<AuthTenantProfilesOfTheCurrentUserQueryResults>(
+                    "sp_Tenants_Auth_GetTenantsIdsOfAccount",
                     new { AccountId = accountId },
                     commandType: CommandType.StoredProcedure
                 );

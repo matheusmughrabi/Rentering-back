@@ -63,18 +63,27 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/general-improvements ======
+// Nomenclaturas OK
+// Migrationg OK
+// Testar OK
+// Merge com release-1.2.1 OK
 
 
 // ====== NOVA BRANCH -> features/tenant-functionality ======
-// Criar unit tests
-// Criar tabela Tenant
-// Criar Stored Procedures Tenant
-// Implementar Repositorios Tenant
+// Criar handlers OK
+// Criar unit tests OK
+// Criar tabela Tenant OK
+// Criar Stored Procedures Tenant OK
+// Implementar Repositorios Tenant OK
+// Testar ON GOING -> Corrigir bugs em renterService e tenantService, além disso é preciso criar testes para estes services OK
+// Criar query repositories e controllers
 // Testar
 // Merge com release-1.2.1
 
 
 // ====== NOVA BRANCH -> features/guarantor-functionality ======
+// Criar handlers
+// Criar unit tests
 // Criar tabela Guarantor
 // Criar Stored Procedures Guarantor
 // Implementar Repositorios Guarantor
