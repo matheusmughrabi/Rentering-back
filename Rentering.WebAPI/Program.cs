@@ -88,8 +88,8 @@ namespace Rentering.WebAPI
 // Criar auth unit tests OK
 // Implementar GuarantorService OK
 // Criar unit tests para guarantorService OK
-// Criar tabela Guarantor
-// Criar Stored Procedures Guarantor
+// Criar tabela Guarantor OK
+// Criar Stored Procedures Guarantor OK
 // Implementar Repositorios Guarantor
 // Criar controller
 // Testar
