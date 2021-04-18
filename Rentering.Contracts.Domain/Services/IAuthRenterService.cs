@@ -2,6 +2,6 @@
 {
     public interface IAuthRenterService
     {
-        bool IsCurrentUserRenterProfileOwner(int accountId, int renterProfileId);
+        bool IsCurrentUserTheOwnerOfRenterProfile(int accountId, int renterProfileId);
     }
 }

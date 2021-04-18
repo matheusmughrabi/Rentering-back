@@ -29,7 +29,7 @@ namespace Rentering.WebAPI.Migrations
                         BEGIN
                             SELECT [Id]
 	                        FROM Tenants
-	                        WHERE [AccountId] = [AccountId]
+	                        WHERE [AccountId] = @AccountId
                         END
                         GO");
 

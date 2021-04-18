@@ -15,7 +15,7 @@ namespace Rentering.UnitTests.ContractContext.Authorization.Handlers
             var authCurrentUserAndProfileRenterMatchCommand = new AuthCurrentUserAndProfileRenterMatchCommand(1, 2);
 
             Mock<IAuthRenterService> mockAuth = new Mock<IAuthRenterService>();
-            mockAuth.Setup(m => m.IsCurrentUserRenterProfileOwner(
+            mockAuth.Setup(m => m.IsCurrentUserTheOwnerOfRenterProfile(
                 authCurrentUserAndProfileRenterMatchCommand.AccountId, authCurrentUserAndProfileRenterMatchCommand.RenterId))
                 .Returns(false);
 
@@ -31,7 +31,7 @@ namespace Rentering.UnitTests.ContractContext.Authorization.Handlers
             var authCurrentUserAndProfileRenterMatchCommand = new AuthCurrentUserAndProfileRenterMatchCommand(1, 2);
 
             Mock<IAuthRenterService> mockAuth = new Mock<IAuthRenterService>();
-            mockAuth.Setup(m => m.IsCurrentUserRenterProfileOwner(
+            mockAuth.Setup(m => m.IsCurrentUserTheOwnerOfRenterProfile(
                 authCurrentUserAndProfileRenterMatchCommand.AccountId, authCurrentUserAndProfileRenterMatchCommand.RenterId))
                 .Returns(true);
 

@@ -31,7 +31,7 @@ namespace Rentering.WebAPI.Migrations
                         BEGIN
                             SELECT [Id]
 	                        FROM Renters
-	                        WHERE [AccountId] = [AccountId]
+	                        WHERE [AccountId] = @AccountId
                         END
                         GO");
 
