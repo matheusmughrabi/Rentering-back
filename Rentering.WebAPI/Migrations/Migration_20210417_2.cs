@@ -1,20 +1,19 @@
 ﻿using FluentMigrator;
-using System;
 
 namespace Rentering.WebAPI.Migrations
 {
-    [Migration(20210416_4)]
-    public class Migration_20210416_4 : Migration
+    [Migration(20210417_2)]
+    public class Migration_20210417_2 : Migration
     {
         public override void Down()
         {
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]");
-		}
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Auth_GetTenantsIdsOfAccount]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_CreateTenant]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_DeleteTenant]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_UpdateTenant]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]");
+        }
 
         public override void Up()
         {
@@ -24,24 +23,23 @@ namespace Rentering.WebAPI.Migrations
                         SET QUOTED_IDENTIFIER ON
                         GO
 
-
-                        CREATE PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]
+                        CREATE PROCEDURE [dbo].[sp_Tenants_Auth_GetTenantsIdsOfAccount]
 	                        @AccountId int
                         AS
                         BEGIN
                             SELECT [Id]
-	                        FROM Renters
+	                        FROM Tenants
 	                        WHERE [AccountId] = [AccountId]
                         END
                         GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]
+						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_CreateTenant]
 							@AccountId INT,
 							@FirstName NVARCHAR(50),
 							@LastName NVARCHAR(50),
@@ -58,11 +56,12 @@ namespace Rentering.WebAPI.Migrations
 							@SpouseFirstName NVARCHAR(50),
 							@SpouseLastName NVARCHAR(50),
 							@SpouseNationality NVARCHAR(50),
+							@SpouseOcupation NVARCHAR(50),
 							@SpouseIdentityRG NVARCHAR(50),
 							@SpouseCPF NVARCHAR(50)
 						AS
 						BEGIN
-							INSERT INTO [Renters] (
+							INSERT INTO [Tenants] (
 								[AccountId],
 								[FirstName], 
 								[LastName],
@@ -79,6 +78,7 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],
+								[SpouseOcupation],
 								[SpouseIdentityRG],
 								[SpouseCPF]
 							) VALUES (
@@ -98,13 +98,14 @@ namespace Rentering.WebAPI.Migrations
 								@SpouseFirstName,
 								@SpouseLastName,
 								@SpouseNationality,
+								@SpouseOcupation,
 								@SpouseIdentityRG,
 								@SpouseCPF
 							)
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
@@ -112,24 +113,24 @@ namespace Rentering.WebAPI.Migrations
 
 
 
-						CREATE PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]
+						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_DeleteTenant]
 							@Id INT
 						AS
 						BEGIN
 							DELETE FROM 
-								Renters
+								Tenants
 							WHERE 
 								Id = @Id
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]
+						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_UpdateTenant]
 							@Id INT,
 							@AccountId INT,
 							@FirstName NVARCHAR(50),
@@ -147,12 +148,13 @@ namespace Rentering.WebAPI.Migrations
 							@SpouseFirstName NVARCHAR(50),
 							@SpouseLastName NVARCHAR(50),
 							@SpouseNationality NVARCHAR(50),
+							@SpouseOcupation NVARCHAR(50),
 							@SpouseIdentityRG NVARCHAR(50),
 							@SpouseCPF NVARCHAR(50)
 						AS
 						BEGIN
 							UPDATE 
-								Renters
+								Tenants
 							SET
 								[AccountId] = @AccountId,
 								[FirstName] = @FirstName, 
@@ -170,6 +172,7 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseFirstName] = @SpouseFirstName,
 								[SpouseLastName] = @SpouseLastName,
 								[SpouseNationality] = @SpouseNationality,
+								[SpouseOcupation] = @SpouseOcupation,
 								[SpouseIdentityRG] = @SpouseIdentityRG,
 								[SpouseCPF] = @SpouseCPF
 							WHERE 
@@ -177,13 +180,13 @@ namespace Rentering.WebAPI.Migrations
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]
+						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]
 							@Id INT
 						AS
 						BEGIN
@@ -204,22 +207,23 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],
+								[SpouseOcupation],
 								[SpouseIdentityRG],
 								[SpouseCPF]
 							FROM 
-								Renters
+								Tenants
 							WHERE 
 								[Id] = @Id;
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]
+						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]
 							@AccountId INT
 						AS
 						BEGIN
@@ -240,15 +244,16 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseFirstName],
 								[SpouseLastName],
 								[SpouseNationality],
+								[SpouseOcupation],
 								[SpouseIdentityRG],
 								[SpouseCPF]
 							FROM 
-								Renters
+								Tenants
 							WHERE 
 								[AccountId] = @AccountId;
 						END
 						GO
 						");
-        }
+		}
     }
 }
