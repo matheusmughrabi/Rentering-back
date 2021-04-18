@@ -1,6 +1,7 @@
 ﻿using Rentering.Contracts.Domain.Repositories.AuthRepositories;
 using Rentering.Contracts.Domain.Services;
 using System;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Services
 {
@@ -15,7 +16,11 @@ namespace Rentering.Contracts.Infra.Services
 
         public bool IsCurrentUserTenantProfileOwner(int accountId, int tenantProfileId)
         {
-            throw new NotImplementedException();
+            var tenantProfilesOfTheCurrentUser = _authTenantRepository.GetTenantProfilesOfTheCurrentUser(accountId);
+
+            bool containsPassedTenantProfileId = tenantProfilesOfTheCurrentUser.ToList().Any(c => c.Id == tenantProfileId);
+
+            return containsPassedTenantProfileId;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rentering.Contracts.Application.Authorization.CommandHandlers;
+using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
@@ -12,14 +14,14 @@ namespace Rentering.WebAPI.Controllers.ContractContext
     public class TenantController : ControllerBase
     {
         private readonly ITenantCUDRepository _tenantCUDRepository;
-        //private readonly IAuthTenantService _authTenantService;
+        private readonly IAuthTenantService _authTenantService;
 
         public TenantController(
-            ITenantCUDRepository tenantCUDRepository)
-            //IAuthTenantService authTenantService)
+            ITenantCUDRepository tenantCUDRepository,
+            IAuthTenantService authTenantService)
         {
             _tenantCUDRepository = tenantCUDRepository;
-            //_authTenantService = authTenantService;
+            _authTenantService = authTenantService;
         }
 
         [HttpPost]
@@ -50,12 +52,12 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            //var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(accountId, updateRenterCommand.Id);
-            //var authHandler = new AuthRenterHandlers(_authRenterService);
-            //var authResult = authHandler.Handle(authContractCommand);
+            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(accountId, updateTenantCommand.Id);
+            var authHandler = new AuthTenantHandlers(_authTenantService);
+            var authResult = authHandler.Handle(authContractCommand);
 
-            //if (authResult.Success == false)
-            //    return Unauthorized(authResult);
+            if (authResult.Success == false)
+                return Unauthorized(authResult);
 
             updateTenantCommand.AccountId = accountId;
 
@@ -75,12 +77,12 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            //var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(authenticatedUserId, deleteContractCommand.Id);
-            //var authHandler = new AuthRenterHandlers(_authRenterService);
-            //var authResult = authHandler.Handle(authContractCommand);
+            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
+            var authHandler = new AuthTenantHandlers(_authTenantService);
+            var authResult = authHandler.Handle(authContractCommand);
 
-            //if (authResult.Success == false)
-            //    return Unauthorized(authResult);
+            if (authResult.Success == false)
+                return Unauthorized(authResult);
 
             var handler = new TenantHandlers(_tenantCUDRepository);
             var result = handler.Handle(deleteTenantCommand);
