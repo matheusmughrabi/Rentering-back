@@ -6,11 +6,6 @@ using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentering.UnitTests.ContractContext.Handlers
 {
@@ -18,7 +13,9 @@ namespace Rentering.UnitTests.ContractContext.Handlers
     public class GuarantorHandlersTests
     {
         private CreateGuarantorCommand _createGuarantorCommand;
+        private UpdateGuarantorCommand _updateGuarantorCommand;
 
+        private int _id;
         private int _accountId;
         private string _firstName;
         private string _lastName;
@@ -51,6 +48,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
 
         public GuarantorHandlersTests()
         {
+            _id = 1;
             _accountId = 1;
             _firstName = "João";
             _lastName = "Silva";
@@ -75,13 +73,17 @@ namespace Rentering.UnitTests.ContractContext.Handlers
                 _cpf, _street, _neighborhood, _city, _cep, _state, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
                 _spouseIdentityRG, _spouseCPF);
 
-            name = new NameValueObject("João", "Silva");
-            identityRG = new IdentityRGValueObject("26.384.185-6");
-            cpf = new CPFValueObject("729.533.620-61");
-            address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", _state);
-            spouseName = new NameValueObject("Maria", "Silva");
-            spouseIdentityRG = new IdentityRGValueObject("34.254.880-3");
-            spouseCPF = new CPFValueObject("667.137.180-60");
+            _updateGuarantorCommand = new UpdateGuarantorCommand(_id, _firstName, _lastName, _nationality, _ocupation, _maritalStatus, _identityRG,
+                _cpf, _street, _neighborhood, _city, _cep, _state, _spouseFirstName, _spouseLastName, _spouseNationality, _spouseOcupation,
+                _spouseIdentityRG, _spouseCPF);
+
+            name = new NameValueObject(_createGuarantorCommand.FirstName, _createGuarantorCommand.LastName);
+            identityRG = new IdentityRGValueObject(_createGuarantorCommand.IdentityRG);
+            cpf = new CPFValueObject(_createGuarantorCommand.CPF);
+            address = new AddressValueObject(_createGuarantorCommand.Street, _createGuarantorCommand.Neighborhood, _createGuarantorCommand.City, _createGuarantorCommand.CEP, _createGuarantorCommand.State);
+            spouseName = new NameValueObject(_createGuarantorCommand.SpouseFirstName, _createGuarantorCommand.SpouseLastName);
+            spouseIdentityRG = new IdentityRGValueObject(_createGuarantorCommand.SpouseIdentityRG);
+            spouseCPF = new CPFValueObject(_createGuarantorCommand.SpouseCPF);
 
             _guarantorEntity = new GuarantorEntity(_accountId, name, _nationality, _ocupation, _maritalStatus, identityRG,
                 cpf, address, spouseName, _spouseNationality, _spouseOcupation, spouseIdentityRG, spouseCPF);
@@ -109,6 +111,32 @@ namespace Rentering.UnitTests.ContractContext.Handlers
 
             var createTenantHandler = new GuarantorHandlers(mock.Object);
             var result = createTenantHandler.Handle(_createGuarantorCommand);
+
+            Assert.AreEqual(true, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldNotUpdateGuarantor_WhenAccountDoesNotExist()
+        {
+            Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+            mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
+
+            var updateGuarantorHandler = new GuarantorHandlers(mock.Object);
+            var result = updateGuarantorHandler.Handle(_updateGuarantorCommand);
+
+            Assert.AreEqual(false, result.Success);
+        }
+
+        [TestMethod]
+        public void ShouldUpdateGuarantor_WhenAccountExists()
+        {
+            Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
+            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
+            mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
+
+            var updateGuarantorHandler = new GuarantorHandlers(mock.Object);
+            var result = updateGuarantorHandler.Handle(_updateGuarantorCommand);
 
             Assert.AreEqual(true, result.Success);
         }

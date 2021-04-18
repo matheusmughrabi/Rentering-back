@@ -7,24 +7,24 @@ using System.Data;
 
 namespace Rentering.Contracts.Infra.Repositories.AuthRepositories
 {
-    public class TenantAuthRepository : ITenantAuthRepository
+    public class GuarantorAuthRepository : IGuarantorAuthRepository
     {
         private readonly RenteringDataContext _context;
 
-        public TenantAuthRepository(RenteringDataContext context)
+        public GuarantorAuthRepository(RenteringDataContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<AuthTenantProfilesOfTheCurrentUserQueryResults> GetTenantProfilesOfTheCurrentUser(int accountId)
+        public IEnumerable<AuthGuarantorProfilesOfTheCurrentUserQueryResults> GetGuarantorProfilesOfTheCurrentUser(int accountId)
         {
-            var tenantsFromDb = _context.Connection.Query<AuthTenantProfilesOfTheCurrentUserQueryResults>(
-                    "sp_Tenants_Auth_GetTenantsIdsOfAccount",
+            var guarantorsFromDb = _context.Connection.Query<AuthGuarantorProfilesOfTheCurrentUserQueryResults>(
+                    "sp_Guarantors_Auth_GetGuarantorsIdsOfAccount",
                     new { AccountId = accountId },
                     commandType: CommandType.StoredProcedure
                 );
 
-            return tenantsFromDb;
+            return guarantorsFromDb;
         }
     }
 }

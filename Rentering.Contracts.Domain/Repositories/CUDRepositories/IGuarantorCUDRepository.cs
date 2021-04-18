@@ -6,5 +6,7 @@ namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
     {
         bool CheckIfAccountExists(int accountId);
         void CreateGuarantor(GuarantorEntity guarantor);
+        void UpdateGuarantor(int id, GuarantorEntity guarantor);
+        void DeleteGuarantor(int id);
     }
 }
