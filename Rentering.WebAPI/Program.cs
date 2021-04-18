@@ -90,10 +90,10 @@ namespace Rentering.WebAPI
 // Criar unit tests para guarantorService OK
 // Criar tabela Guarantor OK
 // Criar Stored Procedures Guarantor OK
-// Implementar Repositorios Guarantor
-// Criar controller
-// Testar
-// Merge com release-1.2.1
+// Implementar Repositorios Guarantor OK
+// Criar controller OK
+// Testar OK
+// Merge com release-1.2.1 OK
 
 
 // ====== NOVA BRANCH -> features/estate-contracts ======
