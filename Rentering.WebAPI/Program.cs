@@ -75,7 +75,7 @@ namespace Rentering.WebAPI
 // Criar tabela Tenant OK
 // Criar Stored Procedures Tenant OK
 // Implementar Repositorios Tenant OK
-// Testar ON GOING -> Corrigir bugs em renterService e tenantService, além disso é preciso criar testes para estes services
+// Testar ON GOING -> Corrigir bugs em renterService e tenantService, além disso é preciso criar testes para estes services OK
 // Criar query repositories e controllers
 // Testar
 // Merge com release-1.2.1
