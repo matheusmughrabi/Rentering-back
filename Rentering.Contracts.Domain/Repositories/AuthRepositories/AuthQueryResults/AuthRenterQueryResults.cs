@@ -2,6 +2,16 @@
 {
     public class AuthRenterProfilesOfTheCurrentUserQueryResults
     {
+        public AuthRenterProfilesOfTheCurrentUserQueryResults(int id)
+        {
+            Id = id;
+        }
+
+        public AuthRenterProfilesOfTheCurrentUserQueryResults()
+        {
+
+        }
+
         public int Id { get; set; }
     }
 }
