@@ -82,13 +82,15 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> feature/guarantor-functionality ======
-// Criar handlers
-// Criar unit tests
+// Criar handlers OK
+// Criar unit tests OK
+// Criar auth handlers OK
+// Criar auth unit tests OK
 // Criar tabela Guarantor
 // Criar Stored Procedures Guarantor
 // Implementar Repositorios Guarantor
+// Criar controller
 // Testar
-// Criar unit tests
 // Merge com release-1.2.1
 
 
