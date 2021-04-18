@@ -138,5 +138,4 @@ namespace Rentering.Contracts.Application.Commands
 
         public int Id { get; set; }
     }
-
 }

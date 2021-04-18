@@ -129,7 +129,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var deletedTenant = new CommandResult(true, "Tenant deleted successfuly", new
             {
-                TenantId = command.Id
+                GuarantorId = command.Id
             });
 
             return deletedTenant;
