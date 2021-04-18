@@ -36,6 +36,11 @@ namespace Rentering.WebAPI.Configuration
             services.AddTransient<IRenterAuthRepository, RenterAuthRepository>();
             services.AddTransient<IAuthRenterService, AuthRenterService>();
 
+            services.AddTransient<ITenantCUDRepository, TenantCUDRepository>();
+            //services.AddTransient<ITenantQueryRepository, TenantQueryRepository>();
+            //services.AddTransient<ITenantAuthRepository, TenantAuthRepository>();
+            //services.AddTransient<IAuthTenantService, AuthTenantService>();
+
             services.AddTransient<IContractAuthRepository, ContractAuthRepository>();
 
             services.AddTransient<IContractUserProfileCUDRepository, ContractUserProfileCUDRepository>();

@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Authorization.CommandHandlers;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Services;
 
 namespace Rentering.WebAPI.Controllers.ContractContext
@@ -99,16 +97,16 @@ namespace Rentering.WebAPI.Controllers.ContractContext
         }
 
         [HttpDelete]
-        [Route("v1/DeleteRenter/{id}")]
+        [Route("v1/DeleteRenter")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult Delete([FromBody] DeleteRenterCommand deleteContractCommand)
+        public IActionResult Delete([FromBody] DeleteRenterCommand deleteTenantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int authenticatedUserId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(authenticatedUserId, deleteContractCommand.Id);
+            var authContractCommand = new AuthCurrentUserAndProfileRenterMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
             var authHandler = new AuthRenterHandlers(_authRenterService);
             var authResult = authHandler.Handle(authContractCommand);
 
@@ -116,7 +114,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
                 return Unauthorized(authResult);
 
             var handler = new RenterHandlers(_renterCUDRepository);
-            var result = handler.Handle(deleteContractCommand);
+            var result = handler.Handle(deleteTenantCommand);
 
             return Ok(result);
         }
