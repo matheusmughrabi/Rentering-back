@@ -97,3 +97,24 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/estate-contracts ======
+// Criar ContractWithGuarantorEntity
+// Criar testes de unidade
+
+// Criar commands, IRepository e handlers
+// Criar testes de unidade
+
+// Criar auth commands, IAuthRepository, IService e handlers
+// Criar testes de unidade para auth handlers
+
+// Implementar Service
+// Criar testes de unidade para Service
+
+// Criar migration de tabela ContractsWithGuarantor
+// Criar StoredProcedures
+
+// Implementar CUDRepository
+// Implementar AuthRepository
+// Criar IQueryRepository e implementar QueryRepository
+
+// Implementar Controller
+// Testar

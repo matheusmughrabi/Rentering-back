@@ -16,7 +16,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var renterId = command.RenterId;
             var tenantId = command.TenantId;
             var guarantorId = command.GuarantorId;
-            var contract = new EstateContractGuarantorEntity(contractName, rentPrice, renterId, tenantId, guarantorId);
+            var contract = new ContractWithGuarantorEntity(contractName, rentPrice, renterId, tenantId, guarantorId);
 
             //if (_contractRepository.CheckIfContractNameExists(command.ContractName))
             //    AddNotification("ContractName", "This ContractName is already registered");

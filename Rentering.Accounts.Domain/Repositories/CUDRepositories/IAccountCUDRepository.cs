@@ -14,3 +14,4 @@ namespace Rentering.Accounts.Domain.Repositories.CUDRepositories
         void DeleteAccount(int id);
     }
 }
+
