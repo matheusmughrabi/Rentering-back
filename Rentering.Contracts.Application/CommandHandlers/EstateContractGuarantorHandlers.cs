@@ -12,18 +12,27 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(CreateEstateContractGuarantorCommand command)
         {
             var contractName = command.ContractName;
-            var rentPrice = new PriceValueObject(command.RentPrice);
             var renterId = command.RenterId;
+            var renterAccountId = command.RenterAccountId;
             var tenantId = command.TenantId;
+            var tenantAccountId = command.TenantAccountId;
             var guarantorId = command.GuarantorId;
-            var contract = new ContractWithGuarantorEntity(contractName, rentPrice, renterId, tenantId, guarantorId);
+            var guarantorAccountId = command.GuarantorAccountId;
+            var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
+            var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(command.PropertyRegistrationNumber);
+            var rentPrice = new PriceValueObject(command.RentPrice);
+            var rentDueDate = command.RentDueDate;
+            var contractStartDate = command.ContractStartDate;
+            var contractEndDate = command.ContractEndDate;
+
+            var contract = new ContractWithGuarantorEntity(contractName, renterId, renterAccountId, tenantId, tenantAccountId, guarantorId, guarantorAccountId, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             //if (_contractRepository.CheckIfContractNameExists(command.ContractName))
             //    AddNotification("ContractName", "This ContractName is already registered");
 
-            // Check if renterId exists -> Musts exist
-            // Check if tenantId exists -> Musts exist
-            // Check if guarantorId exists -> Musts exist
+            // Check if renterId exists -> Must exist
+            // Check if tenantId exists -> Must exist
+            // Check if guarantorId exists -> Must exist
 
             AddNotifications(rentPrice.Notifications);
             AddNotifications(contract.Notifications);
