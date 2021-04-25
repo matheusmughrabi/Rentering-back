@@ -42,5 +42,16 @@ namespace Rentering.Contracts.Domain.Entities
         public DateTime RentDueDate { get; set; }
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
+
+        public void UpdateRentPrice(PriceValueObject rentPrice)
+        {
+            if (rentPrice.Price < 0)
+            {
+                AddNotifications(rentPrice.Notifications);
+                return;
+            }
+
+            RentPrice = rentPrice;
+        }
     }
 }
