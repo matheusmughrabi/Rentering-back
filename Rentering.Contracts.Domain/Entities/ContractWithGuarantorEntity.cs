@@ -22,9 +22,6 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime contractEndDate)
         {
             ContractName = contractName;
-            RenterStatus = e_ContractParticipantStatus.Pendente;
-            TenantStatus = e_ContractParticipantStatus.Pendente;
-            GuarantorStatus = e_ContractParticipantStatus.Pendente;
             Address = address;
             PropertyRegistrationNumber = propertyRegistrationNumber;
             RentPrice = rentPrice;
@@ -46,9 +43,6 @@ namespace Rentering.Contracts.Domain.Entities
         }
 
         public string ContractName { get; private set; }
-        public e_ContractParticipantStatus RenterStatus { get; private set; }
-        public e_ContractParticipantStatus TenantStatus { get; private set; }
-        public e_ContractParticipantStatus GuarantorStatus { get; private set; }
         public AddressValueObject Address { get; private set; }
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
         public PriceValueObject RentPrice { get; private set; }

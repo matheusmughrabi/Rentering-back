@@ -21,6 +21,7 @@ namespace Rentering.Contracts.Domain.Entities
             CPFValueObject spouseCPF)
         {
             AccountId = accountId;
+            RenterStatus = e_ContractParticipantStatus.Pendente;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -35,6 +36,7 @@ namespace Rentering.Contracts.Domain.Entities
         }
 
         public int AccountId { get; private set; }
+        public e_ContractParticipantStatus RenterStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
