@@ -51,7 +51,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             var contractId = 1;
             var date = DateTime.Now;
-            var contractPayment = new ContractPaymentEntity(contractId, date, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.EXECUTED);
+            var contractPayment = new ContractPaymentEntity(contractId, date, e_RenterPaymentStatus.NONE, e_TenantPaymentStatus.EXECUTED);
 
             contractPayment.AcceptPayment();
 
@@ -76,7 +76,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             var contractId = 1;
             var date = DateTime.Now;
-            var contractPayment = new ContractPaymentEntity(contractId, date, e_RenterPaymentStatus.NONE, e_TentantPaymentStatus.EXECUTED);
+            var contractPayment = new ContractPaymentEntity(contractId, date, e_RenterPaymentStatus.NONE, e_TenantPaymentStatus.EXECUTED);
 
             contractPayment.RejectPayment();
 

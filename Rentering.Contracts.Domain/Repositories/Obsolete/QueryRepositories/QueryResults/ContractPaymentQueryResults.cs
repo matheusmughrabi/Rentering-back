@@ -8,6 +8,6 @@ namespace Rentering.Contracts.Application.QueryResults
         public int ContractId { get; private set; }
         public DateTime Month { get; private set; }
         public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }
-        public e_TentantPaymentStatus TenantPaymentStatus { get; private set; }
+        public e_TenantPaymentStatus TenantPaymentStatus { get; private set; }
     }
 }

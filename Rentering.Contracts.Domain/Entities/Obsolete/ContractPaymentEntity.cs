@@ -11,10 +11,10 @@ namespace Rentering.Contracts.Domain.Entities
             ContractId = contractId;
             Month = month;
             RenterPaymentStatus = e_RenterPaymentStatus.NONE;
-            TenantPaymentStatus = e_TentantPaymentStatus.NONE;
+            TenantPaymentStatus = e_TenantPaymentStatus.NONE;
         }
 
-        public ContractPaymentEntity(int contractId, DateTime month, e_RenterPaymentStatus renterPaymentStatus, e_TentantPaymentStatus tenantPaymentStatus)
+        public ContractPaymentEntity(int contractId, DateTime month, e_RenterPaymentStatus renterPaymentStatus, e_TenantPaymentStatus tenantPaymentStatus)
         {
             ContractId = contractId;
             Month = month;
@@ -25,22 +25,22 @@ namespace Rentering.Contracts.Domain.Entities
         public int ContractId { get; private set; }
         public DateTime Month { get; private set; }
         public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }
-        public e_TentantPaymentStatus TenantPaymentStatus { get; private set; }
+        public e_TenantPaymentStatus TenantPaymentStatus { get; private set; }
 
         public void PayRent()
         {
-            if (TenantPaymentStatus == e_TentantPaymentStatus.EXECUTED)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
             {
                 AddNotification("TenantPaymentStatus", "Payment of this month is already executed");
                 return;
             }
 
-            TenantPaymentStatus = e_TentantPaymentStatus.EXECUTED;
+            TenantPaymentStatus = e_TenantPaymentStatus.EXECUTED;
         }
 
         public void AcceptPayment()
         {
-            if (TenantPaymentStatus == e_TentantPaymentStatus.NONE)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.NONE)
             {
                 AddNotification("TentantPaymentStatus", "You cannot accept this payment because the tenant has not executed it yet");
                 return;
@@ -57,7 +57,7 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void RejectPayment()
         {
-            if (TenantPaymentStatus == e_TentantPaymentStatus.NONE)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.NONE)
             {
                 AddNotification("TentantPaymentStatus", "You cannot accept this payment because the tenant has not executed it yet");
                 return;
