@@ -15,11 +15,11 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG, 
             CPFValueObject cpf, 
             AddressValueObject address, 
-            NameValueObject spouseName, 
-            string spouseNationality, 
-            string spouseOcupation, 
-            IdentityRGValueObject spouseIdentityRG,
-            CPFValueObject spouseCPF)
+            NameValueObject spouseName = null, 
+            string spouseNationality = null, 
+            string spouseOcupation = null, 
+            IdentityRGValueObject spouseIdentityRG = null,
+            CPFValueObject spouseCPF = null)
         {
             AccountId = accountId;
             GuarantorStatus = e_ContractParticipantStatus.Pendente;

@@ -12,6 +12,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(CreateEstateContractGuarantorCommand command)
         {
             var contractName = command.ContractName;
+
             var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
             var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(command.PropertyRegistrationNumber);
             var rentPrice = new PriceValueObject(command.RentPrice);

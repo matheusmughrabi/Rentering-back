@@ -2,8 +2,9 @@
 {
     public enum e_ContractParticipantStatus
     {
-        Pendente = 1,
-        Aceito = 2,
-        Recusado = 3
+        None = 1,
+        Pendente = 2,
+        Aceito = 3,
+        Recusado = 4
     }
 }

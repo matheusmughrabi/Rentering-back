@@ -15,10 +15,10 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG,
             CPFValueObject cpf, 
             AddressValueObject address,
-            NameValueObject spouseName, 
-            string spouseNationality,
-            IdentityRGValueObject spouseIdentityRG, 
-            CPFValueObject spouseCPF)
+            NameValueObject spouseName = null, 
+            string spouseNationality = null,
+            IdentityRGValueObject spouseIdentityRG = null,
+            CPFValueObject spouseCPF = null)
         {
             AccountId = accountId;
             RenterStatus = e_ContractParticipantStatus.Pendente;
@@ -48,5 +48,27 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseNationality { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
+
+        public void AcceptToParticipate()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Aceito)
+            {
+                AddNotification("RenterStatus", "The status is already accepted");
+                return;
+            }               
+
+            RenterStatus = e_ContractParticipantStatus.Aceito;
+        }
+
+        public void RefuseToParticipate()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Recusado)
+            {
+                AddNotification("RenterStatus", "The status is already refused");
+                return;
+            }
+
+            RenterStatus = e_ContractParticipantStatus.Recusado;
+        }
     }
 }

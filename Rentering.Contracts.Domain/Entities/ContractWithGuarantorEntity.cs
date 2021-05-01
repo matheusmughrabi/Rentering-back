@@ -14,11 +14,11 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractWithGuarantorEntity(
             string contractName,
-            AddressValueObject address, 
+            AddressValueObject address,
             PropertyRegistrationNumberValueObject propertyRegistrationNumber,
             PriceValueObject rentPrice,
-            DateTime rentDueDate, 
-            DateTime contractStartDate, 
+            DateTime rentDueDate,
+            DateTime contractStartDate,
             DateTime contractEndDate)
         {
             ContractName = contractName;
@@ -31,18 +31,17 @@ namespace Rentering.Contracts.Domain.Entities
 
             _payments = new List<ContractPayment>();
 
-            AddNotifications(new ValidationContract()
-                .Requires()
-                .HasMinLen(ContractName, 3, "ContractName", "Contract name must have at least 3 letters")
-                .HasMaxLen(ContractName, 40, "ContractName", "Contract name must have less than 40 letters")
-            );
+            var monthSpan = (ContractEndDate.Month - ContractStartDate.Month);
+            if (Payments.Count == 0)
+                CreatePaymentCycle(monthSpan);
 
-            AddNotifications(Address.Notifications);
-            AddNotifications(PropertyRegistrationNumber.Notifications);
-            AddNotifications(RentPrice.Notifications);
+            ApplyValidations();
         }
 
         public string ContractName { get; private set; }
+        public RenterEntity Renter { get; private set; }
+        public TenantEntity Tenant { get; private set; }
+        public GuarantorEntity Guarantor { get; private set; }
         public AddressValueObject Address { get; private set; }
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
         public PriceValueObject RentPrice { get; private set; }
@@ -50,6 +49,39 @@ namespace Rentering.Contracts.Domain.Entities
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
         public IReadOnlyCollection<ContractPayment> Payments => _payments.ToArray();
+
+        public void InviteRenter(RenterEntity renter)
+        {
+            if (renter.RenterStatus != e_ContractParticipantStatus.None)
+            {
+                AddNotification("Renter", "This renter is already associated to another contract");
+                return;
+            }
+
+            Renter = renter;
+        }
+
+        public void InviteTenant(TenantEntity tenant)
+        {
+            if (tenant.TenantStatus != e_ContractParticipantStatus.None)
+            {
+                AddNotification("Tenant", "This tenant is already associated to another contract");
+                return;
+            }
+
+            Tenant = tenant;
+        }
+
+        public void InviteGuarantor(GuarantorEntity guarantor)
+        {
+            if (guarantor.GuarantorStatus != e_ContractParticipantStatus.None)
+            {
+                AddNotification("Guarantor", "This guarantor is already associated to another contract");
+                return;
+            }
+
+            Guarantor = guarantor;
+        }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
@@ -82,6 +114,19 @@ namespace Rentering.Contracts.Domain.Entities
 
             var currentOwedAmount = currentPayment.CalculateOwedAmount(RentDueDate);
             return currentOwedAmount;
+        }
+
+        private void ApplyValidations()
+        {
+            AddNotifications(new ValidationContract()
+                .Requires()
+                .HasMinLen(ContractName, 3, "ContractName", "Contract name must have at least 3 letters")
+                .HasMaxLen(ContractName, 40, "ContractName", "Contract name must have less than 40 letters")
+            );
+
+            AddNotifications(Address.Notifications);
+            AddNotifications(PropertyRegistrationNumber.Notifications);
+            AddNotifications(RentPrice.Notifications);
         }
     }
 }

@@ -7,13 +7,7 @@ namespace Rentering.Contracts.Application.Commands
     public class CreateEstateContractGuarantorCommand : ICommand
     {
         public CreateEstateContractGuarantorCommand(
-            string contractName, 
-            int renterId, 
-            int renterAccountId, 
-            int tenantId, 
-            int tenantAccountId, 
-            int guarantorId, 
-            int guarantorAccountId, 
+            string contractName,
             string street, 
             string neighborhood, 
             string city, 
@@ -26,12 +20,6 @@ namespace Rentering.Contracts.Application.Commands
             DateTime contractEndDate)
         {
             ContractName = contractName;
-            RenterId = renterId;
-            RenterAccountId = renterAccountId;
-            TenantId = tenantId;
-            TenantAccountId = tenantAccountId;
-            GuarantorId = guarantorId;
-            GuarantorAccountId = guarantorAccountId;
             Street = street;
             Neighborhood = neighborhood;
             City = city;
@@ -45,12 +33,6 @@ namespace Rentering.Contracts.Application.Commands
         }
 
         public string ContractName { get; set; }
-        public int RenterId { get; set; }
-        public int RenterAccountId { get; set; }
-        public int TenantId { get; set; }
-        public int TenantAccountId { get; set; }
-        public int GuarantorId { get; set; }
-        public int GuarantorAccountId { get; set; }
         public string Street { get; set; }
         public string Neighborhood { get; set; }
         public string City { get; set; }
