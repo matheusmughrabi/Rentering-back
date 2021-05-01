@@ -1,5 +1,6 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Entities;
+using Rentering.Common.Shared.Extensions.DateTime;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
@@ -31,7 +32,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             _payments = new List<ContractPayment>();
 
-            var monthSpan = (ContractEndDate.Month - ContractStartDate.Month);
+            var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
             if (Payments.Count == 0)
                 CreatePaymentCycle(monthSpan);
 

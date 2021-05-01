@@ -26,7 +26,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
             rentPrice = new PriceValueObject(1500);
             rentDueDate = DateTime.Now;
             contractStartDate = DateTime.Now;
-            contractEndDate = DateTime.Now.AddYears(1);
+            contractEndDate = DateTime.Now.AddYears(1).AddDays(1);
         }
 
         [TestMethod]
@@ -147,11 +147,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldNotCreatePaymentCycle_WhenNegativeMonthSpanIsPassed()
         {
-            var monthSpan = -12;
-
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
-
-            contract.CreatePaymentCycle(monthSpan);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate);
 
             Assert.AreEqual(0, contract.Payments.Count);
         }
@@ -162,8 +158,6 @@ namespace Rentering.UnitTests.ContractContext.Entities
             var monthSpan = 12;
 
             var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
-
-            contract.CreatePaymentCycle(monthSpan);
 
             Assert.AreEqual(monthSpan, contract.Payments.Count);
         }
@@ -186,12 +180,10 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldReturnOwedAmount_WithAddedFeesIncluded()
         {
-            var monthSpan = 12;
             rentDueDate = DateTime.Now.AddDays(-1);
 
             var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            contract.CreatePaymentCycle(monthSpan);
             var owedAmount = contract.CurrentOwedAmount();
 
             Assert.AreEqual(1650M, owedAmount);

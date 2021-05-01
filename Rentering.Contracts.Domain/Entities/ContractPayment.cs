@@ -59,7 +59,9 @@ namespace Rentering.Contracts.Domain.Entities
             if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
                 return 0M;
 
-            var factor = (decimal)0.1*(DateTime.Now.Day - dueDate.Day);
+            var daysLate = (DateTime.Now - dueDate).Days;
+
+            var factor = (decimal)0.1 * daysLate;
 
             var owedAmount = RentPrice.Price * (1 + factor);
             return owedAmount;
