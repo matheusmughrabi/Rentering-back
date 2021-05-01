@@ -14,6 +14,11 @@ namespace Rentering.Contracts.Application.CommandHandlers
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorUtilRepository _contractWithGuarantorUtilRepository;
 
+        public EstateContractGuarantorHandlers(IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository)
+        {
+            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
+        }
+
         public EstateContractGuarantorHandlers(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository, 
             IContractWithGuarantorUtilRepository contractWithGuarantorUtilRepository)
@@ -34,8 +39,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            if (_contractWithGuarantorUtilRepository.CheckIfContractNameExists(command.ContractName))
-                AddNotification("ContractName", "This ContractName is already registered");
+            //if (_contractWithGuarantorUtilRepository.CheckIfContractNameExists(command.ContractName))
+            //    AddNotification("ContractName", "This ContractName is already registered");
 
             AddNotifications(address.Notifications);
             AddNotifications(propertyRegistrationNumber.Notifications);

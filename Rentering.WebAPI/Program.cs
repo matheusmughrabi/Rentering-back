@@ -100,8 +100,9 @@ namespace Rentering.WebAPI
 // Criar ContractWithGuarantorEntity OK
 // Criar testes de unidade OK
 
-// Criar commands, IRepository e handlers
-// Criar testes de unidade
+// Criar commands, IRepository e handlers OK
+// Criar testes de unidade OK
+// Implementar CUDRepository
 
 // Criar auth commands, IAuthRepository, IService e handlers
 // Criar testes de unidade para auth handlers
@@ -112,7 +113,6 @@ namespace Rentering.WebAPI
 // Criar migration de tabela ContractsWithGuarantor
 // Criar StoredProcedures
 
-// Implementar CUDRepository
 // Implementar AuthRepository
 // Criar IQueryRepository e implementar QueryRepository
 
