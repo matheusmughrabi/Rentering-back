@@ -97,8 +97,8 @@ namespace Rentering.WebAPI
 
 
 // ====== NOVA BRANCH -> features/estate-contracts ======
-// Criar ContractWithGuarantorEntity ON GOING
-// Criar testes de unidade ON GOING
+// Criar ContractWithGuarantorEntity OK
+// Criar testes de unidade OK
 
 // Criar commands, IRepository e handlers
 // Criar testes de unidade

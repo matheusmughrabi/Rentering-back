@@ -2,17 +2,29 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.UtilRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
 {
     public class EstateContractGuarantorHandlers : Notifiable,
-        ICommandHandler<CreateEstateContractGuarantorCommand>
+        ICommandHandler<CreateContractGuarantorCommand>
     {
-        public ICommandResult Handle(CreateEstateContractGuarantorCommand command)
+        private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
+        private readonly IContractWithGuarantorUtilRepository _contractWithGuarantorUtilRepository;
+
+        public EstateContractGuarantorHandlers(
+            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository, 
+            IContractWithGuarantorUtilRepository contractWithGuarantorUtilRepository)
+        {
+            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
+            _contractWithGuarantorUtilRepository = contractWithGuarantorUtilRepository;
+        }
+
+        public ICommandResult Handle(CreateContractGuarantorCommand command)
         {
             var contractName = command.ContractName;
-
             var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
             var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(command.PropertyRegistrationNumber);
             var rentPrice = new PriceValueObject(command.RentPrice);
@@ -22,25 +34,23 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            //if (_contractRepository.CheckIfContractNameExists(command.ContractName))
-            //    AddNotification("ContractName", "This ContractName is already registered");
+            if (_contractWithGuarantorUtilRepository.CheckIfContractNameExists(command.ContractName))
+                AddNotification("ContractName", "This ContractName is already registered");
 
-            // Check if renterId exists -> Must exist
-            // Check if tenantId exists -> Must exist
-            // Check if guarantorId exists -> Must exist
-
+            AddNotifications(address.Notifications);
+            AddNotifications(propertyRegistrationNumber.Notifications);
             AddNotifications(rentPrice.Notifications);
-            AddNotifications(contract.Notifications);
+            AddNotifications(contract.Notifications);           
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            //_contractRepository.CreateContract(contract);
+            _contractWithGuarantorCUDRepository.CreateContract(contract);
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
                 contract.ContractName,
-                contract.RentPrice.Price,
+                contract.RentPrice.Price
             });
 
             return createdContract;

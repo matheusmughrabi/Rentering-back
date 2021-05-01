@@ -61,7 +61,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             var daysLate = (DateTime.Now - dueDate).Days;
 
-            var factor = (decimal)0.1 * daysLate;
+            var factor = (decimal) 0.1 * daysLate;
 
             var owedAmount = RentPrice.Price * (1 + factor);
             return owedAmount;

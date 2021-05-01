@@ -4,16 +4,16 @@ using System;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class CreateEstateContractGuarantorCommand : ICommand
+    public class CreateContractGuarantorCommand : ICommand
     {
-        public CreateEstateContractGuarantorCommand(
+        public CreateContractGuarantorCommand(
             string contractName,
             string street, 
             string neighborhood, 
             string city, 
             string cep, 
             e_BrazilStates state, 
-            int number, 
+            int propertyRegistrationNumber, 
             decimal rentPrice, 
             DateTime rentDueDate, 
             DateTime contractStartDate, 
@@ -25,7 +25,7 @@ namespace Rentering.Contracts.Application.Commands
             City = city;
             CEP = cep;
             State = state;
-            PropertyRegistrationNumber = number;
+            PropertyRegistrationNumber = propertyRegistrationNumber;
             RentPrice = rentPrice;
             RentDueDate = rentDueDate;
             ContractStartDate = contractStartDate;
