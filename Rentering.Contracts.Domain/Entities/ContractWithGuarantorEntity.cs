@@ -59,6 +59,7 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             Renter = renter;
+            Renter.UpdateRenterStatusToAwaiting();
         }
 
         public void InviteTenant(TenantEntity tenant)
@@ -70,6 +71,7 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             Tenant = tenant;
+            Tenant.UpdateTenantStatusToAwaiting();
         }
 
         public void InviteGuarantor(GuarantorEntity guarantor)
@@ -81,6 +83,7 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             Guarantor = guarantor;
+            Guarantor.UpdateGuarantorStatusToAwaiting();
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
@@ -96,6 +99,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void CreatePaymentCycle(int monthSpan)
         {
+            if (monthSpan < 0)
+            {
+                AddNotification("monthSpan", "Month span must an integer greater than zero");
+                return;
+            }
+
             for (int i = 0; i < monthSpan; i++)
                 _payments.Add(new ContractPayment(DateTime.Now.AddMonths(i), RentPrice));
         }

@@ -11,7 +11,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
     public class ContractGuarantorEntityTests
     {
         string contractName;
-        AddressValueObject address;
+        AddressValueObject propertyAddress;
         PropertyRegistrationNumberValueObject propertyRegistrationNumber;
         PriceValueObject rentPrice;
         DateTime rentDueDate;
@@ -21,7 +21,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         public ContractGuarantorEntityTests()
         {
             contractName = "Contract 1";
-            address = new AddressValueObject("Street 1", "Neighborhood 1", "City 1", "12345678", Contracts.Domain.Enums.e_BrazilStates.AC);
+            propertyAddress = new AddressValueObject("Street 1", "Neighborhood 1", "City 1", "12345678", Contracts.Domain.Enums.e_BrazilStates.AC);
             propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(12345);
             rentPrice = new PriceValueObject(1500);
             rentDueDate = DateTime.Now;
@@ -30,11 +30,108 @@ namespace Rentering.UnitTests.ContractContext.Entities
         }
 
         [TestMethod]
+        public void ShouldNotInviteRenter_WhenRenterIsAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var renter = new RenterEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            renter.AcceptToParticipate();
+
+            contract.InviteRenter(renter);
+
+            Assert.AreEqual(false, contract.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldInviteRenter_WhenRenterIsNotAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var renter = new RenterEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+
+            contract.InviteRenter(renter);
+
+            Assert.AreEqual(true, contract.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldNotInviteTenant_WhenTenantIsAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            tenant.AcceptToParticipate();
+
+            contract.InviteTenant(tenant);
+
+            Assert.AreEqual(false, contract.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldInviteTenant_WhenTenantIsNotAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            tenant.AcceptToParticipate();
+
+            Assert.AreEqual(true, contract.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldNotInviteGuarantor_WhenGuarantorIsAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            guarantor.AcceptToParticipate();
+
+            contract.InviteGuarantor(guarantor);
+
+            Assert.AreEqual(false, contract.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldInviteGuarantor_WhenGuarantorIsAssociatedWithAnotherContract()
+        {
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            var name = new NameValueObject("Meg", "Magson");
+            var identityRG = new IdentityRGValueObject("123456789");
+            var identityCPF = new CPFValueObject("43126701884");
+            var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            guarantor.AcceptToParticipate();
+
+            Assert.AreEqual(true, contract.Valid);
+        }
+
+        [TestMethod]
         public void ShouldNotUpdateRentPrice_WhenNegativeRentPriceIsPassed()
         {
             rentPrice = new PriceValueObject(-1500);
 
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             Assert.AreEqual(false, contract.Valid);
         }
@@ -42,17 +139,29 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldUpdateRentPrice_WhenPositiveRentPriceIsPassed()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             Assert.AreEqual(true, contract.Valid);
         }
 
         [TestMethod]
-        public void ShouldCreatePaymentCycle()
+        public void ShouldNotCreatePaymentCycle_WhenNegativeMonthSpanIsPassed()
+        {
+            var monthSpan = -12;
+
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+
+            contract.CreatePaymentCycle(monthSpan);
+
+            Assert.AreEqual(0, contract.Payments.Count);
+        }
+
+        [TestMethod]
+        public void ShouldCreatePaymentCycle_WhenPositiveMonthSpanIsPassed()
         {
             var monthSpan = 12;
 
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             contract.CreatePaymentCycle(monthSpan);
 
@@ -64,7 +173,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             var monthSpan = 12;
 
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             contract.CreatePaymentCycle(monthSpan);
             contract.ExecutePayment(DateTime.Now);
@@ -75,12 +184,12 @@ namespace Rentering.UnitTests.ContractContext.Entities
         }
 
         [TestMethod]
-        public void ShouldReturnCorrectOwedAmount()
+        public void ShouldReturnOwedAmount_WithAddedFeesIncluded()
         {
             var monthSpan = 12;
             rentDueDate = DateTime.Now.AddDays(-1);
 
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             contract.CreatePaymentCycle(monthSpan);
             var owedAmount = contract.CurrentOwedAmount();

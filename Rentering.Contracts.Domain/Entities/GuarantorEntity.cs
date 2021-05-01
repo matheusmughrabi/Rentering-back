@@ -51,5 +51,38 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseOcupation { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
+
+        public void AcceptToParticipate()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Aceito)
+            {
+                AddNotification("GuarantorStatus", "The status is already accepted");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Aceito;
+        }
+
+        public void RefuseToParticipate()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Recusado)
+            {
+                AddNotification("GuarantorStatus", "The status is already refused");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Recusado;
+        }
+
+        public void UpdateGuarantorStatusToAwaiting()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Pendente)
+            {
+                AddNotification("GuarantorStatus", "The status is already awaiting");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Pendente;
+        }
     }
 }

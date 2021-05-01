@@ -21,7 +21,7 @@ namespace Rentering.Contracts.Domain.Entities
             CPFValueObject spouseCPF = null)
         {
             AccountId = accountId;
-            RenterStatus = e_ContractParticipantStatus.Pendente;
+            RenterStatus = e_ContractParticipantStatus.None;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -69,6 +69,17 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             RenterStatus = e_ContractParticipantStatus.Recusado;
+        }
+
+        public void UpdateRenterStatusToAwaiting()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Pendente)
+            {
+                AddNotification("RenterStatus", "The status is already awaiting");
+                return;
+            }
+
+            RenterStatus = e_ContractParticipantStatus.Pendente;
         }
     }
 }
