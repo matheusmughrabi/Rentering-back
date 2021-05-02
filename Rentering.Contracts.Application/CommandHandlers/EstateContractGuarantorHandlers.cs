@@ -9,7 +9,8 @@ using Rentering.Contracts.Domain.ValueObjects;
 namespace Rentering.Contracts.Application.CommandHandlers
 {
     public class EstateContractGuarantorHandlers : Notifiable,
-        ICommandHandler<CreateContractGuarantorCommand>
+        ICommandHandler<CreateContractGuarantorCommand>,
+        ICommandHandler<InviteRenterToParticipate>
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorUtilRepository _contractWithGuarantorUtilRepository;
@@ -39,8 +40,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            //if (_contractWithGuarantorUtilRepository.CheckIfContractNameExists(command.ContractName))
-            //    AddNotification("ContractName", "This ContractName is already registered");
+            if (_contractWithGuarantorUtilRepository.CheckIfContractNameExists(command.ContractName))
+                AddNotification("ContractName", "This ContractName is already registered");
 
             AddNotifications(address.Notifications);
             AddNotifications(propertyRegistrationNumber.Notifications);
@@ -59,6 +60,34 @@ namespace Rentering.Contracts.Application.CommandHandlers
             });
 
             return createdContract;
+        }
+
+        public ICommandResult Handle(InviteRenterToParticipate command)
+        {
+            throw new System.NotImplementedException();
+
+            //var contractEntityFromDb = _contractWithGuarantorCUDRepository.GetContractById(command.Id);
+
+            //contractEntityFromDb.InviteRenter();
+
+            //AddNotifications(contractEntityFromDb.Notifications);
+
+            //if (Invalid)
+            //    return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            //_contractRepository.UpdateContractRentPrice(command.Id, contractEntityFromDb);
+
+            //var updatedContractRentPrice = new CommandResult(true, "Contract rent updated successfuly", new
+            //{
+            //    contractEntityFromDb.ContractName,
+            //    contractEntityFromDb.RentPrice.Price
+            //});
+
+            //return updatedContractRentPrice;
+
+            // Buscar Contrato do BD
+            // Chamar método InviteRenter
+            // Persistir mudança no BD
         }
     }
 }

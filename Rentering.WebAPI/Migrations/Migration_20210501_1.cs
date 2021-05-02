@@ -10,6 +10,7 @@ namespace Rentering.WebAPI.Migrations
 		{
 			Delete.Table("ContractsWithGuarantor");
 			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Util_CheckIfContractNameExists]");
 		}
 
 		public override void Up()
@@ -79,6 +80,24 @@ namespace Rentering.WebAPI.Migrations
 							)
 
                         END
+                        GO");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
+                        GO
+
+                        SET QUOTED_IDENTIFIER ON
+                        GO
+
+                        CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_Util_CheckIfContractNameExists]
+	                        @ContractName NVARCHAR(255)
+                        AS
+	                        SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [ContractsWithGuarantor]
+		                        WHERE [ContractName] = @ContractName
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT) END
                         GO");
 		}
 	}

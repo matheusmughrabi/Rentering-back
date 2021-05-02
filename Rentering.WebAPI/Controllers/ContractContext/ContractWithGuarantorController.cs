@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.UtilRepositories;
 
 namespace Rentering.WebAPI.Controllers.ContractContext
 {
@@ -11,10 +12,14 @@ namespace Rentering.WebAPI.Controllers.ContractContext
     public class ContractWithGuarantorController : RenteringBaseController
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
+        private readonly IContractWithGuarantorUtilRepository _contractWithGuarantorUtilRepository;
 
-        public ContractWithGuarantorController(IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository)
+        public ContractWithGuarantorController(
+            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository, 
+            IContractWithGuarantorUtilRepository contractWithGuarantorUtilRepository)
         {
-            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
+            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository; 
+            _contractWithGuarantorUtilRepository = contractWithGuarantorUtilRepository;
         }
 
         [HttpPost]
@@ -27,7 +32,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new EstateContractGuarantorHandlers(_contractWithGuarantorCUDRepository);
+            var handler = new EstateContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorUtilRepository);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);

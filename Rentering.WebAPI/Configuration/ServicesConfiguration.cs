@@ -11,10 +11,12 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Repositories.AuthRepositories;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories.UtilRepositories;
 using Rentering.Contracts.Domain.Services;
 using Rentering.Contracts.Infra.Repositories.AuthRepositories;
 using Rentering.Contracts.Infra.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Repositories.QueryRepositories;
+using Rentering.Contracts.Infra.Repositories.UtilRepositories;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 using System.Reflection;
@@ -47,6 +49,7 @@ namespace Rentering.WebAPI.Configuration
             services.AddTransient<IAuthGuarantorService, AuthGuarantorService>();
 
             services.AddTransient<IContractWithGuarantorCUDRepository, ContractWithGuarantorCUDRepository>();
+            services.AddTransient<IContractWithGuarantorUtilRepository, ContractWithGuarantorUtilRepository>();
 
             services.AddTransient<IContractAuthRepository, ContractAuthRepository>();
 

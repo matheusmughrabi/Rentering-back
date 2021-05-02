@@ -15,6 +15,10 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         {
             _context = context;
         }
+        public ContractWithGuarantorEntity GetContractById(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public void CreateContract(ContractWithGuarantorEntity contract)
         {
@@ -34,7 +38,12 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         ContractEndDate = contract.ContractEndDate
                     },
                     commandType: CommandType.StoredProcedure
-                ); ;
+                );
+        }
+
+        public void InviteRenterToParticipate(ContractWithGuarantorEntity contract)
+        {
+            throw new NotImplementedException();
         }
     }
 }
