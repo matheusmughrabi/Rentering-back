@@ -2,6 +2,8 @@
 using Moq;
 using Rentering.Contracts.Domain.Repositories.AuthRepositories;
 using Rentering.Contracts.Domain.Repositories.AuthRepositories.AuthQueryResults;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 
@@ -22,12 +24,12 @@ namespace Rentering.UnitTests.ContractContext.Services
         [TestMethod]
         public void ShouldReturnFalse_WhenCurrentUserDoesNotOwnTenantProfile()
         {
-            List<AuthTenantProfilesOfTheCurrentUserQueryResults> _tenantProfilesFromMockDb = new List<AuthTenantProfilesOfTheCurrentUserQueryResults>();
-            _tenantProfilesFromMockDb.Add(new AuthTenantProfilesOfTheCurrentUserQueryResults(14));
-            _tenantProfilesFromMockDb.Add(new AuthTenantProfilesOfTheCurrentUserQueryResults(13));
+            List<GetTenantQueryResult> _tenantProfilesFromMockDb = new List<GetTenantQueryResult>();
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
 
-            Mock<ITenantAuthRepository> mock = new Mock<ITenantAuthRepository>();
-            mock.Setup(m => m.GetTenantProfilesOfTheCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);
+            Mock<ITenantQueryRepository> mock = new Mock<ITenantQueryRepository>();
+            mock.Setup(m => m.GetTenantProfilesOfCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);
 
             var authTenantService = new AuthTenantService(mock.Object);
             var isCurrentUserTheOwnerOfTenantProfile = authTenantService.IsCurrentUserTenantProfileOwner(_accountId, _tenantProfileId);
@@ -38,13 +40,12 @@ namespace Rentering.UnitTests.ContractContext.Services
         [TestMethod]
         public void ShouldReturnTrue_WhenCurrentUserOwnsTenantProfile()
         {
-            List<AuthTenantProfilesOfTheCurrentUserQueryResults> _tenantProfilesFromMockDb = new List<AuthTenantProfilesOfTheCurrentUserQueryResults>();
-            _tenantProfilesFromMockDb.Add(new AuthTenantProfilesOfTheCurrentUserQueryResults(15));
-            _tenantProfilesFromMockDb.Add(new AuthTenantProfilesOfTheCurrentUserQueryResults(14));
-            _tenantProfilesFromMockDb.Add(new AuthTenantProfilesOfTheCurrentUserQueryResults(13));
+            List<GetTenantQueryResult> _tenantProfilesFromMockDb = new List<GetTenantQueryResult>();
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
 
-            Mock<ITenantAuthRepository> mock = new Mock<ITenantAuthRepository>();
-            mock.Setup(m => m.GetTenantProfilesOfTheCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);
+            Mock<ITenantQueryRepository> mock = new Mock<ITenantQueryRepository>();
+            mock.Setup(m => m.GetTenantProfilesOfCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);
 
             var authTenantService = new AuthTenantService(mock.Object);
             var isCurrentUserTheOwnerOfTenantProfile = authTenantService.IsCurrentUserTenantProfileOwner(_accountId, _tenantProfileId);

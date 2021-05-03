@@ -3,7 +3,6 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using System.Data;
-using System.Linq;
 
 namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 {
@@ -14,17 +13,6 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         public TenantCUDRepository(RenteringDataContext context)
         {
             _context = context;
-        }
-
-        public bool CheckIfAccountExists(int accountId)
-        {
-            var accountExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Query_CheckIfAccountExists",
-                    new { Id = accountId },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
-
-            return accountExists;
         }
 
         public void CreateTenant(TenantEntity tenant)
