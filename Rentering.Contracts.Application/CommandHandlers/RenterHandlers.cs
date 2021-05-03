@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -14,10 +15,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
     {
         private readonly IRenterCUDRepository _renterCUDRepository;
+        private readonly IRenterQueryRepository _renterQueryRepository;
 
-        public RenterHandlers(IRenterCUDRepository renterCUDRepository)
+        public RenterHandlers(IRenterCUDRepository renterCUDRepository, IRenterQueryRepository renterQueryRepository)
         {
             _renterCUDRepository = renterCUDRepository;
+            _renterQueryRepository = renterQueryRepository;
         }
 
         public ICommandResult Handle(CreateRenterCommand command)
@@ -33,7 +36,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_renterQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);
@@ -87,7 +90,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var renterEntity = new RenterEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            if (_renterCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_renterQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);

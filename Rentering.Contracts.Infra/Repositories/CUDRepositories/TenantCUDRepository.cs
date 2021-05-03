@@ -19,7 +19,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         public bool CheckIfAccountExists(int accountId)
         {
             var accountExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Util_CheckIfAccountExists",
+                    "sp_Accounts_Query_CheckIfAccountExists",
                     new { Id = accountId },
                     commandType: CommandType.StoredProcedure
                 ).FirstOrDefault();

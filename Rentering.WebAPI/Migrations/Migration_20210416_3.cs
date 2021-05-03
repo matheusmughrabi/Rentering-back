@@ -9,13 +9,13 @@ namespace Rentering.WebAPI.Migrations
         {
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAllAccounts]");
-            //Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]");
-            //Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfAccountExists]");
 
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_CreateAccount]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_DeleteAccount]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_UpdateAccount]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Util_CheckIfAccountExists]");
         }
 
         public override void Up()
@@ -81,6 +81,25 @@ namespace Rentering.WebAPI.Migrations
 		                        SELECT [Id]
 		                        FROM [Accounts]
 		                        WHERE [Username] = @Username
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT) END
+                        GO");
+
+            Execute.Sql(@"SET ANSI_NULLS ON
+                        GO
+
+                        SET QUOTED_IDENTIFIER ON
+                        GO
+
+
+                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfAccountExists]
+	                        @Id int
+                        AS
+	                        SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Id] = @Id
 	                        )
 	                        THEN CAST(1 AS BIT)
 	                        ELSE CAST(0 AS BIT) END
@@ -157,25 +176,6 @@ namespace Rentering.WebAPI.Migrations
 	                        WHERE 
 		                        Id = @Id
                         END
-                        GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-
-                        CREATE PROCEDURE [dbo].[sp_Accounts_Util_CheckIfAccountExists]
-	                        @Id int
-                        AS
-	                        SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [Accounts]
-		                        WHERE [Id] = @Id
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT) END
                         GO");
             #endregion
         }

@@ -1,5 +1,4 @@
 ﻿using FluentMigrator;
-using System;
 
 namespace Rentering.WebAPI.Migrations
 {
@@ -8,33 +7,94 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]");
 			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]");
 			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]");
+
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]");
+			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]");			
 		}
 
         public override void Up()
         {
+            #region Query
             Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
+						GO
 
-                        SET QUOTED_IDENTIFIER ON
-                        GO
+						SET QUOTED_IDENTIFIER ON
+						GO
 
+						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]
+							@Id INT
+						AS
+						BEGIN
+							SELECT 
+								[Id],
+								[AccountId],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							FROM 
+								Renters
+							WHERE 
+								[Id] = @Id;
+						END
+						GO");
 
-                        CREATE PROCEDURE [dbo].[sp_Renters_Auth_GetRentersIdsOfAccount]
-	                        @AccountId int
-                        AS
-                        BEGIN
-                            SELECT [Id]
-	                        FROM Renters
-	                        WHERE [AccountId] = @AccountId
-                        END
-                        GO");
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
 
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]
+							@AccountId INT
+						AS
+						BEGIN
+							SELECT 
+								[Id],
+								[AccountId],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							FROM 
+								Renters
+							WHERE 
+								[AccountId] = @AccountId;
+						END
+						GO
+						");
+			#endregion
+
+			#region CUD	
             Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
@@ -104,26 +164,7 @@ namespace Rentering.WebAPI.Migrations
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
-
-
-						CREATE PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]
-							@Id INT
-						AS
-						BEGIN
-							DELETE FROM 
-								Renters
-							WHERE 
-								Id = @Id
-						END
-						GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
@@ -177,78 +218,25 @@ namespace Rentering.WebAPI.Migrations
 						END
 						GO");
 
-            Execute.Sql(@"SET ANSI_NULLS ON
+			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRenterById]
+
+
+						CREATE PROCEDURE [dbo].[sp_Renters_CUD_DeleteRenter]
 							@Id INT
 						AS
 						BEGIN
-							SELECT 
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseIdentityRG],
-								[SpouseCPF]
-							FROM 
+							DELETE FROM 
 								Renters
 							WHERE 
-								[Id] = @Id;
+								Id = @Id
 						END
 						GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
-						CREATE PROCEDURE [dbo].[sp_Renters_Query_GetRentersOfAccount]
-							@AccountId INT
-						AS
-						BEGIN
-							SELECT 
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseIdentityRG],
-								[SpouseCPF]
-							FROM 
-								Renters
-							WHERE 
-								[AccountId] = @AccountId;
-						END
-						GO
-						");
-        }
-    }
+			#endregion
+		}
+	}
 }

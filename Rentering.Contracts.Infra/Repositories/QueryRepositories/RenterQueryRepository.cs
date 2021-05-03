@@ -17,6 +17,17 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             _context = context;
         }
 
+        public bool CheckIfAccountExists(int accountId)
+        {
+            var accountExists = _context.Connection.Query<bool>(
+                    "sp_Accounts_Query_CheckIfAccountExists",
+                    new { Id = accountId },
+                    commandType: CommandType.StoredProcedure
+                ).FirstOrDefault();
+
+            return accountExists;
+        }
+
         public GetRenterQueryResult GetRenterById(int id)
         {
             var renterFromDb = _context.Connection.Query<GetRenterQueryResult>(
