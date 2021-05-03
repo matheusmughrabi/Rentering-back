@@ -4,6 +4,7 @@ using Rentering.Accounts.Application.CommandHandlers;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Repositories.CUDRepositories;
+using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.ValueObjects;
 
 namespace Rentering.UnitTests.AccountContext.Handlers
@@ -41,7 +42,9 @@ namespace Rentering.UnitTests.AccountContext.Handlers
             mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -55,7 +58,9 @@ namespace Rentering.UnitTests.AccountContext.Handlers
             mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(true);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -69,7 +74,9 @@ namespace Rentering.UnitTests.AccountContext.Handlers
             mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(true);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -83,7 +90,9 @@ namespace Rentering.UnitTests.AccountContext.Handlers
             mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(true, result.Success);

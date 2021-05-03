@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Accounts.Application.CommandHandlers;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.QueryResults;
+using Rentering.Accounts.Domain.Extensions;
 using Rentering.Accounts.Domain.Repositories.CUDRepositories;
 using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Common.Shared.Commands;
@@ -56,7 +57,7 @@ namespace Rentering.WebAPI.Controllers.AccountContext
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
 
-            var handler = new AccountHandlers(_accountCUDRepository);
+            var handler = new AccountHandlers(_accountCUDRepository, _accountQueryRepository);
             var result = handler.Handle(accountCommand);
 
             return Ok(result);
@@ -67,14 +68,16 @@ namespace Rentering.WebAPI.Controllers.AccountContext
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var account = _accountCUDRepository.GetAllAccounts()
-                .Where(c => c.Username.Username == loginCommand.Username && c.Password.Password == loginCommand.Password)
+            var account = _accountQueryRepository.GetAccounts()
+                .Where(c => c.Username == loginCommand.Username && c.Password == loginCommand.Password)
                 .FirstOrDefault();
 
             if (account == null)
                 return NotFound(new { Message = "Invalid username or password" });
 
-            var userInfo = TokenService.GenerateToken(account);
+            var accountEntity = account.EntityFromQueryResult();
+
+            var userInfo = TokenService.GenerateToken(accountEntity);
 
             return new { userInfo };
         }
@@ -84,7 +87,7 @@ namespace Rentering.WebAPI.Controllers.AccountContext
         [Authorize(Roles = "Admin")]
         public IActionResult AssignAdminRole([FromBody] AssignAccountCommand assignAdminRoleCommand)
         {
-            var handler = new AccountHandlers(_accountCUDRepository);
+            var handler = new AccountHandlers(_accountCUDRepository, _accountQueryRepository);
             var result = handler.Handle(assignAdminRoleCommand);
 
             return Ok(result);
@@ -104,6 +107,8 @@ namespace Rentering.WebAPI.Controllers.AccountContext
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });
+
+            SignOut();
 
             return Ok(deletedAccount);
         }
