@@ -5,6 +5,7 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.UnitTests.ContractContext.Handlers
@@ -93,10 +94,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateGuarantor_WhenAccountDoesNotExist()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
             mock.Setup(m => m.CreateGuarantor(_guarantorEntity));
 
-            var createTenantHandler = new GuarantorHandlers(mock.Object);
+            Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+
+            var createTenantHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = createTenantHandler.Handle(_createGuarantorCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -106,10 +109,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateGuarantor_WhenAccountExists()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
             mock.Setup(m => m.CreateGuarantor(_guarantorEntity));
 
-            var createTenantHandler = new GuarantorHandlers(mock.Object);
+            Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+
+            var createTenantHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = createTenantHandler.Handle(_createGuarantorCommand);
 
             Assert.AreEqual(true, result.Success);
@@ -119,10 +124,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateGuarantor_WhenAccountDoesNotExist()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
             mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
 
-            var updateGuarantorHandler = new GuarantorHandlers(mock.Object);
+            Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+
+            var updateGuarantorHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = updateGuarantorHandler.Handle(_updateGuarantorCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -132,10 +139,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateGuarantor_WhenAccountExists()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
             mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
 
-            var updateGuarantorHandler = new GuarantorHandlers(mock.Object);
+            Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+
+            var updateGuarantorHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = updateGuarantorHandler.Handle(_updateGuarantorCommand);
 
             Assert.AreEqual(true, result.Success);

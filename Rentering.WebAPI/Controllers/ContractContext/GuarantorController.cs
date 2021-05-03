@@ -65,7 +65,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             createGuarantorCommand.AccountId = accountId;
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository);
+            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
             var result = handler.Handle(createGuarantorCommand);
 
             return Ok(result);
@@ -90,7 +90,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
 
             updateGuarantorCommand.AccountId = accountId;
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository);
+            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
             var result = handler.Handle(updateGuarantorCommand);
 
             return Ok(result);
@@ -113,7 +113,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository);
+            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
             var result = handler.Handle(deleteGuarantorCommand);
 
             return Ok(result);
