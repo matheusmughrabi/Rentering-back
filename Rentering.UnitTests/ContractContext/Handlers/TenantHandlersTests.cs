@@ -112,7 +112,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CreateTenant(_tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
-            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
 
             var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
@@ -142,7 +142,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
-            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
 
             var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_updateTenantCommand);

@@ -83,13 +83,13 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         }
 
         [TestMethod]
-        public void ShouldCreateAccount_WhenUsernameANdEmailDoNotExistYet()
+        public void ShouldCreateAccount_WhenUsernameAndEmailDoNotExistYet()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
             Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
-            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
+            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(false);
             mockQueryRepository.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
 
             var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);

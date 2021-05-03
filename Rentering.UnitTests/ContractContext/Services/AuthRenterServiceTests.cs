@@ -23,8 +23,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnFalse_WhenCurrentUserDoesNotOwnRenterProfile()
         {
             List<GetRenterQueryResult> _renterProfilesFromMockDb = new List<GetRenterQueryResult>();
-            _renterProfilesFromMockDb.Add(new GetRenterQueryResult());
-            _renterProfilesFromMockDb.Add(new GetRenterQueryResult());
+            _renterProfilesFromMockDb.Add(new GetRenterQueryResult() { Id = 25 });
+            _renterProfilesFromMockDb.Add(new GetRenterQueryResult() { Id = 65 });
 
             Mock<IRenterQueryRepository> mock = new Mock<IRenterQueryRepository>();
             mock.Setup(m => m.GetRenterProfilesOfCurrentUser(_accountId)).Returns(_renterProfilesFromMockDb);
@@ -39,8 +39,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnTrue_WhenCurrentUserOwnsRenterProfile()
         {
             List<GetRenterQueryResult> _renterProfilesFromMockDb = new List<GetRenterQueryResult>();
-            _renterProfilesFromMockDb.Add(new GetRenterQueryResult());
-            _renterProfilesFromMockDb.Add(new GetRenterQueryResult());
+            _renterProfilesFromMockDb.Add(new GetRenterQueryResult() { Id = 15 });
+            _renterProfilesFromMockDb.Add(new GetRenterQueryResult() { Id = 25 });
 
             Mock<IRenterQueryRepository> mock = new Mock<IRenterQueryRepository>();
             mock.Setup(m => m.GetRenterProfilesOfCurrentUser(_accountId)).Returns(_renterProfilesFromMockDb);

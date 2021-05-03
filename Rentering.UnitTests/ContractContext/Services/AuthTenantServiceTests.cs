@@ -23,8 +23,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnFalse_WhenCurrentUserDoesNotOwnTenantProfile()
         {
             List<GetTenantQueryResult> _tenantProfilesFromMockDb = new List<GetTenantQueryResult>();
-            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
-            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult() { Id = 16 });
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult() { Id = 17 });
 
             Mock<ITenantQueryRepository> mock = new Mock<ITenantQueryRepository>();
             mock.Setup(m => m.GetTenantProfilesOfCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);
@@ -39,8 +39,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnTrue_WhenCurrentUserOwnsTenantProfile()
         {
             List<GetTenantQueryResult> _tenantProfilesFromMockDb = new List<GetTenantQueryResult>();
-            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
-            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult());
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult() { Id = 15 });
+            _tenantProfilesFromMockDb.Add(new GetTenantQueryResult() { Id = 17 });
 
             Mock<ITenantQueryRepository> mock = new Mock<ITenantQueryRepository>();
             mock.Setup(m => m.GetTenantProfilesOfCurrentUser(_accountId)).Returns(_tenantProfilesFromMockDb);

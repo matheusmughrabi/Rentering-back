@@ -112,7 +112,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.CreateGuarantor(_guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
-            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
 
             var createTenantHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = createTenantHandler.Handle(_createGuarantorCommand);
@@ -142,7 +142,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
-            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
+            mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
 
             var updateGuarantorHandler = new GuarantorHandlers(mock.Object, mockQuery.Object);
             var result = updateGuarantorHandler.Handle(_updateGuarantorCommand);

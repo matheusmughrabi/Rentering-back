@@ -23,8 +23,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnFalse_WhenCurrentUserDoesNotOwnGuarantorProfile()
         {
             List<GetGuarantorQueryResult> _guarantorProfilesFromMockDb = new List<GetGuarantorQueryResult>();
-            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult());
-            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult());
+            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult() { Id = 16 });
+            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult() { Id = 17 });
 
             Mock<IGuarantorQueryRepository> mock = new Mock<IGuarantorQueryRepository>();
             mock.Setup(m => m.GetGuarantorProfilesOfCurrentUser(_accountId)).Returns(_guarantorProfilesFromMockDb);
@@ -39,8 +39,8 @@ namespace Rentering.UnitTests.ContractContext.Services
         public void ShouldReturnTrue_WhenCurrentUserOwnsGuarantorProfile()
         {
             List<GetGuarantorQueryResult> _guarantorProfilesFromMockDb = new List<GetGuarantorQueryResult>();
-            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult());
-            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult());
+            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult() { Id = 15 });
+            _guarantorProfilesFromMockDb.Add(new GetGuarantorQueryResult() { Id = 17 });
 
             Mock<IGuarantorQueryRepository> mock = new Mock<IGuarantorQueryRepository>();
             mock.Setup(m => m.GetGuarantorProfilesOfCurrentUser(_accountId)).Returns(_guarantorProfilesFromMockDb);
