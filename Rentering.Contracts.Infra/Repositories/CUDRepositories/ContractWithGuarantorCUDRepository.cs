@@ -15,10 +15,6 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         {
             _context = context;
         }
-        public ContractWithGuarantorEntity GetContractById(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public void CreateContract(ContractWithGuarantorEntity contract)
         {

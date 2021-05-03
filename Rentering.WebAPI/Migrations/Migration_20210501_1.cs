@@ -9,8 +9,7 @@ namespace Rentering.WebAPI.Migrations
 		public override void Down()
 		{
 			Delete.Table("ContractsWithGuarantor");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Util_CheckIfContractNameExists]");
+			
 		}
 
 		public override void Up()
@@ -31,74 +30,6 @@ namespace Rentering.WebAPI.Migrations
 				.WithColumn("RentDueDate").AsDate().NotNullable()
 				.WithColumn("ContractStartDate").AsDate().NotNullable()
 				.WithColumn("ContractEndDate").AsDate().NotNullable();
-
-			Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-                        CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]
-	                        @ContractName nvarchar(255),
-	                        @Street nvarchar(255),
-	                        @Neighborhood nvarchar(255),
-	                        @City nvarchar(255),
-	                        @CEP nvarchar(255),
-	                        @State int,
-	                        @PropertyRegistrationNumber int,
-	                        @RentPrice decimal(19, 5),
-	                        @RentDueDate date,
-	                        @ContractStartDate date,
-	                        @ContractEndDate date
-                        AS
-                        BEGIN
-                           
-						INSERT INTO [ContractsWithGuarantor] (
-								[ContractName], 
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[PropertyRegistrationNumber],
-								[RentPrice],
-								[RentDueDate],
-								[ContractStartDate],
-								[ContractEndDate]
-							) VALUES (
-								@ContractName,
-								@Street,
-								@Neighborhood,
-								@City,
-								@CEP,
-								@State,
-								@PropertyRegistrationNumber,
-								@RentPrice,
-								@RentDueDate,
-								@ContractStartDate,
-								@ContractEndDate
-							)
-
-                        END
-                        GO");
-
-			Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-                        CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_Util_CheckIfContractNameExists]
-	                        @ContractName NVARCHAR(255)
-                        AS
-	                        SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [ContractsWithGuarantor]
-		                        WHERE [ContractName] = @ContractName
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT) END
-                        GO");
 		}
 	}
 }
