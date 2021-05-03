@@ -5,6 +5,7 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.UnitTests.ContractContext.Handlers
@@ -93,10 +94,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateTenant_WhenAccountDoesNotExist()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
             mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createTenantHandler = new TenantHandlers(mock.Object);
+            Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+
+            var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -106,10 +109,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateTenant_WhenAccountExists()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
             mock.Setup(m => m.CreateTenant(_tenantEntity));
 
-            var createTenantHandler = new TenantHandlers(mock.Object);
+            Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
+
+            var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_createTenantCommand);
 
             Assert.AreEqual(true, result.Success);
@@ -119,10 +124,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateTenant_WhenAccountDoesNotExist()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
             mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
 
-            var createTenantHandler = new TenantHandlers(mock.Object);
+            Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
+
+            var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_updateTenantCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -132,10 +139,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateTenant_WhenAccountExists()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
             mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
 
-            var createTenantHandler = new TenantHandlers(mock.Object);
+            Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
+            queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
+
+            var createTenantHandler = new TenantHandlers(mock.Object, queryMock.Object);
             var result = createTenantHandler.Handle(_updateTenantCommand);
 
             Assert.AreEqual(true, result.Success);

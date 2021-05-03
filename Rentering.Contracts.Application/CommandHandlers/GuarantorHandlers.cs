@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -13,10 +14,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
         ICommandHandler<DeleteGuarantorCommand>
     {
         private readonly IGuarantorCUDRepository _guarantorCUDRepository;
+        private readonly IGuarantorQueryRepository _guarantorQueryRepository;
 
-        public GuarantorHandlers(IGuarantorCUDRepository guarantorCUDRepository)
+        public GuarantorHandlers(IGuarantorCUDRepository guarantorCUDRepository, IGuarantorQueryRepository guarantorQueryRepository)
         {
             _guarantorCUDRepository = guarantorCUDRepository;
+            _guarantorQueryRepository = guarantorQueryRepository;
         }
 
         public ICommandResult Handle(CreateGuarantorCommand command)
@@ -32,7 +35,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_guarantorCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_guarantorQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(guarantorEntity.Notifications);
@@ -80,7 +83,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_guarantorCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_guarantorQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);

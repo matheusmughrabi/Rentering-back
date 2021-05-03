@@ -16,17 +16,6 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public bool CheckIfAccountExists(int accountId)
-        {
-            var accountExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Util_CheckIfAccountExists",
-                    new { Id = accountId },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
-
-            return accountExists;
-        }
-
         public void CreateGuarantor(GuarantorEntity guarantor)
         {
             _context.Connection.Execute("sp_Guarantors_CUD_CreateGuarantor",

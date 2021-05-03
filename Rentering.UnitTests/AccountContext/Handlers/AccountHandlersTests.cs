@@ -4,6 +4,7 @@ using Rentering.Accounts.Application.CommandHandlers;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Repositories.CUDRepositories;
+using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.ValueObjects;
 
 namespace Rentering.UnitTests.AccountContext.Handlers
@@ -36,12 +37,14 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         [TestMethod]
         public void ShouldNotCreateAccount_WhenEmailAlreadyExists()
         {
-            Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
-            mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
+            Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();        
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
+            mockQueryRepository.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -51,11 +54,13 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldNotCreateAccount_WhenUsernameAlreadyExists()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(false);
-            mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(true);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
+            mockQueryRepository.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -65,25 +70,29 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldNotCreateAccount_WhenUsernameAndEmailAlreadyExist()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
-            mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(true);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
+            mockQueryRepository.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(false, result.Success);
         }
 
         [TestMethod]
-        public void ShouldCreateAccount_WhenUsernameANdEmailDoNotExistYet()
+        public void ShouldCreateAccount_WhenUsernameAndEmailDoNotExistYet()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(false);
-            mock.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
             mock.Setup(m => m.CreateAccount(_accountEntity));
 
-            var accountHandler = new AccountHandlers(mock.Object);
+            Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
+            mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(false);
+            mockQueryRepository.Setup(m => m.CheckIfUsernameExists(_createAccountCommand.Username)).Returns(false);
+
+            var accountHandler = new AccountHandlers(mock.Object, mockQueryRepository.Object);
             var result = accountHandler.Handle(_createAccountCommand);
 
             Assert.AreEqual(true, result.Success);

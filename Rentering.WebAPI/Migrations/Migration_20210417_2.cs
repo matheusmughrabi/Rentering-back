@@ -7,32 +7,96 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Auth_GetTenantsIdsOfAccount]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]");
+
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_CreateTenant]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_DeleteTenant]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_CUD_UpdateTenant]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]");
         }
 
         public override void Up()
         {
+            #region Query
             Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
+						GO
 
-                        SET QUOTED_IDENTIFIER ON
-                        GO
+						SET QUOTED_IDENTIFIER ON
+						GO
 
-                        CREATE PROCEDURE [dbo].[sp_Tenants_Auth_GetTenantsIdsOfAccount]
-	                        @AccountId int
-                        AS
-                        BEGIN
-                            SELECT [Id]
-	                        FROM Tenants
-	                        WHERE [AccountId] = @AccountId
-                        END
-                        GO");
+						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]
+							@Id INT
+						AS
+						BEGIN
+							SELECT 
+								[Id],
+								[AccountId],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseOcupation],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							FROM 
+								Tenants
+							WHERE 
+								[Id] = @Id;
+						END
+						GO");
 
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]
+							@AccountId INT
+						AS
+						BEGIN
+							SELECT 
+								[Id],
+								[AccountId],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseOcupation],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							FROM 
+								Tenants
+							WHERE 
+								[AccountId] = @AccountId;
+						END
+						GO
+						");
+			#endregion
+
+			#region CUD
 			Execute.Sql(@"SET ANSI_NULLS ON
 						GO
 
@@ -179,81 +243,7 @@ namespace Rentering.WebAPI.Migrations
 								Id = @Id
 						END
 						GO");
-
-			Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
-						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantById]
-							@Id INT
-						AS
-						BEGIN
-							SELECT 
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseOcupation],
-								[SpouseIdentityRG],
-								[SpouseCPF]
-							FROM 
-								Tenants
-							WHERE 
-								[Id] = @Id;
-						END
-						GO");
-
-			Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
-						CREATE PROCEDURE [dbo].[sp_Tenants_Query_GetTenantsOfAccount]
-							@AccountId INT
-						AS
-						BEGIN
-							SELECT 
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseOcupation],
-								[SpouseIdentityRG],
-								[SpouseCPF]
-							FROM 
-								Tenants
-							WHERE 
-								[AccountId] = @AccountId;
-						END
-						GO
-						");
+			#endregion
 		}
-    }
+	}
 }

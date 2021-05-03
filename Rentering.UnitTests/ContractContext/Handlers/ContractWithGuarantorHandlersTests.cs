@@ -4,7 +4,7 @@ using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.UtilRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
 
@@ -39,10 +39,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<IContractWithGuarantorCUDRepository> contractCUDRepositoryMock = new Mock<IContractWithGuarantorCUDRepository>();
             contractCUDRepositoryMock.Setup(m => m.CreateContract(contract));
 
-            Mock<IContractWithGuarantorUtilRepository> contractUtilRepositoryMock = new Mock<IContractWithGuarantorUtilRepository>();
-            contractUtilRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(true);
+            Mock<IContractWithGuarantorQueryRepository> contractQueryRepositoryMock = new Mock<IContractWithGuarantorQueryRepository>();
+            contractQueryRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(true);
 
-            var createTenantHandler = new EstateContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractUtilRepositoryMock.Object);
+            var createTenantHandler = new EstateContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -54,10 +54,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<IContractWithGuarantorCUDRepository> contractCUDRepositoryMock = new Mock<IContractWithGuarantorCUDRepository>();
             contractCUDRepositoryMock.Setup(m => m.CreateContract(contract));
 
-            Mock<IContractWithGuarantorUtilRepository> contractUtilRepositoryMock = new Mock<IContractWithGuarantorUtilRepository>();
-            contractUtilRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(false);
+            Mock<IContractWithGuarantorQueryRepository> contractQueryRepositoryMock = new Mock<IContractWithGuarantorQueryRepository>();
+            contractQueryRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(false);
 
-            var createTenantHandler = new EstateContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractUtilRepositoryMock.Object);
+            var createTenantHandler = new EstateContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(true, result.Success);

@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -13,10 +14,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
         ICommandHandler<DeleteTenantCommand>
     {
         private readonly ITenantCUDRepository _tenantCUDRepository;
+        private readonly ITenantQueryRepository _tenantQueryRepository;
 
-        public TenantHandlers(ITenantCUDRepository tenantCUDRepository)
+        public TenantHandlers(ITenantCUDRepository tenantCUDRepository, ITenantQueryRepository tenantQueryRepository)
         {
             _tenantCUDRepository = tenantCUDRepository;
+            _tenantQueryRepository = tenantQueryRepository;
         }
 
         public ICommandResult Handle(CreateTenantCommand command)
@@ -32,7 +35,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_tenantCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_tenantQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(tenantEntity.Notifications);
@@ -80,7 +83,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_tenantCUDRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_tenantQueryRepository.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);

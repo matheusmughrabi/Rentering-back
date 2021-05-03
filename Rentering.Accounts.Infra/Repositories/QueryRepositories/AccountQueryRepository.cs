@@ -17,6 +17,28 @@ namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
             _context = context;
         }
 
+        public bool CheckIfEmailExists(string email)
+        {
+            var emailExists = _context.Connection.Query<bool>(
+                     "sp_Accounts_Query_CheckIfEmailExists",
+                     new { Email = email },
+                     commandType: CommandType.StoredProcedure
+                 ).FirstOrDefault();
+
+            return emailExists;
+        }
+
+        public bool CheckIfUsernameExists(string username)
+        {
+            var documentExists = _context.Connection.Query<bool>(
+                    "sp_Accounts_Query_CheckIfUsernameExists",
+                    new { Username = username },
+                    commandType: CommandType.StoredProcedure
+                ).FirstOrDefault();
+
+            return documentExists;
+        }
+
         public GetAccountQueryResult GetAccountById(int id)
         {
             var accountQueryResult = _context.Connection.Query<GetAccountQueryResult>(

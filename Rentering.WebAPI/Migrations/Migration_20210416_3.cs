@@ -1,5 +1,4 @@
 ﻿using FluentMigrator;
-using System;
 
 namespace Rentering.WebAPI.Migrations
 {
@@ -10,16 +9,18 @@ namespace Rentering.WebAPI.Migrations
         {
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAllAccounts]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_GetAllAccounts]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfAccountExists]");
+
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_CreateAccount]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_DeleteAccount]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_GetAccountById]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_UpdateAccount]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Util_CheckIfAccountExists]");
         }
 
         public override void Up()
         {
+            #region QueryRepository
             Execute.Sql(@"SET ANSI_NULLS ON
                             GO
                             SET QUOTED_IDENTIFIER ON
@@ -31,7 +32,7 @@ namespace Rentering.WebAPI.Migrations
                             BEGIN
 	                            SET NOCOUNT ON;
 
-	                            SELECT Id, Email, Username, Role FROM Accounts WHERE Id = @Id
+	                            SELECT * FROM Accounts WHERE Id = @Id
                             END
                             GO");
 
@@ -45,26 +46,67 @@ namespace Rentering.WebAPI.Migrations
                             BEGIN
 	                            SET NOCOUNT ON;
 
-	                            SELECT Id, Email, Username, Role FROM Accounts
+	                            SELECT * FROM Accounts
                             END
                             GO");
 
-            Execute.Sql(@"
-                        SET ANSI_NULLS ON
+            Execute.Sql(@"SET ANSI_NULLS ON
+                        GO
+
+                        SET QUOTED_IDENTIFIER ON
+                        GO
+
+                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]
+	                        @Email NVARCHAR(50)
+                        AS
+	                        SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Email] = @Email
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT) END
+                        GO");
+
+            Execute.Sql(@"SET ANSI_NULLS ON
+                        GO
+
+                        SET QUOTED_IDENTIFIER ON
+                        GO
+
+                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]
+	                        @Username NVARCHAR(50)
+                        AS
+	                        SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Username] = @Username
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT) END
+                        GO");
+
+            Execute.Sql(@"SET ANSI_NULLS ON
                         GO
 
                         SET QUOTED_IDENTIFIER ON
                         GO
 
 
-                        CREATE PROCEDURE [dbo].[sp_Accounts_CUD_GetAllAccounts]
+                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfAccountExists]
+	                        @Id int
                         AS
-                        BEGIN
-                            SELECT AC.[Id], AC.[Email], AC.[Username], AC.[Password], AC.[Role]
-	                        FROM Accounts AS AC
-                        END
+	                        SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Id] = @Id
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT) END
                         GO");
+            #endregion
 
+            # region CUDRepository
             Execute.Sql(@"SET ANSI_NULLS ON
                         GO
 
@@ -116,23 +158,6 @@ namespace Rentering.WebAPI.Migrations
                         SET QUOTED_IDENTIFIER ON
                         GO
 
-
-                        CREATE PROCEDURE [dbo].[sp_Accounts_CUD_GetAccountById]
-	                        @Id INT
-                        AS
-                        BEGIN
-                            SELECT RU.[Id], RU.[Email], RU.[Username], RU.[Password], RU.[Role]
-	                        FROM Accounts AS RU
-	                        WHERE [Id] = @Id;
-                        END
-                        GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
                         CREATE PROCEDURE [dbo].[sp_Accounts_CUD_UpdateAccount]
 	                        @Id INT,
 	                        @Email NVARCHAR(50),
@@ -152,25 +177,7 @@ namespace Rentering.WebAPI.Migrations
 		                        Id = @Id
                         END
                         GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-
-                        CREATE PROCEDURE [dbo].[sp_Accounts_Util_CheckIfAccountExists]
-	                        @Id int
-                        AS
-	                        SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [Accounts]
-		                        WHERE [Id] = @Id
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT) END
-                        GO");
+            #endregion
         }
     }
 }

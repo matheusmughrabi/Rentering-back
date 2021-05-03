@@ -2,7 +2,6 @@
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,6 +15,17 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
         public GuarantorQueryRepository(RenteringDataContext context)
         {
             _context = context;
+        }
+
+        public bool CheckIfAccountExists(int accountId)
+        {
+            var accountExists = _context.Connection.Query<bool>(
+                    "sp_Accounts_Query_CheckIfAccountExists",
+                    new { Id = accountId },
+                    commandType: CommandType.StoredProcedure
+                ).FirstOrDefault();
+
+            return accountExists;
         }
 
         public GetGuarantorQueryResult GetGuarantorById(int id)

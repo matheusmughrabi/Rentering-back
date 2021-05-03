@@ -4,6 +4,7 @@ namespace Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults
 {
     public class GetGuarantorQueryResult
     {
+        public int Id { get; set; }
         public int AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

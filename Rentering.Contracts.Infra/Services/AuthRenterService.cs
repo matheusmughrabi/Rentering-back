@@ -1,4 +1,4 @@
-﻿using Rentering.Contracts.Domain.Repositories.AuthRepositories;
+﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
 using System.Linq;
 
@@ -6,16 +6,16 @@ namespace Rentering.Contracts.Infra.Services
 {
     public class AuthRenterService : IAuthRenterService
     {
-        private readonly IRenterAuthRepository _authRenterRepository;
+        private readonly IRenterQueryRepository _renterQueryRepository;
 
-        public AuthRenterService(IRenterAuthRepository authRenterRepository)
+        public AuthRenterService(IRenterQueryRepository renterQueryRepository)
         {
-            _authRenterRepository = authRenterRepository;
+            _renterQueryRepository = renterQueryRepository;
         }
 
         public bool IsCurrentUserTheOwnerOfRenterProfile(int accountId, int renterProfileId)
         {
-            var renterProfilesOfTheCurrentUser = _authRenterRepository.GetRenterProfilesOfTheCurrentUser(accountId);
+            var renterProfilesOfTheCurrentUser = _renterQueryRepository.GetRenterProfilesOfCurrentUser(accountId);
 
             bool containsPassedRenterProfileId = renterProfilesOfTheCurrentUser.ToList().Any(c => c.Id == renterProfileId);
 

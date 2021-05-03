@@ -5,12 +5,8 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentering.UnitTests.ContractContext.Handlers
 {
@@ -95,10 +91,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateRenter_WhenAccountDoesNotExist()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
             mock.Setup(m => m.CreateRenter(_renterEntity));
 
-            var createRenterHandler = new RenterHandlers(mock.Object);
+            Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
+            queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
+
+            var createRenterHandler = new RenterHandlers(mock.Object, queryRepositorymock.Object);
             var result = createRenterHandler.Handle(_createRenterCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -108,10 +106,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateRenter_WhenAccountExists()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
             mock.Setup(m => m.CreateRenter(_renterEntity));
 
-            var createRenterHandler = new RenterHandlers(mock.Object);
+            Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
+            queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
+
+            var createRenterHandler = new RenterHandlers(mock.Object, queryRepositorymock.Object);
             var result = createRenterHandler.Handle(_createRenterCommand);
 
             Assert.AreEqual(true, result.Success);
@@ -121,10 +121,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateRenter_WhenAccountDoesNotExist()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
             mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
 
-            var createRenterHandler = new RenterHandlers(mock.Object);
+            Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
+            queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
+
+            var createRenterHandler = new RenterHandlers(mock.Object, queryRepositorymock.Object);
             var result = createRenterHandler.Handle(_updateRenterCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -134,10 +136,12 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateRenter_WhenAccountExists()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
             mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
 
-            var createRenterHandler = new RenterHandlers(mock.Object);
+            Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
+            queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
+
+            var createRenterHandler = new RenterHandlers(mock.Object, queryRepositorymock.Object);
             var result = createRenterHandler.Handle(_updateRenterCommand);
 
             Assert.AreEqual(true, result.Success);

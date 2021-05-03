@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.UtilRepositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 
 namespace Rentering.WebAPI.Controllers.ContractContext
 {
@@ -12,14 +12,14 @@ namespace Rentering.WebAPI.Controllers.ContractContext
     public class ContractWithGuarantorController : RenteringBaseController
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
-        private readonly IContractWithGuarantorUtilRepository _contractWithGuarantorUtilRepository;
+        private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
 
         public ContractWithGuarantorController(
-            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository, 
-            IContractWithGuarantorUtilRepository contractWithGuarantorUtilRepository)
+            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
+            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository; 
-            _contractWithGuarantorUtilRepository = contractWithGuarantorUtilRepository;
+            _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new EstateContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorUtilRepository);
+            var handler = new EstateContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);

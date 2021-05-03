@@ -11,12 +11,10 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Repositories.AuthRepositories;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
-using Rentering.Contracts.Domain.Repositories.UtilRepositories;
 using Rentering.Contracts.Domain.Services;
 using Rentering.Contracts.Infra.Repositories.AuthRepositories;
 using Rentering.Contracts.Infra.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Repositories.QueryRepositories;
-using Rentering.Contracts.Infra.Repositories.UtilRepositories;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 using System.Reflection;
@@ -35,21 +33,18 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddTransient<IRenterCUDRepository, RenterCUDRepository>();
             services.AddTransient<IRenterQueryRepository, RenterQueryRepository>();
-            services.AddTransient<IRenterAuthRepository, RenterAuthRepository>();
             services.AddTransient<IAuthRenterService, AuthRenterService>();
 
             services.AddTransient<ITenantCUDRepository, TenantCUDRepository>();
             services.AddTransient<ITenantQueryRepository, TenantQueryRepository>();
-            services.AddTransient<ITenantAuthRepository, TenantAuthRepository>();
             services.AddTransient<IAuthTenantService, AuthTenantService>();
 
             services.AddTransient<IGuarantorCUDRepository, GuarantorCUDRepository>();
             services.AddTransient<IGuarantorQueryRepository, GuarantorQueryRepository>();
-            services.AddTransient<IGuarantorAuthRepository, GuarantorAuthRepository>();
             services.AddTransient<IAuthGuarantorService, AuthGuarantorService>();
 
             services.AddTransient<IContractWithGuarantorCUDRepository, ContractWithGuarantorCUDRepository>();
-            services.AddTransient<IContractWithGuarantorUtilRepository, ContractWithGuarantorUtilRepository>();
+            services.AddTransient<IContractWithGuarantorQueryRepository, ContractWithGuarantorQueryRepository>();
 
             services.AddTransient<IContractAuthRepository, ContractAuthRepository>();
 
