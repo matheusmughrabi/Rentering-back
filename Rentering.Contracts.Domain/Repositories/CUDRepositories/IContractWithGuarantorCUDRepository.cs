@@ -5,6 +5,7 @@ namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
     public interface IContractWithGuarantorCUDRepository
     {
         void CreateContract(ContractWithGuarantorEntity contract);
-        void InviteRenterToParticipate(ContractWithGuarantorEntity contract);
+        void UpdateContract(int id, ContractWithGuarantorEntity contract);
+        void DeleteContract(int id);
     }
 }

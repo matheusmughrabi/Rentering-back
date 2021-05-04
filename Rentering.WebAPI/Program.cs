@@ -103,7 +103,6 @@ namespace Rentering.WebAPI
 // Criar commands, IRepository e handlers OK
 // Criar testes de unidade OK
 // Implementar CUDRepository OK
-// Implementar UtilRepository OK
 
 // Criar auth commands, IAuthRepository, IService e handlers
 // Criar testes de unidade para auth handlers

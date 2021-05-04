@@ -7,16 +7,56 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_CheckIfContractNameExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_GetContractById]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_GetAllContracts]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_CheckIfContractNameExists]");
 
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]");
-			Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_InviteRenter]");
-		}
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_UpdateContract]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_DeleteContract]");
+        }
 
         public override void Up()
         {
-            #region Query
-            Execute.Sql(@"SET ANSI_NULLS ON
+			#region Query
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+						CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_GetContractById]
+							@Id INT
+						AS
+						BEGIN
+							SELECT
+								*
+							FROM 
+								ContractsWithGuarantor
+							WHERE 
+								[Id] = @Id;
+						END
+						GO");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+						CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_GetAllContracts]
+
+						AS
+						BEGIN
+							SELECT 
+								*
+							FROM 
+								ContractsWithGuarantor
+						END
+						GO
+						");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
                         GO
 
                         SET QUOTED_IDENTIFIER ON
@@ -37,26 +77,6 @@ namespace Rentering.WebAPI.Migrations
 
 			#region CUD
 			Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
-						CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_InviteRenter]
-							@Id INT,
-							@RenterId INT
-						AS
-						BEGIN
-							UPDATE 
-								ContractsWithGuarantor
-							SET
-								[RenterId] = @RenterId
-							WHERE 
-								Id = @Id
-						END
-						GO");
-
-			Execute.Sql(@"SET ANSI_NULLS ON
                         GO
 
                         SET QUOTED_IDENTIFIER ON
@@ -64,6 +84,9 @@ namespace Rentering.WebAPI.Migrations
 
                         CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_CreateContract]
 	                        @ContractName nvarchar(255),
+							@RenterId INT,
+							@TenantId INT,
+							@GuarantorId INT,
 	                        @Street nvarchar(255),
 	                        @Neighborhood nvarchar(255),
 	                        @City nvarchar(255),
@@ -79,6 +102,9 @@ namespace Rentering.WebAPI.Migrations
                            
 						INSERT INTO [ContractsWithGuarantor] (
 								[ContractName], 
+								[RenterId],
+								[TenantId],
+								[GuarantorId],
 								[Street],
 								[Neighborhood],
 								[City],
@@ -91,6 +117,9 @@ namespace Rentering.WebAPI.Migrations
 								[ContractEndDate]
 							) VALUES (
 								@ContractName,
+								@RenterId,
+								@TenantId,
+								@GuarantorId,
 								@Street,
 								@Neighborhood,
 								@City,
@@ -105,6 +134,71 @@ namespace Rentering.WebAPI.Migrations
 
                         END
                         GO");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+						CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_UpdateContract]
+							@Id INT,
+							@ContractName nvarchar(255),
+							@RenterId INT,
+							@TenantId INT,
+							@GuarantorId INT,
+	                        @Street nvarchar(255),
+	                        @Neighborhood nvarchar(255),
+	                        @City nvarchar(255),
+	                        @CEP nvarchar(255),
+	                        @State int,
+	                        @PropertyRegistrationNumber int,
+	                        @RentPrice decimal(19, 5),
+	                        @RentDueDate date,
+	                        @ContractStartDate date,
+	                        @ContractEndDate date
+						AS
+						BEGIN
+							UPDATE 
+								ContractsWithGuarantor
+							SET
+								[ContractName] = @ContractName,
+								[RenterId] = @RenterId,
+								[TenantId] = @TenantId,
+								[GuarantorId] = @GuarantorId,
+								[Street] = @Street,
+								[Neighborhood] = @Neighborhood,
+								[City] = @City,
+								[CEP] = @CEP,
+								[State] = @State,
+								[PropertyRegistrationNumber] = @PropertyRegistrationNumber,
+								[RentPrice] = @RentPrice,
+								[RentDueDate] = @RentDueDate,
+								[ContractStartDate] = @ContractStartDate,
+								[ContractEndDate] = @ContractEndDate
+							WHERE 
+								Id = @Id
+						END
+						GO");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+
+
+						CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_CUD_DeleteContract]
+							@Id INT
+						AS
+						BEGIN
+							DELETE FROM 
+								ContractsWithGuarantor
+							WHERE 
+								Id = @Id
+						END
+						GO");
 			#endregion
 		}
 	}

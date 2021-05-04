@@ -22,6 +22,9 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     new
                     {
                         ContractName = contract.ContractName,
+                        RenterId = contract.Renter?.Id,
+                        TenantId = contract.Tenant?.Id,
+                        GuarantorId = contract.Guarantor?.Id,
                         Street = contract.Address.Street,
                         Neighborhood = contract.Address.Neighborhood,
                         City = contract.Address.City,
@@ -36,10 +39,15 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     commandType: CommandType.StoredProcedure
                 );
         }
-
-        public void InviteRenterToParticipate(ContractWithGuarantorEntity contract)
+        public void UpdateContract(int id, ContractWithGuarantorEntity contract)
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteContract(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
