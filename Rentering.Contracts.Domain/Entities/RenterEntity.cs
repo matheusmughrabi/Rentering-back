@@ -19,10 +19,10 @@ namespace Rentering.Contracts.Domain.Entities
             string spouseNationality = null,
             IdentityRGValueObject spouseIdentityRG = null,
             CPFValueObject spouseCPF = null,
+            e_ContractParticipantStatus? renterStatus = null,
             int? id = null)
         {
-            AccountId = accountId;
-            RenterStatus = e_ContractParticipantStatus.None;
+            AccountId = accountId;            
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -37,6 +37,11 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (id != null)
                 AssignId((int)id);
+
+            if (renterStatus == null)
+                RenterStatus = e_ContractParticipantStatus.None;
+            else
+                RenterStatus = (e_ContractParticipantStatus)renterStatus;
         }
 
         public int AccountId { get; private set; }

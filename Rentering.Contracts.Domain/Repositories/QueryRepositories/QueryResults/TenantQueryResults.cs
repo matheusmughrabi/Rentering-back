@@ -6,7 +6,7 @@ namespace Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults
     {
         public int Id { get; set; }
         public int AccountId { get; set; }
-        public int Status { get; set; }
+        public e_ContractParticipantStatus Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Nationality { get; set; }

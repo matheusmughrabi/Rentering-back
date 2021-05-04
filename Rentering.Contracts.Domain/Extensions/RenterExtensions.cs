@@ -10,6 +10,7 @@ namespace Rentering.Contracts.Domain.Extensions
         {
             var id = renterQueryResult.Id;
             var accountId = renterQueryResult.AccountId;
+            var status = renterQueryResult.Status;
             var name = new NameValueObject(renterQueryResult.FirstName, renterQueryResult.LastName);
             var nationality = renterQueryResult.Nationality;
             var ocupation = renterQueryResult.Ocupation;
@@ -23,7 +24,7 @@ namespace Rentering.Contracts.Domain.Extensions
             var spouseIdentityRG = new IdentityRGValueObject(renterQueryResult.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(renterQueryResult.SpouseCPF);
 
-            var renterEntity = new RenterEntity(accountId, name, nationality, ocupation, maritalStatus, identityRG, CPF, address, spouseName, spouseNationality, spouseIdentityRG, spouseCPF, id);
+            var renterEntity = new RenterEntity(accountId, name, nationality, ocupation, maritalStatus, identityRG, CPF, address, spouseName, spouseNationality, spouseIdentityRG, spouseCPF, status, id);
 
             return renterEntity;
         }
