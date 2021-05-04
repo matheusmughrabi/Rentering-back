@@ -108,8 +108,8 @@ namespace Rentering.WebAPI
 // Implementar CUDRepository ON GOING
 
 // OBS:
-// 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD
-// 2) Precisa garantir que eles já não estejam associados a outro contrato
+// 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD OK
+// 2) Precisa garantir que eles já não estejam associados a outro contrato OK
 
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers

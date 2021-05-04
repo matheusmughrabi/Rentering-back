@@ -3,7 +3,6 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using System.Data;
-using System.Linq;
 
 namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
 {
@@ -22,6 +21,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     new
                     {
                         AccountId = guarantor.AccountId,
+                        Status = guarantor.GuarantorStatus,
                         FirstName = guarantor.Name.FirstName,
                         LastName = guarantor.Name.LastName,
                         Nationality = guarantor.Nationality,
@@ -52,6 +52,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                    {
                        Id = id,
                        AccountId = guarantor.AccountId,
+                       Status = guarantor.GuarantorStatus,
                        FirstName = guarantor.Name.FirstName,
                        LastName = guarantor.Name.LastName,
                        Nationality = guarantor.Nationality,

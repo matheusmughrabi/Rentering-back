@@ -21,6 +21,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     new
                     {
                         AccountId = renter.AccountId,
+                        Status = renter.RenterStatus,
                         FirstName = renter.Name.FirstName,
                         LastName = renter.Name.LastName,
                         Nationality = renter.Nationality,
@@ -50,6 +51,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     {
                         Id = id,
                         AccountId = renter.AccountId,
+                        Status = renter.RenterStatus,
                         FirstName = renter.Name.FirstName,
                         LastName = renter.Name.LastName,
                         Nationality = renter.Nationality,
