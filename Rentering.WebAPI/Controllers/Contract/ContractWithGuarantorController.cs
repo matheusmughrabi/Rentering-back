@@ -13,13 +13,16 @@ namespace Rentering.WebAPI.Controllers.Contract
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
+        private readonly IRenterQueryRepository _renterQueryRepository;
 
         public ContractWithGuarantorController(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
-            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository)
+            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository, 
+            IRenterQueryRepository renterQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
+            _renterQueryRepository = renterQueryRepository;
         }
 
         [HttpPost]
@@ -32,8 +35,24 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new EstateContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterQueryRepository);
             var result = handler.Handle(createContractGuarantorCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("v1/UpdateContract")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult UpdateGuarantor([FromBody] InviteRenterToParticipate inviteRenterToParticipateCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterQueryRepository);
+            var result = handler.Handle(inviteRenterToParticipateCommand);
 
             return Ok(result);
         }

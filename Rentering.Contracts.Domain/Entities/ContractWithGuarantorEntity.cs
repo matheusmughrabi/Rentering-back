@@ -20,7 +20,8 @@ namespace Rentering.Contracts.Domain.Entities
             PriceValueObject rentPrice,
             DateTime rentDueDate,
             DateTime contractStartDate,
-            DateTime contractEndDate)
+            DateTime contractEndDate,
+            int? id = null)
         {
             ContractName = contractName;
             Address = address;
@@ -35,6 +36,9 @@ namespace Rentering.Contracts.Domain.Entities
             var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
             if (Payments.Count == 0)
                 CreatePaymentCycle(monthSpan);
+
+            if (id != null)
+                AssignId((int)id);
 
             ApplyValidations();
         }

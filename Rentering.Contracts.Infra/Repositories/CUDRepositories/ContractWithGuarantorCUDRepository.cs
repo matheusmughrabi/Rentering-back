@@ -41,7 +41,27 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
         }
         public void UpdateContract(int id, ContractWithGuarantorEntity contract)
         {
-            throw new NotImplementedException();
+            _context.Connection.Execute("sp_ContractsWithGuarantor_CUD_UpdateContract",
+                    new
+                    {
+                        Id = contract.Id,
+                        ContractName = contract.ContractName,
+                        RenterId = contract.Renter?.Id,
+                        TenantId = contract.Tenant?.Id,
+                        GuarantorId = contract.Guarantor?.Id,
+                        Street = contract.Address.Street,
+                        Neighborhood = contract.Address.Neighborhood,
+                        City = contract.Address.City,
+                        CEP = contract.Address.CEP,
+                        State = contract.Address.State,
+                        PropertyRegistrationNumber = contract.PropertyRegistrationNumber.Number,
+                        RentPrice = contract.RentPrice.Price,
+                        RentDueDate = contract.RentDueDate,
+                        ContractStartDate = contract.ContractStartDate,
+                        ContractEndDate = contract.ContractEndDate
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
         }
 
         public void DeleteContract(int id)

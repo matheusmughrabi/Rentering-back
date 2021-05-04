@@ -2,30 +2,29 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Extensions;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
 {
-    public class EstateContractGuarantorHandlers : Notifiable,
+    public class ContractGuarantorHandlers : Notifiable,
         ICommandHandler<CreateContractGuarantorCommand>,
         ICommandHandler<InviteRenterToParticipate>
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
+        private readonly IRenterQueryRepository _renterQueryRepository;
 
-        public EstateContractGuarantorHandlers(IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository)
-        {
-            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
-        }
-
-        public EstateContractGuarantorHandlers(
+        public ContractGuarantorHandlers(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
-            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository)
+            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository, 
+            IRenterQueryRepository renterQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
+            _renterQueryRepository = renterQueryRepository;
         }
 
         public ICommandResult Handle(CreateContractGuarantorCommand command)
@@ -64,30 +63,29 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
-            throw new System.NotImplementedException();
+            var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
+            var contractEntity = contractFromDb.EntityFromModel();
 
-            //var contractEntityFromDb = _contractWithGuarantorCUDRepository.GetContractById(command.Id);
+            var renterFromDb = _renterQueryRepository.GetRenterById(command.Id);
+            var renterEntity = renterFromDb.EntityFromModel();
 
-            //contractEntityFromDb.InviteRenter();
+            contractEntity.InviteRenter(renterEntity);
 
-            //AddNotifications(contractEntityFromDb.Notifications);
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(renterEntity.Notifications);
 
-            //if (Invalid)
-            //    return new CommandResult(false, "Fix erros below", new { Notifications });
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            //_contractRepository.UpdateContractRentPrice(command.Id, contractEntityFromDb);
+            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
 
-            //var updatedContractRentPrice = new CommandResult(true, "Contract rent updated successfuly", new
-            //{
-            //    contractEntityFromDb.ContractName,
-            //    contractEntityFromDb.RentPrice.Price
-            //});
+            var updatedContract = new CommandResult(true, "Renter invited successfuly", new
+            {
+                contractEntity.ContractName,
+                contractEntity.Renter.Name.FirstName
+            });
 
-            //return updatedContractRentPrice;
-
-            // Buscar Contrato do BD
-            // Chamar método InviteRenter
-            // Persistir mudança no BD
+            return updatedContract;
         }
     }
 }
