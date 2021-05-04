@@ -100,21 +100,22 @@ namespace Rentering.WebAPI
 // Criar ContractWithGuarantorEntity OK
 // Criar testes de unidade OK
 
-// Criar commands, IRepository e handlers OK
-// Criar testes de unidade OK
-// Implementar CUDRepository OK
+// Criar migration de tabela ContractsWithGuarantor OK
+// Criar StoredProcedures OK
 
-// Criar auth commands, IAuthRepository, IService e handlers
+// Criar commands, IRepository e handlers ON GOING
+// Criar testes de unidade ON GOING
+// Implementar CUDRepository ON GOING
+
+// OBS:
+// 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD
+// 2) Precisa garantir que eles já não estejam associados a outro contrato
+
+// Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
 
 // Implementar Service
 // Criar testes de unidade para Service
-
-// Criar migration de tabela ContractsWithGuarantor
-// Criar StoredProcedures
-
-// Implementar AuthRepository
-// Criar IQueryRepository e implementar QueryRepository
 
 // Implementar Controller
 // Testar

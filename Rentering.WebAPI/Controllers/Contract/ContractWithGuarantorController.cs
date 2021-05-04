@@ -13,15 +13,18 @@ namespace Rentering.WebAPI.Controllers.Contract
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
+        private readonly IRenterCUDRepository _renterCUDRepository;
         private readonly IRenterQueryRepository _renterQueryRepository;
 
         public ContractWithGuarantorController(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
-            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository, 
-            IRenterQueryRepository renterQueryRepository)
+            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository,
+            IRenterCUDRepository renterCUDRepository,
+            IRenterQueryRepository renterQueryRepository) 
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
+            _renterCUDRepository = renterCUDRepository;
             _renterQueryRepository = renterQueryRepository;
         }
 
@@ -35,7 +38,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);
@@ -51,7 +54,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository);
             var result = handler.Handle(inviteRenterToParticipateCommand);
 
             return Ok(result);

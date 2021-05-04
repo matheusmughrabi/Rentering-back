@@ -15,15 +15,18 @@ namespace Rentering.Contracts.Application.CommandHandlers
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
+        private readonly IRenterCUDRepository _renterCUDRepository;
         private readonly IRenterQueryRepository _renterQueryRepository;
 
         public ContractGuarantorHandlers(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
-            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository, 
+            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository,
+            IRenterCUDRepository renterCUDRepository,
             IRenterQueryRepository renterQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
+            _renterCUDRepository = renterCUDRepository;
             _renterQueryRepository = renterQueryRepository;
         }
 
@@ -66,7 +69,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
             var contractEntity = contractFromDb.EntityFromModel();
 
-            var renterFromDb = _renterQueryRepository.GetRenterById(command.Id);
+            var renterFromDb = _renterQueryRepository.GetRenterById(command.RenterId);
             var renterEntity = renterFromDb.EntityFromModel();
 
             contractEntity.InviteRenter(renterEntity);
@@ -78,6 +81,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
             _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
+            _renterCUDRepository.UpdateRenter(command.RenterId, renterEntity);
 
             var updatedContract = new CommandResult(true, "Renter invited successfuly", new
             {
