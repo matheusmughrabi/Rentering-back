@@ -5,7 +5,7 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 
-namespace Rentering.WebAPI.Controllers.ContractContext
+namespace Rentering.WebAPI.Controllers.Contract
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,7 +18,7 @@ namespace Rentering.WebAPI.Controllers.ContractContext
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
             IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository)
         {
-            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository; 
+            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
         }
 

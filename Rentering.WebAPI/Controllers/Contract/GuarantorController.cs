@@ -8,7 +8,7 @@ using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
 
-namespace Rentering.WebAPI.Controllers.ContractContext
+namespace Rentering.WebAPI.Controllers.Contract
 {
     [Route("api/[controller]")]
     [ApiController]

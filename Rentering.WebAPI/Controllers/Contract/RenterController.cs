@@ -8,7 +8,7 @@ using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
 
-namespace Rentering.WebAPI.Controllers.ContractContext
+namespace Rentering.WebAPI.Controllers.Contract
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,8 +19,8 @@ namespace Rentering.WebAPI.Controllers.ContractContext
         private readonly IAuthRenterService _authRenterService;
 
         public RenterController(
-            IRenterCUDRepository renterCUDRepository, 
-            IRenterQueryRepository renterQueryRepository, 
+            IRenterCUDRepository renterCUDRepository,
+            IRenterQueryRepository renterQueryRepository,
             IAuthRenterService authRenterService)
         {
             _renterCUDRepository = renterCUDRepository;

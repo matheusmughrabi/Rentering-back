@@ -11,7 +11,7 @@ using Rentering.WebAPI.Authorization.Services;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Rentering.WebAPI.Controllers.AccountContext
+namespace Rentering.WebAPI.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
