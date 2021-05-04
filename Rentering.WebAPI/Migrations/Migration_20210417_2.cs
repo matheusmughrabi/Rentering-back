@@ -29,26 +29,7 @@ namespace Rentering.WebAPI.Migrations
 						AS
 						BEGIN
 							SELECT 
-								[Id],
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseOcupation],
-								[SpouseIdentityRG],
-								[SpouseCPF]
+								*
 							FROM 
 								Tenants
 							WHERE 
@@ -67,26 +48,7 @@ namespace Rentering.WebAPI.Migrations
 						AS
 						BEGIN
 							SELECT 
-								[Id],
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseOcupation],
-								[SpouseIdentityRG],
-								[SpouseCPF]
+								*
 							FROM 
 								Tenants
 							WHERE 
@@ -105,6 +67,7 @@ namespace Rentering.WebAPI.Migrations
 
 						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_CreateTenant]
 							@AccountId INT,
+							@Status INT,
 							@FirstName NVARCHAR(50),
 							@LastName NVARCHAR(50),
 							@Nationality NVARCHAR(50),
@@ -127,6 +90,7 @@ namespace Rentering.WebAPI.Migrations
 						BEGIN
 							INSERT INTO [Tenants] (
 								[AccountId],
+								[Status],
 								[FirstName], 
 								[LastName],
 								[Nationality],
@@ -147,6 +111,7 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseCPF]
 							) VALUES (
 								@AccountId,
+								@Status,
 								@FirstName,
 								@LastName,
 								@Nationality,
@@ -175,28 +140,10 @@ namespace Rentering.WebAPI.Migrations
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-
-
-						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_DeleteTenant]
-							@Id INT
-						AS
-						BEGIN
-							DELETE FROM 
-								Tenants
-							WHERE 
-								Id = @Id
-						END
-						GO");
-
-			Execute.Sql(@"SET ANSI_NULLS ON
-						GO
-
-						SET QUOTED_IDENTIFIER ON
-						GO
-
 						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_UpdateTenant]
 							@Id INT,
 							@AccountId INT,
+							@Status INT,
 							@FirstName NVARCHAR(50),
 							@LastName NVARCHAR(50),
 							@Nationality NVARCHAR(50),
@@ -221,6 +168,7 @@ namespace Rentering.WebAPI.Migrations
 								Tenants
 							SET
 								[AccountId] = @AccountId,
+								[Status] = @Status,
 								[FirstName] = @FirstName, 
 								[LastName] = @LastName,
 								[Nationality] = @Nationality,
@@ -239,6 +187,25 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseOcupation] = @SpouseOcupation,
 								[SpouseIdentityRG] = @SpouseIdentityRG,
 								[SpouseCPF] = @SpouseCPF
+							WHERE 
+								Id = @Id
+						END
+						GO");
+
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
+
+						SET QUOTED_IDENTIFIER ON
+						GO
+
+
+
+						CREATE PROCEDURE [dbo].[sp_Tenants_CUD_DeleteTenant]
+							@Id INT
+						AS
+						BEGIN
+							DELETE FROM 
+								Tenants
 							WHERE 
 								Id = @Id
 						END

@@ -29,25 +29,7 @@ namespace Rentering.WebAPI.Migrations
 						AS
 						BEGIN
 							SELECT 
-								[Id],
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseIdentityRG],
-								[SpouseCPF]
+								*
 							FROM 
 								Renters
 							WHERE 
@@ -66,25 +48,7 @@ namespace Rentering.WebAPI.Migrations
 						AS
 						BEGIN
 							SELECT 
-								[Id],
-								[AccountId],
-								[FirstName], 
-								[LastName],
-								[Nationality],
-								[Ocupation],
-								[MaritalStatus],
-								[IdentityRG],
-								[CPF],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[SpouseFirstName],
-								[SpouseLastName],
-								[SpouseNationality],
-								[SpouseIdentityRG],
-								[SpouseCPF]
+								*
 							FROM 
 								Renters
 							WHERE 
@@ -103,6 +67,7 @@ namespace Rentering.WebAPI.Migrations
 
 						CREATE PROCEDURE [dbo].[sp_Renters_CUD_CreateRenter]
 							@AccountId INT,
+							@Status INT,
 							@FirstName NVARCHAR(50),
 							@LastName NVARCHAR(50),
 							@Nationality NVARCHAR(50),
@@ -124,6 +89,7 @@ namespace Rentering.WebAPI.Migrations
 						BEGIN
 							INSERT INTO [Renters] (
 								[AccountId],
+								[Status],
 								[FirstName], 
 								[LastName],
 								[Nationality],
@@ -143,6 +109,7 @@ namespace Rentering.WebAPI.Migrations
 								[SpouseCPF]
 							) VALUES (
 								@AccountId,
+								@Status,
 								@FirstName,
 								@LastName,
 								@Nationality,
@@ -173,6 +140,7 @@ namespace Rentering.WebAPI.Migrations
 						CREATE PROCEDURE [dbo].[sp_Renters_CUD_UpdateRenter]
 							@Id INT,
 							@AccountId INT,
+							@Status INT,
 							@FirstName NVARCHAR(50),
 							@LastName NVARCHAR(50),
 							@Nationality NVARCHAR(50),
@@ -196,6 +164,7 @@ namespace Rentering.WebAPI.Migrations
 								Renters
 							SET
 								[AccountId] = @AccountId,
+								[Status] = @Status,
 								[FirstName] = @FirstName, 
 								[LastName] = @LastName,
 								[Nationality] = @Nationality,
