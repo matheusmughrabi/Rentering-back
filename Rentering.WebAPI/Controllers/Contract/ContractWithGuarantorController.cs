@@ -31,7 +31,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpPost]
         [Route("v1/CreateContract")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreateGuarantor([FromBody] CreateContractGuarantorCommand createContractGuarantorCommand)
+        public IActionResult CreateContract([FromBody] CreateContractGuarantorCommand createContractGuarantorCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
@@ -45,9 +45,9 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPut]
-        [Route("v1/UpdateContract")]
+        [Route("v1/InviteRenter")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult UpdateGuarantor([FromBody] InviteRenterToParticipate inviteRenterToParticipateCommand)
+        public IActionResult InviteRenter([FromBody] InviteRenterToParticipate inviteRenterToParticipateCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
