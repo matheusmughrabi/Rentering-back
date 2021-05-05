@@ -15,17 +15,23 @@ namespace Rentering.WebAPI.Controllers.Contract
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
         private readonly IRenterCUDRepository _renterCUDRepository;
         private readonly IRenterQueryRepository _renterQueryRepository;
+        private readonly ITenantCUDRepository _tenantCUDRepository;
+        private readonly ITenantQueryRepository _tenantQueryRepository;
 
         public ContractWithGuarantorController(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
             IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository,
             IRenterCUDRepository renterCUDRepository,
-            IRenterQueryRepository renterQueryRepository) 
+            IRenterQueryRepository renterQueryRepository, 
+            ITenantCUDRepository tenantCUDRepository, 
+            ITenantQueryRepository tenantQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
             _renterCUDRepository = renterCUDRepository;
             _renterQueryRepository = renterQueryRepository;
+            _tenantCUDRepository = tenantCUDRepository;
+            _tenantQueryRepository = tenantQueryRepository;
         }
 
         [HttpPost]
@@ -38,7 +44,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);
@@ -54,8 +60,24 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository);
             var result = handler.Handle(inviteRenterToParticipateCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("v1/InviteTenant")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult InviteTenant([FromBody] InviteTenantToParticipate inviteTenantToParticipateCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository);
+            var result = handler.Handle(inviteTenantToParticipateCommand);
 
             return Ok(result);
         }

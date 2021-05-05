@@ -17,17 +17,23 @@ namespace Rentering.Contracts.Application.CommandHandlers
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
         private readonly IRenterCUDRepository _renterCUDRepository;
         private readonly IRenterQueryRepository _renterQueryRepository;
+        private readonly ITenantCUDRepository _tenantCUDRepository;
+        private readonly ITenantQueryRepository _tenantQueryRepository;
 
         public ContractGuarantorHandlers(
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
             IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository,
             IRenterCUDRepository renterCUDRepository,
-            IRenterQueryRepository renterQueryRepository)
+            IRenterQueryRepository renterQueryRepository, 
+            ITenantCUDRepository tenantCUDRepository, 
+            ITenantQueryRepository tenantQueryRepository)
         {
             _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
             _renterCUDRepository = renterCUDRepository;
             _renterQueryRepository = renterQueryRepository;
+            _tenantCUDRepository = tenantCUDRepository;
+            _tenantQueryRepository = tenantQueryRepository;
         }
 
         public ICommandResult Handle(CreateContractGuarantorCommand command)
@@ -87,6 +93,34 @@ namespace Rentering.Contracts.Application.CommandHandlers
             {
                 contractEntity.ContractName,
                 contractEntity.Renter.Name.FirstName
+            });
+
+            return updatedContract;
+        }
+
+        public ICommandResult Handle(InviteTenantToParticipate command)
+        {
+            var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
+            var contractEntity = contractFromDb.EntityFromModel();
+
+            var tenantFromDb = _tenantQueryRepository.GetTenantById(command.TenantId);
+            var tenantEntity = tenantFromDb.EntityFromModel();
+
+            contractEntity.InviteTenant(tenantEntity);
+
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(tenantEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
+            _tenantCUDRepository.UpdateTenant(command.TenantId, tenantEntity);
+
+            var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
+            {
+                contractEntity.ContractName,
+                contractEntity.Tenant.Name.FirstName
             });
 
             return updatedContract;

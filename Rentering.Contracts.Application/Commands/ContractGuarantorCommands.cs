@@ -56,4 +56,16 @@ namespace Rentering.Contracts.Application.Commands
         public int Id { get; set; }
         public int RenterId { get; set; }
     }
+
+    public class InviteTenantToParticipate : ICommand
+    {
+        public InviteTenantToParticipate(int id, int tenantId)
+        {
+            Id = id;
+            TenantId = tenantId;
+        }
+
+        public int Id { get; set; }
+        public int TenantId { get; set; }
+    }
 }
