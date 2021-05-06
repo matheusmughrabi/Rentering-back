@@ -45,7 +45,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<IRenterCUDRepository> renterCUDRepositoryMock = new Mock<IRenterCUDRepository>();
             Mock<IRenterQueryRepository> renterQueryRepositoryMock = new Mock<IRenterQueryRepository>();
 
-            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object);
+            Mock<ITenantCUDRepository> tenantCUDRepositoryMock = new Mock<ITenantCUDRepository>();
+            Mock<ITenantQueryRepository> tenantQueryRepositoryMock = new Mock<ITenantQueryRepository>();
+
+            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -63,7 +66,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<IRenterCUDRepository> renterCUDRepositoryMock = new Mock<IRenterCUDRepository>();
             Mock<IRenterQueryRepository> renterQueryRepositoryMock = new Mock<IRenterQueryRepository>();
 
-            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object);
+            Mock<ITenantCUDRepository> tenantCUDRepositoryMock = new Mock<ITenantCUDRepository>();
+            Mock<ITenantQueryRepository> tenantQueryRepositoryMock = new Mock<ITenantQueryRepository>();
+
+            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(true, result.Success);

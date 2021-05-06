@@ -21,7 +21,10 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime rentDueDate,
             DateTime contractStartDate,
             DateTime contractEndDate,
-            int? id = null)
+            int? id = null,
+            int? renterId = null,
+            int? tenantId = null,
+            int? guarantorId = null)
         {
             ContractName = contractName;
             Address = address;
@@ -40,13 +43,22 @@ namespace Rentering.Contracts.Domain.Entities
             if (id != null)
                 AssignId((int)id);
 
+            if (renterId != null)
+                RenterId = (int)renterId;
+
+            if (tenantId != null)
+                TenantId = (int)tenantId;
+
+            if (guarantorId != null)
+                GuarantorId = (int)guarantorId;
+
             ApplyValidations();
         }
 
         public string ContractName { get; private set; }
-        public RenterEntity Renter { get; private set; }
-        public TenantEntity Tenant { get; private set; }
-        public GuarantorEntity Guarantor { get; private set; }
+        public int RenterId { get; private set; }
+        public int TenantId { get; private set; }
+        public int GuarantorId { get; private set; }
         public AddressValueObject Address { get; private set; }
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
         public PriceValueObject RentPrice { get; private set; }
@@ -63,8 +75,12 @@ namespace Rentering.Contracts.Domain.Entities
                 return;
             }
 
-            Renter = renter;
-            Renter.UpdateRenterStatusToAwaiting();
+            renter.UpdateRenterStatusToAwaiting();
+
+            if (renter.Valid == false)
+                return;
+
+            RenterId = renter.Id;
         }
 
         public void InviteTenant(TenantEntity tenant)
@@ -75,8 +91,7 @@ namespace Rentering.Contracts.Domain.Entities
                 return;
             }
 
-            Tenant = tenant;
-            Tenant.UpdateTenantStatusToAwaiting();
+            tenant.UpdateTenantStatusToAwaiting();
         }
 
         public void InviteGuarantor(GuarantorEntity guarantor)
@@ -87,8 +102,7 @@ namespace Rentering.Contracts.Domain.Entities
                 return;
             }
 
-            Guarantor = guarantor;
-            Guarantor.UpdateGuarantorStatusToAwaiting();
+            guarantor.UpdateGuarantorStatusToAwaiting();
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)

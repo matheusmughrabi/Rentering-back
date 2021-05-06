@@ -91,8 +91,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var updatedContract = new CommandResult(true, "Renter invited successfuly", new
             {
-                contractEntity.ContractName,
-                contractEntity.Renter.Name.FirstName
+                contractEntity.ContractName
             });
 
             return updatedContract;
@@ -119,8 +118,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
             {
-                contractEntity.ContractName,
-                contractEntity.Tenant.Name.FirstName
+                contractEntity.ContractName
             });
 
             return updatedContract;

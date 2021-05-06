@@ -10,12 +10,15 @@ namespace Rentering.Contracts.Domain.Extensions
         {
             var id = contractQueryResult.Id;
             var contractName = contractQueryResult.ContractName;
+            var renterId = contractQueryResult.RenterId;
+            var tenantId = contractQueryResult.TenantId;
+            var guarantorId = contractQueryResult.GuarantorId;
             var address = new AddressValueObject(contractQueryResult.Street, contractQueryResult.Neighborhood, contractQueryResult.City,
                 contractQueryResult.CEP, contractQueryResult.State);
             var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(contractQueryResult.PropertyRegistrationNumber);
             var rentPrice = new PriceValueObject(contractQueryResult.RentPrice);
 
-            var contractEntity = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, contractQueryResult.RentDueDate, contractQueryResult.ContractStartDate, contractQueryResult.ContractEndDate, id);
+            var contractEntity = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, contractQueryResult.RentDueDate, contractQueryResult.ContractStartDate, contractQueryResult.ContractEndDate, id, renterId, tenantId, guarantorId);
 
             return contractEntity;
         }

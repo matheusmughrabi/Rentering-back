@@ -22,9 +22,9 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     new
                     {
                         ContractName = contract.ContractName,
-                        RenterId = contract.Renter?.Id,
-                        TenantId = contract.Tenant?.Id,
-                        GuarantorId = contract.Guarantor?.Id,
+                        RenterId = contract.RenterId,
+                        TenantId = contract.TenantId,
+                        GuarantorId = contract.GuarantorId,
                         Street = contract.Address.Street,
                         Neighborhood = contract.Address.Neighborhood,
                         City = contract.Address.City,
@@ -46,9 +46,9 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     {
                         Id = contract.Id,
                         ContractName = contract.ContractName,
-                        RenterId = contract.Renter?.Id,
-                        TenantId = contract.Tenant?.Id,
-                        GuarantorId = contract.Guarantor?.Id,
+                        RenterId = contract.RenterId,
+                        TenantId = contract.TenantId,
+                        GuarantorId = contract.GuarantorId,
                         Street = contract.Address.Street,
                         Neighborhood = contract.Address.Neighborhood,
                         City = contract.Address.City,
