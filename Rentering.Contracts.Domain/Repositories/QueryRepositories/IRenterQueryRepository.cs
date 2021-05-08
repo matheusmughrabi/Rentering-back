@@ -1,12 +1,12 @@
-﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories
 {
-    public interface IRenterQueryRepository
+    public interface IRenterQueryRepository : IGenericQueryRepository<GetRenterQueryResult>
     {
         bool CheckIfAccountExists(int accountId);
-        GetRenterQueryResult GetRenterById(int id);
         IEnumerable<GetRenterQueryResult> GetRenterProfilesOfCurrentUser(int accountId);
     }
 }

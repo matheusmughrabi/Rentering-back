@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rentering.Common.Shared.Queries;
+using System;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults
 {
-    public class GetContractPaymentQueryResult
+    public class GetContractPaymentQueryResult : IQueryResult
     {
         public int Id { get; set; }
         public DateTime Month { get; set; }

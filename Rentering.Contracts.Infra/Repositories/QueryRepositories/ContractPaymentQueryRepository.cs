@@ -17,7 +17,7 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             _context = context;
         }
 
-        public IEnumerable<GetContractPaymentQueryResult> GetAllPayments()
+        public IEnumerable<GetContractPaymentQueryResult> GetAll()
         {
             var paymentsFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
                     "sp_ContractPayments_Query_GetAllPayments",
@@ -27,7 +27,7 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             return paymentsFromDb;
         }
 
-        public GetContractPaymentQueryResult GetPaymentById(int id)
+        public GetContractPaymentQueryResult GetById(int id)
         {
             var paymentFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
                     "sp_ContractPayments_Query_GetPaymentById",

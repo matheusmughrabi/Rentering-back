@@ -1,11 +1,9 @@
-﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
-using System.Collections.Generic;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories
 {
-    public interface IContractPaymentQueryRepository
+    public interface IContractPaymentQueryRepository : IGenericQueryRepository<GetContractPaymentQueryResult>
     {
-        IEnumerable<GetContractPaymentQueryResult> GetAllPayments();
-        GetContractPaymentQueryResult GetPaymentById(int id);
     }
 }

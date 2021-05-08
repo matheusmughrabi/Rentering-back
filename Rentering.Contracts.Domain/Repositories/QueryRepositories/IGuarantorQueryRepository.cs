@@ -1,12 +1,12 @@
-﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories
 {
-    public interface IGuarantorQueryRepository
+    public interface IGuarantorQueryRepository : IGenericQueryRepository<GetGuarantorQueryResult>
     {
         bool CheckIfAccountExists(int accountId);
-        GetGuarantorQueryResult GetGuarantorById(int id);
         IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId);
     }
 }

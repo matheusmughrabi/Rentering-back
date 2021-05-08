@@ -1,8 +1,9 @@
-﻿using Rentering.Contracts.Domain.Enums;
+﻿using Rentering.Common.Shared.Queries;
+using Rentering.Contracts.Domain.Enums;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults
 {
-    public class GetGuarantorQueryResult
+    public class GetGuarantorQueryResult : IQueryResult
     {
         public int Id { get; set; }
         public int AccountId { get; set; }

@@ -33,7 +33,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetGuarantorById(int id)
         {
-            var result = _guarantorQueryRepository.GetGuarantorById(id);
+            var result = _guarantorQueryRepository.GetById(id);
 
             return Ok(result);
         }

@@ -28,7 +28,12 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             return accountExists;
         }
 
-        public GetTenantQueryResult GetTenantById(int id)
+        public IEnumerable<GetTenantQueryResult> GetAll()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public GetTenantQueryResult GetById(int id)
         {
             var renterFromDb = _context.Connection.Query<GetTenantQueryResult>(
                    "sp_Tenants_Query_GetTenantById",

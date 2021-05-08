@@ -28,7 +28,12 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             return accountExists;
         }
 
-        public GetGuarantorQueryResult GetGuarantorById(int id)
+        public IEnumerable<GetGuarantorQueryResult> GetAll()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public GetGuarantorQueryResult GetById(int id)
         {
             var guarantorFromDb = _context.Connection.Query<GetGuarantorQueryResult>(
                    "sp_Guarantors_Query_GetGuarantorById",

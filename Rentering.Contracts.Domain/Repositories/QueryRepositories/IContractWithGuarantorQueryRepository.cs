@@ -1,12 +1,10 @@
-﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
-using System.Collections.Generic;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
 
 namespace Rentering.Contracts.Domain.Repositories.QueryRepositories
 {
-    public interface IContractWithGuarantorQueryRepository
+    public interface IContractWithGuarantorQueryRepository : IGenericQueryRepository<GetContractWithGuarantorQueryResult>
     {
         bool CheckIfContractNameExists(string contractName);
-        IEnumerable<GetContractWithGuarantorQueryResult> GetAllContracts();
-        GetContractWithGuarantorQueryResult GetContractById(int id);
     }
 }

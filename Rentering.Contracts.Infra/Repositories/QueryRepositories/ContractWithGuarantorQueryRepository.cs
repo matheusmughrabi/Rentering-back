@@ -28,7 +28,7 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             return contractNameExists;
         }
 
-        public IEnumerable<GetContractWithGuarantorQueryResult> GetAllContracts()
+        public IEnumerable<GetContractWithGuarantorQueryResult> GetAll()
         {
             var contractsFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(
                     "sp_ContractWithGuarantors_Query_GetAllContracts",
@@ -38,7 +38,7 @@ namespace Rentering.Contracts.Infra.Repositories.QueryRepositories
             return contractsFromDb;
         }
 
-        public GetContractWithGuarantorQueryResult GetContractById(int id)
+        public GetContractWithGuarantorQueryResult GetById(int id)
         {
             var contractFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(
                     "sp_ContractsWithGuarantor_Query_GetContractById",
