@@ -38,7 +38,7 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldNotCreateAccount_WhenEmailAlreadyExists()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();        
-            mock.Setup(m => m.CreateAccount(_accountEntity));
+            mock.Setup(m => m.Create(_accountEntity));
 
             Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
             mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
@@ -54,7 +54,7 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldNotCreateAccount_WhenUsernameAlreadyExists()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CreateAccount(_accountEntity));
+            mock.Setup(m => m.Create(_accountEntity));
 
             Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
             mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
@@ -70,7 +70,7 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldNotCreateAccount_WhenUsernameAndEmailAlreadyExist()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CreateAccount(_accountEntity));
+            mock.Setup(m => m.Create(_accountEntity));
 
             Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
             mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(true);
@@ -86,7 +86,7 @@ namespace Rentering.UnitTests.AccountContext.Handlers
         public void ShouldCreateAccount_WhenUsernameAndEmailDoNotExistYet()
         {
             Mock<IAccountCUDRepository> mock = new Mock<IAccountCUDRepository>();
-            mock.Setup(m => m.CreateAccount(_accountEntity));
+            mock.Setup(m => m.Create(_accountEntity));
 
             Mock<IAccountQueryRepository> mockQueryRepository = new Mock<IAccountQueryRepository>();
             mockQueryRepository.Setup(m => m.CheckIfEmailExists(_createAccountCommand.Email)).Returns(false);

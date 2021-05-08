@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 
 namespace Rentering.WebAPI.Controllers.Contract
@@ -11,38 +11,28 @@ namespace Rentering.WebAPI.Controllers.Contract
     [ApiController]
     public class ContractWithGuarantorController : RenteringBaseController
     {
-        private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
+
         private readonly IContractWithGuarantorQueryRepository _contractWithGuarantorQueryRepository;
-        private readonly IRenterCUDRepository _renterCUDRepository;
         private readonly IRenterQueryRepository _renterQueryRepository;
-        private readonly ITenantCUDRepository _tenantCUDRepository;
         private readonly ITenantQueryRepository _tenantQueryRepository;
-        private readonly IGuarantorCUDRepository _guarantorCUDRepository;
         private readonly IGuarantorQueryRepository _guarantorQueryRepository;
-        private readonly IContractPaymentCUDRepository _contractPaymentCUDRepository;
         private readonly IContractPaymentQueryRepository _contractPaymentQueryRepository;
 
         public ContractWithGuarantorController(
-            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepository,
+            IContractUnitOfWork contractUnitOfWork,
             IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepository,
-            IRenterCUDRepository renterCUDRepository,
             IRenterQueryRepository renterQueryRepository,
-            ITenantCUDRepository tenantCUDRepository,
             ITenantQueryRepository tenantQueryRepository,
-            IGuarantorCUDRepository guarantorCUDRepository,
             IGuarantorQueryRepository guarantorQueryRepository,
-            IContractPaymentCUDRepository contractPaymentCUDRepository,
             IContractPaymentQueryRepository contractPaymentQueryRepository)
         {
-            _contractWithGuarantorCUDRepository = contractWithGuarantorCUDRepository;
+            _contractUnitOfWork = contractUnitOfWork;
+
             _contractWithGuarantorQueryRepository = contractWithGuarantorQueryRepository;
-            _renterCUDRepository = renterCUDRepository;
             _renterQueryRepository = renterQueryRepository;
-            _tenantCUDRepository = tenantCUDRepository;
             _tenantQueryRepository = tenantQueryRepository;
-            _guarantorCUDRepository = guarantorCUDRepository;
             _guarantorQueryRepository = guarantorQueryRepository;
-            _contractPaymentCUDRepository = contractPaymentCUDRepository;
             _contractPaymentQueryRepository = contractPaymentQueryRepository;
         }
 
@@ -56,7 +46,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository, _guarantorCUDRepository, _guarantorQueryRepository, _contractPaymentCUDRepository,  _contractPaymentQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractUnitOfWork, _contractWithGuarantorQueryRepository, _renterQueryRepository, _tenantQueryRepository, _guarantorQueryRepository,  _contractPaymentQueryRepository);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);
@@ -72,7 +62,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository, _guarantorCUDRepository, _guarantorQueryRepository, _contractPaymentCUDRepository, _contractPaymentQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractUnitOfWork, _contractWithGuarantorQueryRepository, _renterQueryRepository, _tenantQueryRepository, _guarantorQueryRepository, _contractPaymentQueryRepository);
             var result = handler.Handle(inviteRenterToParticipateCommand);
 
             return Ok(result);
@@ -88,7 +78,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository, _guarantorCUDRepository, _guarantorQueryRepository, _contractPaymentCUDRepository, _contractPaymentQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractUnitOfWork, _contractWithGuarantorQueryRepository, _renterQueryRepository, _tenantQueryRepository, _guarantorQueryRepository, _contractPaymentQueryRepository);
             var result = handler.Handle(inviteTenantToParticipateCommand);
 
             return Ok(result);
@@ -104,7 +94,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository, _guarantorCUDRepository, _guarantorQueryRepository, _contractPaymentCUDRepository, _contractPaymentQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractUnitOfWork, _contractWithGuarantorQueryRepository, _renterQueryRepository, _tenantQueryRepository, _guarantorQueryRepository, _contractPaymentQueryRepository);
             var result = handler.Handle(inviteGuarantorToParticipate);
 
             return Ok(result);
@@ -120,7 +110,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractWithGuarantorCUDRepository, _contractWithGuarantorQueryRepository, _renterCUDRepository, _renterQueryRepository, _tenantCUDRepository, _tenantQueryRepository, _guarantorCUDRepository, _guarantorQueryRepository, _contractPaymentCUDRepository, _contractPaymentQueryRepository);
+            var handler = new ContractGuarantorHandlers(_contractUnitOfWork, _contractWithGuarantorQueryRepository, _renterQueryRepository, _tenantQueryRepository, _guarantorQueryRepository, _contractPaymentQueryRepository);
             var result = handler.Handle(createContractPaymentCycleCommand);
 
             return Ok(result);

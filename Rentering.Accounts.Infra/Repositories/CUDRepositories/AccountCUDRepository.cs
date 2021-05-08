@@ -16,7 +16,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void CreateAccount(AccountEntity accountEntity)
+        public void Create(AccountEntity accountEntity)
         {
             _context.Connection.Execute("sp_Accounts_CUD_CreateAccount",
                      new
@@ -30,7 +30,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
                  );
         }
 
-        public void UpdateAccount(int id, AccountEntity accountEntity)
+        public void Update(int id, AccountEntity accountEntity)
         {
             _context.Connection.Execute("sp_Accounts_CUD_UpdateAccount",
                     new
@@ -45,7 +45,7 @@ namespace Rentering.Accounts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void DeleteAccount(int id)
+        public void Delete(int id)
         {
             _context.Connection.Execute("sp_Accounts_CUD_DeleteAccount",
                     new { Id = id },

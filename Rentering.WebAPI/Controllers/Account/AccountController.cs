@@ -103,7 +103,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            _accountCUDRepository.DeleteAccount(accountId);
+            _accountCUDRepository.Delete(accountId);
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });

@@ -8,9 +8,11 @@ using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Infra.Repositories.CUDRepositories;
 using Rentering.Accounts.Infra.Repositories.QueryRepositories;
 using Rentering.Common.Infra;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
+using Rentering.Contracts.Infra.Repositories;
 using Rentering.Contracts.Infra.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Repositories.QueryRepositories;
 using Rentering.Contracts.Infra.Services;
@@ -26,8 +28,13 @@ namespace Rentering.WebAPI.Configuration
         {
             services.AddScoped<RenteringDataContext, RenteringDataContext>();
 
+            #region Accounts
             services.AddTransient<IAccountCUDRepository, AccountCUDRepository>();
             services.AddTransient<IAccountQueryRepository, AccountQueryRepository>();
+            #endregion
+
+            #region Contracts
+            services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
 
             services.AddTransient<IRenterCUDRepository, RenterCUDRepository>();
             services.AddTransient<IRenterQueryRepository, RenterQueryRepository>();
@@ -46,6 +53,7 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
             services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();
+            #endregion
         }
 
         public static void RegisterFluentMigrator(this IServiceCollection services)

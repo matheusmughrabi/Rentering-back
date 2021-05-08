@@ -44,7 +44,7 @@ namespace Rentering.Accounts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _accountCUDRepository.CreateAccount(accountEntity);
+            _accountCUDRepository.Create(accountEntity);
 
             var createdUser = new CommandResult(true, "User created successfuly", new
             {
@@ -69,7 +69,7 @@ namespace Rentering.Accounts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _accountCUDRepository.UpdateAccount(id, accountEntity);
+            _accountCUDRepository.Update(id, accountEntity);
 
             var adminRoleAssignedUser = new CommandResult(true, "Admin role assigned successfuly", new
             {
