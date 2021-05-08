@@ -115,7 +115,8 @@ namespace Rentering.WebAPI
 // Implementar InviteTenant OK
 // Implementar InviteGuarantor OK
 
-// Criar UnitOfWork
+// Estudar implementações de UnitOfWork com dapper
+// Implementar UnitOfWork
 // Estudar dapper fast crud e outras extensions
 
 // Modelar melhor como será feita a criação de ciclos de contrato

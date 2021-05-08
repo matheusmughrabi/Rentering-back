@@ -92,9 +92,14 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
             var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
-            var contractEntity = contractFromDb.EntityFromModel();
+            var renterFromDb = _renterQueryRepository.GetRenterById(command.RenterId);          
 
-            var renterFromDb = _renterQueryRepository.GetRenterById(command.RenterId);
+            if (contractFromDb == null || renterFromDb == null)
+            {
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract or renter not found" });
+            }
+
+            var contractEntity = contractFromDb.EntityFromModel();
             var renterEntity = renterFromDb.EntityFromModel();
 
             contractEntity.InviteRenter(renterEntity);
@@ -119,9 +124,14 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(InviteTenantToParticipate command)
         {
             var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
-            var contractEntity = contractFromDb.EntityFromModel();
-
             var tenantFromDb = _tenantQueryRepository.GetTenantById(command.TenantId);
+
+            if (contractFromDb == null || tenantFromDb == null)
+            {
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract or tenant not found" });
+            }
+
+            var contractEntity = contractFromDb.EntityFromModel();
             var tenantEntity = tenantFromDb.EntityFromModel();
 
             contractEntity.InviteTenant(tenantEntity);
@@ -146,9 +156,14 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(InviteGuarantorToParticipate command)
         {
             var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
-            var contractEntity = contractFromDb.EntityFromModel();
-
             var guarantorFromDb = _guarantorQueryRepository.GetGuarantorById(command.GuarantorId);
+
+            if (contractFromDb == null || guarantorFromDb == null)
+            {
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract or guarantor not found" });
+            }
+
+            var contractEntity = contractFromDb.EntityFromModel();
             var guarantorEntity = guarantorFromDb.EntityFromModel();
 
             contractEntity.InviteGuarantor(guarantorEntity);
@@ -173,6 +188,12 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(CreateContractPaymentCycleCommand command)
         {
             var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.ContractId);
+
+            if (contractFromDb == null)
+            {
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+            }
+
             var contractEntity = contractFromDb.EntityFromModel();
 
             contractEntity.CreatePaymentCycle();

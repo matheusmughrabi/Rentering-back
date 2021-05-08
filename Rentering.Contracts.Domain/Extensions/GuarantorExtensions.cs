@@ -8,6 +8,9 @@ namespace Rentering.Contracts.Domain.Extensions
     {
         public static GuarantorEntity EntityFromModel(this GetGuarantorQueryResult guarantorQueryResult)
         {
+            if (guarantorQueryResult == null)
+                return null;
+
             var id = guarantorQueryResult.Id;
             var accountId = guarantorQueryResult.AccountId;
             var status = guarantorQueryResult.Status;

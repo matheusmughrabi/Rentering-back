@@ -8,6 +8,9 @@ namespace Rentering.Contracts.Domain.Extensions
     {
         public static RenterEntity EntityFromModel(this GetRenterQueryResult renterQueryResult)
         {
+            if (renterQueryResult == null)
+                return null;
+
             var id = renterQueryResult.Id;
             var accountId = renterQueryResult.AccountId;
             var status = renterQueryResult.Status;
