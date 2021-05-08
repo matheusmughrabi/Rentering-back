@@ -103,19 +103,28 @@ namespace Rentering.WebAPI
 // Criar migration de tabela ContractsWithGuarantor OK
 // Criar StoredProcedures OK
 
-// Criar commands, IRepository e handlers ON GOING
-// Criar testes de unidade ON GOING
-// Implementar CUDRepository ON GOING
+// Criar commands, IRepository e handlers OK
+// Implementar CUDRepository OK
+// Implementar QueryRepository OK
 
 // OBS:
 // 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD OK
 // 2) Precisa garantir que eles já não estejam associados a outro contrato OK
 
+// Modelar melhor como será feita a criação de ciclos de contrato
+// Implementar nova modelagem
+
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
-
 // Implementar Service
-// Criar testes de unidade para Service
 
 // Implementar Controller
-// Testar
+// Criar testes de unidade
+// Testar módulo de contratos inteiro
+
+// Criar UnityOfWork
+// Separar no Swagger por Módulos
+// Versionar Swagger
+
+// Testar tudo
+// Mergear e liberar nova versão
