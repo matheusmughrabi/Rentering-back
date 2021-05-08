@@ -1,58 +1,58 @@
-﻿using Rentering.Contracts.Domain.Repositories.AuthRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
-using Rentering.Contracts.Domain.Services;
-using System.Linq;
+﻿// TODO - OBSOLETE
 
-namespace Rentering.Contracts.Infra.Services
-{
-    public class AuthContractService : IAuthContractService
-    {
-        private const int _limitOfContractsPerContractUserProfile = 2;
-        private IContractQueryRepository _contractQueryContract;
-        private readonly IContractAuthRepository _contractAuthRepository;
+//using Rentering.Contracts.Domain.Services;
+//using System.Linq;
 
-        public AuthContractService(IContractQueryRepository contractQueryContract, IContractAuthRepository contractAuthRepository)
-        {
-            _contractQueryContract = contractQueryContract;
-            _contractAuthRepository = contractAuthRepository;
-        }
+//namespace Rentering.Contracts.Infra.Services
+//{
+//    public class AuthContractService : IAuthContractService
+//    {
+//        //private const int _limitOfContractsPerContractUserProfile = 2;
+//        //private IContractQueryRepository _contractQueryContract;
+//        //private readonly IContractAuthRepository _contractAuthRepository;
 
-        public bool IsCurrentUserContractRenter(int accountId, int contractId)
-        {
-            var contractAuthQueryResult = _contractAuthRepository.GetContractUserProfileIdOfTheCurrentUser(accountId);
-            var contractProfileUserId = contractAuthQueryResult.Id;
+//        //public AuthContractService(IContractQueryRepository contractQueryContract, IContractAuthRepository contractAuthRepository)
+//        //{
+//        //    _contractQueryContract = contractQueryContract;
+//        //    _contractAuthRepository = contractAuthRepository;
+//        //}
 
-            var authContracParticipants = _contractAuthRepository.GetContractParticipants(contractId);
-            var contractRenterId = authContracParticipants.RenterId;
+//        //public bool IsCurrentUserContractRenter(int accountId, int contractId)
+//        //{
+//        //    var contractAuthQueryResult = _contractAuthRepository.GetContractUserProfileIdOfTheCurrentUser(accountId);
+//        //    var contractProfileUserId = contractAuthQueryResult.Id;
 
-            if (contractProfileUserId != contractRenterId)
-                return false;
+//        //    var authContracParticipants = _contractAuthRepository.GetContractParticipants(contractId);
+//        //    var contractRenterId = authContracParticipants.RenterId;
 
-            return true;
-        }
+//        //    if (contractProfileUserId != contractRenterId)
+//        //        return false;
 
-        public bool IsCurrentUserContractTenant(int accountId, int contractId)
-        {
-            var contractAuthQueryResult = _contractAuthRepository.GetContractUserProfileIdOfTheCurrentUser(accountId);
-            var contractProfileUserId = contractAuthQueryResult.Id;
+//        //    return true;
+//        //}
 
-            var authContracParticipants = _contractAuthRepository.GetContractParticipants(contractId);
-            var contractTenantId = authContracParticipants.TenantId;
+//        //public bool IsCurrentUserContractTenant(int accountId, int contractId)
+//        //{
+//        //    var contractAuthQueryResult = _contractAuthRepository.GetContractUserProfileIdOfTheCurrentUser(accountId);
+//        //    var contractProfileUserId = contractAuthQueryResult.Id;
 
-            if (contractProfileUserId != contractTenantId)
-                return false;
+//        //    var authContracParticipants = _contractAuthRepository.GetContractParticipants(contractId);
+//        //    var contractTenantId = authContracParticipants.TenantId;
 
-            return true;
-        }
+//        //    if (contractProfileUserId != contractTenantId)
+//        //        return false;
 
-        public bool HasUserReachedLimitOfContracts(int contractUserProfile)
-        {
-            var renterContracts = _contractQueryContract.GetContractsOfRenter(contractUserProfile);
+//        //    return true;
+//        //}
 
-            if (renterContracts.Count() >= _limitOfContractsPerContractUserProfile)
-                return true;
+//        //public bool HasUserReachedLimitOfContracts(int contractUserProfile)
+//        //{
+//        //    var renterContracts = _contractQueryContract.GetContractsOfRenter(contractUserProfile);
 
-            return false;
-        }
-    }
-}
+//        //    if (renterContracts.Count() >= _limitOfContractsPerContractUserProfile)
+//        //        return true;
+
+//        //    return false;
+//        //}
+//    }
+//}

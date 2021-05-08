@@ -8,11 +8,9 @@ using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Infra.Repositories.CUDRepositories;
 using Rentering.Accounts.Infra.Repositories.QueryRepositories;
 using Rentering.Common.Infra;
-using Rentering.Contracts.Domain.Repositories.AuthRepositories;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
-using Rentering.Contracts.Infra.Repositories.AuthRepositories;
 using Rentering.Contracts.Infra.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Repositories.QueryRepositories;
 using Rentering.Contracts.Infra.Services;
@@ -45,18 +43,6 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddTransient<IContractWithGuarantorCUDRepository, ContractWithGuarantorCUDRepository>();
             services.AddTransient<IContractWithGuarantorQueryRepository, ContractWithGuarantorQueryRepository>();
-
-            services.AddTransient<IContractAuthRepository, ContractAuthRepository>();
-
-            services.AddTransient<IContractUserProfileCUDRepository, ContractUserProfileCUDRepository>();
-            services.AddTransient<IContractUserProfileQueryRepository, ContractUserQueryRepository>();
-
-            services.AddTransient<IContractCUDRepository, ContractCUDRepository>();
-            services.AddTransient<IContractQueryRepository, ContractQueryRepository>();
-            services.AddTransient<IAuthContractService, AuthContractService>();
-
-            services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
-            services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();
         }
 
         public static void RegisterFluentMigrator(this IServiceCollection services)

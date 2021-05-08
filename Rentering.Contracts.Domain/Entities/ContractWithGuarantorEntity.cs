@@ -108,6 +108,11 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             guarantor.UpdateGuarantorStatusToAwaiting();
+
+            if (guarantor.Valid == false)
+                return;
+
+            GuarantorId = guarantor.Id;
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
