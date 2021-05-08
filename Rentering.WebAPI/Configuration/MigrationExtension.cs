@@ -11,7 +11,7 @@ namespace Rentering.WebAPI.Configuration
             using var scope = app.ApplicationServices.CreateScope();
             var runner = scope.ServiceProvider.GetService<IMigrationRunner>();
             runner.ListMigrations();
-            runner.MigrateUp(20210502_1);
+            runner.MigrateUp(20210507_2);
             return app;
         }
     }

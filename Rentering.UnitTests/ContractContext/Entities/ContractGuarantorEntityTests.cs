@@ -169,7 +169,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
 
             var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            contract.CreatePaymentCycle(monthSpan);
+            contract.CreatePaymentCycle();
             contract.ExecutePayment(DateTime.Now);
 
             var payment = contract.Payments.Where(p => p.Month.ToShortDateString() == DateTime.Now.ToShortDateString()).FirstOrDefault();

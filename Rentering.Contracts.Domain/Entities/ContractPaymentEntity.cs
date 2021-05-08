@@ -5,17 +5,19 @@ using System;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class ContractPayment : Entity
+    public class ContractPaymentEntity : Entity
     {
-        public ContractPayment(DateTime month, PriceValueObject rentPrice)
+        public ContractPaymentEntity(int contractId, DateTime month, PriceValueObject rentPrice)
         {
+            ContractId = contractId;
             Month = month;
             RentPrice = rentPrice;
 
             RenterPaymentStatus = e_RenterPaymentStatus.NONE;
-            TenantPaymentStatus = e_TenantPaymentStatus.NONE;
+            TenantPaymentStatus = e_TenantPaymentStatus.NONE;  
         }
 
+        public int ContractId { get; set; }
         public DateTime Month { get; private set; }
         public PriceValueObject RentPrice { get; private set; }
         public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }

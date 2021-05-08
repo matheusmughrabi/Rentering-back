@@ -11,7 +11,7 @@ namespace Rentering.Contracts.Domain.Entities
 {
     public class ContractWithGuarantorEntity : Entity
     {
-        private List<ContractPayment> _payments;
+        private List<ContractPaymentEntity> _payments;
 
         public ContractWithGuarantorEntity(
             string contractName,
@@ -34,11 +34,7 @@ namespace Rentering.Contracts.Domain.Entities
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
-            _payments = new List<ContractPayment>();
-
-            var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
-            if (Payments.Count == 0)
-                CreatePaymentCycle(monthSpan);
+            _payments = new List<ContractPaymentEntity>();
 
             if (id != null)
                 AssignId((int)id);
@@ -65,7 +61,7 @@ namespace Rentering.Contracts.Domain.Entities
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
-        public IReadOnlyCollection<ContractPayment> Payments => _payments.ToArray();
+        public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
         public void InviteRenter(RenterEntity renter)
         {
@@ -126,8 +122,16 @@ namespace Rentering.Contracts.Domain.Entities
             RentPrice = rentPrice;
         }
 
-        public void CreatePaymentCycle(int monthSpan)
+        public void CreatePaymentCycle()
         {
+            if (Id == 0)
+            {
+                AddNotification("Id", "ContractId cannot be null");
+                return;
+            }
+
+            var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
+
             if (monthSpan < 0)
             {
                 AddNotification("monthSpan", "Month span must an integer greater than zero");
@@ -135,7 +139,7 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             for (int i = 0; i < monthSpan; i++)
-                _payments.Add(new ContractPayment(DateTime.Now.AddMonths(i), RentPrice));
+                _payments.Add(new ContractPaymentEntity(Id, DateTime.Now.AddMonths(i), RentPrice));
         }
 
         public void ExecutePayment(DateTime month)
