@@ -92,6 +92,11 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             tenant.UpdateTenantStatusToAwaiting();
+
+            if (tenant.Valid == false)
+                return;
+
+            TenantId = tenant.Id;
         }
 
         public void InviteGuarantor(GuarantorEntity guarantor)
