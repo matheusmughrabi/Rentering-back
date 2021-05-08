@@ -12,6 +12,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
     public class ContractGuarantorHandlers : Notifiable,
         ICommandHandler<CreateContractGuarantorCommand>,
         ICommandHandler<InviteRenterToParticipate>,
+        ICommandHandler<InviteTenantToParticipate>,
+        ICommandHandler<InviteGuarantorToParticipate>,
         ICommandHandler<CreateContractPaymentCycleCommand>
     {
         private readonly IContractWithGuarantorCUDRepository _contractWithGuarantorCUDRepository;
@@ -20,6 +22,9 @@ namespace Rentering.Contracts.Application.CommandHandlers
         private readonly IRenterQueryRepository _renterQueryRepository;
         private readonly ITenantCUDRepository _tenantCUDRepository;
         private readonly ITenantQueryRepository _tenantQueryRepository;
+
+        private readonly IGuarantorCUDRepository _guarantorCUDRepository;
+        private readonly IGuarantorQueryRepository _guarantorQueryRepository;
 
         private readonly IContractPaymentCUDRepository _contractPaymentCUDRepository;
         private readonly IContractPaymentQueryRepository _contractPaymentQueryRepository;
@@ -30,7 +35,9 @@ namespace Rentering.Contracts.Application.CommandHandlers
             IRenterCUDRepository renterCUDRepository,
             IRenterQueryRepository renterQueryRepository,
             ITenantCUDRepository tenantCUDRepository,
-            ITenantQueryRepository tenantQueryRepository, 
+            ITenantQueryRepository tenantQueryRepository,
+            IGuarantorCUDRepository guarantorCUDRepository,
+            IGuarantorQueryRepository guarantorQueryRepository,
             IContractPaymentCUDRepository contractPaymentCUDRepository, 
             IContractPaymentQueryRepository contractPaymentQueryRepository)
         {
@@ -40,6 +47,10 @@ namespace Rentering.Contracts.Application.CommandHandlers
             _renterQueryRepository = renterQueryRepository;
             _tenantCUDRepository = tenantCUDRepository;
             _tenantQueryRepository = tenantQueryRepository;
+
+            _guarantorCUDRepository = guarantorCUDRepository;
+            _guarantorQueryRepository = guarantorQueryRepository;
+
             _contractPaymentCUDRepository = contractPaymentCUDRepository;
             _contractPaymentQueryRepository = contractPaymentQueryRepository;
         }
@@ -125,6 +136,33 @@ namespace Rentering.Contracts.Application.CommandHandlers
             _tenantCUDRepository.UpdateTenant(command.TenantId, tenantEntity);
 
             var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
+            {
+                contractEntity.ContractName
+            });
+
+            return updatedContract;
+        }
+
+        public ICommandResult Handle(InviteGuarantorToParticipate command)
+        {
+            var contractFromDb = _contractWithGuarantorQueryRepository.GetContractById(command.Id);
+            var contractEntity = contractFromDb.EntityFromModel();
+
+            var guarantorFromDb = _guarantorQueryRepository.GetGuarantorById(command.GuarantorId);
+            var guarantorEntity = guarantorFromDb.EntityFromModel();
+
+            contractEntity.InviteGuarantor(guarantorEntity);
+
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(guarantorEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
+            _guarantorCUDRepository.UpdateGuarantor(command.GuarantorId, guarantorEntity);
+
+            var updatedContract = new CommandResult(true, "Guarantor invited successfuly", new
             {
                 contractEntity.ContractName
             });

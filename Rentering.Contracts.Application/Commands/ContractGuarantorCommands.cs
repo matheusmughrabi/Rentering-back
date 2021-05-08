@@ -69,6 +69,18 @@ namespace Rentering.Contracts.Application.Commands
         public int TenantId { get; set; }
     }
 
+    public class InviteGuarantorToParticipate : ICommand
+    {
+        public InviteGuarantorToParticipate(int id, int guarantorId)
+        {
+            Id = id;
+            GuarantorId = guarantorId;
+        }
+
+        public int Id { get; set; }
+        public int GuarantorId { get; set; }
+    }
+
     public class CreateContractPaymentCycleCommand : ICommand
     {
         public CreateContractPaymentCycleCommand(int contractId)

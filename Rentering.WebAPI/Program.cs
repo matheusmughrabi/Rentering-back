@@ -111,6 +111,7 @@ namespace Rentering.WebAPI
 // 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD OK
 // 2) Precisa garantir que eles já não estejam associados a outro contrato OK
 
+// Implementar InviteGuarantor
 // Modelar melhor como será feita a criação de ciclos de contrato
 // Implementar nova modelagem
 
