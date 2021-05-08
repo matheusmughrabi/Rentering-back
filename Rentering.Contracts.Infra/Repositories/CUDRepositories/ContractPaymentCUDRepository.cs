@@ -22,7 +22,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     {
                         ContractId = payment.ContractId,
                         Month = payment.Month,
-                        RentPrice = payment.RentPrice,
+                        RentPrice = payment.RentPrice.Price,
                         RenterPaymentStatus = payment.RenterPaymentStatus,
                         TenantPaymentStatus = payment.TenantPaymentStatus
                     },
@@ -38,7 +38,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                          Id = id,
                          ContractId = payment.ContractId,
                          Month = payment.Month,
-                         RentPrice = payment.RentPrice,
+                         RentPrice = payment.RentPrice.Price,
                          RenterPaymentStatus = payment.RenterPaymentStatus,
                          TenantPaymentStatus = payment.TenantPaymentStatus
                      },

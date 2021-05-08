@@ -68,4 +68,14 @@ namespace Rentering.Contracts.Application.Commands
         public int Id { get; set; }
         public int TenantId { get; set; }
     }
+
+    public class CreateContractPaymentCycleCommand : ICommand
+    {
+        public CreateContractPaymentCycleCommand(int contractId)
+        {
+            ContractId = contractId;
+        }
+
+        public int ContractId { get; set; }
+    }
 }

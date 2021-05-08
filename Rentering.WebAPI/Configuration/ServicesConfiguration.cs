@@ -43,6 +43,9 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddTransient<IContractWithGuarantorCUDRepository, ContractWithGuarantorCUDRepository>();
             services.AddTransient<IContractWithGuarantorQueryRepository, ContractWithGuarantorQueryRepository>();
+
+            services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
+            services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();
         }
 
         public static void RegisterFluentMigrator(this IServiceCollection services)

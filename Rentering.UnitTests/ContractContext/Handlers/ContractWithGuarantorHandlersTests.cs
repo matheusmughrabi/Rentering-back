@@ -48,7 +48,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<ITenantCUDRepository> tenantCUDRepositoryMock = new Mock<ITenantCUDRepository>();
             Mock<ITenantQueryRepository> tenantQueryRepositoryMock = new Mock<ITenantQueryRepository>();
 
-            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object);
+            Mock<IContractPaymentCUDRepository> contractPaymentCUDRepositoryMock = new Mock<IContractPaymentCUDRepository>();
+            Mock<IContractPaymentQueryRepository> contractPaymentQueryRepositoryMock = new Mock<IContractPaymentQueryRepository>();
+
+            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object, contractPaymentCUDRepositoryMock.Object, contractPaymentQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(false, result.Success);
@@ -69,7 +72,10 @@ namespace Rentering.UnitTests.ContractContext.Handlers
             Mock<ITenantCUDRepository> tenantCUDRepositoryMock = new Mock<ITenantCUDRepository>();
             Mock<ITenantQueryRepository> tenantQueryRepositoryMock = new Mock<ITenantQueryRepository>();
 
-            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object);
+            Mock<IContractPaymentCUDRepository> contractPaymentCUDRepositoryMock = new Mock<IContractPaymentCUDRepository>();
+            Mock<IContractPaymentQueryRepository> contractPaymentQueryRepositoryMock = new Mock<IContractPaymentQueryRepository>();
+
+            var createTenantHandler = new ContractGuarantorHandlers(contractCUDRepositoryMock.Object, contractQueryRepositoryMock.Object, renterCUDRepositoryMock.Object, renterQueryRepositoryMock.Object, tenantCUDRepositoryMock.Object, tenantQueryRepositoryMock.Object, contractPaymentCUDRepositoryMock.Object, contractPaymentQueryRepositoryMock.Object);
             var result = createTenantHandler.Handle(createContractCommand);
 
             Assert.AreEqual(true, result.Success);
