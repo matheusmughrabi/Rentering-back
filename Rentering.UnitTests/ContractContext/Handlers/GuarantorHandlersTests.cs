@@ -94,7 +94,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateGuarantor_WhenAccountDoesNotExist()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CreateGuarantor(_guarantorEntity));
+            mock.Setup(m => m.Create(_guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
             mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
@@ -109,7 +109,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateGuarantor_WhenAccountExists()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.CreateGuarantor(_guarantorEntity));
+            mock.Setup(m => m.Create(_guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
             mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);
@@ -124,7 +124,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateGuarantor_WhenAccountDoesNotExist()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
+            mock.Setup(m => m.Update(_updateGuarantorCommand.Id, _guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
             mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(false);
@@ -139,7 +139,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateGuarantor_WhenAccountExists()
         {
             Mock<IGuarantorCUDRepository> mock = new Mock<IGuarantorCUDRepository>();
-            mock.Setup(m => m.UpdateGuarantor(_updateGuarantorCommand.Id, _guarantorEntity));
+            mock.Setup(m => m.Update(_updateGuarantorCommand.Id, _guarantorEntity));
 
             Mock<IGuarantorQueryRepository> mockQuery = new Mock<IGuarantorQueryRepository>();
             mockQuery.Setup(m => m.CheckIfAccountExists(_createGuarantorCommand.AccountId)).Returns(true);

@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void CreatePayment(ContractPaymentEntity payment)
+        public void Create(ContractPaymentEntity payment)
         {
             _context.Connection.Execute("sp_ContractPayments_CUD_CreatePayment",
                     new
@@ -30,7 +30,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void UpdatePayment(int id, ContractPaymentEntity payment)
+        public void Update(int id, ContractPaymentEntity payment)
         {
             _context.Connection.Execute("sp_ContractPayments_CUD_UpdatePayment",
                      new
@@ -46,7 +46,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                  );
         }
 
-        public void DeletePaymentt(int id)
+        public void Delete(int id)
         {
             _context.Connection.Execute("sp_ContractPayments_CUD_DeletePayment",
                      new

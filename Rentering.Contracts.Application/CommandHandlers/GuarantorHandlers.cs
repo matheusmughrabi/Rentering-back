@@ -43,7 +43,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _guarantorCUDRepository.CreateGuarantor(guarantorEntity);
+            _guarantorCUDRepository.Create(guarantorEntity);
 
             var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
@@ -98,7 +98,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _guarantorCUDRepository.UpdateGuarantor(command.Id, guarantorEntity);
+            _guarantorCUDRepository.Update(command.Id, guarantorEntity);
 
             var updatedGuarantor = new CommandResult(true, "Guarantor updated successfuly", new
             {
@@ -128,7 +128,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
         public ICommandResult Handle(DeleteGuarantorCommand command)
         {
-            _guarantorCUDRepository.DeleteGuarantor(command.Id);
+            _guarantorCUDRepository.Delete(command.Id);
 
             var deletedGuarantor = new CommandResult(true, "Guarantor deleted successfuly", new
             {

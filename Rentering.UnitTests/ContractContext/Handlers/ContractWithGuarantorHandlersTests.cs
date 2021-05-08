@@ -37,7 +37,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateContract_WhenContractNameAlreadyExists()
         {
             Mock<IContractWithGuarantorCUDRepository> contractCUDRepositoryMock = new Mock<IContractWithGuarantorCUDRepository>();
-            contractCUDRepositoryMock.Setup(m => m.CreateContract(contract));
+            contractCUDRepositoryMock.Setup(m => m.Create(contract));
 
             Mock<IContractWithGuarantorQueryRepository> contractQueryRepositoryMock = new Mock<IContractWithGuarantorQueryRepository>();
             contractQueryRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(true);
@@ -64,7 +64,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateContract_WhenContractNameDoesNotExistsYet()
         {
             Mock<IContractWithGuarantorCUDRepository> contractCUDRepositoryMock = new Mock<IContractWithGuarantorCUDRepository>();
-            contractCUDRepositoryMock.Setup(m => m.CreateContract(contract));
+            contractCUDRepositoryMock.Setup(m => m.Create(contract));
 
             Mock<IContractWithGuarantorQueryRepository> contractQueryRepositoryMock = new Mock<IContractWithGuarantorQueryRepository>();
             contractQueryRepositoryMock.Setup(m => m.CheckIfContractNameExists(contractName)).Returns(false);

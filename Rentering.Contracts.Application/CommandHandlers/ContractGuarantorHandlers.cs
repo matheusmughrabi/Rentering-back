@@ -78,7 +78,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractWithGuarantorCUDRepository.CreateContract(contract);
+            _contractWithGuarantorCUDRepository.Create(contract);
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
@@ -110,8 +110,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
-            _renterCUDRepository.UpdateRenter(command.RenterId, renterEntity);
+            _contractWithGuarantorCUDRepository.Update(command.Id, contractEntity);
+            _renterCUDRepository.Update(command.RenterId, renterEntity);
 
             var updatedContract = new CommandResult(true, "Renter invited successfuly", new
             {
@@ -142,8 +142,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
-            _tenantCUDRepository.UpdateTenant(command.TenantId, tenantEntity);
+            _contractWithGuarantorCUDRepository.Update(command.Id, contractEntity);
+            _tenantCUDRepository.Update(command.TenantId, tenantEntity);
 
             var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
             {
@@ -174,8 +174,8 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractWithGuarantorCUDRepository.UpdateContract(command.Id, contractEntity);
-            _guarantorCUDRepository.UpdateGuarantor(command.GuarantorId, guarantorEntity);
+            _contractWithGuarantorCUDRepository.Update(command.Id, contractEntity);
+            _guarantorCUDRepository.Update(command.GuarantorId, guarantorEntity);
 
             var updatedContract = new CommandResult(true, "Guarantor invited successfuly", new
             {
@@ -205,7 +205,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             foreach (var payment in contractEntity.Payments)
             {
-                _contractPaymentCUDRepository.CreatePayment(payment);
+                _contractPaymentCUDRepository.Create(payment);
             }
 
             var createdPayments = new CommandResult(true, "Payment cycle created successfuly", new

@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void CreateTenant(TenantEntity tenant)
+        public void Create(TenantEntity tenant)
         {
             _context.Connection.Execute("sp_Tenants_CUD_CreateTenant",
                     new
@@ -45,7 +45,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void UpdateTenant(int id, TenantEntity tenant)
+        public void Update(int id, TenantEntity tenant)
         {
             _context.Connection.Execute("sp_Tenants_CUD_UpdateTenant",
                     new
@@ -76,7 +76,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void DeleteTenant(int id)
+        public void Delete(int id)
         {
             _context.Connection.Execute("sp_Tenants_CUD_DeleteTenant",
                     new

@@ -94,7 +94,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateTenant_WhenAccountDoesNotExist()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CreateTenant(_tenantEntity));
+            mock.Setup(m => m.Create(_tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
             queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
@@ -109,7 +109,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateTenant_WhenAccountExists()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.CreateTenant(_tenantEntity));
+            mock.Setup(m => m.Create(_tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
             queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);
@@ -124,7 +124,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateTenant_WhenAccountDoesNotExist()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
+            mock.Setup(m => m.Update(_updateTenantCommand.Id, _tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
             queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(false);
@@ -139,7 +139,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateTenant_WhenAccountExists()
         {
             Mock<ITenantCUDRepository> mock = new Mock<ITenantCUDRepository>();
-            mock.Setup(m => m.UpdateTenant(_updateTenantCommand.Id, _tenantEntity));
+            mock.Setup(m => m.Update(_updateTenantCommand.Id, _tenantEntity));
 
             Mock<ITenantQueryRepository> queryMock = new Mock<ITenantQueryRepository>();
             queryMock.Setup(m => m.CheckIfAccountExists(_createTenantCommand.AccountId)).Returns(true);

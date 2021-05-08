@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void CreateGuarantor(GuarantorEntity guarantor)
+        public void Create(GuarantorEntity guarantor)
         {
             _context.Connection.Execute("sp_Guarantors_CUD_CreateGuarantor",
                     new
@@ -45,7 +45,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void UpdateGuarantor(int id, GuarantorEntity guarantor)
+        public void Update(int id, GuarantorEntity guarantor)
         {
             _context.Connection.Execute("sp_Guarantors_CUD_UpdateGuarantor",
                    new
@@ -76,7 +76,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                );
         }
 
-        public void DeleteGuarantor(int id)
+        public void Delete(int id)
         {
             _context.Connection.Execute("sp_Guarantors_CUD_DeleteGuarantor",
                     new

@@ -16,7 +16,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void CreateContract(ContractWithGuarantorEntity contract)
+        public void Create(ContractWithGuarantorEntity contract)
         {
             _context.Connection.Execute("sp_ContractsWithGuarantor_CUD_CreateContract",
                     new
@@ -39,7 +39,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     commandType: CommandType.StoredProcedure
                 );
         }
-        public void UpdateContract(int id, ContractWithGuarantorEntity contract)
+        public void Update(int id, ContractWithGuarantorEntity contract)
         {
             _context.Connection.Execute("sp_ContractsWithGuarantor_CUD_UpdateContract",
                     new
@@ -64,7 +64,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                 );
         }
 
-        public void DeleteContract(int id)
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }

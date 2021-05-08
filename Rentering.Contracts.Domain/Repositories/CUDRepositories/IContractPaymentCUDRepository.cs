@@ -1,11 +1,9 @@
-﻿using Rentering.Contracts.Domain.Entities;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Entities;
 
 namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
 {
-    public interface IContractPaymentCUDRepository
+    public interface IContractPaymentCUDRepository : IGenericCUDRepository<ContractPaymentEntity>
     {
-        void CreatePayment(ContractPaymentEntity payment);
-        void UpdatePayment(int id, ContractPaymentEntity payment);
-        void DeletePaymentt(int id);
     }
 }

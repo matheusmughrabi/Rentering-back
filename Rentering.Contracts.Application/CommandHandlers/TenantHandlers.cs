@@ -43,7 +43,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _tenantCUDRepository.CreateTenant(tenantEntity);
+            _tenantCUDRepository.Create(tenantEntity);
 
             var createdContractProfileUser = new CommandResult(true, "Profile created successfuly", new
             {
@@ -98,7 +98,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _tenantCUDRepository.UpdateTenant(command.Id, tenantEntity);
+            _tenantCUDRepository.Update(command.Id, tenantEntity);
 
             var updatedTenant = new CommandResult(true, "Tenant updated successfuly", new
             {
@@ -128,7 +128,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
         public ICommandResult Handle(DeleteTenantCommand command)
         {
-            _tenantCUDRepository.DeleteTenant(command.Id);
+            _tenantCUDRepository.Delete(command.Id);
 
             var deletedTenant = new CommandResult(true, "Tenant deleted successfuly", new
             {

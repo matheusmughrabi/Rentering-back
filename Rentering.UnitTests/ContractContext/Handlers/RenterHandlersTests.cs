@@ -91,7 +91,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotCreateRenter_WhenAccountDoesNotExist()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CreateRenter(_renterEntity));
+            mock.Setup(m => m.Create(_renterEntity));
 
             Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
             queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
@@ -106,7 +106,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldCreateRenter_WhenAccountExists()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.CreateRenter(_renterEntity));
+            mock.Setup(m => m.Create(_renterEntity));
 
             Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
             queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);
@@ -121,7 +121,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldNotUpdateRenter_WhenAccountDoesNotExist()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
+            mock.Setup(m => m.Update(_updateRenterCommand.Id, _renterEntity));
 
             Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
             queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(false);
@@ -136,7 +136,7 @@ namespace Rentering.UnitTests.ContractContext.Handlers
         public void ShouldUpdateRenter_WhenAccountExists()
         {
             Mock<IRenterCUDRepository> mock = new Mock<IRenterCUDRepository>();
-            mock.Setup(m => m.UpdateRenter(_updateRenterCommand.Id, _renterEntity));
+            mock.Setup(m => m.Update(_updateRenterCommand.Id, _renterEntity));
 
             Mock<IRenterQueryRepository> queryRepositorymock = new Mock<IRenterQueryRepository>();
             queryRepositorymock.Setup(m => m.CheckIfAccountExists(_createRenterCommand.AccountId)).Returns(true);

@@ -1,11 +1,9 @@
-﻿using Rentering.Contracts.Domain.Entities;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Entities;
 
 namespace Rentering.Contracts.Domain.Repositories.CUDRepositories
 {
-    public interface IGuarantorCUDRepository
+    public interface IGuarantorCUDRepository : IGenericCUDRepository<GuarantorEntity>
     {
-        void CreateGuarantor(GuarantorEntity guarantor);
-        void UpdateGuarantor(int id, GuarantorEntity guarantor);
-        void DeleteGuarantor(int id);
     }
 }

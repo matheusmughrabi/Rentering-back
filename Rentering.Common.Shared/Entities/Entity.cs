@@ -2,11 +2,11 @@
 
 namespace Rentering.Common.Shared.Entities
 {
-    public abstract class Entity : Notifiable
+    public abstract class Entity : Notifiable, IEntity
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
-        protected void AssignId(int id)
+        public void AssignId(int id)
         {
             if (id <= 0)
                 AddNotification("Id", "Id must be greater than zero");
