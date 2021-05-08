@@ -111,7 +111,13 @@ namespace Rentering.WebAPI
 // 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD OK
 // 2) Precisa garantir que eles já não estejam associados a outro contrato OK
 
-// Implementar InviteGuarantor
+// Implementar InviteRenter OK
+// Implementar InviteTenant OK
+// Implementar InviteGuarantor OK
+
+// Criar UnitOfWork
+// Estudar dapper fast crud e outras extensions
+
 // Modelar melhor como será feita a criação de ciclos de contrato
 // Implementar nova modelagem
 
@@ -123,7 +129,6 @@ namespace Rentering.WebAPI
 // Criar testes de unidade
 // Testar módulo de contratos inteiro
 
-// Criar UnityOfWork
 // Separar no Swagger por Módulos
 // Versionar Swagger
 
