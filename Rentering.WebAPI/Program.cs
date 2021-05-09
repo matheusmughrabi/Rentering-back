@@ -116,12 +116,13 @@ namespace Rentering.WebAPI
 // Implementar InviteGuarantor OK
 
 // Estudar implementações de UnitOfWork com dapper OK
-// Implementar UnitOfWork OK
+// Implementar ContractUnitOfWork OK
+// Implementar AccountUnitOfWork OK
 
-// Modelar melhor como será feita a criação de ciclos de contrato ON GOING
-// Implementar nova modelagem ON GOING
-// Implementar ContractPaymentController ON GOING
-// ExecutePayment, Accept e Reject
+// Modelar melhor como será feita a criação de ciclos de contrato OK
+// Implementar nova modelagem OK
+// Implementar ContractPaymentController OK
+// ExecutePayment, Accept e Reject OK
 
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
