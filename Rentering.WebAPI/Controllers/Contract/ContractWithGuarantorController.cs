@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.Repositories;
+using Rentering.Contracts.Domain.Data;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {

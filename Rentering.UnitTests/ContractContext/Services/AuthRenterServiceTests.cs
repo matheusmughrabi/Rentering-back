@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
+using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 

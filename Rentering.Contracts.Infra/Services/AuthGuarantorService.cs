@@ -1,4 +1,4 @@
-﻿using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+﻿using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
 using System.Linq;
 

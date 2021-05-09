@@ -4,7 +4,7 @@ using Rentering.Contracts.Application.Authorization.CommandHandlers;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.Repositories;
+using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Services;
 
 namespace Rentering.WebAPI.Controllers.Contract

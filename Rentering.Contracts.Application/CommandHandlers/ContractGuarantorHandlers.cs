@@ -1,9 +1,9 @@
 ﻿using FluentValidator;
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
+using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Extensions;
-using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers

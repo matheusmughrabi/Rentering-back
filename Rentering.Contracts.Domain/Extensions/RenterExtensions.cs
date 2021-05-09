@@ -1,5 +1,5 @@
-﻿using Rentering.Contracts.Domain.Entities;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories.QueryResults;
+﻿using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Domain.Extensions
