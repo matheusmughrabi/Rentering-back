@@ -1,5 +1,6 @@
 ﻿using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Domain.Extensions
@@ -15,8 +16,10 @@ namespace Rentering.Contracts.Domain.Extensions
             var contractId = contractPaymentQueryResult.ContractId;
             var month = contractPaymentQueryResult.Month;
             var rentPrice = new PriceValueObject(contractPaymentQueryResult.RentPrice);
+            var renterStatus = (e_RenterPaymentStatus) contractPaymentQueryResult.RenterPaymentStatus;
+            var tenantStatus = (e_TenantPaymentStatus) contractPaymentQueryResult.TenantPaymentStatus;
 
-            var contractPaymentEntity = new ContractPaymentEntity(contractId, month, rentPrice, id);
+            var contractPaymentEntity = new ContractPaymentEntity(contractId, month, rentPrice, id, renterStatus, tenantStatus);
 
             return contractPaymentEntity;
         }

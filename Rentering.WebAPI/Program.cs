@@ -127,8 +127,6 @@ namespace Rentering.WebAPI
 // Criar testes de unidade para auth handlers
 // Implementar Service
 
-// Implementar UnitOfWork em Accounts
-
 // Criar todos os testes de unidade
 // Testar módulo de contratos inteiro
 // Mergear e liberar nova versão

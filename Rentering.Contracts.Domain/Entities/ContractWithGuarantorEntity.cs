@@ -161,7 +161,40 @@ namespace Rentering.Contracts.Domain.Entities
         public void ExecutePayment(DateTime month)
         {
             var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+
+            if (payment == null)
+            {
+                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                return;
+            }
+                
             payment.ExecutePayment();
+        }
+
+        public void AcceptPayment(DateTime month)
+        {
+            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+
+            if (payment == null)
+            {
+                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                return;
+            }
+
+            payment.AcceptPayment();
+        }
+
+        public void RejectPayment(DateTime month)
+        {
+            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+
+            if (payment == null)
+            {
+                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                return;
+            }
+
+            payment.RejectPayment();
         }
 
         public decimal CurrentOwedAmount()
