@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -16,6 +17,32 @@ namespace Rentering.WebAPI.Controllers.Contract
             IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
+        }
+
+        [HttpGet]
+        [Route("v1/Contract/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetContractById(int id)
+        {
+            var result = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(id);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("v1/Renters")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetRenterProfilesOfCurrentUser()
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            // TODO - GetOfCurrentUser()
+            var result = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+
+            return Ok(result);
         }
 
         [HttpPost]
