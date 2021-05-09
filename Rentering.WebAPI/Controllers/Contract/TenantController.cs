@@ -4,8 +4,7 @@ using Rentering.Contracts.Application.Authorization.CommandHandlers;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.Services;
 
 namespace Rentering.WebAPI.Controllers.Contract
@@ -14,17 +13,14 @@ namespace Rentering.WebAPI.Controllers.Contract
     [ApiController]
     public class TenantController : ControllerBase
     {
-        private readonly ITenantCUDRepository _tenantCUDRepository;
-        private readonly ITenantQueryRepository _tenantQueryRepository;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
         private readonly IAuthTenantService _authTenantService;
 
         public TenantController(
-            ITenantCUDRepository tenantCUDRepository,
-            ITenantQueryRepository tenantQueryRepository,
+            IContractUnitOfWork contractUnitOfWork,
             IAuthTenantService authTenantService)
         {
-            _tenantCUDRepository = tenantCUDRepository;
-            _tenantQueryRepository = tenantQueryRepository;
+            _contractUnitOfWork = contractUnitOfWork;
             _authTenantService = authTenantService;
         }
 
@@ -33,7 +29,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetTenantById(int id)
         {
-            var result = _tenantQueryRepository.GetById(id);
+            var result = _contractUnitOfWork.TenantQuery.GetById(id);
 
             return Ok(result);
         }
@@ -48,7 +44,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _tenantQueryRepository.GetTenantProfilesOfCurrentUser(accountId);
+            var result = _contractUnitOfWork.TenantQuery.GetTenantProfilesOfCurrentUser(accountId);
 
             return Ok(result);
         }
@@ -65,7 +61,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             createTenantCommand.AccountId = accountId;
 
-            var handler = new TenantHandlers(_tenantCUDRepository, _tenantQueryRepository);
+            var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(createTenantCommand);
 
             return Ok(result);
@@ -90,7 +86,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             updateTenantCommand.AccountId = accountId;
 
-            var handler = new TenantHandlers(_tenantCUDRepository, _tenantQueryRepository);
+            var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(updateTenantCommand);
 
             return Ok(result);
@@ -113,7 +109,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            var handler = new TenantHandlers(_tenantCUDRepository, _tenantQueryRepository);
+            var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(deleteTenantCommand);
 
             return Ok(result);

@@ -4,8 +4,7 @@ using Rentering.Contracts.Application.Authorization.CommandHandlers;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.Services;
 
 namespace Rentering.WebAPI.Controllers.Contract
@@ -14,26 +13,25 @@ namespace Rentering.WebAPI.Controllers.Contract
     [ApiController]
     public class GuarantorController : ControllerBase
     {
-        private readonly IGuarantorCUDRepository _guarantorCUDRepository;
-        private readonly IGuarantorQueryRepository _guarantorQueryRepository;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
         private readonly IAuthGuarantorService _authGuarantorService;
 
         public GuarantorController(
-            IGuarantorCUDRepository guarantorCUDRepository,
-            IGuarantorQueryRepository guarantorQueryRepository,
+            IContractUnitOfWork contractUnitOfWork, 
             IAuthGuarantorService authGuarantorService)
         {
-            _guarantorCUDRepository = guarantorCUDRepository;
-            _guarantorQueryRepository = guarantorQueryRepository;
+            _contractUnitOfWork = contractUnitOfWork;
             _authGuarantorService = authGuarantorService;
         }
+
+
 
         [HttpGet]
         [Route("v1/Guarantors/{id}")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetGuarantorById(int id)
         {
-            var result = _guarantorQueryRepository.GetById(id);
+            var result = _contractUnitOfWork.GuarantorQuery.GetById(id);
 
             return Ok(result);
         }
@@ -48,7 +46,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _guarantorQueryRepository.GetGuarantorProfilesOfCurrentUser(accountId);
+            var result = _contractUnitOfWork.GuarantorQuery.GetGuarantorProfilesOfCurrentUser(accountId);
 
             return Ok(result);
         }
@@ -65,7 +63,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             createGuarantorCommand.AccountId = accountId;
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
+            var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(createGuarantorCommand);
 
             return Ok(result);
@@ -90,7 +88,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             updateGuarantorCommand.AccountId = accountId;
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
+            var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(updateGuarantorCommand);
 
             return Ok(result);
@@ -113,7 +111,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            var handler = new GuarantorHandlers(_guarantorCUDRepository, _guarantorQueryRepository);
+            var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(deleteGuarantorCommand);
 
             return Ok(result);

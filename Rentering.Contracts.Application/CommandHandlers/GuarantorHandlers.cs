@@ -2,8 +2,7 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -13,13 +12,11 @@ namespace Rentering.Contracts.Application.CommandHandlers
         ICommandHandler<UpdateGuarantorCommand>,
         ICommandHandler<DeleteGuarantorCommand>
     {
-        private readonly IGuarantorCUDRepository _guarantorCUDRepository;
-        private readonly IGuarantorQueryRepository _guarantorQueryRepository;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public GuarantorHandlers(IGuarantorCUDRepository guarantorCUDRepository, IGuarantorQueryRepository guarantorQueryRepository)
+        public GuarantorHandlers(IContractUnitOfWork contractUnitOfWork)
         {
-            _guarantorCUDRepository = guarantorCUDRepository;
-            _guarantorQueryRepository = guarantorQueryRepository;
+            _contractUnitOfWork = contractUnitOfWork;
         }
 
         public ICommandResult Handle(CreateGuarantorCommand command)
@@ -35,7 +32,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_guarantorQueryRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(guarantorEntity.Notifications);
@@ -43,7 +40,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _guarantorCUDRepository.Create(guarantorEntity);
+            _contractUnitOfWork.GuarantorCUD.Create(guarantorEntity);
 
             var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
@@ -83,7 +80,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_guarantorQueryRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);
@@ -98,7 +95,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _guarantorCUDRepository.Update(command.Id, guarantorEntity);
+            _contractUnitOfWork.GuarantorCUD.Update(command.Id, guarantorEntity);
 
             var updatedGuarantor = new CommandResult(true, "Guarantor updated successfuly", new
             {
@@ -128,7 +125,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
         public ICommandResult Handle(DeleteGuarantorCommand command)
         {
-            _guarantorCUDRepository.Delete(command.Id);
+            _contractUnitOfWork.GuarantorCUD.Delete(command.Id);
 
             var deletedGuarantor = new CommandResult(true, "Guarantor deleted successfuly", new
             {

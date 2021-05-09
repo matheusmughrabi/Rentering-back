@@ -2,8 +2,7 @@
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -13,13 +12,11 @@ namespace Rentering.Contracts.Application.CommandHandlers
         ICommandHandler<UpdateTenantCommand>,
         ICommandHandler<DeleteTenantCommand>
     {
-        private readonly ITenantCUDRepository _tenantCUDRepository;
-        private readonly ITenantQueryRepository _tenantQueryRepository;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public TenantHandlers(ITenantCUDRepository tenantCUDRepository, ITenantQueryRepository tenantQueryRepository)
+        public TenantHandlers(IContractUnitOfWork contractUnitOfWork)
         {
-            _tenantCUDRepository = tenantCUDRepository;
-            _tenantQueryRepository = tenantQueryRepository;
+            _contractUnitOfWork = contractUnitOfWork;
         }
 
         public ICommandResult Handle(CreateTenantCommand command)
@@ -35,7 +32,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_tenantQueryRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(tenantEntity.Notifications);
@@ -43,7 +40,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _tenantCUDRepository.Create(tenantEntity);
+            _contractUnitOfWork.TenantCUD.Create(tenantEntity);
 
             var createdContractProfileUser = new CommandResult(true, "Profile created successfuly", new
             {
@@ -83,7 +80,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
             var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_tenantQueryRepository.CheckIfAccountExists(command.AccountId) == false)
+            if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
                 AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);
@@ -98,7 +95,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _tenantCUDRepository.Update(command.Id, tenantEntity);
+            _contractUnitOfWork.TenantCUD.Update(command.Id, tenantEntity);
 
             var updatedTenant = new CommandResult(true, "Tenant updated successfuly", new
             {
@@ -128,7 +125,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
 
         public ICommandResult Handle(DeleteTenantCommand command)
         {
-            _tenantCUDRepository.Delete(command.Id);
+            _contractUnitOfWork.TenantCUD.Delete(command.Id);
 
             var deletedTenant = new CommandResult(true, "Tenant deleted successfuly", new
             {
