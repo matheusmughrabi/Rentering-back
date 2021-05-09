@@ -37,5 +37,16 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
             return paymentFromDb;
         }
+
+        public IEnumerable<GetContractPaymentQueryResult> GetPaymentsFromContract(int contractId)
+        {
+            var paymentsFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
+                   "sp_ContractPayments_Query_GetPaymentsFromContract",
+                   new { ContractId = contractId },
+                   commandType: CommandType.StoredProcedure
+               );
+
+            return paymentsFromDb;
+        }
     }
 }

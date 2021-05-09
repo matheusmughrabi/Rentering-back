@@ -9,7 +9,7 @@ namespace Rentering.WebAPI.Migrations
         {
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_Query_GetPaymentById]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_Query_GetAllPayments]");
-            //Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_Query_CheckIfContractNameExists]");
+            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_Query_GetPaymentsFromContract]");
 
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_CUD_CreatePayment]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_ContractPayments_CUD_UpdatePayment]");
@@ -56,23 +56,25 @@ namespace Rentering.WebAPI.Migrations
 						GO
 						");
 
-			//Execute.Sql(@"SET ANSI_NULLS ON
-   //                     GO
+			Execute.Sql(@"SET ANSI_NULLS ON
+						GO
 
-   //                     SET QUOTED_IDENTIFIER ON
-   //                     GO
+						SET QUOTED_IDENTIFIER ON
+						GO
 
-   //                     CREATE PROCEDURE [dbo].[sp_ContractsWithGuarantor_Query_CheckIfContractNameExists]
-	  //                      @ContractName NVARCHAR(255)
-   //                     AS
-	  //                      SELECT CASE WHEN EXISTS (
-		 //                       SELECT [Id]
-		 //                       FROM [ContractsWithGuarantor]
-		 //                       WHERE [ContractName] = @ContractName
-	  //                      )
-	  //                      THEN CAST(1 AS BIT)
-	  //                      ELSE CAST(0 AS BIT) END
-   //                     GO");
+						CREATE PROCEDURE [dbo].[sp_ContractPayments_Query_GetPaymentsFromContract]
+							@ContractId INT
+						AS
+						BEGIN
+							SELECT 
+								*
+							FROM 
+								ContractPayments
+							WHERE 
+								ContractId = @ContractId
+						END
+						GO
+						");
 			#endregion
 
 			#region CUD
@@ -114,7 +116,7 @@ namespace Rentering.WebAPI.Migrations
 						SET QUOTED_IDENTIFIER ON
 						GO
 
-						CREATE PROCEDURE [dbo].[sp_ContractPayments_CUD_UpdateContract]
+						CREATE PROCEDURE [dbo].[sp_ContractPayments_CUD_UpdatePayment]
 							@Id INT,
 							@ContractId nvarchar(255),
 	                        @Month date,

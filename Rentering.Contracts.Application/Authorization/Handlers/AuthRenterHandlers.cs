@@ -3,10 +3,10 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Domain.Services;
 
-namespace Rentering.Contracts.Application.Authorization.CommandHandlers
+namespace Rentering.Contracts.Application.Authorization.Handlers
 {
     public class AuthRenterHandlers : Notifiable,
-        ICommandHandler<AuthCurrentUserAndProfileRenterMatchCommand>
+        IHandler<AuthCurrentUserAndProfileRenterMatchCommand>
     {
         private readonly IAuthRenterService _authRenterService;
 

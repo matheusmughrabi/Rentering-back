@@ -117,21 +117,15 @@ namespace Rentering.WebAPI
 
 // Estudar implementações de UnitOfWork com dapper OK
 // Implementar UnitOfWork OK
-// Estudar dapper fast crud e outras extensions
 
 // Modelar melhor como será feita a criação de ciclos de contrato
 // Implementar nova modelagem
+// Implementar ContractPaymentController
 
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
 // Implementar Service
 
-// Implementar Controller
-// Criar testes de unidade
+// Criar todos os testes de unidade
 // Testar módulo de contratos inteiro
-
-// Separar no Swagger por Módulos
-// Versionar Swagger
-
-// Testar tudo
 // Mergear e liberar nova versão

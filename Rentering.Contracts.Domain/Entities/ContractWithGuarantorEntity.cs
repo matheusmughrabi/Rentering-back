@@ -34,7 +34,6 @@ namespace Rentering.Contracts.Domain.Entities
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
-            _payments = new List<ContractPaymentEntity>();
 
             if (id != null)
                 AssignId((int)id);
@@ -122,6 +121,12 @@ namespace Rentering.Contracts.Domain.Entities
             RentPrice = rentPrice;
         }
 
+        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
+        {
+            if (payments != null)
+                _payments = payments;
+        }
+
         public void CreatePaymentCycle()
         {
             if (Id == 0)
@@ -139,7 +144,17 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             for (int i = 0; i < monthSpan; i++)
-                _payments.Add(new ContractPaymentEntity(Id, DateTime.Now.AddMonths(i), RentPrice));
+            {
+                var monthToBeAdded = ContractStartDate.AddMonths(i);
+
+                if (_payments.Any(c => c.Month == monthToBeAdded))
+                {
+                    AddNotification("monthSpan", $"{monthToBeAdded} is already registered in the payment cycle");
+                    continue;
+                }
+
+                _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, RentPrice));
+            }
         }
 
         public void ExecutePayment(DateTime month)

@@ -5,12 +5,12 @@ using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.ValueObjects;
 
-namespace Rentering.Contracts.Application.CommandHandlers
+namespace Rentering.Contracts.Application.Handlers
 {
     public class RenterHandlers : Notifiable,
-        ICommandHandler<CreateRenterCommand>,
-        ICommandHandler<UpdateRenterCommand>,
-        ICommandHandler<DeleteRenterCommand>
+        IHandler<CreateRenterCommand>,
+        IHandler<UpdateRenterCommand>,
+        IHandler<DeleteRenterCommand>
 
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
@@ -80,7 +80,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
             var cpf = new CPFValueObject(command.CPF);
-            var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State); 
+            var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
             var spouseName = new NameValueObject(command.SpouseFirstName, command.SpouseLastName, false, false);
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
             var spouseCPF = new CPFValueObject(command.SpouseCPF, false);

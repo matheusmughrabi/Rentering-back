@@ -6,13 +6,12 @@ using Rentering.Accounts.Domain.Repositories.CUDRepositories;
 using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
-using System.Linq;
 
-namespace Rentering.Accounts.Application.CommandHandlers
+namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
-        ICommandHandler<CreateAccountCommand>,
-        ICommandHandler<AssignAccountCommand>
+        IHandler<CreateAccountCommand>,
+        IHandler<AssignAccountCommand>
     {
         private readonly IAccountCUDRepository _accountCUDRepository;
         private readonly IAccountQueryRepository _accountQueryRepository;

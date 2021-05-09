@@ -1,6 +1,6 @@
 ﻿namespace Rentering.Common.Shared.Commands
 {
-    public interface ICommandHandler<T> where T : ICommand
+    public interface IHandler<T> where T : ICommand
     {
         ICommandResult Handle(T command);
     }

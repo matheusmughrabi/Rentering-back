@@ -5,15 +5,16 @@ using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Extensions;
 using Rentering.Contracts.Domain.ValueObjects;
+using System.Linq;
 
-namespace Rentering.Contracts.Application.CommandHandlers
+namespace Rentering.Contracts.Application.Handlers
 {
     public class ContractGuarantorHandlers : Notifiable,
-        ICommandHandler<CreateContractGuarantorCommand>,
-        ICommandHandler<InviteRenterToParticipate>,
-        ICommandHandler<InviteTenantToParticipate>,
-        ICommandHandler<InviteGuarantorToParticipate>,
-        ICommandHandler<CreateContractPaymentCycleCommand>
+        IHandler<CreateContractGuarantorCommand>,
+        IHandler<InviteRenterToParticipate>,
+        IHandler<InviteTenantToParticipate>,
+        IHandler<InviteGuarantorToParticipate>,
+        IHandler<CreateContractPaymentCycleCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
@@ -41,7 +42,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
             AddNotifications(address.Notifications);
             AddNotifications(propertyRegistrationNumber.Notifications);
             AddNotifications(rentPrice.Notifications);
-            AddNotifications(contract.Notifications);           
+            AddNotifications(contract.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
@@ -60,7 +61,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
             var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.Id);
-            var renterFromDb = _contractUnitOfWork.RenterQuery.GetById(command.RenterId);          
+            var renterFromDb = _contractUnitOfWork.RenterQuery.GetById(command.RenterId);
 
             if (contractFromDb == null || renterFromDb == null)
             {
@@ -158,6 +159,7 @@ namespace Rentering.Contracts.Application.CommandHandlers
         public ICommandResult Handle(CreateContractPaymentCycleCommand command)
         {
             var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
             if (contractFromDb == null)
             {
@@ -165,6 +167,9 @@ namespace Rentering.Contracts.Application.CommandHandlers
             }
 
             var contractEntity = contractFromDb.EntityFromModel();
+            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+
+            contractEntity.IncludeContractPayments(paymentEntities);
 
             contractEntity.CreatePaymentCycle();
 

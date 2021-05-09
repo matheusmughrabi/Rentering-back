@@ -7,14 +7,17 @@ namespace Rentering.Contracts.Domain.Entities
 {
     public class ContractPaymentEntity : Entity
     {
-        public ContractPaymentEntity(int contractId, DateTime month, PriceValueObject rentPrice)
+        public ContractPaymentEntity(int contractId, DateTime month, PriceValueObject rentPrice, int? id = null)
         {
             ContractId = contractId;
             Month = month;
             RentPrice = rentPrice;
 
             RenterPaymentStatus = e_RenterPaymentStatus.NONE;
-            TenantPaymentStatus = e_TenantPaymentStatus.NONE;  
+            TenantPaymentStatus = e_TenantPaymentStatus.NONE;
+
+            if (id != null)
+                AssignId((int)id);
         }
 
         public int ContractId { get; set; }

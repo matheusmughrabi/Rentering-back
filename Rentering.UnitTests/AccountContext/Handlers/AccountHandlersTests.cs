@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Rentering.Accounts.Application.CommandHandlers;
 using Rentering.Accounts.Application.Commands;
+using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Repositories.CUDRepositories;
 using Rentering.Accounts.Domain.Repositories.QueryRepositories;

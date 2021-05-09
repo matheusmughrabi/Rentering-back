@@ -5,12 +5,12 @@ using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.ValueObjects;
 
-namespace Rentering.Contracts.Application.CommandHandlers
+namespace Rentering.Contracts.Application.Handlers
 {
     public class TenantHandlers : Notifiable,
-        ICommandHandler<CreateTenantCommand>,
-        ICommandHandler<UpdateTenantCommand>,
-        ICommandHandler<DeleteTenantCommand>
+        IHandler<CreateTenantCommand>,
+        IHandler<UpdateTenantCommand>,
+        IHandler<DeleteTenantCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 

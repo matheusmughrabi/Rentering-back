@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Contracts.Application.CommandHandlers;
 using Rentering.Contracts.Application.Commands;
+using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
 
 namespace Rentering.WebAPI.Controllers.Contract

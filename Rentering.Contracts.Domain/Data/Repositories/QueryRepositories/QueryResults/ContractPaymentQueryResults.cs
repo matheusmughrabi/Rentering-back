@@ -6,6 +6,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryRe
     public class GetContractPaymentQueryResult : IQueryResult
     {
         public int Id { get; set; }
+        public int ContractId { get; set; }
         public DateTime Month { get; set; }
         public decimal RentPrice { get; set; }
         public int RenterPaymentStatus { get; set; }

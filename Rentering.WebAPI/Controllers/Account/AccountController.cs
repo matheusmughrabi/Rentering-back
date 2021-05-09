@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Accounts.Application.CommandHandlers;
 using Rentering.Accounts.Application.Commands;
+using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Application.QueryResults;
 using Rentering.Accounts.Domain.Extensions;
 using Rentering.Accounts.Domain.Repositories.CUDRepositories;
