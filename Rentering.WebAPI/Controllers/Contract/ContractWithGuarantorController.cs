@@ -30,19 +30,57 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/GetContractsOfCurrentUser")]
+        [Route("v1/GetRenterContractsOfCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetContractsOfCurrentUser()
+        public IActionResult GetRenterContractsOfCurrentUser()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            // TODO - GetOfCurrentUser()
-            var result = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var renters = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
 
-            return Ok(result);
+            var contractsOfCurrentUser = contracts.Where(c => renters.Any(r => r.Id == c.RenterId)).ToList();
+
+            return Ok(contractsOfCurrentUser);
+        }
+
+        [HttpGet]
+        [Route("v1/GetTenantContractsOfCurrentUser")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetTenantContractsOfCurrentUser()
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var tenants = _contractUnitOfWork.TenantQuery.GetTenantProfilesOfCurrentUser(accountId);
+
+            var contractsOfCurrentUser = contracts.Where(c => tenants.Any(r => r.Id == c.TenantId)).ToList();
+
+            return Ok(contractsOfCurrentUser);
+        }
+
+        [HttpGet]
+        [Route("v1/GetGuarantorContractsOfCurrentUser")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetGuarantorContractsOfCurrentUser()
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var guarantors = _contractUnitOfWork.GuarantorQuery.GetGuarantorProfilesOfCurrentUser(accountId);
+
+            var contractsOfCurrentUser = contracts.Where(c => guarantors.Any(r => r.Id == c.GuarantorId)).ToList();
+
+            return Ok(contractsOfCurrentUser);
         }
 
         [HttpPost]

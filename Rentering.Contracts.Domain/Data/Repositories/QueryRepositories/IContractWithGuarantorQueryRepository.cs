@@ -7,6 +7,5 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories
     public interface IContractWithGuarantorQueryRepository : IGenericQueryRepository<GetContractWithGuarantorQueryResult>
     {
         bool CheckIfContractNameExists(string contractName);
-        IEnumerable<GetContractWithGuarantorQueryResult> GetContractsOfCurrentUser();
     }
 }
