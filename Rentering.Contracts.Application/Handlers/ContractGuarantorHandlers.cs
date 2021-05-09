@@ -64,9 +64,7 @@ namespace Rentering.Contracts.Application.Handlers
             var renterFromDb = _contractUnitOfWork.RenterQuery.GetById(command.RenterId);
 
             if (contractFromDb == null || renterFromDb == null)
-            {
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or renter not found" });
-            }
 
             var contractEntity = contractFromDb.EntityFromModel();
             var renterEntity = renterFromDb.EntityFromModel();
@@ -98,9 +96,7 @@ namespace Rentering.Contracts.Application.Handlers
             var tenantFromDb = _contractUnitOfWork.TenantQuery.GetById(command.TenantId);
 
             if (contractFromDb == null || tenantFromDb == null)
-            {
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or tenant not found" });
-            }
 
             var contractEntity = contractFromDb.EntityFromModel();
             var tenantEntity = tenantFromDb.EntityFromModel();
@@ -130,9 +126,7 @@ namespace Rentering.Contracts.Application.Handlers
             var guarantorFromDb = _contractUnitOfWork.GuarantorQuery.GetById(command.GuarantorId);
 
             if (contractFromDb == null || guarantorFromDb == null)
-            {
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or guarantor not found" });
-            }
 
             var contractEntity = contractFromDb.EntityFromModel();
             var guarantorEntity = guarantorFromDb.EntityFromModel();
@@ -162,9 +156,7 @@ namespace Rentering.Contracts.Application.Handlers
             var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
             if (contractFromDb == null)
-            {
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
-            }
 
             var contractEntity = contractFromDb.EntityFromModel();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();

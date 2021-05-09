@@ -121,6 +121,7 @@ namespace Rentering.Contracts.Domain.Entities
             RentPrice = rentPrice;
         }
 
+        // TODO - This method should not exist, instead the list of payments should be included in a way similar to EF
         public void IncludeContractPayments(List<ContractPaymentEntity> payments)
         {
             if (payments != null)

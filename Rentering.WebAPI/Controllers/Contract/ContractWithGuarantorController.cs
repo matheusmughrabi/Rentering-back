@@ -30,9 +30,9 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/Renters")]
+        [Route("v1/GetContractsOfCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetRenterProfilesOfCurrentUser()
+        public IActionResult GetContractsOfCurrentUser()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
