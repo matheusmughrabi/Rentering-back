@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Domain.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -41,8 +37,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            // TODO - GetOfCurrentUser()
-            var result = _contractUnitOfWork.ContractPaymentQuery.GetAll().Where(c => c.ContractId == contractId);
+            var result = _contractUnitOfWork.ContractPaymentQuery.GetAll().Where(c => c.ContractId == contractId).ToList();
 
             return Ok(result);
         }
