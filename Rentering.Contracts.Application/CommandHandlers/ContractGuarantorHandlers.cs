@@ -4,8 +4,6 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Extensions;
 using Rentering.Contracts.Domain.Repositories;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.ValueObjects;
 
 namespace Rentering.Contracts.Application.CommandHandlers
@@ -80,8 +78,10 @@ namespace Rentering.Contracts.Application.CommandHandlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
+            _contractUnitOfWork.BeginTransaction();
             _contractUnitOfWork.ContractWithGuarantorCUD.Update(command.Id, contractEntity);
             _contractUnitOfWork.RenterCUD.Update(command.RenterId, renterEntity);
+            _contractUnitOfWork.Commit();
 
             var updatedContract = new CommandResult(true, "Renter invited successfuly", new
             {

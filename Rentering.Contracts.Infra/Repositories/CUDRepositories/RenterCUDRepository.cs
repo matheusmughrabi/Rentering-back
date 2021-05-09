@@ -40,6 +40,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = renter.SpouseCPF.CPF
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }
@@ -70,6 +71,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         SpouseIdentityRG = renter.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = renter.SpouseCPF.CPF
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }
@@ -81,6 +83,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                     { 
                         Id = renterId
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }

@@ -1,12 +1,14 @@
-﻿using Rentering.Contracts.Domain.Repositories;
+﻿using Rentering.Common.Infra;
+using Rentering.Contracts.Domain.Repositories;
 using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 
 namespace Rentering.Contracts.Infra.Repositories
 {
-    public class ContractUnitOfWork : IContractUnitOfWork
+    public class ContractUnitOfWork : BaseUnitOfWork, IContractUnitOfWork
     {
         public ContractUnitOfWork(
+            RenteringDataContext renteringDataContext,
             IRenterCUDRepository renterCUD,
             IRenterQueryRepository renterQuery,
             ITenantCUDRepository tenantCUD,
@@ -16,7 +18,7 @@ namespace Rentering.Contracts.Infra.Repositories
             IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepositoryCUD,
             IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepositoryQuery, 
             IContractPaymentCUDRepository contractPaymentCUD,
-            IContractPaymentQueryRepository contractPaymentQuery)
+            IContractPaymentQueryRepository contractPaymentQuery) : base(renteringDataContext)
         {
             RenterCUD = renterCUD;
             RenterQuery = renterQuery;

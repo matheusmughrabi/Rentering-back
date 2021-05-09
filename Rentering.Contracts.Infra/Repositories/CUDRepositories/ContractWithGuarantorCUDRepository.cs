@@ -36,6 +36,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         ContractStartDate = contract.ContractStartDate,
                         ContractEndDate = contract.ContractEndDate
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }
@@ -60,6 +61,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         ContractStartDate = contract.ContractStartDate,
                         ContractEndDate = contract.ContractEndDate
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }

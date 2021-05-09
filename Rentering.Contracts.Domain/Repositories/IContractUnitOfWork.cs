@@ -1,9 +1,10 @@
-﻿using Rentering.Contracts.Domain.Repositories.CUDRepositories;
+﻿using Rentering.Common.Shared.Repositories;
+using Rentering.Contracts.Domain.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Repositories.QueryRepositories;
 
 namespace Rentering.Contracts.Domain.Repositories
 {
-    public interface IContractUnitOfWork
+    public interface IContractUnitOfWork : IUnitOfWork
     {
         IRenterCUDRepository RenterCUD { get; }
         IRenterQueryRepository RenterQuery { get; }

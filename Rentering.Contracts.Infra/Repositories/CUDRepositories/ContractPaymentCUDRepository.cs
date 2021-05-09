@@ -26,6 +26,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                         RenterPaymentStatus = payment.RenterPaymentStatus,
                         TenantPaymentStatus = payment.TenantPaymentStatus
                     },
+                    _context.Transaction,
                     commandType: CommandType.StoredProcedure
                 );
         }
@@ -42,6 +43,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                          RenterPaymentStatus = payment.RenterPaymentStatus,
                          TenantPaymentStatus = payment.TenantPaymentStatus
                      },
+                     _context.Transaction,
                      commandType: CommandType.StoredProcedure
                  );
         }
@@ -53,6 +55,7 @@ namespace Rentering.Contracts.Infra.Repositories.CUDRepositories
                      {
                          Id = id
                      },
+                     _context.Transaction,
                      commandType: CommandType.StoredProcedure
                  );
         }
