@@ -18,7 +18,39 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public void Create(ContractWithGuarantorEntity contract)
         {
-            _context.Connection.Execute("sp_ContractsWithGuarantor_CUD_CreateContract",
+            var sql = @"INSERT INTO [ContractsWithGuarantor] (
+								[ContractName], 
+								[RenterId],
+								[TenantId],
+								[GuarantorId],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[PropertyRegistrationNumber],
+								[RentPrice],
+								[RentDueDate],
+								[ContractStartDate],
+								[ContractEndDate]
+							) VALUES (
+								@ContractName,
+								@RenterId,
+								@TenantId,
+								@GuarantorId,
+								@Street,
+								@Neighborhood,
+								@City,
+								@CEP,
+								@State,
+								@PropertyRegistrationNumber,
+								@RentPrice,
+								@RentDueDate,
+								@ContractStartDate,
+								@ContractEndDate
+							);";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         contract.ContractName,
@@ -36,13 +68,31 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         contract.ContractStartDate,
                         contract.ContractEndDate
                     },
-                    _context.Transaction,
-                    commandType: CommandType.StoredProcedure
-                );
+                    _context.Transaction);
         }
         public void Update(int id, ContractWithGuarantorEntity contract)
         {
-            _context.Connection.Execute("sp_ContractsWithGuarantor_CUD_UpdateContract",
+            var sql = @"UPDATE 
+							ContractsWithGuarantor
+						SET
+							[ContractName] = @ContractName,
+							[RenterId] = @RenterId,
+							[TenantId] = @TenantId,
+							[GuarantorId] = @GuarantorId,
+							[Street] = @Street,
+							[Neighborhood] = @Neighborhood,
+							[City] = @City,
+							[CEP] = @CEP,
+							[State] = @State,
+							[PropertyRegistrationNumber] = @PropertyRegistrationNumber,
+							[RentPrice] = @RentPrice,
+							[RentDueDate] = @RentDueDate,
+							[ContractStartDate] = @ContractStartDate,
+							[ContractEndDate] = @ContractEndDate
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         contract.Id,
@@ -61,15 +111,20 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         contract.ContractStartDate,
                         contract.ContractEndDate
                     },
-                    _context.Transaction,
-                    commandType: CommandType.StoredProcedure
-                );
+                    _context.Transaction);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            var sql = @"DELETE 
+                        FROM 
+							ContractsWithGuarantor
+						WHERE 
+							Id = @Id;";
 
+            _context.Connection.Execute(sql,
+                   new{ Id = id },
+                   _context.Transaction);
+        }
     }
 }

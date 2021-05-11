@@ -143,7 +143,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             var sql = @"DELETE FROM 
 								Renters
 							WHERE 
-								Id = @Id";
+								Id = @Id;";
 
             _context.Connection.Execute(sql,
                     new

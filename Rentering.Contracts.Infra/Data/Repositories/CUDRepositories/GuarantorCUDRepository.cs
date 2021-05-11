@@ -17,7 +17,51 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public void Create(GuarantorEntity guarantor)
         {
-            _context.Connection.Execute("sp_Guarantors_CUD_CreateGuarantor",
+            var sql = @"INSERT INTO [Guarantors] (
+								[AccountId],
+								[Status],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseOcupation],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							) VALUES (
+								@AccountId,
+								@Status,
+								@FirstName,
+								@LastName,
+								@Nationality,
+								@Ocupation,
+								@MaritalStatus,
+								@IdentityRG,
+								@CPF,
+								@Street,
+								@Neighborhood,
+								@City,
+								@CEP,
+								@State,
+								@SpouseFirstName,
+								@SpouseLastName,
+								@SpouseNationality,
+								@SpouseOcupation,
+								@SpouseIdentityRG,
+								@SpouseCPF
+							);";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         guarantor.AccountId,
@@ -40,14 +84,38 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         guarantor.SpouseOcupation,
                         SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = guarantor.SpouseCPF.CPF
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                    });
         }
 
         public void Update(int id, GuarantorEntity guarantor)
         {
-            _context.Connection.Execute("sp_Guarantors_CUD_UpdateGuarantor",
+            var sql = @"UPDATE 
+								Guarantors
+							SET
+								[AccountId] = @AccountId,
+								[Status] = @Status,
+								[FirstName] = @FirstName, 
+								[LastName] = @LastName,
+								[Nationality] = @Nationality,
+								[Ocupation] = @Ocupation,
+								[MaritalStatus] = @MaritalStatus,
+								[IdentityRG] = @IdentityRG,
+								[CPF] = @CPF,
+								[Street] = @Street,
+								[Neighborhood] = @Neighborhood,
+								[City] = @City,
+								[CEP] = @CEP,
+								[State] = @State,
+								[SpouseFirstName] = @SpouseFirstName,
+								[SpouseLastName] = @SpouseLastName,
+								[SpouseNationality] = @SpouseNationality,
+								[SpouseOcupation] = @SpouseOcupation,
+								[SpouseIdentityRG] = @SpouseIdentityRG,
+								[SpouseCPF] = @SpouseCPF
+							WHERE 
+								Id = @Id;";
+
+            _context.Connection.Execute(sql,
                    new
                    {
                        Id = id,
@@ -71,20 +139,22 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                        guarantor.SpouseOcupation,
                        SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                        SpouseCPF = guarantor.SpouseCPF.CPF
-                   },
-                   commandType: CommandType.StoredProcedure
-               );
+                   });
         }
 
         public void Delete(int id)
         {
-            _context.Connection.Execute("sp_Guarantors_CUD_DeleteGuarantor",
+            var sql = @"DELETE 
+                        FROM 
+							Guarantors
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         Id = id
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                    });
         }
     }
 }

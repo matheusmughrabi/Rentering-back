@@ -19,32 +19,46 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public bool CheckIfContractNameExists(string contractName)
         {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [ContractsWithGuarantor]
+		                        WHERE [ContractName] = @ContractName
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT)
+                            END;";
+
             var contractNameExists = _context.Connection.Query<bool>(
-                    "sp_ContractsWithGuarantor_Query_CheckIfContractNameExists",
-                    new { ContractName = contractName },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new { ContractName = contractName }).FirstOrDefault();
 
             return contractNameExists;
         }
 
         public IEnumerable<GetContractWithGuarantorQueryResult> GetAll()
         {
-            var contractsFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(
-                    "sp_ContractsWithGuarantor_Query_GetAllContracts",
-                    commandType: CommandType.StoredProcedure
-                );
+            var sql = @"SELECT 
+							*
+						FROM 
+							ContractsWithGuarantor;";
+
+            var contractsFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(sql);
 
             return contractsFromDb;
         }
 
         public GetContractWithGuarantorQueryResult GetById(int id)
         {
+            var sql = @"SELECT
+							*
+						FROM 
+							ContractsWithGuarantor
+						WHERE 
+							[Id] = @Id;";
+
             var contractFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(
-                    "sp_ContractsWithGuarantor_Query_GetContractById",
-                    new { Id = id },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new { Id = id }).FirstOrDefault();
 
             return contractFromDb;
         }

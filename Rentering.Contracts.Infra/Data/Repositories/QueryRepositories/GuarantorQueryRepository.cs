@@ -25,7 +25,8 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 		                        WHERE [Id] = @Id
 	                        )
 	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT);";
+	                        ELSE CAST(0 AS BIT)
+                            END;";
 
             var accountExists = _context.Connection.Query<bool>(
                     sql,
@@ -43,22 +44,32 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public GetGuarantorQueryResult GetById(int id)
         {
+            var sql = @"SELECT
+							*
+						FROM 
+							Guarantors
+						WHERE 
+							[Id] = @Id;";
+
             var guarantorFromDb = _context.Connection.Query<GetGuarantorQueryResult>(
-                   "sp_Guarantors_Query_GetGuarantorById",
-                   new { Id = id },
-                   commandType: CommandType.StoredProcedure
-               ).FirstOrDefault();
+                   sql,
+                   new { Id = id }).FirstOrDefault();
 
             return guarantorFromDb;
         }
 
         public IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId)
         {
+            var sql = @"SELECT 
+							*
+						FROM 
+							Guarantors
+						WHERE 
+							[AccountId] = @AccountId;";
+
             var guarantorsFromDb = _context.Connection.Query<GetGuarantorQueryResult>(
-                    "sp_Guarantors_Query_GetGuarantorsOfAccount",
-                    new { AccountId = accountId },
-                    commandType: CommandType.StoredProcedure
-                );
+                    sql,
+                    new { AccountId = accountId });
 
             return guarantorsFromDb;
         }

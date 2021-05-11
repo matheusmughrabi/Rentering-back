@@ -24,7 +24,8 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 		                        WHERE [Email] = @Email
 	                        )
 	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT);";
+	                        ELSE CAST(0 AS BIT)
+                        END;";
 
             var emailExists = _context.Connection.Query<bool>(
                      sql,
@@ -41,7 +42,8 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 		                        WHERE [Username] = @Username
 	                        )
 	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT);";
+	                        ELSE CAST(0 AS BIT)
+                            END;";
 
             var documentExists = _context.Connection.Query<bool>(
                     sql,
