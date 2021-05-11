@@ -55,8 +55,8 @@ namespace Rentering.Accounts.Application.Handlers
         public ICommandResult Handle(AssignAccountCommand command)
         {
             var id = command.Id;
-            var accountQueryResult = _accountUnitOfWork.AccountQuery.GetAccountById(command.Id);
-            var accountEntity = accountQueryResult.EntityFromQueryResult();
+            var accountForCUDResult = _accountUnitOfWork.AccountCUD.GetAccountForCUD(command.Id);
+            var accountEntity = accountForCUDResult.EntityFromQueryResult();
 
             accountEntity.AssignAdminRole();
 

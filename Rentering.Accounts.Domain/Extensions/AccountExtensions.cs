@@ -1,4 +1,5 @@
-﻿using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+﻿using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.ValueObjects;
 
@@ -6,17 +7,15 @@ namespace Rentering.Accounts.Domain.Extensions
 {
     public static class AccountExtensions
     {
-        public static AccountEntity EntityFromQueryResult(this GetAccountQueryResult accountQueryResult)
+        public static AccountEntity EntityFromQueryResult(this GetAccountForCUDResult accountForCUDResult)
         {
-            var email = new EmailValueObject(accountQueryResult.Email);
-            var username = new UsernameValueObject(accountQueryResult.Username);
+            var email = new EmailValueObject(accountForCUDResult.Email);
+            var username = new UsernameValueObject(accountForCUDResult.Username);
 
-            var passwordFromDb = "123";
-            var password = new PasswordValueObject(passwordFromDb);
-            //var role = accountQueryResult.Role;
-            //var id = accountQueryResult.Id;
+            var role = accountForCUDResult.Role;
+            var id = accountForCUDResult.Id;
 
-            var accountEntity = new AccountEntity(email, username, password);
+            var accountEntity = new AccountEntity(email, username, null, role, id);
 
             return accountEntity;
         }

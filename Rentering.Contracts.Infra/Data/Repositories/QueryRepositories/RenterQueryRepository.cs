@@ -19,11 +19,20 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public bool CheckIfAccountExists(int accountId)
         {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Id] = @Id
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT);";
+
             var accountExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Query_CheckIfAccountExists",
-                    new { Id = accountId },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new
+                    {
+                        Id = accountId
+                    }).FirstOrDefault();
 
             return accountExists;
         }
