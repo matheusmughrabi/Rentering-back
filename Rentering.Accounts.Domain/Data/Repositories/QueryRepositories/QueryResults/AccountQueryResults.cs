@@ -4,6 +4,21 @@ namespace Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryRes
 {
     public class GetAccountQueryResult
     {
+        public string Email { get; set; }
+        public string Username { get; set; }
+    }
+
+    public class GetAccountForLoginQueryResult
+    {
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public e_Roles Role { get; set; }
+    }
+
+    public class GetAccountQueryResult_AdminUsageOnly
+    {
         public int Id { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }

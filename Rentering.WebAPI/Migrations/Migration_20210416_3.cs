@@ -7,7 +7,7 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
+            //Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAllAccounts]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]");
@@ -21,20 +21,20 @@ namespace Rentering.WebAPI.Migrations
         public override void Up()
         {
             #region QueryRepository
-            Execute.Sql(@"SET ANSI_NULLS ON
-                            GO
-                            SET QUOTED_IDENTIFIER ON
-                            GO
+            //Execute.Sql(@"SET ANSI_NULLS ON
+            //                GO
+            //                SET QUOTED_IDENTIFIER ON
+            //                GO
 
-                            CREATE PROCEDURE sp_Accounts_Query_GetAccountById
-                                @Id INT
-                            AS
-                            BEGIN
-	                            SET NOCOUNT ON;
+            //                CREATE PROCEDURE sp_Accounts_Query_GetAccountById
+            //                    @Id INT
+            //                AS
+            //                BEGIN
+	           //                 SET NOCOUNT ON;
 
-	                            SELECT * FROM Accounts WHERE Id = @Id
-                            END
-                            GO");
+	           //                 SELECT * FROM Accounts WHERE Id = @Id
+            //                END
+            //                GO");
 
             Execute.Sql(@"SET ANSI_NULLS ON
                             GO

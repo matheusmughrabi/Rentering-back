@@ -10,9 +10,26 @@ namespace Rentering.Accounts.Domain.Extensions
         {
             var email = new EmailValueObject(accountQueryResult.Email);
             var username = new UsernameValueObject(accountQueryResult.Username);
-            var password = new PasswordValueObject(accountQueryResult.Password);
-            var role = accountQueryResult.Role;
-            var id = accountQueryResult.Id;
+
+            var passwordFromDb = "123";
+            var password = new PasswordValueObject(passwordFromDb);
+            //var role = accountQueryResult.Role;
+            //var id = accountQueryResult.Id;
+
+            var accountEntity = new AccountEntity(email, username, password);
+
+            return accountEntity;
+        }
+
+        public static AccountEntity EntityFromQueryResult(this GetAccountForLoginQueryResult accountForLoginQueryResult)
+        {
+            var email = new EmailValueObject(accountForLoginQueryResult.Email);
+            var username = new UsernameValueObject(accountForLoginQueryResult.Username);
+
+            var passwordFromDb = "123";
+            var password = new PasswordValueObject(passwordFromDb);
+            var role = accountForLoginQueryResult.Role;
+            var id = accountForLoginQueryResult.Id;
 
             var accountEntity = new AccountEntity(email, username, password, role, id);
 

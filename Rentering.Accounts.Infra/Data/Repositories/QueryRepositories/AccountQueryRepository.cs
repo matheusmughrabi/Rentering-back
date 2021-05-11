@@ -41,19 +41,33 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 
         public GetAccountQueryResult GetAccountById(int id)
         {
+            var sql = @"SELECT Email, Username FROM Accounts WHERE Id = @Id";
+
             var accountQueryResult = _context.Connection.Query<GetAccountQueryResult>(
-                    "sp_Accounts_Query_GetAllAccounts",
+                    sql,
                     new { Id = id }
                 ).FirstOrDefault();
 
             return accountQueryResult;
         }
 
-        public IEnumerable<GetAccountQueryResult> GetAccounts()
+        public GetAccountForLoginQueryResult GetAccountForLogin(string username)
         {
-            var accountsFromDb = _context.Connection.Query<GetAccountQueryResult>(
-                    "sp_Accounts_Query_GetAllAccounts",
-                    commandType: CommandType.StoredProcedure);
+            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username";
+
+            var accountFromDb = _context.Connection.Query<GetAccountForLoginQueryResult>(
+                    sql,
+                    new { Username = username }).FirstOrDefault();
+
+            return accountFromDb;
+        }
+
+        public IEnumerable<GetAccountQueryResult_AdminUsageOnly> GetAllAccounts_AdminUsageOnly()
+        {
+            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts";
+
+            var accountsFromDb = _context.Connection.Query<GetAccountQueryResult_AdminUsageOnly>(
+                    sql);
 
             return accountsFromDb;
         }

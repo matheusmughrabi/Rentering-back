@@ -26,11 +26,11 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpGet]
         [Route("v1/Accounts/GetAllAccounts")]
         [Authorize(Roles = "Admin")]
-        public IEnumerable<GetAccountQueryResult> GetAllAccount()
+        public IActionResult GetAllAccount()
         {
-            var result = _accountUnitOfWork.AccountQuery.GetAccounts();
+            var result = _accountUnitOfWork.AccountQuery.GetAllAccounts_AdminUsageOnly();
 
-            return result;
+            return Ok(result);
         }
 
         [HttpGet]
@@ -66,11 +66,9 @@ namespace Rentering.WebAPI.Controllers.Account
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var account = _accountUnitOfWork.AccountQuery.GetAccounts()
-                .Where(c => c.Username == loginCommand.Username && c.Password == loginCommand.Password)
-                .FirstOrDefault();
+            var account = _accountUnitOfWork.AccountQuery.GetAccountForLogin(loginCommand.Username);
 
-            if (account == null)
+            if (account == null || account.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
 
             var accountEntity = account.EntityFromQueryResult();
