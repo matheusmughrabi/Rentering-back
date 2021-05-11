@@ -7,10 +7,6 @@ namespace Rentering.WebAPI.Migrations
     {
         public override void Down()
         {
-            //Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAccountById]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_GetAllAccounts]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]");
-            Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]");
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_Query_CheckIfAccountExists]");
 
             Execute.Sql(@"DROP PROCEDURE [dbo].[sp_Accounts_CUD_CreateAccount]");
@@ -20,72 +16,6 @@ namespace Rentering.WebAPI.Migrations
 
         public override void Up()
         {
-            #region QueryRepository
-            //Execute.Sql(@"SET ANSI_NULLS ON
-            //                GO
-            //                SET QUOTED_IDENTIFIER ON
-            //                GO
-
-            //                CREATE PROCEDURE sp_Accounts_Query_GetAccountById
-            //                    @Id INT
-            //                AS
-            //                BEGIN
-	           //                 SET NOCOUNT ON;
-
-	           //                 SELECT * FROM Accounts WHERE Id = @Id
-            //                END
-            //                GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                            GO
-                            SET QUOTED_IDENTIFIER ON
-                            GO
-
-                            CREATE PROCEDURE sp_Accounts_Query_GetAllAccounts
-                            AS
-                            BEGIN
-	                            SET NOCOUNT ON;
-
-	                            SELECT * FROM Accounts
-                            END
-                            GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfEmailExists]
-	                        @Email NVARCHAR(50)
-                        AS
-	                        SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [Accounts]
-		                        WHERE [Email] = @Email
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT) END
-                        GO");
-
-            Execute.Sql(@"SET ANSI_NULLS ON
-                        GO
-
-                        SET QUOTED_IDENTIFIER ON
-                        GO
-
-                        CREATE PROCEDURE [dbo].[sp_Accounts_Query_CheckIfUsernameExists]
-	                        @Username NVARCHAR(50)
-                        AS
-	                        SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [Accounts]
-		                        WHERE [Username] = @Username
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT) END
-                        GO");
-
             Execute.Sql(@"SET ANSI_NULLS ON
                         GO
 
@@ -104,7 +34,6 @@ namespace Rentering.WebAPI.Migrations
 	                        THEN CAST(1 AS BIT)
 	                        ELSE CAST(0 AS BIT) END
                         GO");
-            #endregion
 
             # region CUDRepository
             Execute.Sql(@"SET ANSI_NULLS ON

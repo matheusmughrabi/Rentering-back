@@ -3,7 +3,6 @@ using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Common.Infra;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
@@ -19,29 +18,41 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 
         public bool CheckIfEmailExists(string email)
         {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Email] = @Email
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT);";
+
             var emailExists = _context.Connection.Query<bool>(
-                     "sp_Accounts_Query_CheckIfEmailExists",
-                     new { Email = email },
-                     commandType: CommandType.StoredProcedure
-                 ).FirstOrDefault();
+                     sql,
+                     new { Email = email }).FirstOrDefault();
 
             return emailExists;
         }
 
         public bool CheckIfUsernameExists(string username)
         {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Username] = @Username
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT);";
+
             var documentExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Query_CheckIfUsernameExists",
-                    new { Username = username },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new { Username = username }).FirstOrDefault();
 
             return documentExists;
         }
 
         public GetAccountQueryResult GetAccountById(int id)
         {
-            var sql = @"SELECT Email, Username FROM Accounts WHERE Id = @Id";
+            var sql = @"SELECT Email, Username FROM Accounts WHERE Id = @Id;";
 
             var accountQueryResult = _context.Connection.Query<GetAccountQueryResult>(
                     sql,
@@ -53,7 +64,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 
         public GetAccountForLoginQueryResult GetAccountForLogin(string username)
         {
-            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username";
+            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username;";
 
             var accountFromDb = _context.Connection.Query<GetAccountForLoginQueryResult>(
                     sql,
@@ -64,7 +75,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 
         public IEnumerable<GetAccountQueryResult_AdminUsageOnly> GetAllAccounts_AdminUsageOnly()
         {
-            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts";
+            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts;";
 
             var accountsFromDb = _context.Connection.Query<GetAccountQueryResult_AdminUsageOnly>(
                     sql);
