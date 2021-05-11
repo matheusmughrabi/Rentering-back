@@ -1,9 +1,8 @@
 ﻿using FluentValidator;
 using Rentering.Accounts.Application.Commands;
+using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Extensions;
-using Rentering.Accounts.Domain.Repositories.CUDRepositories;
-using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
 
@@ -13,13 +12,11 @@ namespace Rentering.Accounts.Application.Handlers
         IHandler<CreateAccountCommand>,
         IHandler<AssignAccountCommand>
     {
-        private readonly IAccountCUDRepository _accountCUDRepository;
-        private readonly IAccountQueryRepository _accountQueryRepository;
+        private readonly IAccountUnitOfWork _accountUnitOfWork;
 
-        public AccountHandlers(IAccountCUDRepository accountRepository, IAccountQueryRepository accountQueryRepository)
+        public AccountHandlers(IAccountUnitOfWork accountUnitOfWork)
         {
-            _accountCUDRepository = accountRepository;
-            _accountQueryRepository = accountQueryRepository;
+            _accountUnitOfWork = accountUnitOfWork;
         }
 
         public ICommandResult Handle(CreateAccountCommand command)
@@ -29,10 +26,10 @@ namespace Rentering.Accounts.Application.Handlers
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
             var accountEntity = new AccountEntity(email, username, password);
 
-            if (_accountQueryRepository.CheckIfEmailExists(command.Email))
+            if (_accountUnitOfWork.AccountQuery.CheckIfEmailExists(command.Email))
                 AddNotification("Email", "This Email is already registered");
 
-            if (_accountQueryRepository.CheckIfUsernameExists(command.Username))
+            if (_accountUnitOfWork.AccountQuery.CheckIfUsernameExists(command.Username))
                 AddNotification("Username", "This Username is already registered");
 
             AddNotifications(email.Notifications);
@@ -43,7 +40,7 @@ namespace Rentering.Accounts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _accountCUDRepository.Create(accountEntity);
+            _accountUnitOfWork.AccountCUD.Create(accountEntity);
 
             var createdUser = new CommandResult(true, "User created successfuly", new
             {
@@ -58,7 +55,7 @@ namespace Rentering.Accounts.Application.Handlers
         public ICommandResult Handle(AssignAccountCommand command)
         {
             var id = command.Id;
-            var accountQueryResult = _accountQueryRepository.GetAccountById(command.Id);
+            var accountQueryResult = _accountUnitOfWork.AccountQuery.GetAccountById(command.Id);
             var accountEntity = accountQueryResult.EntityFromQueryResult();
 
             accountEntity.AssignAdminRole();
@@ -68,7 +65,7 @@ namespace Rentering.Accounts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _accountCUDRepository.Update(id, accountEntity);
+            _accountUnitOfWork.AccountCUD.Update(id, accountEntity);
 
             var adminRoleAssignedUser = new CommandResult(true, "Admin role assigned successfuly", new
             {

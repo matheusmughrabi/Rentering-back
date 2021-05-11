@@ -1,6 +1,6 @@
 ﻿using Rentering.Accounts.Domain.Enums;
 
-namespace Rentering.Accounts.Application.QueryResults
+namespace Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults
 {
     public class GetAccountQueryResult
     {

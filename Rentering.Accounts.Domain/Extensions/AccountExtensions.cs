@@ -1,4 +1,4 @@
-﻿using Rentering.Accounts.Application.QueryResults;
+﻿using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.ValueObjects;
 

@@ -14,7 +14,10 @@ namespace Rentering.Contracts.Application.Handlers
         IHandler<InviteRenterToParticipate>,
         IHandler<InviteTenantToParticipate>,
         IHandler<InviteGuarantorToParticipate>,
-        IHandler<CreateContractPaymentCycleCommand>
+        IHandler<CreateContractPaymentCycleCommand>,
+        IHandler<ExecutePaymentCommand>,
+        IHandler<AcceptPaymentCommand>,
+        IHandler<RejectPaymentCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
@@ -181,6 +184,93 @@ namespace Rentering.Contracts.Application.Handlers
             });
 
             return createdPayments;
+        }
+
+        public ICommandResult Handle(ExecutePaymentCommand command)
+        {
+            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
+
+            if (contractFromDb == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var contractEntity = contractFromDb.EntityFromModel();
+            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+
+            contractEntity.IncludeContractPayments(paymentEntities);
+            contractEntity.ExecutePayment(command.Month);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            var executedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+
+            _contractUnitOfWork.ContractPaymentCUD.Update(executedPaymentEntity.Id, executedPaymentEntity);
+
+            var executedPayment = new CommandResult(true, "Payment executed successfuly", new
+            {
+                executedPaymentEntity
+            });
+
+            return executedPayment;
+        }
+
+        public ICommandResult Handle(AcceptPaymentCommand command)
+        {
+            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
+
+            if (contractFromDb == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var contractEntity = contractFromDb.EntityFromModel();
+            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+
+            contractEntity.IncludeContractPayments(paymentEntities);
+            contractEntity.AcceptPayment(command.Month);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            var acceptedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+
+            _contractUnitOfWork.ContractPaymentCUD.Update(acceptedPaymentEntity.Id, acceptedPaymentEntity);
+
+            var acceptedPayment = new CommandResult(true, "Payment accepted successfuly", new
+            {
+                acceptedPaymentEntity
+            });
+
+            return acceptedPayment;
+        }
+
+        public ICommandResult Handle(RejectPaymentCommand command)
+        {
+            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
+
+            if (contractFromDb == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var contractEntity = contractFromDb.EntityFromModel();
+            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+
+            contractEntity.IncludeContractPayments(paymentEntities);
+            contractEntity.RejectPayment(command.Month);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            var rejectedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+
+            _contractUnitOfWork.ContractPaymentCUD.Update(rejectedPaymentEntity.Id, rejectedPaymentEntity);
+
+            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly", new
+            {
+                rejectedPaymentEntity
+            });
+
+            return rejectedPayment;
         }
     }
 }

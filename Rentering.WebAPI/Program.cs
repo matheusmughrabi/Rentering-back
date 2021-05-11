@@ -116,18 +116,24 @@ namespace Rentering.WebAPI
 // Implementar InviteGuarantor OK
 
 // Estudar implementações de UnitOfWork com dapper OK
-// Implementar UnitOfWork OK
+// Implementar ContractUnitOfWork OK
+// Implementar AccountUnitOfWork OK
 
-// Modelar melhor como será feita a criação de ciclos de contrato ON GOING
-// Implementar nova modelagem ON GOING
-// Implementar ContractPaymentController ON GOING
-// ExecutePayment, Accept e Reject
+// Modelar melhor como será feita a criação de ciclos de contrato OK
+// Implementar nova modelagem OK
+// Implementar ContractPaymentController OK
+// ExecutePayment, Accept e Reject OK
+
+/* Refatoração dos repositórios 
+     -> Passar storedProcedures para o C#
+     -> Criar uma consulta específica para cada cenário
+     -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos
+     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
+ */
 
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
 // Implementar Service
-
-// Implementar UnitOfWork em Accounts
 
 // Criar todos os testes de unidade
 // Testar módulo de contratos inteiro

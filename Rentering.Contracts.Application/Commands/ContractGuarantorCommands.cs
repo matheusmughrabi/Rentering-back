@@ -90,4 +90,40 @@ namespace Rentering.Contracts.Application.Commands
 
         public int ContractId { get; set; }
     }
+
+    public class ExecutePaymentCommand : ICommand
+    {
+        public ExecutePaymentCommand(int contractId, DateTime month)
+        {
+            ContractId = contractId;
+            Month = month;
+        }
+
+        public int ContractId { get; set; }
+        public DateTime Month { get; set; }
+    }
+
+    public class AcceptPaymentCommand : ICommand
+    {
+        public AcceptPaymentCommand(int contractId, DateTime month)
+        {
+            ContractId = contractId;
+            Month = month;
+        }
+
+        public int ContractId { get; set; }
+        public DateTime Month { get; set; }
+    }
+
+    public class RejectPaymentCommand : ICommand
+    {
+        public RejectPaymentCommand(int contractId, DateTime month)
+        {
+            ContractId = contractId;
+            Month = month;
+        }
+
+        public int ContractId { get; set; }
+        public DateTime Month { get; set; }
+    }
 }

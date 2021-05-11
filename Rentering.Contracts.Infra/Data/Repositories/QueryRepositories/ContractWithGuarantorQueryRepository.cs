@@ -31,7 +31,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetContractWithGuarantorQueryResult> GetAll()
         {
             var contractsFromDb = _context.Connection.Query<GetContractWithGuarantorQueryResult>(
-                    "sp_ContractWithGuarantors_Query_GetAllContracts",
+                    "sp_ContractsWithGuarantor_Query_GetAllContracts",
                     commandType: CommandType.StoredProcedure
                 );
 

@@ -1,7 +1,7 @@
-﻿using Rentering.Accounts.Application.QueryResults;
+﻿using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using System.Collections.Generic;
 
-namespace Rentering.Accounts.Domain.Repositories.QueryRepositories
+namespace Rentering.Accounts.Domain.Data.Repositories.QueryRepositories
 {
     public interface IAccountQueryRepository
     {

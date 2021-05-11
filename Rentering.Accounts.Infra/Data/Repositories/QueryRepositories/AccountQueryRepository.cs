@@ -1,12 +1,12 @@
 ﻿using Dapper;
-using Rentering.Accounts.Application.QueryResults;
-using Rentering.Accounts.Domain.Repositories.QueryRepositories;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Common.Infra;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Rentering.Accounts.Infra.Repositories.QueryRepositories
+namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
 {
     public class AccountQueryRepository : IAccountQueryRepository
     {

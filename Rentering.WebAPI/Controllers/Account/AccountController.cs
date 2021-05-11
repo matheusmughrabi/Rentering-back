@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.Handlers;
-using Rentering.Accounts.Application.QueryResults;
+using Rentering.Accounts.Domain.Data;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Accounts.Domain.Extensions;
-using Rentering.Accounts.Domain.Repositories.CUDRepositories;
-using Rentering.Accounts.Domain.Repositories.QueryRepositories;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
 using System.Collections.Generic;
@@ -17,12 +16,11 @@ namespace Rentering.WebAPI.Controllers.Account
     [ApiController]
     public class AccountController : RenteringBaseController
     {
-        private readonly IAccountCUDRepository _accountCUDRepository;
-        private readonly IAccountQueryRepository _accountQueryRepository;
-        public AccountController(IAccountCUDRepository accountCUDRepository, IAccountQueryRepository accountQueryRepository)
+        private readonly IAccountUnitOfWork _accountUnitOfWork;
+
+        public AccountController(IAccountUnitOfWork accountUnitOfWork)
         {
-            _accountCUDRepository = accountCUDRepository;
-            _accountQueryRepository = accountQueryRepository;
+            _accountUnitOfWork = accountUnitOfWork;
         }
 
         [HttpGet]
@@ -30,7 +28,7 @@ namespace Rentering.WebAPI.Controllers.Account
         [Authorize(Roles = "Admin")]
         public IEnumerable<GetAccountQueryResult> GetAllAccount()
         {
-            var result = _accountQueryRepository.GetAccounts();
+            var result = _accountUnitOfWork.AccountQuery.GetAccounts();
 
             return result;
         }
@@ -45,7 +43,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _accountQueryRepository.GetAccountById(currentUserId);
+            var result = _accountUnitOfWork.AccountQuery.GetAccountById(currentUserId);
 
             return Ok(result);
         }
@@ -57,7 +55,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
 
-            var handler = new AccountHandlers(_accountCUDRepository, _accountQueryRepository);
+            var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(accountCommand);
 
             return Ok(result);
@@ -68,7 +66,7 @@ namespace Rentering.WebAPI.Controllers.Account
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var account = _accountQueryRepository.GetAccounts()
+            var account = _accountUnitOfWork.AccountQuery.GetAccounts()
                 .Where(c => c.Username == loginCommand.Username && c.Password == loginCommand.Password)
                 .FirstOrDefault();
 
@@ -87,7 +85,7 @@ namespace Rentering.WebAPI.Controllers.Account
         [Authorize(Roles = "Admin")]
         public IActionResult AssignAdminRole([FromBody] AssignAccountCommand assignAdminRoleCommand)
         {
-            var handler = new AccountHandlers(_accountCUDRepository, _accountQueryRepository);
+            var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(assignAdminRoleCommand);
 
             return Ok(result);
@@ -103,7 +101,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            _accountCUDRepository.Delete(accountId);
+            _accountUnitOfWork.AccountCUD.Delete(accountId);
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });

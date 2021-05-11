@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Rentering.Accounts.Domain.Repositories.CUDRepositories;
-using Rentering.Accounts.Domain.Repositories.QueryRepositories;
-using Rentering.Accounts.Infra.Repositories.CUDRepositories;
-using Rentering.Accounts.Infra.Repositories.QueryRepositories;
+using Rentering.Accounts.Domain.Data;
+using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
+using Rentering.Accounts.Infra.Data;
+using Rentering.Accounts.Infra.Data.Repositories.CUDRepositories;
+using Rentering.Accounts.Infra.Data.Repositories.QueryRepositories;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
@@ -29,6 +31,8 @@ namespace Rentering.WebAPI.Configuration
             services.AddScoped<RenteringDataContext, RenteringDataContext>();
 
             #region Accounts
+            services.AddScoped<IAccountUnitOfWork, AccountUnitOfWork>();
+
             services.AddTransient<IAccountCUDRepository, AccountCUDRepository>();
             services.AddTransient<IAccountQueryRepository, AccountQueryRepository>();
             #endregion
