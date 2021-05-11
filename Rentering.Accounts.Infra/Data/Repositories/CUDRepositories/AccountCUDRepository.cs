@@ -3,7 +3,6 @@ using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories;
 using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Common.Infra;
-using System.Data;
 using System.Linq;
 
 namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
