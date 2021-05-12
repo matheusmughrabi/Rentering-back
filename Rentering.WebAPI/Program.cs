@@ -127,7 +127,7 @@ namespace Rentering.WebAPI
 /* Refatoração dos repositórios 
      -> Passar storedProcedures para o C# OK
      -> Criar uma consulta específica para cada cenário ON GOING
-     -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos
+     -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos OK
      -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
  */
 
