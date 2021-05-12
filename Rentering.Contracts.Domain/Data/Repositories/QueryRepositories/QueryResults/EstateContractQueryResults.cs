@@ -4,7 +4,7 @@ using System;
 
 namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults
 {
-    public class GetContractWithGuarantorQueryResult : IQueryResult
+    public class GetEstateContractQueryResult : IQueryResult
     {
         public int Id { get; set; }
         public string ContractName { get; set; }

@@ -8,13 +8,13 @@ namespace Rentering.WebAPI.Migrations
     {
 		public override void Down()
 		{
-			Delete.Table("ContractsWithGuarantor");
+			Delete.Table("EstateContracts");
 			
 		}
 
 		public override void Up()
 		{
-			Create.Table("ContractsWithGuarantor")
+			Create.Table("EstateContracts")
 				.WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
 				.WithColumn("ContractName").AsString().NotNullable()
 				.WithColumn("RenterId").AsInt32().Nullable()

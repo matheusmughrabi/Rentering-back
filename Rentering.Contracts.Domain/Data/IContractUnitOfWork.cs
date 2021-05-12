@@ -15,8 +15,8 @@ namespace Rentering.Contracts.Domain.Data
         IGuarantorCUDRepository GuarantorCUD { get; }
         IGuarantorQueryRepository GuarantorQuery { get; }
 
-        IContractWithGuarantorCUDRepository ContractWithGuarantorCUD { get; }
-        IContractWithGuarantorQueryRepository ContractWithGuarantorQuery { get; }
+        IEstateContractCUDRepository EstateContractCUD { get; }
+        IEstateContractQueryRepository EstateContractQuery { get; }
 
         IContractPaymentCUDRepository ContractPaymentCUD { get; }
         IContractPaymentQueryRepository ContractPaymentQuery { get; }

@@ -15,7 +15,7 @@ namespace Rentering.WebAPI.Migrations
         {
             Create.Table("ContractPayments")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
-                .WithColumn("ContractId").AsInt32().NotNullable().ForeignKey("ContractsWithGuarantor", "Id")
+                .WithColumn("ContractId").AsInt32().NotNullable().ForeignKey("EstateContracts", "Id")
                 .WithColumn("Month").AsDate().NotNullable()
                 .WithColumn("RentPrice").AsDecimal().NotNullable()
                 .WithColumn("RenterPaymentStatus").AsInt32().NotNullable()

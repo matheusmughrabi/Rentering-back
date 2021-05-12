@@ -36,9 +36,9 @@ namespace Rentering.Contracts.Application.Handlers
             var contractStartDate = command.ContractStartDate;
             var contractEndDate = command.ContractEndDate;
 
-            var contract = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            if (_contractUnitOfWork.ContractWithGuarantorQuery.CheckIfContractNameExists(command.ContractName))
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractNameExists(command.ContractName))
                 AddNotification("ContractName", "This ContractName is already registered");
 
             AddNotifications(address.Notifications);
@@ -49,7 +49,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWork.ContractWithGuarantorCUD.Create(contract);
+            _contractUnitOfWork.EstateContractCUD.Create(contract);
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
@@ -62,7 +62,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
             var renterEntity = _contractUnitOfWork.RenterCUD.GetRenterForCUD(command.RenterId);
 
             if (contractEntity == null || renterEntity == null)
@@ -77,7 +77,7 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
             _contractUnitOfWork.BeginTransaction();
-            _contractUnitOfWork.ContractWithGuarantorCUD.Update(command.Id, contractEntity);
+            _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
             _contractUnitOfWork.RenterCUD.Update(command.RenterId, renterEntity);
             _contractUnitOfWork.Commit();
 
@@ -91,7 +91,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteTenantToParticipate command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
             var tenantEntity = _contractUnitOfWork.TenantCUD.GetTenantForCUD(command.TenantId);
 
             if (contractEntity == null || tenantEntity == null)
@@ -105,7 +105,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWork.ContractWithGuarantorCUD.Update(command.Id, contractEntity);
+            _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
             _contractUnitOfWork.TenantCUD.Update(command.TenantId, tenantEntity);
 
             var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
@@ -118,7 +118,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteGuarantorToParticipate command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
             var guarantorEntity = _contractUnitOfWork.GuarantorCUD.GetGuarantorForCUD(command.GuarantorId);
 
             if (contractEntity == null || guarantorEntity == null)
@@ -132,7 +132,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWork.ContractWithGuarantorCUD.Update(command.Id, contractEntity);
+            _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
             _contractUnitOfWork.GuarantorCUD.Update(command.GuarantorId, guarantorEntity);
 
             var updatedContract = new CommandResult(true, "Guarantor invited successfuly", new
@@ -145,7 +145,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(CreateContractPaymentCycleCommand command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -172,7 +172,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -196,7 +196,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(AcceptPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -221,7 +221,7 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(RejectPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });

@@ -7,21 +7,21 @@ using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {
-    public class ContractWithGuarantorCUDRepository : IContractWithGuarantorCUDRepository
+    public class EstateContractCUDRepository : IEstateContractCUDRepository
     {
         private readonly RenteringDataContext _context;
 
-        public ContractWithGuarantorCUDRepository(RenteringDataContext context)
+        public EstateContractCUDRepository(RenteringDataContext context)
         {
             _context = context;
         }
 
-        public ContractWithGuarantorEntity GetContractForCUD(int id)
+        public EstateContractEntity GetContractForCUD(int id)
         {
-            var contractSql = @"SELECT * FROM ContractsWithGuarantor WHERE Id = @Id";
+            var contractSql = @"SELECT * FROM EstateContracts WHERE Id = @Id";
             var paymentSql = @"SELECT * FROM ContractPayments WHERE ContractId = @ContractId";
 
-            var contractFromDb = _context.Connection.Query<GetContractWithGuarantorForCUD>(
+            var contractFromDb = _context.Connection.Query<GetEstateContractForCUD>(
                    contractSql,
                    new { Id = id }).FirstOrDefault();
 
@@ -40,9 +40,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return contractEntity;
         }
 
-        public void Create(ContractWithGuarantorEntity contract)
+        public void Create(EstateContractEntity contract)
         {
-            var sql = @"INSERT INTO [ContractsWithGuarantor] (
+            var sql = @"INSERT INTO [EstateContracts] (
 								[ContractName], 
 								[RenterId],
 								[TenantId],
@@ -94,10 +94,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     },
                     _context.Transaction);
         }
-        public void Update(int id, ContractWithGuarantorEntity contract)
+        public void Update(int id, EstateContractEntity contract)
         {
             var sql = @"UPDATE 
-							ContractsWithGuarantor
+							EstateContracts
 						SET
 							[ContractName] = @ContractName,
 							[RenterId] = @RenterId,
@@ -142,7 +142,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         {
             var sql = @"DELETE 
                         FROM 
-							ContractsWithGuarantor
+							EstateContracts
 						WHERE 
 							Id = @Id;";
 

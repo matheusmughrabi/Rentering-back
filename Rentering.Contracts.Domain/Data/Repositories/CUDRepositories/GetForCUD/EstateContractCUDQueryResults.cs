@@ -6,7 +6,7 @@ using System;
 
 namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
 {
-    public class GetContractWithGuarantorForCUD : IGetForCUD<ContractWithGuarantorEntity>
+    public class GetEstateContractForCUD : IGetForCUD<EstateContractEntity>
     {
         public int Id { get; set; }
         public string ContractName { get; set; }
@@ -24,7 +24,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
-        public ContractWithGuarantorEntity EntityFromModel()
+        public EstateContractEntity EntityFromModel()
         {
             var id = Id;
             var contractName = ContractName;
@@ -35,7 +35,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
             var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(PropertyRegistrationNumber);
             var rentPrice = new PriceValueObject(RentPrice);
 
-            var contractEntity = new ContractWithGuarantorEntity(contractName, address, propertyRegistrationNumber, rentPrice, RentDueDate, ContractStartDate, ContractEndDate, id, renterId, tenantId, guarantorId);
+            var contractEntity = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, RentDueDate, ContractStartDate, ContractEndDate, id, renterId, tenantId, guarantorId);
 
             return contractEntity;
         }

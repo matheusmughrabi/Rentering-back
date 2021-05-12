@@ -15,8 +15,8 @@ namespace Rentering.Contracts.Infra.Data
             ITenantQueryRepository tenantQuery,
             IGuarantorCUDRepository guarantorCUD,
             IGuarantorQueryRepository guarantorQuery,
-            IContractWithGuarantorCUDRepository contractWithGuarantorCUDRepositoryCUD,
-            IContractWithGuarantorQueryRepository contractWithGuarantorQueryRepositoryQuery,
+            IEstateContractCUDRepository estateContractCUDRepositoryCUD,
+            IEstateContractQueryRepository estateContractQueryRepositoryQuery,
             IContractPaymentCUDRepository contractPaymentCUD,
             IContractPaymentQueryRepository contractPaymentQuery) : base(renteringDataContext)
         {
@@ -29,8 +29,8 @@ namespace Rentering.Contracts.Infra.Data
             GuarantorCUD = guarantorCUD;
             GuarantorQuery = guarantorQuery;
 
-            ContractWithGuarantorCUD = contractWithGuarantorCUDRepositoryCUD;
-            ContractWithGuarantorQuery = contractWithGuarantorQueryRepositoryQuery;
+            EstateContractCUD = estateContractCUDRepositoryCUD;
+            EstateContractQuery = estateContractQueryRepositoryQuery;
 
             ContractPaymentCUD = contractPaymentCUD;
             ContractPaymentQuery = contractPaymentQuery;
@@ -45,8 +45,8 @@ namespace Rentering.Contracts.Infra.Data
         public IGuarantorCUDRepository GuarantorCUD { get; }
         public IGuarantorQueryRepository GuarantorQuery { get; }
 
-        public IContractWithGuarantorCUDRepository ContractWithGuarantorCUD { get; }
-        public IContractWithGuarantorQueryRepository ContractWithGuarantorQuery { get; }
+        public IEstateContractCUDRepository EstateContractCUD { get; }
+        public IEstateContractQueryRepository EstateContractQuery { get; }
 
         public IContractPaymentCUDRepository ContractPaymentCUD { get; }
         public IContractPaymentQueryRepository ContractPaymentQuery { get; }
