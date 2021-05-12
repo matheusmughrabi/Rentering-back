@@ -131,6 +131,14 @@ namespace Rentering.WebAPI
      -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
  */
 
+// POSSIBILIDADES ADICIONAIS
+/*
+  -> Criar tabela intermediária com os campos AccountId, ContractId e UserRoleInTheContractId 
+     (Owner, Participant OU ENTÃO Owner, Renter, Tenant and Guarantor)
+  -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
+  -> Refatorar nomenclatura para EstateContract
+ */
+
 // Criar auth commands, IService e handlers
 // Criar testes de unidade para auth handlers
 // Implementar Service
@@ -138,3 +146,6 @@ namespace Rentering.WebAPI
 // Criar todos os testes de unidade
 // Testar módulo de contratos inteiro
 // Mergear e liberar nova versão
+
+
+

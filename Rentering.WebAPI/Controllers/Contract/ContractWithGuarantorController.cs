@@ -39,6 +39,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
+            // TODO - Precisa ser refatorado
             var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
             var renters = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
 

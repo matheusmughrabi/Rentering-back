@@ -16,7 +16,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
             _context = context;
         }
 
-        public GetAccountForCUDResult GetAccountForCUD(int id)
+        public AccountEntity GetAccountForCUD(int id)
         {
             var sql = @"SELECT Id, Email, Username, Role FROM Accounts WHERE Id = @Id;";
 
@@ -24,7 +24,9 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Id = id }).FirstOrDefault();
 
-            return accountFromDb;
+            var accountEntity = accountFromDb.EntityFromModel();
+
+            return accountEntity;
         }
 
         public void Create(AccountEntity accountEntity)
