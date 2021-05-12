@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
 using Rentering.Contracts.Domain.Entities;
-using System.Data;
+using Rentering.Contracts.Domain.Extensions;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {
@@ -13,6 +15,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public GuarantorCUDRepository(RenteringDataContext context)
         {
             _context = context;
+        }
+
+        public GuarantorEntity GetGuarantorForCUD(int guarantorId)
+        {
+            var guarantorSql = @"SELECT * FROM Guarantors WHERE Id = @Id";
+
+            var guarantorFromDb = _context.Connection.Query<GetGuarantorForCUD>(
+                   guarantorSql,
+                   new { Id = guarantorId })
+                .FirstOrDefault();
+
+            if (guarantorFromDb == null)
+                return null;
+
+            var guarantorEntity = guarantorFromDb.EntityFromModel();
+
+            return guarantorEntity;
         }
 
         public void Create(GuarantorEntity guarantor)

@@ -1,4 +1,5 @@
-﻿using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+﻿using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
+using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.ValueObjects;
 
@@ -26,6 +27,32 @@ namespace Rentering.Contracts.Domain.Extensions
             var spouseNationality = renterQueryResult.SpouseNationality;
             var spouseIdentityRG = new IdentityRGValueObject(renterQueryResult.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(renterQueryResult.SpouseCPF);
+
+            var renterEntity = new RenterEntity(accountId, name, nationality, ocupation, maritalStatus, identityRG, CPF, address, spouseName, spouseNationality, spouseIdentityRG, spouseCPF, status, id);
+
+            return renterEntity;
+        }
+
+        public static RenterEntity EntityFromModel(this GetRenterForCUD getRenterForCUD)
+        {
+            if (getRenterForCUD == null)
+                return null;
+
+            var id = getRenterForCUD.Id;
+            var accountId = getRenterForCUD.AccountId;
+            var status = getRenterForCUD.Status;
+            var name = new NameValueObject(getRenterForCUD.FirstName, getRenterForCUD.LastName);
+            var nationality = getRenterForCUD.Nationality;
+            var ocupation = getRenterForCUD.Ocupation;
+            var maritalStatus = getRenterForCUD.MaritalStatus;
+            var identityRG = new IdentityRGValueObject(getRenterForCUD.IdentityRG);
+            var CPF = new CPFValueObject(getRenterForCUD.CPF);
+            var address = new AddressValueObject(getRenterForCUD.Street, getRenterForCUD.Neighborhood, getRenterForCUD.City, getRenterForCUD.CEP,
+                getRenterForCUD.State);
+            var spouseName = new NameValueObject(getRenterForCUD.SpouseFirstName, getRenterForCUD.SpouseLastName, false, false);
+            var spouseNationality = getRenterForCUD.SpouseNationality;
+            var spouseIdentityRG = new IdentityRGValueObject(getRenterForCUD.SpouseIdentityRG);
+            var spouseCPF = new CPFValueObject(getRenterForCUD.SpouseCPF);
 
             var renterEntity = new RenterEntity(accountId, name, nationality, ocupation, maritalStatus, identityRG, CPF, address, spouseName, spouseNationality, spouseIdentityRG, spouseCPF, status, id);
 

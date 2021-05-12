@@ -1,7 +1,10 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Extensions;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {
@@ -12,6 +15,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public RenterCUDRepository(RenteringDataContext context)
         {
             _context = context;
+        }
+
+        public RenterEntity GetRenterForCUD(int renterId)
+        {
+            var renterSql = @"SELECT * FROM Renters WHERE Id = @Id";
+
+            var renterFromDb = _context.Connection.Query<GetRenterForCUD>(
+                   renterSql,
+                   new { Id = renterId })
+                .FirstOrDefault();
+
+            if (renterFromDb == null)
+                return null;
+
+            var renterEntity = renterFromDb.EntityFromModel();
+
+            return renterEntity;
         }
 
         public void Create(RenterEntity renter)

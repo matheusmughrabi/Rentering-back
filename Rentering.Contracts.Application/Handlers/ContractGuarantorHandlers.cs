@@ -64,12 +64,10 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
-            var renterFromDb = _contractUnitOfWork.RenterQuery.GetById(command.RenterId);
+            var renterEntity = _contractUnitOfWork.RenterCUD.GetRenterForCUD(command.RenterId);
 
-            if (contractEntity == null || renterFromDb == null)
+            if (contractEntity == null || renterEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or renter not found" });
-
-            var renterEntity = renterFromDb.EntityFromModel();
 
             contractEntity.InviteRenter(renterEntity);
 
@@ -95,12 +93,10 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(InviteTenantToParticipate command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
-            var tenantFromDb = _contractUnitOfWork.TenantQuery.GetById(command.TenantId);
+            var tenantEntity = _contractUnitOfWork.TenantCUD.GetTenantForCUD(command.TenantId);
 
-            if (contractEntity == null || tenantFromDb == null)
+            if (contractEntity == null || tenantEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or tenant not found" });
-
-            var tenantEntity = tenantFromDb.EntityFromModel();
 
             contractEntity.InviteTenant(tenantEntity);
 
@@ -124,12 +120,10 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(InviteGuarantorToParticipate command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
-            var guarantorFromDb = _contractUnitOfWork.GuarantorQuery.GetById(command.GuarantorId);
+            var guarantorEntity = _contractUnitOfWork.GuarantorCUD.GetGuarantorForCUD(command.GuarantorId);
 
-            if (contractEntity == null || guarantorFromDb == null)
+            if (contractEntity == null || guarantorEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or guarantor not found" });
-
-            var guarantorEntity = guarantorFromDb.EntityFromModel();
 
             contractEntity.InviteGuarantor(guarantorEntity);
 
@@ -180,20 +174,16 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
-            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
-
-            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
-
-            contractEntity.IncludeContractPayments(paymentEntities);
             contractEntity.ExecutePayment(command.Month);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var executedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+            var executedPaymentEntity = contractEntity.Payments
+                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
 
             _contractUnitOfWork.ContractPaymentCUD.Update(executedPaymentEntity.Id, executedPaymentEntity);
 
@@ -208,20 +198,17 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(AcceptPaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
-            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
-
-            contractEntity.IncludeContractPayments(paymentEntities);
             contractEntity.AcceptPayment(command.Month);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var acceptedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+            var acceptedPaymentEntity = contractEntity.Payments
+                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
 
             _contractUnitOfWork.ContractPaymentCUD.Update(acceptedPaymentEntity.Id, acceptedPaymentEntity);
 
@@ -236,20 +223,17 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(RejectPaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
-            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
-
-            contractEntity.IncludeContractPayments(paymentEntities);
             contractEntity.RejectPayment(command.Month);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var rejectedPaymentEntity = paymentEntities.Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+            var rejectedPaymentEntity = contractEntity.Payments
+                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
 
             _contractUnitOfWork.ContractPaymentCUD.Update(rejectedPaymentEntity.Id, rejectedPaymentEntity);
 
