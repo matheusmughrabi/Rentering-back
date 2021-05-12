@@ -3,8 +3,8 @@ using FluentMigrator.SqlServer;
 
 namespace Rentering.WebAPI.Migrations
 {
-    [Migration(20210501_1)]
-    public class Migration_20210501_1 : Migration
+    [Migration(20210501_1, "CreateEstateContracts")]
+    public class Migration_20210501_1_CreateEstateContracts : Migration
     {
 		public override void Down()
 		{
