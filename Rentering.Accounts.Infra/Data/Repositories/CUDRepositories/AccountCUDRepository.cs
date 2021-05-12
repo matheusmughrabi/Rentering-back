@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories;
-using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
+using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.GetForCUD;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Common.Infra;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
         {
             var sql = @"SELECT Id, Email, Username, Role FROM Accounts WHERE Id = @Id;";
 
-            var accountFromDb = _context.Connection.Query<GetAccountForCUDResult>(
+            var accountFromDb = _context.Connection.Query<GetAccountForCUD>(
                     sql,
                     new { Id = id }).FirstOrDefault();
 
@@ -33,7 +33,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
         {
             var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username;";
 
-            var accountFromDb = _context.Connection.Query<GetAccountForLoginCUDResult>(
+            var accountFromDb = _context.Connection.Query<GetAccountForLoginCUD>(
                     sql,
                     new { Username = username }).FirstOrDefault();
 

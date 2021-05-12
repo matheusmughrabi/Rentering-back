@@ -1,10 +1,11 @@
 ﻿using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
+using Rentering.Common.Shared.Queries;
 
-namespace Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults
+namespace Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.GetForCUD
 {
-    public class GetAccountForCUDResult
+    public class GetAccountForCUD : IGetForCUD<AccountEntity>
     {
         public int Id { get; set; }
         public string Email { get; set; }
@@ -24,7 +25,7 @@ namespace Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.CUDQueryRe
         }
     }
 
-    public class GetAccountForLoginCUDResult
+    public class GetAccountForLoginCUD : IGetForCUD<AccountEntity>
     {
         public int Id { get; set; }
         public string Email { get; set; }

@@ -3,12 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
-using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
-using Rentering.Accounts.Domain.Extensions;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {

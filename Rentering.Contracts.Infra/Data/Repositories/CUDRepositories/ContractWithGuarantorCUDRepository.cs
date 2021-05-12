@@ -1,9 +1,8 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD;
 using Rentering.Contracts.Domain.Entities;
-using Rentering.Contracts.Domain.Extensions;
 using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
