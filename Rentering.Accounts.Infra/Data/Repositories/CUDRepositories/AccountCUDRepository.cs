@@ -29,6 +29,19 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
             return accountEntity;
         }
 
+        public AccountEntity GetAccountForLoginCUD(string username)
+        {
+            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username;";
+
+            var accountFromDb = _context.Connection.Query<GetAccountForLoginCUDResult>(
+                    sql,
+                    new { Username = username }).FirstOrDefault();
+
+            var accountEntity = accountFromDb.EntityFromModel();
+
+            return accountEntity;
+        }
+
         public void Create(AccountEntity accountEntity)
         {
             var sql = @" INSERT INTO [Accounts] (

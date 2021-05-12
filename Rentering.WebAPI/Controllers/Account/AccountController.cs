@@ -66,12 +66,10 @@ namespace Rentering.WebAPI.Controllers.Account
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var account = _accountUnitOfWork.AccountQuery.GetAccountForLogin(loginCommand.Username);
+            var accountEntity = _accountUnitOfWork.AccountCUD.GetAccountForLoginCUD(loginCommand.Username);
 
-            if (account == null || account.Password != loginCommand.Password)
+            if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
-
-            var accountEntity = account.EntityFromQueryResult();
 
             var userInfo = TokenService.GenerateToken(accountEntity);
 

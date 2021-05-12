@@ -64,17 +64,6 @@ namespace Rentering.Accounts.Infra.Data.Repositories.QueryRepositories
             return accountQueryResult;
         }
 
-        public GetAccountForLoginQueryResult GetAccountForLogin(string username)
-        {
-            var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts WHERE Username = @Username;";
-
-            var accountFromDb = _context.Connection.Query<GetAccountForLoginQueryResult>(
-                    sql,
-                    new { Username = username }).FirstOrDefault();
-
-            return accountFromDb;
-        }
-
         public IEnumerable<GetAccountQueryResult_AdminUsageOnly> GetAllAccounts_AdminUsageOnly()
         {
             var sql = @"SELECT Id, Email, Username, Password, Role FROM Accounts;";

@@ -6,6 +6,7 @@ namespace Rentering.Accounts.Domain.Data.Repositories.CUDRepositories
     public interface IAccountCUDRepository : IGenericCUDRepository<AccountEntity>
     {
         AccountEntity GetAccountForCUD(int id);
+        AccountEntity GetAccountForLoginCUD(string username);
     }
 }
 

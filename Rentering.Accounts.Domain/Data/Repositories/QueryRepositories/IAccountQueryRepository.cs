@@ -8,7 +8,6 @@ namespace Rentering.Accounts.Domain.Data.Repositories.QueryRepositories
         bool CheckIfEmailExists(string email);
         bool CheckIfUsernameExists(string username);
         GetAccountQueryResult GetAccountById(int id);
-        GetAccountForLoginQueryResult GetAccountForLogin(string username);
         IEnumerable<GetAccountQueryResult_AdminUsageOnly> GetAllAccounts_AdminUsageOnly();
     }
 }
