@@ -155,16 +155,18 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(CreateContractPaymentCycleCommand command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
-            var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
 
-            if (contractFromDb == null)
+            //var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            //var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
+
+            if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
-            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+            //var contractEntity = contractFromDb.EntityFromModel();
+            //var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
-            contractEntity.IncludeContractPayments(paymentEntities);
+            //contractEntity.IncludeContractPayments(paymentEntities);
 
             contractEntity.CreatePaymentCycle();
 

@@ -1,9 +1,10 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.CUDQueryResults;
 using Rentering.Contracts.Domain.Entities;
-using System;
-using System.Data;
+using Rentering.Contracts.Domain.Extensions;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {
@@ -14,6 +15,30 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public ContractWithGuarantorCUDRepository(RenteringDataContext context)
         {
             _context = context;
+        }
+
+        public ContractWithGuarantorEntity GetContractForCUD(int id)
+        {
+            var contractSql = @"SELECT * FROM ContractsWithGuarantor WHERE Id = @Id";
+            var paymentSql = @"SELECT * FROM ContractPayments WHERE ContractId = @ContractId";
+
+            var contractFromDb = _context.Connection.Query<GetContractWithGuarantorForCUD>(
+                   contractSql,
+                   new { Id = id }).FirstOrDefault();
+
+            if (contractFromDb == null)
+                return null;
+
+            var paymentsFromDb = _context.Connection.Query<GetPaymentForCUD>(
+                   paymentSql,
+                   new { ContractId = id });
+
+            var contractEntity = contractFromDb.EntityFromModel();
+            var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
+
+            contractEntity.IncludeContractPayments(paymentEntities);
+
+            return contractEntity;
         }
 
         public void Create(ContractWithGuarantorEntity contract)
