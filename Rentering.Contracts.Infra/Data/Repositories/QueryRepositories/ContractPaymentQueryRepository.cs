@@ -20,7 +20,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetContractPaymentQueryResult> GetAll()
         {
             var sql = @"SELECT 
-							*
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
 						FROM 
 							ContractPayments;";
 
@@ -32,7 +32,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public GetContractPaymentQueryResult GetById(int id)
         {
             var sql = @"SELECT
-							*
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
 						FROM 
 							ContractPayments
 						WHERE 
@@ -48,7 +48,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetContractPaymentQueryResult> GetPaymentsFromContract(int contractId)
         {
             var sql = @"SELECT 
-							*
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
 						FROM 
 							ContractPayments
 						WHERE 

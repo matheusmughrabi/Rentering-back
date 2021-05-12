@@ -37,7 +37,21 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetEstateContractQueryResult> GetAll()
         {
             var sql = @"SELECT 
-							*
+							Id, 
+                            ContractName, 
+                            RenterId, 
+                            TenantId, 
+                            GuarantorId, 
+                            Street, 
+                            Neighborhood, 
+                            City, 
+                            CEP, 
+                            State, 
+                            PropertyRegistrationNumber, 
+                            RentPrice, 
+                            RentDueDate, 
+                            ContractStartDate, 
+                            ContractEndDate
 						FROM 
 							EstateContracts;";
 
@@ -49,7 +63,21 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public GetEstateContractQueryResult GetById(int id)
         {
             var sql = @"SELECT
-							*
+							Id, 
+                            ContractName, 
+                            RenterId, 
+                            TenantId, 
+                            GuarantorId, 
+                            Street, 
+                            Neighborhood, 
+                            City, 
+                            CEP, 
+                            State, 
+                            PropertyRegistrationNumber, 
+                            RentPrice, 
+                            RentDueDate, 
+                            ContractStartDate, 
+                            ContractEndDate
 						FROM 
 							EstateContracts
 						WHERE 

@@ -45,7 +45,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public GetGuarantorQueryResult GetById(int id)
         {
             var sql = @"SELECT
-							*
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseOcupation,
+                            SpouseIdentityRG,
+                            SpouseCPF
 						FROM 
 							Guarantors
 						WHERE 
@@ -61,7 +77,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId)
         {
             var sql = @"SELECT 
-							*
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseOcupation,
+                            SpouseIdentityRG,
+                            SpouseCPF
 						FROM 
 							Guarantors
 						WHERE 

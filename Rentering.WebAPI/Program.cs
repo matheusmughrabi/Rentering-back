@@ -129,6 +129,7 @@ namespace Rentering.WebAPI
      -> Criar uma consulta específica para cada cenário ON GOING
      -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos OK
      -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
+     -> Testar tudo
  */
 
 // POSSIBILIDADES ADICIONAIS
@@ -136,16 +137,22 @@ namespace Rentering.WebAPI
   -> Criar tabela intermediária com os campos AccountId, ContractId e UserRoleInTheContractId 
      (Owner, Participant OU ENTÃO Owner, Renter, Tenant and Guarantor)
   -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
-  -> Refatorar nomenclatura para EstateContract
+  -> Refatorar nomenclatura para EstateContract OK
  */
 
 // Criar auth commands, IService e handlers
-// Criar testes de unidade para auth handlers
 // Implementar Service
 
-// Criar todos os testes de unidade
-// Testar módulo de contratos inteiro
-// Mergear e liberar nova versão
+// Criar Account UnitTests -> Entity, Handlers
+// Criar Renter UnitTests -> Entity, Handlers, AuthHandlers e AuthService
+// Criar Tenant UnitTests -> Entity, Handlers, AuthHandlers e AuthService
+// Criar Guarantor UnitTests -> Entity, Handlers, AuthHandlers e AuthService
+// Criar EstateContract UnitTests -> Entity, Handlers, AuthHandlers e AuthService
+// Criar ContractPayment UnitTests -> Entity, Handlers, AuthHandlers e AuthService
+
+// Testar módulo de contratos inteiro -> Relizar teste que possam gerar exceções para ver se o sistema está robusto
+// Revisão Geral
+// Mergear e liberar versão 1.2.1 da API
 
 
 

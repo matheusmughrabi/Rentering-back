@@ -45,7 +45,22 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public GetRenterQueryResult GetById(int id)
         {
             var sql = @"SELECT 
-								*
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseIdentityRG,
+                            SpouseCPF
 						FROM 
 							Renters
 						WHERE 
@@ -61,7 +76,22 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         public IEnumerable<GetRenterQueryResult> GetRenterProfilesOfCurrentUser(int accountId)
         {
             var sql = @"SELECT 
-							*
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseIdentityRG,
+                            SpouseCPF
 						FROM 
 							Renters
 						WHERE 
