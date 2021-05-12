@@ -63,13 +63,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteRenterToParticipate command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.Id);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
             var renterFromDb = _contractUnitOfWork.RenterQuery.GetById(command.RenterId);
 
-            if (contractFromDb == null || renterFromDb == null)
+            if (contractEntity == null || renterFromDb == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or renter not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var renterEntity = renterFromDb.EntityFromModel();
 
             contractEntity.InviteRenter(renterEntity);
@@ -95,13 +94,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteTenantToParticipate command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.Id);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
             var tenantFromDb = _contractUnitOfWork.TenantQuery.GetById(command.TenantId);
 
-            if (contractFromDb == null || tenantFromDb == null)
+            if (contractEntity == null || tenantFromDb == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or tenant not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var tenantEntity = tenantFromDb.EntityFromModel();
 
             contractEntity.InviteTenant(tenantEntity);
@@ -125,13 +123,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(InviteGuarantorToParticipate command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.Id);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.Id);
             var guarantorFromDb = _contractUnitOfWork.GuarantorQuery.GetById(command.GuarantorId);
 
-            if (contractFromDb == null || guarantorFromDb == null)
+            if (contractEntity == null || guarantorFromDb == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract or guarantor not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var guarantorEntity = guarantorFromDb.EntityFromModel();
 
             contractEntity.InviteGuarantor(guarantorEntity);
@@ -157,16 +154,8 @@ namespace Rentering.Contracts.Application.Handlers
         {
             var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
 
-            //var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
-            //var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
-
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
-
-            //var contractEntity = contractFromDb.EntityFromModel();
-            //var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
-
-            //contractEntity.IncludeContractPayments(paymentEntities);
 
             contractEntity.CreatePaymentCycle();
 
@@ -190,13 +179,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
             var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
-            if (contractFromDb == null)
+            if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
             contractEntity.IncludeContractPayments(paymentEntities);
@@ -219,13 +207,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(AcceptPaymentCommand command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
             var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
-            if (contractFromDb == null)
+            if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
             contractEntity.IncludeContractPayments(paymentEntities);
@@ -248,13 +235,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(RejectPaymentCommand command)
         {
-            var contractFromDb = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractWithGuarantorCUD.GetContractForCUD(command.ContractId);
             var paymentsFromDb = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(command.ContractId);
 
-            if (contractFromDb == null)
+            if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            var contractEntity = contractFromDb.EntityFromModel();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
             contractEntity.IncludeContractPayments(paymentEntities);
