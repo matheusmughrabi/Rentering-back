@@ -32,7 +32,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldNotInviteRenter_WhenRenterIsAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -49,7 +49,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldInviteRenter_WhenRenterIsNotAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -65,7 +65,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldNotInviteTenant_WhenTenantIsAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -82,7 +82,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldInviteTenant_WhenTenantIsNotAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -97,7 +97,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldNotInviteGuarantor_WhenGuarantorIsAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -114,7 +114,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldInviteGuarantor_WhenGuarantorIsAssociatedWithAnotherContract()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
@@ -131,7 +131,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             rentPrice = new PriceValueObject(-1500);
 
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             Assert.AreEqual(false, contract.Valid);
         }
@@ -139,7 +139,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldUpdateRentPrice_WhenPositiveRentPriceIsPassed()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             Assert.AreEqual(true, contract.Valid);
         }
@@ -147,7 +147,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         [TestMethod]
         public void ShouldNotCreatePaymentCycle_WhenNegativeMonthSpanIsPassed()
         {
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate);
 
             Assert.AreEqual(0, contract.Payments.Count);
         }
@@ -157,7 +157,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             var monthSpan = 12;
 
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             Assert.AreEqual(monthSpan, contract.Payments.Count);
         }
@@ -167,7 +167,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             var monthSpan = 12;
 
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             contract.CreatePaymentCycle();
             contract.ExecutePayment(DateTime.Now);
@@ -182,7 +182,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
         {
             rentDueDate = DateTime.Now.AddDays(-1);
 
-            var contract = new ContractWithGuarantorEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             var owedAmount = contract.CurrentOwedAmount();
 

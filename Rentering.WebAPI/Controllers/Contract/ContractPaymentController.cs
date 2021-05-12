@@ -37,7 +37,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _contractUnitOfWork.ContractPaymentQuery.GetAll().Where(c => c.ContractId == contractId).ToList();
+            var result = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(contractId).ToList();
 
             return Ok(result);
         }

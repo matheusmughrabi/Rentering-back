@@ -2,7 +2,6 @@
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
-using Rentering.Accounts.Domain.Extensions;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
 
@@ -55,8 +54,7 @@ namespace Rentering.Accounts.Application.Handlers
         public ICommandResult Handle(AssignAccountCommand command)
         {
             var id = command.Id;
-            var accountQueryResult = _accountUnitOfWork.AccountQuery.GetAccountById(command.Id);
-            var accountEntity = accountQueryResult.EntityFromQueryResult();
+            var accountEntity = _accountUnitOfWork.AccountCUD.GetAccountForCUD(command.Id);
 
             accountEntity.AssignAdminRole();
 

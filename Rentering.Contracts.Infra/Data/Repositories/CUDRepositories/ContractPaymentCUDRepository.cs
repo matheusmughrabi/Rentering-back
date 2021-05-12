@@ -17,7 +17,21 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public void Create(ContractPaymentEntity payment)
         {
-            _context.Connection.Execute("sp_ContractPayments_CUD_CreatePayment",
+            var sql = @"INSERT INTO [ContractPayments] (
+								[ContractId], 
+								[Month],
+								[RentPrice],
+								[RenterPaymentStatus],
+								[TenantPaymentStatus]
+							) VALUES (
+								@ContractId,
+								@Month,
+								@RentPrice,
+								@RenterPaymentStatus,
+								@TenantPaymentStatus
+							);";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         payment.ContractId,
@@ -26,14 +40,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         payment.RenterPaymentStatus,
                         payment.TenantPaymentStatus
                     },
-                    _context.Transaction,
-                    commandType: CommandType.StoredProcedure
-                );
+                    _context.Transaction);
         }
 
         public void Update(int id, ContractPaymentEntity payment)
         {
-            _context.Connection.Execute("sp_ContractPayments_CUD_UpdatePayment",
+            var sql = @"UPDATE 
+							ContractPayments
+						SET
+							[ContractId] = @ContractId,
+							[Month] = @Month,
+							[RentPrice] = @RentPrice,
+							[RenterPaymentStatus] = @RenterPaymentStatus,
+							[TenantPaymentStatus] = @TenantPaymentStatus
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                      new
                      {
                          Id = id,
@@ -43,21 +66,23 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                          payment.RenterPaymentStatus,
                          payment.TenantPaymentStatus
                      },
-                     _context.Transaction,
-                     commandType: CommandType.StoredProcedure
-                 );
+                     _context.Transaction);
         }
 
         public void Delete(int id)
         {
-            _context.Connection.Execute("sp_ContractPayments_CUD_DeletePayment",
+            var sql = @"DELETE 
+                        FROM 
+							ContractPayments
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                      new
                      {
                          Id = id
                      },
-                     _context.Transaction,
-                     commandType: CommandType.StoredProcedure
-                 );
+                     _context.Transaction);
         }
     }
 }

@@ -9,11 +9,11 @@ using System.Linq;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class ContractWithGuarantorEntity : Entity
+    public class EstateContractEntity : Entity
     {
         private List<ContractPaymentEntity> _payments;
 
-        public ContractWithGuarantorEntity(
+        public EstateContractEntity(
             string contractName,
             AddressValueObject address,
             PropertyRegistrationNumberValueObject propertyRegistrationNumber,

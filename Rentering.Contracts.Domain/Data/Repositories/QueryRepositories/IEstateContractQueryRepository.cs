@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories
 {
-    public interface IContractWithGuarantorQueryRepository : IGenericQueryRepository<GetContractWithGuarantorQueryResult>
+    public interface IEstateContractQueryRepository : IGenericQueryRepository<GetEstateContractQueryResult>
     {
         bool CheckIfContractNameExists(string contractName);
     }

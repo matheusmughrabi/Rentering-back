@@ -1,8 +1,9 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD;
 using Rentering.Contracts.Domain.Entities;
-using System.Data;
+using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {
@@ -15,9 +16,70 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             _context = context;
         }
 
+        public TenantEntity GetTenantForCUD(int tenantId)
+        {
+            var tenantSql = @"SELECT * FROM Tenants WHERE Id = @Id";
+
+            var tenantFromDb = _context.Connection.Query<GetTenantForCUD>(
+                   tenantSql,
+                   new { Id = tenantId })
+                .FirstOrDefault();
+
+            if (tenantFromDb == null)
+                return null;
+
+            var tenantEntity = tenantFromDb.EntityFromModel();
+
+            return tenantEntity;
+        }
+
         public void Create(TenantEntity tenant)
         {
-            _context.Connection.Execute("sp_Tenants_CUD_CreateTenant",
+            var sql = @"INSERT INTO [Tenants] (
+								[AccountId],
+								[Status],
+								[FirstName], 
+								[LastName],
+								[Nationality],
+								[Ocupation],
+								[MaritalStatus],
+								[IdentityRG],
+								[CPF],
+								[Street],
+								[Neighborhood],
+								[City],
+								[CEP],
+								[State],
+								[SpouseFirstName],
+								[SpouseLastName],
+								[SpouseNationality],
+								[SpouseOcupation],
+								[SpouseIdentityRG],
+								[SpouseCPF]
+							) VALUES (
+								@AccountId,
+								@Status,
+								@FirstName,
+								@LastName,
+								@Nationality,
+								@Ocupation,
+								@MaritalStatus,
+								@IdentityRG,
+								@CPF,
+								@Street,
+								@Neighborhood,
+								@City,
+								@CEP,
+								@State,
+								@SpouseFirstName,
+								@SpouseLastName,
+								@SpouseNationality,
+								@SpouseOcupation,
+								@SpouseIdentityRG,
+								@SpouseCPF
+							);";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         tenant.AccountId,
@@ -40,14 +102,38 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         tenant.SpouseOcupation,
                         SpouseIdentityRG = tenant.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = tenant.SpouseCPF.CPF
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                    });
         }
 
         public void Update(int id, TenantEntity tenant)
         {
-            _context.Connection.Execute("sp_Tenants_CUD_UpdateTenant",
+            var sql = @"UPDATE 
+							Tenants
+						SET
+							[AccountId] = @AccountId,
+							[Status] = @Status,
+							[FirstName] = @FirstName, 
+							[LastName] = @LastName,
+							[Nationality] = @Nationality,
+							[Ocupation] = @Ocupation,
+							[MaritalStatus] = @MaritalStatus,
+							[IdentityRG] = @IdentityRG,
+							[CPF] = @CPF,
+							[Street] = @Street,
+							[Neighborhood] = @Neighborhood,
+							[City] = @City,
+							[CEP] = @CEP,
+							[State] = @State,
+							[SpouseFirstName] = @SpouseFirstName,
+							[SpouseLastName] = @SpouseLastName,
+							[SpouseNationality] = @SpouseNationality,
+							[SpouseOcupation] = @SpouseOcupation,
+							[SpouseIdentityRG] = @SpouseIdentityRG,
+							[SpouseCPF] = @SpouseCPF
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         Id = id,
@@ -71,20 +157,22 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         tenant.SpouseOcupation,
                         SpouseIdentityRG = tenant.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = tenant.SpouseCPF.CPF
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                    });
         }
 
         public void Delete(int id)
         {
-            _context.Connection.Execute("sp_Tenants_CUD_DeleteTenant",
+            var sql = @"DELETE 
+                        FROM 
+							Tenants
+						WHERE 
+							Id = @Id;";
+
+            _context.Connection.Execute(sql,
                     new
                     {
                         Id = id
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                    });
         }
     }
 }

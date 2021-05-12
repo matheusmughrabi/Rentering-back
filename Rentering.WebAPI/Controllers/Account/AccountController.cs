@@ -3,12 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
-using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
-using Rentering.Accounts.Domain.Extensions;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {
@@ -26,11 +22,11 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpGet]
         [Route("v1/Accounts/GetAllAccounts")]
         [Authorize(Roles = "Admin")]
-        public IEnumerable<GetAccountQueryResult> GetAllAccount()
+        public IActionResult GetAllAccount()
         {
-            var result = _accountUnitOfWork.AccountQuery.GetAccounts();
+            var result = _accountUnitOfWork.AccountQuery.GetAllAccounts_AdminUsageOnly();
 
-            return result;
+            return Ok(result);
         }
 
         [HttpGet]
@@ -66,14 +62,10 @@ namespace Rentering.WebAPI.Controllers.Account
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var account = _accountUnitOfWork.AccountQuery.GetAccounts()
-                .Where(c => c.Username == loginCommand.Username && c.Password == loginCommand.Password)
-                .FirstOrDefault();
+            var accountEntity = _accountUnitOfWork.AccountCUD.GetAccountForLoginCUD(loginCommand.Username);
 
-            if (account == null)
+            if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
-
-            var accountEntity = account.EntityFromQueryResult();
 
             var userInfo = TokenService.GenerateToken(accountEntity);
 

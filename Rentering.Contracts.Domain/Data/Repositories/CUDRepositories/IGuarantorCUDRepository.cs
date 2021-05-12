@@ -5,5 +5,6 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories
 {
     public interface IGuarantorCUDRepository : IGenericCUDRepository<GuarantorEntity>
     {
+        GuarantorEntity GetGuarantorForCUD(int guarantorId);
     }
 }

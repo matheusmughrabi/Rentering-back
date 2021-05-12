@@ -52,8 +52,8 @@ namespace Rentering.WebAPI.Configuration
             services.AddTransient<IGuarantorQueryRepository, GuarantorQueryRepository>();
             services.AddTransient<IAuthGuarantorService, AuthGuarantorService>();
 
-            services.AddTransient<IContractWithGuarantorCUDRepository, ContractWithGuarantorCUDRepository>();
-            services.AddTransient<IContractWithGuarantorQueryRepository, ContractWithGuarantorQueryRepository>();
+            services.AddTransient<IEstateContractCUDRepository, EstateContractCUDRepository>();
+            services.AddTransient<IEstateContractQueryRepository, EstateContractQueryRepository>();
 
             services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
             services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();

@@ -19,32 +19,44 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public IEnumerable<GetContractPaymentQueryResult> GetAll()
         {
-            var paymentsFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
-                    "sp_ContractPayments_Query_GetAllPayments",
-                    commandType: CommandType.StoredProcedure
-                );
+            var sql = @"SELECT 
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
+						FROM 
+							ContractPayments;";
+
+            var paymentsFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(sql);
 
             return paymentsFromDb;
         }
 
         public GetContractPaymentQueryResult GetById(int id)
         {
+            var sql = @"SELECT
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
+						FROM 
+							ContractPayments
+						WHERE 
+							[Id] = @Id;";
+
             var paymentFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
-                    "sp_ContractPayments_Query_GetPaymentById",
-                    new { Id = id },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new { Id = id }).FirstOrDefault();
 
             return paymentFromDb;
         }
 
         public IEnumerable<GetContractPaymentQueryResult> GetPaymentsFromContract(int contractId)
         {
+            var sql = @"SELECT 
+							Id, ContractId, Month, RentPrice, RenterPaymentStatus, TenantPaymentStatus
+						FROM 
+							ContractPayments
+						WHERE 
+							ContractId = @ContractId;";
+
             var paymentsFromDb = _context.Connection.Query<GetContractPaymentQueryResult>(
-                   "sp_ContractPayments_Query_GetPaymentsFromContract",
-                   new { ContractId = contractId },
-                   commandType: CommandType.StoredProcedure
-               );
+                   sql,
+                   new { ContractId = contractId });
 
             return paymentsFromDb;
         }

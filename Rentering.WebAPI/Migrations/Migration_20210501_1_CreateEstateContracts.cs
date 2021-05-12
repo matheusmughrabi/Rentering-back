@@ -3,18 +3,18 @@ using FluentMigrator.SqlServer;
 
 namespace Rentering.WebAPI.Migrations
 {
-    [Migration(20210501_1)]
-    public class Migration_20210501_1 : Migration
+    [Migration(20210501_1, "CreateEstateContracts")]
+    public class Migration_20210501_1_CreateEstateContracts : Migration
     {
 		public override void Down()
 		{
-			Delete.Table("ContractsWithGuarantor");
+			Delete.Table("EstateContracts");
 			
 		}
 
 		public override void Up()
 		{
-			Create.Table("ContractsWithGuarantor")
+			Create.Table("EstateContracts")
 				.WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
 				.WithColumn("ContractName").AsString().NotNullable()
 				.WithColumn("RenterId").AsInt32().Nullable()

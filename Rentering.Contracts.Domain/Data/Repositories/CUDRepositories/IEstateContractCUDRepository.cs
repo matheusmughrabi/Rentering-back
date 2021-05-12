@@ -3,7 +3,8 @@ using Rentering.Contracts.Domain.Entities;
 
 namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories
 {
-    public interface IContractWithGuarantorCUDRepository : IGenericCUDRepository<ContractWithGuarantorEntity>
+    public interface IEstateContractCUDRepository : IGenericCUDRepository<EstateContractEntity>
     {
+        EstateContractEntity GetContractForCUD(int id);
     }
 }

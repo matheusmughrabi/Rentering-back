@@ -3,17 +3,17 @@ using FluentMigrator.SqlServer;
 
 namespace Rentering.WebAPI.Migrations
 {
-    [Migration(20210416_2)]
-    public class Migration_20210416_2 : Migration
+    [Migration(20210418_1, "CreateGuarantors")]
+    public class Migration_20210418_1_CreateGuarantors : Migration
     {
         public override void Down()
         {
-            Delete.Table("Renters");
+            Delete.Table("Guarantors");
         }
 
         public override void Up()
         {
-            Create.Table("Renters")
+            Create.Table("Guarantors")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
                 .WithColumn("AccountId").AsInt32().NotNullable().ForeignKey("Accounts", "Id")
                 .WithColumn("Status").AsInt32().NotNullable()
@@ -32,6 +32,7 @@ namespace Rentering.WebAPI.Migrations
                 .WithColumn("SpouseFirstName").AsString().Nullable()
                 .WithColumn("SpouseLastName").AsString().Nullable()
                 .WithColumn("SpouseNationality").AsString().Nullable()
+                .WithColumn("SpouseOcupation").AsString().Nullable()
                 .WithColumn("SpouseIdentityRG").AsString().Nullable()
                 .WithColumn("SpouseCPF").AsString().Nullable();
         }

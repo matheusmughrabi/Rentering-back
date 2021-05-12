@@ -9,11 +9,11 @@ namespace Rentering.WebAPI.Controllers.Contract
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContractWithGuarantorController : RenteringBaseController
+    public class EstateContractController : RenteringBaseController
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public ContractWithGuarantorController(
+        public EstateContractController(
             IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
@@ -24,7 +24,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetContractById(int id)
         {
-            var result = _contractUnitOfWork.ContractWithGuarantorQuery.GetById(id);
+            var result = _contractUnitOfWork.EstateContractQuery.GetById(id);
 
             return Ok(result);
         }
@@ -39,7 +39,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            // TODO - Precisa ser refatorado
+            var contracts = _contractUnitOfWork.EstateContractQuery.GetAll();
             var renters = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
 
             var contractsOfCurrentUser = contracts.Where(c => renters.Any(r => r.Id == c.RenterId)).ToList();
@@ -57,7 +58,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var contracts = _contractUnitOfWork.EstateContractQuery.GetAll();
             var tenants = _contractUnitOfWork.TenantQuery.GetTenantProfilesOfCurrentUser(accountId);
 
             var contractsOfCurrentUser = contracts.Where(c => tenants.Any(r => r.Id == c.TenantId)).ToList();
@@ -75,7 +76,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var contracts = _contractUnitOfWork.ContractWithGuarantorQuery.GetAll();
+            var contracts = _contractUnitOfWork.EstateContractQuery.GetAll();
             var guarantors = _contractUnitOfWork.GuarantorQuery.GetGuarantorProfilesOfCurrentUser(accountId);
 
             var contractsOfCurrentUser = contracts.Where(c => guarantors.Any(r => r.Id == c.GuarantorId)).ToList();

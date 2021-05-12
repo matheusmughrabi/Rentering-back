@@ -19,11 +19,21 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public bool CheckIfAccountExists(int accountId)
         {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [Accounts]
+		                        WHERE [Id] = @Id
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT)
+                            END;";
+
             var accountExists = _context.Connection.Query<bool>(
-                    "sp_Accounts_Query_CheckIfAccountExists",
-                    new { Id = accountId },
-                    commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                    sql,
+                    new
+                    {
+                        Id = accountId
+                    }).FirstOrDefault();
 
             return accountExists;
         }
@@ -35,22 +45,64 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public GetTenantQueryResult GetById(int id)
         {
+            var sql = @"SELECT 
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseOcupation,
+                            SpouseIdentityRG,
+                            SpouseCPF
+						FROM 
+							Tenants
+						WHERE 
+							[Id] = @Id;";
+
             var renterFromDb = _context.Connection.Query<GetTenantQueryResult>(
-                   "sp_Tenants_Query_GetTenantById",
-                   new { Id = id },
-                   commandType: CommandType.StoredProcedure
-               ).FirstOrDefault();
+                   sql,
+                   new { Id = id }).FirstOrDefault();
 
             return renterFromDb;
         }
 
         public IEnumerable<GetTenantQueryResult> GetTenantProfilesOfCurrentUser(int accountId)
         {
+            var sql = @"SELECT 
+							Id,
+                            AccountId,
+                            Status,
+                            FirstName,
+                            LastName,
+                            Nationality,
+                            Ocupation,
+                            MaritalStatus,
+                            IdentityRG,
+                            CPF,
+                            Street,
+                            SpouseFirstName,
+                            SpouseLastName,
+                            SpouseNationality,
+                            SpouseOcupation,
+                            SpouseIdentityRG,
+                            SpouseCPF
+						FROM 
+							Tenants
+						WHERE 
+							[AccountId] = @AccountId;";
+
             var rentersFromDb = _context.Connection.Query<GetTenantQueryResult>(
-                    "sp_Tenants_Query_GetTenantsOfAccount",
-                    new { AccountId = accountId },
-                    commandType: CommandType.StoredProcedure
-                );
+                    sql,
+                    new { AccountId = accountId });
 
             return rentersFromDb;
         }
