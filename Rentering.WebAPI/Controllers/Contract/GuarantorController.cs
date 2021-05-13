@@ -79,12 +79,12 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(accountId, updateGuarantorCommand.Id);
-            var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
-            var authResult = authHandler.Handle(authGuarantorCommand);
+            //var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(accountId, updateGuarantorCommand.Id);
+            //var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
+            //var authResult = authHandler.Handle(authGuarantorCommand);
 
-            if (authResult.Success == false)
-                return Unauthorized(authResult);
+            //if (authResult.Success == false)
+            //    return Unauthorized(authResult);
 
             //updateGuarantorCommand.AccountId = accountId;
 
@@ -101,12 +101,12 @@ namespace Rentering.WebAPI.Controllers.Contract
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int authenticatedUserId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+            //if (isParsingSuccesful == false)
+            //    return BadRequest("Invalid logged in user");
 
-            var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(authenticatedUserId, deleteGuarantorCommand.Id);
-            var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
-            var authResult = authHandler.Handle(authGuarantorCommand);
+            //var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(authenticatedUserId, deleteGuarantorCommand.Id);
+            //var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
+            //var authResult = authHandler.Handle(authGuarantorCommand);
 
             if (authResult.Success == false)
                 return Unauthorized(authResult);

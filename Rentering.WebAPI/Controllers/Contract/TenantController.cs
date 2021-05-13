@@ -77,12 +77,12 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(accountId, updateTenantCommand.Id);
-            var authHandler = new AuthTenantHandlers(_authTenantService);
-            var authResult = authHandler.Handle(authContractCommand);
+            //var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(accountId, updateTenantCommand.Id);
+            //var authHandler = new AuthTenantHandlers(_authTenantService);
+            //var authResult = authHandler.Handle(authContractCommand);
 
-            if (authResult.Success == false)
-                return Unauthorized(authResult);
+            //if (authResult.Success == false)
+            //    return Unauthorized(authResult);
 
             //updateTenantCommand.AccountId = accountId;
 
@@ -102,12 +102,12 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
-            var authHandler = new AuthTenantHandlers(_authTenantService);
-            var authResult = authHandler.Handle(authContractCommand);
+            //var authContractCommand = new AuthCurrentUserAndProfileTenantMatchCommand(authenticatedUserId, deleteTenantCommand.Id);
+            //var authHandler = new AuthTenantHandlers(_authTenantService);
+            //var authResult = authHandler.Handle(authContractCommand);
 
-            if (authResult.Success == false)
-                return Unauthorized(authResult);
+            //if (authResult.Success == false)
+            //    return Unauthorized(authResult);
 
             var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(deleteTenantCommand);

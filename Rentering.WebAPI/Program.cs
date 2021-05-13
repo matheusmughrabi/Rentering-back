@@ -140,15 +140,22 @@ namespace Rentering.WebAPI
   -> Refatorar nomenclatura para EstateContract OK
 
   -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole) OK
-  -> Criar IReadOnlyCollection de cada participante e também alterar cada entity de participante para ter ContractId
-  -> Refatorar nos locais que forem necessários do código
-  -> Refatorar Migrations existentes
+  -> Criar IReadOnlyCollection de cada participante e também alterar cada entity de participante para ter ContractId OK
+  -> Refatorar nos locais que forem necessários do código OK
+  -> Refatorar Migrations existentes OK
+
+  -> Modelar melhor AccountContracts
   -> Criar Migration de AccountContracts Table 
  */
+
+// BUGS
+// Login null exception no método GetForLoginCUD
+// Verificar TODOs no código
 
 // AUTENTICAÇÃO -> Até Terça-feira à noite (18/05/2021)
 // Criar auth commands, IService e handlers
 // Implementar Service
+// Verificar TODOs no código
 
 // TESTES DE UNIDADE -> Até sexta-feira à noite (21/05/2021)
 // Criar Account UnitTests -> Entity, Handlers
@@ -159,6 +166,7 @@ namespace Rentering.WebAPI
 // Criar ContractPayment UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 
 // TESTE E MERGE -> Até sábado à noite (22/05/2021)
+// Verificar TODOs no código
 // Testar módulo de contratos inteiro -> Relizar teste que possam gerar exceções para ver se o sistema está robusto
 // Revisão Geral
 // Mergear e liberar versão 1.2.1 da API
