@@ -4,6 +4,7 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.ValueObjects;
+using System;
 using System.Linq;
 
 namespace Rentering.Contracts.Application.Handlers
@@ -73,10 +74,18 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWork.BeginTransaction();
-            _contractUnitOfWork.EstateContractCUD.Update(command.ContractId, contractEntity);
-            _contractUnitOfWork.AccountContractsCUD.Create(invitedParticipant);
-            _contractUnitOfWork.Commit();
+            try
+            {
+                _contractUnitOfWork.BeginTransaction();
+                _contractUnitOfWork.EstateContractCUD.Update(command.ContractId, contractEntity);
+                _contractUnitOfWork.AccountContractsCUD.Create(invitedParticipant);
+                _contractUnitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _contractUnitOfWork.Rollback();
+                return new CommandResult(false, "Internal Server Error", new { Error = ex.Message });
+            }
 
             var updatedContract = new CommandResult(true, "Participant invited successfuly", new
             {
