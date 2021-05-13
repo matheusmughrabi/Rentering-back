@@ -139,7 +139,7 @@ namespace Rentering.WebAPI
   -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
   -> Refatorar nomenclatura para EstateContract OK
 
-  -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole)
+  -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole) OK
   -> Criar IReadOnlyCollection de cada participante e também alterar cada entity de participante para ter ContractId
   -> Refatorar nos locais que forem necessários do código
   -> Refatorar Migrations existentes

@@ -34,32 +34,30 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("v1/Renters")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetRenterProfilesOfCurrentUser()
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        //[HttpGet]
+        //[Route("v1/Renters")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetRenterProfilesOfCurrentUser()
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
 
-            var result = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
+        //    var result = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         [HttpPost]
         [Route("v1/CreateRenter")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateRenter([FromBody] CreateRenterCommand createRenterCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+            //var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            createRenterCommand.AccountId = accountId;
+            //if (isParsingSuccesful == false)
+            //    return BadRequest("Invalid logged in user");
 
             var handler = new RenterHandlers(_contractUnitOfWork);
             var result = handler.Handle(createRenterCommand);
@@ -84,7 +82,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            updateRenterCommand.AccountId = accountId;
+            //updateRenterCommand.AccountId = accountId;
 
             var handler = new RenterHandlers(_contractUnitOfWork);
             var result = handler.Handle(updateRenterCommand);

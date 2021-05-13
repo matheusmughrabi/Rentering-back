@@ -6,7 +6,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryRe
     public class GetRenterQueryResult : IQueryResult
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public int ContractId { get; set; }
         public e_ContractParticipantStatus Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

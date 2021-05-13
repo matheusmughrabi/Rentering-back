@@ -7,7 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class RenterEntity : Entity
     {
         public RenterEntity(
-            int accountId,
+            int contractId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -22,7 +22,7 @@ namespace Rentering.Contracts.Domain.Entities
             e_ContractParticipantStatus? renterStatus = null,
             int? id = null)
         {
-            AccountId = accountId;            
+            ContractId = contractId;            
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -44,7 +44,7 @@ namespace Rentering.Contracts.Domain.Entities
                 RenterStatus = (e_ContractParticipantStatus)renterStatus;
         }
 
-        public int AccountId { get; private set; }
+        public int ContractId { get; private set; }
         public e_ContractParticipantStatus RenterStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }

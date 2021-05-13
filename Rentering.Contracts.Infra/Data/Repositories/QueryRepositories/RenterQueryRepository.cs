@@ -46,7 +46,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT 
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
@@ -73,11 +73,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             return renterFromDb;
         }
 
+        // TODO - Remover
         public IEnumerable<GetRenterQueryResult> GetRenterProfilesOfCurrentUser(int accountId)
         {
             var sql = @"SELECT 
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
