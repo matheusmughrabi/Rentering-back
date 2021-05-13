@@ -126,23 +126,31 @@ namespace Rentering.WebAPI
 
 /* Refatoração dos repositórios 
      -> Passar storedProcedures para o C# OK
-     -> Criar uma consulta específica para cada cenário ON GOING
+     -> Criar uma consulta específica para cada cenário OK
      -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos OK
-     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
-     -> Testar tudo
+     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse OK
+     -> Testar tudo OK
  */
 
-// POSSIBILIDADES ADICIONAIS
+// POSSIBILIDADES ADICIONAIS -> Até Domingo à noite (16/05/2021)
 /*
   -> Criar tabela intermediária com os campos AccountId, ContractId e UserRoleInTheContractId 
      (Owner, Participant OU ENTÃO Owner, Renter, Tenant and Guarantor)
   -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
   -> Refatorar nomenclatura para EstateContract OK
+
+  -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole)
+  -> Criar IReadOnlyCollection de cada participante e também alterar cada entity de participante para ter ContractId
+  -> Refatorar nos locais que forem necessários do código
+  -> Refatorar Migrations existentes
+  -> Criar Migration de AccountContracts Table 
  */
 
+// AUTENTICAÇÃO -> Até Terça-feira à noite (18/05/2021)
 // Criar auth commands, IService e handlers
 // Implementar Service
 
+// TESTES DE UNIDADE -> Até sexta-feira à noite (21/05/2021)
 // Criar Account UnitTests -> Entity, Handlers
 // Criar Renter UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar Tenant UnitTests -> Entity, Handlers, AuthHandlers e AuthService
@@ -150,9 +158,11 @@ namespace Rentering.WebAPI
 // Criar EstateContract UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar ContractPayment UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 
+// TESTE E MERGE -> Até sábado à noite (22/05/2021)
 // Testar módulo de contratos inteiro -> Relizar teste que possam gerar exceções para ver se o sistema está robusto
 // Revisão Geral
 // Mergear e liberar versão 1.2.1 da API
 
+// DATA FINAL -> 22/05/2021
 
 
