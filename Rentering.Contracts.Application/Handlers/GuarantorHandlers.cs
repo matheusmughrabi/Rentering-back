@@ -29,11 +29,12 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(command.SpouseCPF);
 
-            var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
+            var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            // TODO - CheckIfContractExists
+            //if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.ContractId) == false)
+            //    AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(guarantorEntity.Notifications);
 
@@ -44,7 +45,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,
@@ -78,10 +79,11 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
             var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
-            var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
+            var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            // TODO - CheckIfContractExists
+            //if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.ContractId) == false)
+            //    AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -99,7 +101,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var updatedGuarantor = new CommandResult(true, "Guarantor updated successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,

@@ -34,32 +34,32 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("v1/Tenants")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetTenantProfilesOfCurrentUser()
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        //[HttpGet]
+        //[Route("v1/Tenants")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetTenantProfilesOfCurrentUser()
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
 
-            var result = _contractUnitOfWork.TenantQuery.GetTenantProfilesOfCurrentUser(accountId);
+        //    var result = _contractUnitOfWork.TenantQuery.GetTenantProfilesOfCurrentUser(accountId);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         [HttpPost]
         [Route("v1/CreateTenant")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateTenant([FromBody] CreateTenantCommand createTenantCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+            //var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+            //if (isParsingSuccesful == false)
+            //    return BadRequest("Invalid logged in user");
 
-            createTenantCommand.AccountId = accountId;
+            //createTenantCommand.AccountId = accountId;
 
             var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(createTenantCommand);
@@ -84,7 +84,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (authResult.Success == false)
                 return Unauthorized(authResult);
 
-            updateTenantCommand.AccountId = accountId;
+            //updateTenantCommand.AccountId = accountId;
 
             var handler = new TenantHandlers(_contractUnitOfWork);
             var result = handler.Handle(updateTenantCommand);

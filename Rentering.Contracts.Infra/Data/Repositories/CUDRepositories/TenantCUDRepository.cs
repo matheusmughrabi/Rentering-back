@@ -36,7 +36,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public void Create(TenantEntity tenant)
         {
             var sql = @"INSERT INTO [Tenants] (
-								[AccountId],
+								[ContractId],
 								[Status],
 								[FirstName], 
 								[LastName],
@@ -57,7 +57,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseIdentityRG],
 								[SpouseCPF]
 							) VALUES (
-								@AccountId,
+								@ContractId,
 								@Status,
 								@FirstName,
 								@LastName,
@@ -82,7 +82,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             _context.Connection.Execute(sql,
                     new
                     {
-                        tenant.AccountId,
+                        tenant.ContractId,
                         Status = tenant.TenantStatus,
                         tenant.Name.FirstName,
                         tenant.Name.LastName,
@@ -110,7 +110,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             var sql = @"UPDATE 
 							Tenants
 						SET
-							[AccountId] = @AccountId,
+							[ContractId] = @ContractId,
 							[Status] = @Status,
 							[FirstName] = @FirstName, 
 							[LastName] = @LastName,
@@ -137,7 +137,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     new
                     {
                         Id = id,
-                        tenant.AccountId,
+                        tenant.ContractId,
                         Status = tenant.TenantStatus,
                         tenant.Name.FirstName,
                         tenant.Name.LastName,

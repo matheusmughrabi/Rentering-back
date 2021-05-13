@@ -29,11 +29,12 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
             var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
-            var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
+            var tenantEntity = new TenantEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            // TODO - Criar CheckIfContractExists
+            //if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
+            //    AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(tenantEntity.Notifications);
 
@@ -44,7 +45,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var createdContractProfileUser = new CommandResult(true, "Profile created successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,
@@ -78,10 +79,11 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
             var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
-            var tenantEntity = new TenantEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
+            var tenantEntity = new TenantEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            // TODO - Criar CheckIfContractExists
+            //if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
+            //    AddNotification("AccountId", "This Account does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -99,7 +101,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var updatedTenant = new CommandResult(true, "Tenant updated successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,

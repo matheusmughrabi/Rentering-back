@@ -46,7 +46,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
@@ -74,11 +74,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             return guarantorFromDb;
         }
 
+        // TODO - Remover
         public IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId)
         {
             var sql = @"SELECT 
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,

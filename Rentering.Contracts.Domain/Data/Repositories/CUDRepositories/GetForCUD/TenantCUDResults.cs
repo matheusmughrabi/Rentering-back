@@ -8,7 +8,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
     public class GetTenantForCUD : IGetForCUD<TenantEntity>
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public int ContractId { get; set; }
         public e_ContractParticipantStatus Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -32,7 +32,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
         public TenantEntity EntityFromModel()
         {
             var id = Id;
-            var accountId = AccountId;
+            var contractId = ContractId;
             var status = Status;
             var name = new NameValueObject(FirstName, LastName);
             var nationality = Nationality;
@@ -47,7 +47,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
             var spouseIdentityRG = new IdentityRGValueObject(SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(SpouseCPF);
 
-            var tenantEntity = new TenantEntity(accountId, name, nationality, ocupation, maritalStatus, identityRG, cpf, address, spouseName, spouseNationality, spouseOcupation, spouseIdentityRG, spouseCPF, status, id);
+            var tenantEntity = new TenantEntity(contractId, name, nationality, ocupation, maritalStatus, identityRG, cpf, address, spouseName, spouseNationality, spouseOcupation, spouseIdentityRG, spouseCPF, status, id);
 
             return tenantEntity;
         }
