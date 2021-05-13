@@ -19,6 +19,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public EstateContractEntity GetContractForCUD(int id)
         {
             var contractSql = @"SELECT * FROM EstateContracts WHERE Id = @Id";
+            var renterSql = @"SELECT * FROM Renters WHERE ContractId = @ContractId";
+            var tenantSql = @"SELECT * FROM Tenants WHERE ContractId = @ContractId";
+            var guarantorSql = @"SELECT * FROM Guarantors WHERE ContractId = @ContractId";
             var paymentSql = @"SELECT * FROM ContractPayments WHERE ContractId = @ContractId";
 
             var contractFromDb = _context.Connection.Query<GetEstateContractForCUD>(
@@ -28,13 +31,31 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             if (contractFromDb == null)
                 return null;
 
+            var rentersFromDb = _context.Connection.Query<GetRenterForCUD>(
+                   renterSql,
+                   new { ContractId = id });
+
+            var tenantsFromDb = _context.Connection.Query<GetTenantForCUD>(
+                   tenantSql,
+                   new { ContractId = id });
+
+            var guarantorsFromDb = _context.Connection.Query<GetGuarantorForCUD>(
+                   guarantorSql,
+                   new { ContractId = id });
+
             var paymentsFromDb = _context.Connection.Query<GetPaymentForCUD>(
                    paymentSql,
                    new { ContractId = id });
 
             var contractEntity = contractFromDb.EntityFromModel();
+            var renterEntities = rentersFromDb?.Select(c => c.EntityFromModel()).ToList();
+            var tenantEntities = tenantsFromDb?.Select(c => c.EntityFromModel()).ToList();
+            var guarantorEntities = guarantorsFromDb?.Select(c => c.EntityFromModel()).ToList();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
+            contractEntity.IncludeRenters(renterEntities);
+            contractEntity.IncludeTenants(tenantEntities);
+            contractEntity.IncludeGuarantors(guarantorEntities);
             contractEntity.IncludeContractPayments(paymentEntities);
 
             return contractEntity;
@@ -43,10 +64,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public void Create(EstateContractEntity contract)
         {
             var sql = @"INSERT INTO [EstateContracts] (
-								[ContractName], 
-								[RenterId],
-								[TenantId],
-								[GuarantorId],
+								[ContractName],
 								[Street],
 								[Neighborhood],
 								[City],
@@ -59,9 +77,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[ContractEndDate]
 							) VALUES (
 								@ContractName,
-								@RenterId,
-								@TenantId,
-								@GuarantorId,
 								@Street,
 								@Neighborhood,
 								@City,
@@ -78,9 +93,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     new
                     {
                         contract.ContractName,
-                        contract.RenterId,
-                        contract.TenantId,
-                        contract.GuarantorId,
                         contract.Address.Street,
                         contract.Address.Neighborhood,
                         contract.Address.City,
@@ -100,9 +112,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 							EstateContracts
 						SET
 							[ContractName] = @ContractName,
-							[RenterId] = @RenterId,
-							[TenantId] = @TenantId,
-							[GuarantorId] = @GuarantorId,
 							[Street] = @Street,
 							[Neighborhood] = @Neighborhood,
 							[City] = @City,
@@ -121,9 +130,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     {
                         contract.Id,
                         contract.ContractName,
-                        contract.RenterId,
-                        contract.TenantId,
-                        contract.GuarantorId,
                         contract.Address.Street,
                         contract.Address.Neighborhood,
                         contract.Address.City,

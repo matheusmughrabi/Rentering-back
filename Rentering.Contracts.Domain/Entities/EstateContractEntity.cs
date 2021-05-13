@@ -11,6 +11,10 @@ namespace Rentering.Contracts.Domain.Entities
 {
     public class EstateContractEntity : Entity
     {
+        private List<AccountContractsEntity> _participants;
+        private List<RenterEntity> _renters;
+        private List<TenantEntity> _tenants;
+        private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
 
         public EstateContractEntity(
@@ -21,10 +25,7 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime rentDueDate,
             DateTime contractStartDate,
             DateTime contractEndDate,
-            int? id = null,
-            int? renterId = null,
-            int? tenantId = null,
-            int? guarantorId = null)
+            int? id = null)
         {
             ContractName = contractName;
             Address = address;
@@ -34,80 +35,39 @@ namespace Rentering.Contracts.Domain.Entities
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
-
             if (id != null)
                 AssignId((int)id);
-
-            if (renterId != null)
-                RenterId = (int)renterId;
-
-            if (tenantId != null)
-                TenantId = (int)tenantId;
-
-            if (guarantorId != null)
-                GuarantorId = (int)guarantorId;
 
             ApplyValidations();
         }
 
         public string ContractName { get; private set; }
-        public int RenterId { get; private set; }
-        public int TenantId { get; private set; }
-        public int GuarantorId { get; private set; }
         public AddressValueObject Address { get; private set; }
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
+        public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
+        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray();
+        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray();
+        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray();
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
-        public void InviteRenter(RenterEntity renter)
+        public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            if (renter.RenterStatus != e_ContractParticipantStatus.None)
+            var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
+
+            if (isParticipantAlreadyInThisRole)
             {
-                AddNotification("Renter", "This renter is already associated to another contract");
+                AddNotification("AccountId", $"This account is already { participantRole } in this contract");
                 return;
             }
 
-            renter.UpdateRenterStatusToAwaiting();
+            var contractId = Id;
+            var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
 
-            if (renter.Valid == false)
-                return;
-
-            RenterId = renter.Id;
-        }
-
-        public void InviteTenant(TenantEntity tenant)
-        {
-            if (tenant.TenantStatus != e_ContractParticipantStatus.None)
-            {
-                AddNotification("Tenant", "This tenant is already associated to another contract");
-                return;
-            }
-
-            tenant.UpdateTenantStatusToAwaiting();
-
-            if (tenant.Valid == false)
-                return;
-
-            TenantId = tenant.Id;
-        }
-
-        public void InviteGuarantor(GuarantorEntity guarantor)
-        {
-            if (guarantor.GuarantorStatus != e_ContractParticipantStatus.None)
-            {
-                AddNotification("Guarantor", "This guarantor is already associated to another contract");
-                return;
-            }
-
-            guarantor.UpdateGuarantorStatusToAwaiting();
-
-            if (guarantor.Valid == false)
-                return;
-
-            GuarantorId = guarantor.Id;
+            _participants.Add(accountContractsEntity);
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
@@ -119,13 +79,6 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             RentPrice = rentPrice;
-        }
-
-        // TODO - This method should not exist, instead the list of payments should be included in a way similar to EF
-        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
-        {
-            if (payments != null)
-                _payments = payments;
         }
 
         public void CreatePaymentCycle()
@@ -205,6 +158,37 @@ namespace Rentering.Contracts.Domain.Entities
 
             var currentOwedAmount = currentPayment.CalculateOwedAmount(RentDueDate);
             return currentOwedAmount;
+        }
+
+        // TODO - This method should not exist, instead the list of payments should be included in a way similar to EF
+        public void IncludeParticipants(List<AccountContractsEntity> participants)
+        {
+            if (participants != null)
+                _participants = participants;
+        }
+
+        public void IncludeRenters(List<RenterEntity> renters)
+        {
+            if (renters != null)
+                _renters = renters;
+        }
+
+        public void IncludeTenants(List<TenantEntity> tenants)
+        {
+            if (tenants != null)
+                _tenants = tenants;
+        }
+
+        public void IncludeGuarantors(List<GuarantorEntity> guarantors)
+        {
+            if (guarantors != null)
+                _guarantors = guarantors;
+        }
+
+        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
+        {
+            if (payments != null)
+                _payments = payments;
         }
 
         private void ApplyValidations()

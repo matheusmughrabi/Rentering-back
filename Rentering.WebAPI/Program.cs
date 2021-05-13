@@ -140,9 +140,12 @@ namespace Rentering.WebAPI
   -> Refatorar nomenclatura para EstateContract OK
 
   -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole) OK
-  -> Criar IReadOnlyCollection de cada participante e também alterar cada entity de participante para ter ContractId OK
+  -> Alterar cada entity de participante para ter ContractId OK
   -> Refatorar nos locais que forem necessários do código OK
   -> Refatorar Migrations existentes OK
+  
+  -> Criar IReadOnlyCollection de cada participante em EstateContractEntity
+  -> Verificar se precisa atualizar GetForCUD
 
   -> Modelar melhor AccountContracts
   -> Criar Migration de AccountContracts Table 

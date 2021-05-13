@@ -10,9 +10,6 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
     {
         public int Id { get; set; }
         public string ContractName { get; set; }
-        public int RenterId { get; set; }
-        public int TenantId { get; set; }
-        public int GuarantorId { get; set; }
         public string Street { get; set; }
         public string Neighborhood { get; set; }
         public string City { get; set; }
@@ -28,14 +25,11 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
         {
             var id = Id;
             var contractName = ContractName;
-            var renterId = RenterId;
-            var tenantId = TenantId;
-            var guarantorId = GuarantorId;
             var address = new AddressValueObject(Street, Neighborhood, City, CEP, State);
             var propertyRegistrationNumber = new PropertyRegistrationNumberValueObject(PropertyRegistrationNumber);
             var rentPrice = new PriceValueObject(RentPrice);
 
-            var contractEntity = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, RentDueDate, ContractStartDate, ContractEndDate, id, renterId, tenantId, guarantorId);
+            var contractEntity = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, RentDueDate, ContractStartDate, ContractEndDate, id);
 
             return contractEntity;
         }

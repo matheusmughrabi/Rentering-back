@@ -87,66 +87,66 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpPost]
         [Route("v1/CreateContract")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreateContract([FromBody] CreateContractGuarantorCommand createContractGuarantorCommand)
+        public IActionResult CreateContract([FromBody] CreateEstateContractCommand createContractGuarantorCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);
         }
 
-        [HttpPut]
-        [Route("v1/InviteRenter")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult InviteRenter([FromBody] InviteRenterToParticipate inviteRenterToParticipateCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        //[HttpPut]
+        //[Route("v1/InviteRenter")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult InviteRenter([FromBody] InviteRenterToParticipate inviteRenterToParticipateCommand)
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
-            var result = handler.Handle(inviteRenterToParticipateCommand);
+        //    var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+        //    var result = handler.Handle(inviteRenterToParticipateCommand);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
-        [HttpPut]
-        [Route("v1/InviteTenant")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult InviteTenant([FromBody] InviteTenantToParticipate inviteTenantToParticipateCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        //[HttpPut]
+        //[Route("v1/InviteTenant")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult InviteTenant([FromBody] InviteTenantToParticipate inviteTenantToParticipateCommand)
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
-            var result = handler.Handle(inviteTenantToParticipateCommand);
+        //    var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+        //    var result = handler.Handle(inviteTenantToParticipateCommand);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
-        [HttpPut]
-        [Route("v1/InviteGuarantor")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult InviteGuarantor([FromBody] InviteGuarantorToParticipate inviteGuarantorToParticipate)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        //[HttpPut]
+        //[Route("v1/InviteGuarantor")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult InviteGuarantor([FromBody] InviteGuarantorToParticipate inviteGuarantorToParticipate)
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
-            var result = handler.Handle(inviteGuarantorToParticipate);
+        //    var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+        //    var result = handler.Handle(inviteGuarantorToParticipate);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         [HttpPost]
         [Route("v1/CreatePaymentCycle")]
@@ -158,7 +158,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractPaymentCycleCommand);
 
             return Ok(result);
@@ -174,7 +174,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(executePaymentCommand);
 
             return Ok(result);
@@ -190,7 +190,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptPaymentCommand);
 
             return Ok(result);
@@ -206,7 +206,7 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var handler = new ContractGuarantorHandlers(_contractUnitOfWork);
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);
 
             return Ok(result);

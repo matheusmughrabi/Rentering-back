@@ -108,8 +108,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             //var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
             //var authResult = authHandler.Handle(authGuarantorCommand);
 
-            if (authResult.Success == false)
-                return Unauthorized(authResult);
+            //if (authResult.Success == false)
+            //    return Unauthorized(authResult);
 
             var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(deleteGuarantorCommand);
