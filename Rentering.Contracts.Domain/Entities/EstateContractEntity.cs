@@ -49,7 +49,7 @@ namespace Rentering.Contracts.Domain.Entities
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
         public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
-        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray();
+        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // TODO - Criar IParticipante -> Renter, Tenant, Guarantor
         public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray();
         public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray();
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();

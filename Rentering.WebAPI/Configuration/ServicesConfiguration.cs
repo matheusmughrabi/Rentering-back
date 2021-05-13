@@ -40,6 +40,8 @@ namespace Rentering.WebAPI.Configuration
             #region Contracts
             services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
 
+            services.AddTransient<IAccountContractsCUDRepository, AccountContractsCUDRepository>();
+
             services.AddTransient<IRenterCUDRepository, RenterCUDRepository>();
             services.AddTransient<IRenterQueryRepository, RenterQueryRepository>();
             services.AddTransient<IAuthRenterService, AuthRenterService>();

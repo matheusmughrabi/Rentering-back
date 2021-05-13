@@ -15,6 +15,8 @@ namespace Rentering.Contracts.Domain.Entities
             ContractId = contractId;
             ParticipantRole = participantRole;
 
+            Status = e_ParticipantStatus.Invited;
+
             if (id != null)
                 AssignId((int)id);
         }
@@ -22,5 +24,6 @@ namespace Rentering.Contracts.Domain.Entities
         public int AccountId { get; private set; }
         public int ContractId { get; private set; }
         public e_ParticipantRole ParticipantRole { get; private set; }
+        public e_ParticipantStatus Status { get; private set; }
     }
 }

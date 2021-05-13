@@ -11,6 +11,7 @@ namespace Rentering.Contracts.Application.Handlers
     public class EstateContractHandlers : Notifiable,
         IHandler<CreateEstateContractCommand>,
         IHandler<CreateContractPaymentCycleCommand>,
+        IHandler<InviteParticipantCommand>,
         IHandler<ExecutePaymentCommand>,
         IHandler<AcceptPaymentCommand>,
         IHandler<RejectPaymentCommand>
@@ -57,88 +58,33 @@ namespace Rentering.Contracts.Application.Handlers
             return createdContract;
         }
 
-        //public ICommandResult Handle(InviteRenterToParticipate command)
-        //{
-        //    var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
-        //    var renterEntity = _contractUnitOfWork.RenterCUD.GetRenterForCUD(command.RenterId);
+        public ICommandResult Handle(InviteParticipantCommand command)
+        {
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
 
-        //    if (contractEntity == null || renterEntity == null)
-        //        return new CommandResult(false, "Fix erros below", new { Message = "Contract or renter not found" });
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-        //    contractEntity.InviteRenter(renterEntity);
+            contractEntity.InviteParticipant(command.AccountId, command.ParticipantRole);
+            var invitedParticipant = contractEntity.Participants.Last();
 
-        //    AddNotifications(contractEntity.Notifications);
-        //    AddNotifications(renterEntity.Notifications);
+            AddNotifications(contractEntity.Notifications);
 
-        //    if (Invalid)
-        //        return new CommandResult(false, "Fix erros below", new { Notifications });
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
 
-        //    _contractUnitOfWork.BeginTransaction();
-        //    _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
-        //    _contractUnitOfWork.RenterCUD.Update(command.RenterId, renterEntity);
-        //    _contractUnitOfWork.Commit();
+            _contractUnitOfWork.BeginTransaction();
+            _contractUnitOfWork.EstateContractCUD.Update(command.ContractId, contractEntity);
+            _contractUnitOfWork.AccountContractsCUD.Create(invitedParticipant);
+            _contractUnitOfWork.Commit();
 
-        //    var updatedContract = new CommandResult(true, "Renter invited successfuly", new
-        //    {
-        //        contractEntity.ContractName
-        //    });
+            var updatedContract = new CommandResult(true, "Participant invited successfuly", new
+            {
+                contractEntity.ContractName
+            });
 
-        //    return updatedContract;
-        //}
-
-        //public ICommandResult Handle(InviteTenantToParticipate command)
-        //{
-        //    var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
-        //    var tenantEntity = _contractUnitOfWork.TenantCUD.GetTenantForCUD(command.TenantId);
-
-        //    if (contractEntity == null || tenantEntity == null)
-        //        return new CommandResult(false, "Fix erros below", new { Message = "Contract or tenant not found" });
-
-        //    contractEntity.InviteTenant(tenantEntity);
-
-        //    AddNotifications(contractEntity.Notifications);
-        //    AddNotifications(tenantEntity.Notifications);
-
-        //    if (Invalid)
-        //        return new CommandResult(false, "Fix erros below", new { Notifications });
-
-        //    _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
-        //    _contractUnitOfWork.TenantCUD.Update(command.TenantId, tenantEntity);
-
-        //    var updatedContract = new CommandResult(true, "Tenant invited successfuly", new
-        //    {
-        //        contractEntity.ContractName
-        //    });
-
-        //    return updatedContract;
-        //}
-
-        //public ICommandResult Handle(InviteGuarantorToParticipate command)
-        //{
-        //    var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.Id);
-        //    var guarantorEntity = _contractUnitOfWork.GuarantorCUD.GetGuarantorForCUD(command.GuarantorId);
-
-        //    if (contractEntity == null || guarantorEntity == null)
-        //        return new CommandResult(false, "Fix erros below", new { Message = "Contract or guarantor not found" });
-
-        //    contractEntity.InviteGuarantor(guarantorEntity);
-
-        //    AddNotifications(contractEntity.Notifications);
-        //    AddNotifications(guarantorEntity.Notifications);
-
-        //    if (Invalid)
-        //        return new CommandResult(false, "Fix erros below", new { Notifications });
-
-        //    _contractUnitOfWork.EstateContractCUD.Update(command.Id, contractEntity);
-        //    _contractUnitOfWork.GuarantorCUD.Update(command.GuarantorId, guarantorEntity);
-
-        //    var updatedContract = new CommandResult(true, "Guarantor invited successfuly", new
-        //    {
-        //        contractEntity.ContractName
-        //    });
-
-        //    return updatedContract;
-        //}
+            return updatedContract;
+        }
 
         public ICommandResult Handle(CreateContractPaymentCycleCommand command)
         {

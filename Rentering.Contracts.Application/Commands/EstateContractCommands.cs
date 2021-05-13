@@ -45,57 +45,19 @@ namespace Rentering.Contracts.Application.Commands
         public DateTime ContractEndDate { get; set; }
     }    
     
-    public class InviteParticipant : ICommand
+    public class InviteParticipantCommand : ICommand
     {
-        public InviteParticipant(int contractId, int accountId, e_ParticipantRole role)
+        public InviteParticipantCommand(int contractId, int accountId, e_ParticipantRole participantRole)
         {
             ContractId = contractId;
             AccountId = accountId;
-            Role = role;
+            ParticipantRole = participantRole;
         }
 
         public int ContractId { get; set; }
         public int AccountId { get; set; }
-        public e_ParticipantRole Role { get; set; }
+        public e_ParticipantRole ParticipantRole { get; set; }
     }
-
-
-
-    //public class InviteRenterToParticipate : ICommand
-    //{
-    //    public InviteRenterToParticipate(int id, int renterId)
-    //    {
-    //        Id = id;
-    //        RenterId = renterId;
-    //    }
-
-    //    public int Id { get; set; }
-    //    public int RenterId { get; set; }
-    //}
-
-    //public class InviteTenantToParticipate : ICommand
-    //{
-    //    public InviteTenantToParticipate(int id, int tenantId)
-    //    {
-    //        Id = id;
-    //        TenantId = tenantId;
-    //    }
-
-    //    public int Id { get; set; }
-    //    public int TenantId { get; set; }
-    //}
-
-    //public class InviteGuarantorToParticipate : ICommand
-    //{
-    //    public InviteGuarantorToParticipate(int id, int guarantorId)
-    //    {
-    //        Id = id;
-    //        GuarantorId = guarantorId;
-    //    }
-
-    //    public int Id { get; set; }
-    //    public int GuarantorId { get; set; }
-    //}
 
     public class CreateContractPaymentCycleCommand : ICommand
     {

@@ -2,7 +2,6 @@
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Entities;
-using System.Data;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 {

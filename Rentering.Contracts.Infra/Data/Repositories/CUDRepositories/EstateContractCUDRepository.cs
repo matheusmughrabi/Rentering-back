@@ -19,6 +19,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public EstateContractEntity GetContractForCUD(int id)
         {
             var contractSql = @"SELECT * FROM EstateContracts WHERE Id = @Id";
+            var participantsSql = @"SELECT * FROM AccountContracts WHERE ContractId = @ContractId";
             var renterSql = @"SELECT * FROM Renters WHERE ContractId = @ContractId";
             var tenantSql = @"SELECT * FROM Tenants WHERE ContractId = @ContractId";
             var guarantorSql = @"SELECT * FROM Guarantors WHERE ContractId = @ContractId";
@@ -30,6 +31,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
             if (contractFromDb == null)
                 return null;
+
+            var participantsFromDb = _context.Connection.Query<GetAccountContractsForCUD>(
+                  participantsSql,
+                  new { ContractId = id });
 
             var rentersFromDb = _context.Connection.Query<GetRenterForCUD>(
                    renterSql,
@@ -48,11 +53,13 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                    new { ContractId = id });
 
             var contractEntity = contractFromDb.EntityFromModel();
+            var participantEntities = participantsFromDb?.Select(c => c.EntityFromModel()).ToList();
             var renterEntities = rentersFromDb?.Select(c => c.EntityFromModel()).ToList();
             var tenantEntities = tenantsFromDb?.Select(c => c.EntityFromModel()).ToList();
             var guarantorEntities = guarantorsFromDb?.Select(c => c.EntityFromModel()).ToList();
             var paymentEntities = paymentsFromDb?.Select(c => c.EntityFromModel()).ToList();
 
+            contractEntity.IncludeParticipants(participantEntities);
             contractEntity.IncludeRenters(renterEntities);
             contractEntity.IncludeTenants(tenantEntities);
             contractEntity.IncludeGuarantors(guarantorEntities);
