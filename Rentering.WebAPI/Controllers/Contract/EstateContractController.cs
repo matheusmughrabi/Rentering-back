@@ -29,24 +29,20 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(result);
         }
 
-        //[HttpGet]
-        //[Route("v1/GetRenterContractsOfCurrentUser")]
-        //[Authorize(Roles = "RegularUser,Admin")]
-        //public IActionResult GetRenterContractsOfCurrentUser()
-        //{
-        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        [HttpGet]
+        [Route("v1/GetContract/{contractId}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetContract(int contractId)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-        //    if (isParsingSuccesful == false)
-        //        return BadRequest("Invalid logged in user");
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
 
-        //    // TODO - Precisa ser refatorado
-        //    var contracts = _contractUnitOfWork.EstateContractQuery.GetAll();
-        //    var renters = _contractUnitOfWork.RenterQuery.GetRenterProfilesOfCurrentUser(accountId);
+            var contract = _contractUnitOfWork.EstateContractQuery.GetContract(contractId);
 
-        //    var contractsOfCurrentUser = contracts.Where(c => renters.Any(r => r.Id == c.RenterId)).ToList();
-
-        //    return Ok(contractsOfCurrentUser);
-        //}
+            return Ok(contract);
+        }
 
         [HttpPost]
         [Route("v1/CreateContract")]

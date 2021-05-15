@@ -62,6 +62,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public GetEstateContractQueryResult GetById(int id)
         {
+            // TODO - Corrigir RenterId, TenantId e GuarantorId
             var sql = @"SELECT
 							Id, 
                             ContractName, 
@@ -88,6 +89,32 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
                     new { Id = id }).FirstOrDefault();
 
             return contractFromDb;
+        }
+
+        public GetCurrentUserContract GetContract(int contractId)
+        {
+            var query = @"
+                SELECT * FROM EstateContracts WHERE Id = @ContractId
+                SELECT A.Username, AC.ParticipantRole, AC.Status
+                FROM AccountContracts AS AC
+                INNER JOIN Accounts AS A ON A.Id = AC.AccountId
+                WHERE AC.ContractId = @ContractId;
+                ";
+
+            var result = _context.Connection.QueryMultiple(query, new { ContractId = contractId });
+
+            var contractQuey = new GetCurrentUserContract();
+            try
+            {
+                contractQuey = result.Read<GetCurrentUserContract>().Single();
+                contractQuey.Participants = result.Read<ContractParticipants>().ToList();
+
+                return contractQuey;
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
         }
     }
 }
