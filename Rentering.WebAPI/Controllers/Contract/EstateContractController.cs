@@ -30,18 +30,48 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/GetContract/{contractId}")]
+        [Route("v1/GetContractsOfCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetContract(int contractId)
+        public IActionResult GetContract()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var contract = _contractUnitOfWork.EstateContractQuery.GetContract(contractId);
+            var contracts = _contractUnitOfWork.EstateContractQuery.GetContractsOfCurrentUser(accountId);
+
+            return Ok(contracts);
+        }
+
+        [HttpGet]
+        [Route("v1/GetContractDetailed/{contractId}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetContractDetailed(int contractId)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var contract = _contractUnitOfWork.EstateContractQuery.GetContractDetailed(contractId);
 
             return Ok(contract);
+        }
+
+        [HttpGet]
+        [Route("v1/GetCurrentUserPendingInvitations")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetCurrentUserPendingInvitations()
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var pendingInvitations = _contractUnitOfWork.EstateContractQuery.GetPendingInvitations(accountId);
+
+            return Ok(pendingInvitations);
         }
 
         [HttpPost]

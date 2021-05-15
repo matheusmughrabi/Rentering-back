@@ -2,6 +2,7 @@
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+using Rentering.Contracts.Domain.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -91,7 +92,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             return contractFromDb;
         }
 
-        public GetCurrentUserContract GetContract(int contractId)
+        public GetCurrentUserContractQueryResult GetContractDetailed(int contractId)
         {
             var query = @"
                 SELECT * FROM EstateContracts WHERE Id = @ContractId
@@ -103,10 +104,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
             var result = _context.Connection.QueryMultiple(query, new { ContractId = contractId });
 
-            var contractQuey = new GetCurrentUserContract();
+            var contractQuey = new GetCurrentUserContractQueryResult();
             try
             {
-                contractQuey = result.Read<GetCurrentUserContract>().Single();
+                contractQuey = result.Read<GetCurrentUserContractQueryResult>().Single();
                 contractQuey.Participants = result.Read<ContractParticipants>().ToList();
 
                 return contractQuey;
@@ -115,6 +116,39 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             {
                 return null;
             }
+        }
+
+        public IEnumerable<GetContractNameQueryResult> GetContractsOfCurrentUser(int accountId)
+        {
+            var query = @"SELECT C.ContractName 
+                        FROM EstateContracts AS C
+                        INNER JOIN AccountContracts AS AC ON AC.ContractId = C.Id
+                        WHERE AC.AccountId = @AccountId;";
+
+            var contractFromDb = _context.Connection.Query<GetContractNameQueryResult>(
+                    query,
+                    new { AccountId = accountId });
+
+            return contractFromDb;
+        }
+
+        public IEnumerable<GetPendingInvitations> GetPendingInvitations(int accountId)
+        {
+            var status = e_ParticipantStatus.Invited;
+            var query = @"SELECT C.ContractName, AC.ParticipantRole, AC.Status
+                        FROM AccountContracts AS AC
+                        INNER JOIN EstateContracts AS C ON C.Id = AC.ContractId
+                        WHERE AC.AccountId = @AccountId AND AC.Status = @Status;";
+
+            var contractsFromDb = _context.Connection.Query<GetPendingInvitations>(
+                    query,
+                    new 
+                    { 
+                        AccountId = accountId,
+                        Status = status
+                    });
+
+            return contractsFromDb;
         }
     }
 }

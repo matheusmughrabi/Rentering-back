@@ -25,7 +25,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryRe
         public DateTime ContractEndDate { get; set; }
     }
 
-    public class GetCurrentUserContract : IQueryResult
+    public class GetCurrentUserContractQueryResult : IQueryResult
     {
         public string ContractName { get; set; }
         public string Street { get; set; }
@@ -44,6 +44,18 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryRe
     public class ContractParticipants
     {
         public string Username { get; set; }
+        public e_ParticipantRole ParticipantRole { get; set; }
+        public e_ContractParticipantStatus Status { get; set; }
+    }
+
+    public class GetContractNameQueryResult : IQueryResult
+    {
+        public string ContractName { get; set; }
+    }
+
+    public class GetPendingInvitations : IQueryResult
+    {
+        public string ContractName { get; set; }
         public e_ParticipantRole ParticipantRole { get; set; }
         public e_ContractParticipantStatus Status { get; set; }
     }

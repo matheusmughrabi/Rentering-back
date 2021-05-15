@@ -153,7 +153,7 @@ namespace Rentering.WebAPI
   -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
   -> Quando o contrato for criado o owner já tem que vir com o status Aceito OK
   -> Fluxo para aceitar ou recusar participação no contrato OK
-  -> Criar GetContractsOfCurrentUser, GetPendingInvitationsOfCurrentUser ON GOING
+  -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser ON GOING
   -> Definir melhor a lógica de aceitar ou recusar participação no contrato
  */
 
