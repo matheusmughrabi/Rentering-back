@@ -5,5 +5,6 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories
 {
     public interface IAccountContractsCUDRepository : IGenericCUDRepository<AccountContractsEntity>
     {
+        AccountContractsEntity GetParticipantForCUD(int accountId, int contractId);
     }
 }

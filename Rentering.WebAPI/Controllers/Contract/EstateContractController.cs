@@ -76,6 +76,9 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
+            if (accountId == inviteParticipantCommand.AccountId)
+                return BadRequest("You cannot invite yourself to a contract");
+
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);
 
@@ -142,6 +145,42 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [Route("v1/AcceptToParticipate")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AcceptToParticipate([FromBody] AcceptToParticipateCommand acceptToParticipateCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            acceptToParticipateCommand.AccountId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(acceptToParticipateCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [Route("v1/RejectToParticipate")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RejectToParticipate([FromBody] RejectToParticipateCommand rejectToParticipateCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            rejectToParticipateCommand.AccountId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(rejectToParticipateCommand);
 
             return Ok(result);
         }

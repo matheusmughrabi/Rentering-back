@@ -16,7 +16,9 @@ namespace Rentering.Contracts.Application.Handlers
         IHandler<InviteParticipantCommand>,
         IHandler<ExecutePaymentCommand>,
         IHandler<AcceptPaymentCommand>,
-        IHandler<RejectPaymentCommand>
+        IHandler<RejectPaymentCommand>,
+        IHandler<AcceptToParticipateCommand>,
+        IHandler<RejectToParticipateCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
@@ -219,6 +221,52 @@ namespace Rentering.Contracts.Application.Handlers
             });
 
             return rejectedPayment;
+        }
+
+        public ICommandResult Handle(AcceptToParticipateCommand command)
+        {
+            var participantForCUD = _contractUnitOfWork.AccountContractsCUD.GetParticipantForCUD(command.AccountId, command.ContractId);
+
+            if (participantForCUD == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
+
+            participantForCUD.AcceptToParticipate();
+
+            AddNotifications(participantForCUD);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWork.AccountContractsCUD.Update(participantForCUD.Id, participantForCUD);
+
+            var participant = new CommandResult(true, "You have accepted to participate in the contract successfuly", new
+            {
+            });
+
+            return participant;
+        }
+
+        public ICommandResult Handle(RejectToParticipateCommand command)
+        {
+            var participantForCUD = _contractUnitOfWork.AccountContractsCUD.GetParticipantForCUD(command.AccountId, command.ContractId);
+
+            if (participantForCUD == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
+
+            participantForCUD.RejectToParticipate();
+
+            AddNotifications(participantForCUD);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWork.AccountContractsCUD.Update(participantForCUD.Id, participantForCUD);
+
+            var participant = new CommandResult(true, "You have rejected to participate in the contract successfuly", new
+            {
+            });
+
+            return participant;
         }
     }
 }

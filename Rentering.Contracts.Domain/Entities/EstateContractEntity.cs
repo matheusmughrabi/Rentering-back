@@ -74,9 +74,17 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             var contractId = Id;
-            var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
 
-            _participants.Add(accountContractsEntity);
+            if (_participants.Count() == 0)
+            {
+                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole, e_ParticipantStatus.Accepted);
+                _participants.Add(accountContractsEntity);
+            }
+            else
+            {
+                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
+                _participants.Add(accountContractsEntity);
+            }
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)

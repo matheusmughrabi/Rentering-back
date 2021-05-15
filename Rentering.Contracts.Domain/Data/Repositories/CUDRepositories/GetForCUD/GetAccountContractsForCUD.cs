@@ -6,13 +6,15 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD
 {
     public class GetAccountContractsForCUD : IGetForCUD<AccountContractsEntity>
     {
-        public int AccountId { get; private set; }
-        public int ContractId { get; private set; }
-        public e_ParticipantRole ParticipantRole { get; private set; }
+        public int Id { get; set; }
+        public int AccountId { get; set; }
+        public int ContractId { get; set; }
+        public e_ParticipantRole ParticipantRole { get; set; }
+        public e_ParticipantStatus Status { get; set; }
 
         public AccountContractsEntity EntityFromModel()
         {
-            var accountContractEntity = new AccountContractsEntity(AccountId, ContractId, ParticipantRole);
+            var accountContractEntity = new AccountContractsEntity(AccountId, ContractId, ParticipantRole, Status, Id);
             return accountContractEntity;
         }
     }

@@ -151,13 +151,21 @@ namespace Rentering.WebAPI
   -> Criar Migration de AccountContracts Table OK
 
   -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
+  -> Quando o contrato for criado o owner já tem que vir com o status Aceito OK
+  -> Fluxo para aceitar ou recusar participação no contrato OK
+  -> Definir melhor a lógica de aceitar ou recusar participação no contrato
+  -> Criar GetContractsOfCurrentUser, GetPendingInvitationsOfCurrentUser
  */
 
-// BUGS
+// BUGS - Sábado (15/05/2021)
 // Login null exception no método GetForLoginCUD
+// If(entity == null) em Create e Update dos repositórios
+// Adicionar try-catch padrão do AspNetCore
 // Verificar TODOs no código
+// Datas não devem aparecer as horas, minutos e segundos
 
-// AUTENTICAÇÃO -> Até Terça-feira à noite (18/05/2021)
+// AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
+// Estudar como será feita a autenticação
 // Criar auth commands, IService e handlers
 // Implementar Service
 // Verificar TODOs no código
@@ -172,7 +180,7 @@ namespace Rentering.WebAPI
 
 // TESTE E MERGE -> Até sábado à noite (22/05/2021)
 // Verificar TODOs no código
-// Testar módulo de contratos inteiro -> Relizar teste que possam gerar exceções para ver se o sistema está robusto
+// Testar módulo de contratos inteiro -> Relizar testes que possam gerar exceções para ver se o sistema está robusto
 // Revisão Geral
 // Mergear e liberar versão 1.2.1 da API
 

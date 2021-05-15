@@ -107,4 +107,28 @@ namespace Rentering.Contracts.Application.Commands
         public int ContractId { get; set; }
         public DateTime Month { get; set; }
     }
+
+    public class AcceptToParticipateCommand : ICommand
+    {
+        public AcceptToParticipateCommand(int contractId)
+        {
+            ContractId = contractId;
+        }
+
+        [JsonIgnore]
+        public int AccountId { get; set; }
+        public int ContractId { get; set; }
+    }
+
+    public class RejectToParticipateCommand : ICommand
+    {
+        public RejectToParticipateCommand(int contractId)
+        {
+            ContractId = contractId;
+        }
+
+        [JsonIgnore]
+        public int AccountId { get; set; }
+        public int ContractId { get; set; }
+    }
 }
