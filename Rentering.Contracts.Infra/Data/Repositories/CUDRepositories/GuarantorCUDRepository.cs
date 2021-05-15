@@ -33,7 +33,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return guarantorEntity;
         }
 
-        public void Create(GuarantorEntity guarantor)
+        public GuarantorEntity Create(GuarantorEntity guarantor)
         {
             var sql = @"INSERT INTO [Guarantors] (
 								[ContractId],
@@ -55,8 +55,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseNationality],
 								[SpouseOcupation],
 								[SpouseIdentityRG],
-								[SpouseCPF]
-							) VALUES (
+								[SpouseCPF])
+                        OUTPUT INSERTED.*
+                        VALUES (
 								@ContractId,
 								@Status,
 								@FirstName,
@@ -79,7 +80,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@SpouseCPF
 							);";
 
-            _context.Connection.Execute(sql,
+            var createdGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                     new
                     {
                         guarantor.ContractId,
@@ -103,9 +104,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = guarantor.SpouseCPF.CPF
                     });
+
+            var createdGuarantorEntity = createdGuarantorFromDb.EntityFromModel();
+            return createdGuarantorEntity;
         }
 
-        public void Update(int id, GuarantorEntity guarantor)
+        public GuarantorEntity Update(int id, GuarantorEntity guarantor)
         {
             var sql = @"UPDATE 
 								Guarantors
@@ -130,10 +134,11 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseOcupation] = @SpouseOcupation,
 								[SpouseIdentityRG] = @SpouseIdentityRG,
 								[SpouseCPF] = @SpouseCPF
+                            OUTPUT INSERTED.*
 							WHERE 
 								Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var updatedGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                    new
                    {
                        Id = id,
@@ -158,21 +163,28 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                        SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                        SpouseCPF = guarantor.SpouseCPF.CPF
                    });
+
+            var updatedGuarantorEntity = updatedGuarantorFromDb.EntityFromModel();
+            return updatedGuarantorEntity;
         }
 
-        public void Delete(int id)
+        public GuarantorEntity Delete(int id)
         {
             var sql = @"DELETE 
                         FROM 
 							Guarantors
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var deletedGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                     new
                     {
                         Id = id
                     });
+
+            var deletedGuarantorEntity = deletedGuarantorFromDb.EntityFromModel();
+            return deletedGuarantorEntity;
         }
     }
 }

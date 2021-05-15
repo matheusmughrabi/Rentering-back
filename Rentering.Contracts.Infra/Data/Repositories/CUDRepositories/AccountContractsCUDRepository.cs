@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD;
 using Rentering.Contracts.Domain.Entities;
 using System;
 
@@ -15,21 +16,22 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void Create(AccountContractsEntity entity)
+        public AccountContractsEntity Create(AccountContractsEntity entity)
         {
             var sql = @"INSERT INTO [AccountContracts] (
-								[AccountId], 
-								[ContractId],
-								[ParticipantRole],
-								[Status]
-							) VALUES (
-								@AccountId,
-								@ContractId,
-								@ParticipantRole,
-								@Status
+							[AccountId], 
+							[ContractId],
+							[ParticipantRole],
+							[Status])
+                        OUTPUT INSERTED.*
+                        VALUES (
+							@AccountId,
+							@ContractId,
+							@ParticipantRole,
+							@Status
 							);";
 
-            _context.Connection.Execute(sql,
+            var accountContractsFromDb = _context.Connection.QuerySingle<GetAccountContractsForCUD>(sql,
                     new
                     {
                         entity.AccountId,
@@ -38,14 +40,18 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         entity.Status
                     },
                     _context.Transaction);
+
+            var accountContractsEntity = accountContractsFromDb.EntityFromModel();
+
+            return accountContractsEntity;
         }
 
-        public void Delete(int id)
+        public AccountContractsEntity Update(int id, AccountContractsEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(int id, AccountContractsEntity entity)
+        public AccountContractsEntity Delete(int id)
         {
             throw new NotImplementedException();
         }

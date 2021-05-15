@@ -33,7 +33,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return renterEntity;
         }
 
-        public void Create(RenterEntity renter)
+        public RenterEntity Create(RenterEntity renter)
         {
             var sql = @"INSERT INTO [Renters] (
 								[ContractId],
@@ -54,8 +54,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseLastName],
 								[SpouseNationality],
 								[SpouseIdentityRG],
-								[SpouseCPF]
-							) VALUES (
+								[SpouseCPF])
+                        OUTPUT INSERTED.*
+                        VALUES (
 								@ContractId,
 								@Status,
 								@FirstName,
@@ -77,7 +78,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@SpouseCPF
 							);";
 
-            _context.Connection.Execute(sql,
+            var renterFromDb = _context.Connection.QuerySingle<GetRenterForCUD>(sql,
                     new
                     {
                         renter.ContractId,
@@ -101,9 +102,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseCPF = renter.SpouseCPF.CPF
                     },
                     _context.Transaction);
+
+            var renterEntity = renterFromDb.EntityFromModel();
+            return renterEntity;
         }
 
-        public void Update(int id, RenterEntity renter)
+        public RenterEntity Update(int id, RenterEntity renter)
         {
             var sql = @"UPDATE 
 								Renters
@@ -127,10 +131,11 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseNationality] = @SpouseNationality,
 								[SpouseIdentityRG] = @SpouseIdentityRG,
 								[SpouseCPF] = @SpouseCPF
+                            OUTPUT INSERTED.*
 							WHERE 
 								Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var renterFromDb = _context.Connection.QuerySingle<GetRenterForCUD>(sql,
                     new
                     {
                         Id = id,
@@ -155,21 +160,29 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseCPF = renter.SpouseCPF.CPF
                     },
                     _context.Transaction);
+
+            var renterEntity = renterFromDb.EntityFromModel();
+            return renterEntity;
         }
 
-        public void Delete(int renterId)
+        public RenterEntity Delete(int renterId)
         {
-            var sql = @"DELETE FROM 
-								Renters
-							WHERE 
-								Id = @Id;";
+            var sql = @"DELETE 
+                        FROM 
+							Renters
+                        OUTPUT INSERTED.*
+						WHERE 
+							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var renterFromDb = _context.Connection.QuerySingle<GetRenterForCUD>(sql,
                     new
                     {
                         Id = renterId
                     },
                     _context.Transaction);
+
+            var renterEntity = renterFromDb.EntityFromModel();
+            return renterEntity;
         }
     }
 }

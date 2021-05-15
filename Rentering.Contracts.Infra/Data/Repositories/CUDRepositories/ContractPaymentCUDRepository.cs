@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories.GetForCUD;
 using Rentering.Contracts.Domain.Entities;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
@@ -14,15 +15,16 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             _context = context;
         }
 
-        public void Create(ContractPaymentEntity payment)
+        public ContractPaymentEntity Create(ContractPaymentEntity payment)
         {
             var sql = @"INSERT INTO [ContractPayments] (
 								[ContractId], 
 								[Month],
 								[RentPrice],
 								[RenterPaymentStatus],
-								[TenantPaymentStatus]
-							) VALUES (
+								[TenantPaymentStatus])
+                        OUTPUT INSERTED.*
+                        VALUES (
 								@ContractId,
 								@Month,
 								@RentPrice,
@@ -30,7 +32,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@TenantPaymentStatus
 							);";
 
-            _context.Connection.Execute(sql,
+            var createdPaymentFromDb = _context.Connection.QuerySingle<GetPaymentForCUD>(sql,
                     new
                     {
                         payment.ContractId,
@@ -40,9 +42,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         payment.TenantPaymentStatus
                     },
                     _context.Transaction);
+
+            var createdPaymentEntity = createdPaymentFromDb.EntityFromModel();
+            return createdPaymentEntity;
         }
 
-        public void Update(int id, ContractPaymentEntity payment)
+        public ContractPaymentEntity Update(int id, ContractPaymentEntity payment)
         {
             var sql = @"UPDATE 
 							ContractPayments
@@ -52,10 +57,11 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 							[RentPrice] = @RentPrice,
 							[RenterPaymentStatus] = @RenterPaymentStatus,
 							[TenantPaymentStatus] = @TenantPaymentStatus
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var updatedPaymentFromDb = _context.Connection.QuerySingle<GetPaymentForCUD>(sql,
                      new
                      {
                          Id = id,
@@ -66,22 +72,29 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                          payment.TenantPaymentStatus
                      },
                      _context.Transaction);
+
+            var updatedPaymentEntity = updatedPaymentFromDb.EntityFromModel();
+            return updatedPaymentEntity;
         }
 
-        public void Delete(int id)
+        public ContractPaymentEntity Delete(int id)
         {
             var sql = @"DELETE 
                         FROM 
 							ContractPayments
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var deletedPaymentFromDb = _context.Connection.QuerySingle<GetPaymentForCUD>(sql,
                      new
                      {
                          Id = id
                      },
                      _context.Transaction);
+
+            var deletedPaymentEntity = deletedPaymentFromDb.EntityFromModel();
+            return deletedPaymentEntity;
         }
     }
 }

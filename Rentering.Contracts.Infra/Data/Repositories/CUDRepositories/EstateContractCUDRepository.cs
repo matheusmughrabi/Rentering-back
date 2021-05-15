@@ -70,53 +70,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return contractEntity;
         }
 
-        public void Create(EstateContractEntity contract)
-        {
-            var sql = @"INSERT INTO [EstateContracts] (
-								[ContractName],
-								[Street],
-								[Neighborhood],
-								[City],
-								[CEP],
-								[State],
-								[PropertyRegistrationNumber],
-								[RentPrice],
-								[RentDueDate],
-								[ContractStartDate],
-								[ContractEndDate]
-							) VALUES (
-								@ContractName,
-								@Street,
-								@Neighborhood,
-								@City,
-								@CEP,
-								@State,
-								@PropertyRegistrationNumber,
-								@RentPrice,
-								@RentDueDate,
-								@ContractStartDate,
-								@ContractEndDate
-							);";
-
-            _context.Connection.Execute(sql,
-                    new
-                    {
-                        contract.ContractName,
-                        contract.Address.Street,
-                        contract.Address.Neighborhood,
-                        contract.Address.City,
-                        contract.Address.CEP,
-                        contract.Address.State,
-                        PropertyRegistrationNumber = contract.PropertyRegistrationNumber.Number,
-                        RentPrice = contract.RentPrice.Price,
-                        contract.RentDueDate,
-                        contract.ContractStartDate,
-                        contract.ContractEndDate
-                    },
-                    _context.Transaction);
-        }
-
-        public EstateContractEntity InsertTest(EstateContractEntity contract)
+        public EstateContractEntity Create(EstateContractEntity contract)
         {
             string sql = @"INSERT INTO [EstateContracts](
                                 [ContractName],
@@ -144,7 +98,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@ContractStartDate,
 								@ContractEndDate);";
 
-            var estateContractFromDb = _context.Connection.QuerySingle<GetEstateContractForCUD>(sql,
+            var createdContractFromDb = _context.Connection.QuerySingle<GetEstateContractForCUD>(sql,
                     new
                     {
                         contract.ContractName,
@@ -161,12 +115,12 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     },
                     _context.Transaction);
 
-            var contractEntityFromDb = estateContractFromDb.EntityFromModel();
+            var createdContractEntity = createdContractFromDb.EntityFromModel();
 
-            return contractEntityFromDb;
+            return createdContractEntity;
         }
 
-        public void Update(int id, EstateContractEntity contract)
+        public EstateContractEntity Update(int id, EstateContractEntity contract)
         {
             var sql = @"UPDATE 
 							EstateContracts
@@ -182,10 +136,11 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 							[RentDueDate] = @RentDueDate,
 							[ContractStartDate] = @ContractStartDate,
 							[ContractEndDate] = @ContractEndDate
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var updatedContractFromDb = _context.Connection.QuerySingle<GetEstateContractForCUD>(sql,
                     new
                     {
                         contract.Id,
@@ -202,19 +157,28 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         contract.ContractEndDate
                     },
                     _context.Transaction);
+
+            var updatedContractEntity = updatedContractFromDb.EntityFromModel();
+
+            return updatedContractEntity;
         }
 
-        public void Delete(int id)
+        public EstateContractEntity Delete(int id)
         {
             var sql = @"DELETE 
                         FROM 
 							EstateContracts
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var deletedContractFromDb = _context.Connection.QuerySingle<GetEstateContractForCUD>(sql,
                    new{ Id = id },
                    _context.Transaction);
+
+            var deletedContractEntity = deletedContractFromDb.EntityFromModel();
+
+            return deletedContractEntity;
         }
     }
 }

@@ -6,7 +6,5 @@ namespace Rentering.Contracts.Domain.Data.Repositories.CUDRepositories
     public interface IEstateContractCUDRepository : IGenericCUDRepository<EstateContractEntity>
     {
         EstateContractEntity GetContractForCUD(int id);
-
-        EstateContractEntity InsertTest(EstateContractEntity contract);
     }
 }

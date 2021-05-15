@@ -49,11 +49,11 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            // TODO - Precisa do ContractId para salvar em AccountContracts
+            // TODO - Trabalhar a gambiarra aqui
             try
             {
                 _contractUnitOfWork.BeginTransaction();
-                var newContract = _contractUnitOfWork.EstateContractCUD.InsertTest(contractEntity);
+                var newContract = _contractUnitOfWork.EstateContractCUD.Create(contractEntity);
 
                 var owner = e_ParticipantRole.Owner;
                 newContract.InviteParticipant(command.AccountId, owner);
