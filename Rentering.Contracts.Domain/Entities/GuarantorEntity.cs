@@ -21,7 +21,7 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject spouseIdentityRG = null,
             CPFValueObject spouseCPF = null,
             e_ContractParticipantStatus? guarantorStatus = null,
-            int? id = null)
+            int? id = null) : base(id)
         {
             ContractId = contractId;
             Name = name;
@@ -36,9 +36,6 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseOcupation = spouseOcupation;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
-
-            if (id != null)
-                AssignId((int)id);
 
             if (guarantorStatus == null)
                 GuarantorStatus = e_ContractParticipantStatus.None;

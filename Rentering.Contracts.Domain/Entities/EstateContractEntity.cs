@@ -25,7 +25,7 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime rentDueDate,
             DateTime contractStartDate,
             DateTime contractEndDate,
-            int? id = null)
+            int? id = null) : base(id)
         {
             ContractName = contractName;
             Address = address;
@@ -35,8 +35,11 @@ namespace Rentering.Contracts.Domain.Entities
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
-            if (id != null)
-                AssignId((int)id);
+            _participants = new List<AccountContractsEntity>();
+            _renters = new List<RenterEntity>();
+            _tenants = new List<TenantEntity>();
+            _guarantors = new List<GuarantorEntity>();
+            _payments = new List<ContractPaymentEntity>();
 
             ApplyValidations();
         }
@@ -56,6 +59,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
+            if (Id == 0)
+            {
+                AddNotification("Id", "ContractId cannot be zero");
+                return;
+            }
+
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
             if (isParticipantAlreadyInThisRole)
@@ -160,35 +169,89 @@ namespace Rentering.Contracts.Domain.Entities
             return currentOwedAmount;
         }
 
-        // TODO - This method should not exist, instead the list of payments should be included in a way similar to EF
         public void IncludeParticipants(List<AccountContractsEntity> participants)
         {
-            if (participants != null)
-                _participants = participants;
+            if (participants == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = participants.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Participants", $"You have provided a participant that does not belong to this contract");
+                return;
+            }
+
+            _participants = participants;
         }
 
         public void IncludeRenters(List<RenterEntity> renters)
         {
-            if (renters != null)
-                _renters = renters;
+            if (renters == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = renters.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Renters", $"You have provided a renter that does not belong to this contract");
+                return;
+            }
+
+            _renters = renters;
         }
 
         public void IncludeTenants(List<TenantEntity> tenants)
         {
-            if (tenants != null)
-                _tenants = tenants;
+            if (tenants == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = tenants.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Tenants", $"You have provided a tenant that does not belong to this contract");
+                return;
+            }
+
+            _tenants = tenants;
         }
 
         public void IncludeGuarantors(List<GuarantorEntity> guarantors)
         {
-            if (guarantors != null)
-                _guarantors = guarantors;
+            if (guarantors == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = guarantors.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Guarantors", $"You have provided a guarantor that does not belong to this contract");
+                return;
+            }
+
+            _guarantors = guarantors;
         }
 
         public void IncludeContractPayments(List<ContractPaymentEntity> payments)
         {
-            if (payments != null)
-                _payments = payments;
+            if (payments == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = payments.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Payments", $"You have provided a payment that does not belong to this contract");
+                return;
+            }
+
+            _payments = payments;
         }
 
         private void ApplyValidations()

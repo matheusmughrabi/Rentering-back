@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Rentering.Contracts.Application.Handlers
             var contractStartDate = command.ContractStartDate;
             var contractEndDate = command.ContractEndDate;
 
-            var contract = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contractEntity = new EstateContractEntity(contractName, address, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             if (_contractUnitOfWork.EstateContractQuery.CheckIfContractNameExists(command.ContractName))
                 AddNotification("ContractName", "This ContractName is already registered");
@@ -43,17 +44,34 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(address.Notifications);
             AddNotifications(propertyRegistrationNumber.Notifications);
             AddNotifications(rentPrice.Notifications);
-            AddNotifications(contract.Notifications);
+            AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWork.EstateContractCUD.Create(contract);
+            // TODO - Precisa do ContractId para salvar em AccountContracts
+            try
+            {
+                _contractUnitOfWork.BeginTransaction();
+                var newContract = _contractUnitOfWork.EstateContractCUD.InsertTest(contractEntity);
+
+                var owner = e_ParticipantRole.Owner;
+                newContract.InviteParticipant(command.AccountId, owner);
+                var invitedParticipant = newContract.Participants.Last();
+
+                _contractUnitOfWork.AccountContractsCUD.Create(invitedParticipant);
+                _contractUnitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _contractUnitOfWork.Rollback();
+                return new CommandResult(false, "Internal Server Error", new { Error = ex.Message });
+            }
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
-                contract.ContractName,
-                contract.RentPrice.Price
+                contractEntity.ContractName,
+                contractEntity.RentPrice.Price
             });
 
             return createdContract;

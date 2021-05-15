@@ -94,6 +94,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
+            createContractGuarantorCommand.AccountId = accountId;
+
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractGuarantorCommand);
 

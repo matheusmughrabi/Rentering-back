@@ -144,11 +144,13 @@ namespace Rentering.WebAPI
   -> Refatorar nos locais que forem necessários do código OK
   -> Refatorar Migrations existentes OK
   
-  -> Criar IReadOnlyCollection de cada participante em EstateContractEntity
-  -> Verificar se precisa atualizar GetForCUD
+  -> Criar IReadOnlyCollection de cada participante em EstateContractEntity OK
+  -> Verificar se precisa atualizar GetForCUD OK
 
-  -> Modelar melhor AccountContracts
-  -> Criar Migration de AccountContracts Table 
+  -> Modelar melhor AccountContracts OK
+  -> Criar Migration de AccountContracts Table OK
+
+  -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts
  */
 
 // BUGS

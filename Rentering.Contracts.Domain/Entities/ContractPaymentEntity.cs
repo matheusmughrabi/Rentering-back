@@ -13,16 +13,13 @@ namespace Rentering.Contracts.Domain.Entities
             PriceValueObject rentPrice, 
             int? id = null, 
             e_RenterPaymentStatus? renterPaymentStatus = null, 
-            e_TenantPaymentStatus? tenantPaymentStatus = null)
+            e_TenantPaymentStatus? tenantPaymentStatus = null) : base(id)
         {
             ContractId = contractId;
             Month = month;
             RentPrice = rentPrice;
 
             TenantPaymentStatus = e_TenantPaymentStatus.NONE;
-
-            if (id != null)
-                AssignId((int)id);
 
             if (renterPaymentStatus != null)
                 RenterPaymentStatus = (e_RenterPaymentStatus)renterPaymentStatus;

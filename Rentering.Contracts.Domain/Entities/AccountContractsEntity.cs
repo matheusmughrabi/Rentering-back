@@ -9,16 +9,13 @@ namespace Rentering.Contracts.Domain.Entities
             int accountId,
             int contractId,
              e_ParticipantRole participantRole,
-            int? id = null)
+            int? id = null) : base(id)
         {
             AccountId = accountId;
             ContractId = contractId;
             ParticipantRole = participantRole;
 
             Status = e_ParticipantStatus.Invited;
-
-            if (id != null)
-                AssignId((int)id);
         }
 
         public int AccountId { get; private set; }

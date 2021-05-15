@@ -1,6 +1,7 @@
 ﻿using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Domain.Enums;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
@@ -32,6 +33,8 @@ namespace Rentering.Contracts.Application.Commands
             ContractEndDate = contractEndDate;
         }
 
+        [JsonIgnore]
+        public int AccountId { get; set; }
         public string ContractName { get; set; }
         public string Street { get; set; }
         public string Neighborhood { get; set; }

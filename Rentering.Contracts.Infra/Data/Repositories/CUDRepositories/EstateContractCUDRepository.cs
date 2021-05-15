@@ -19,6 +19,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
         public EstateContractEntity GetContractForCUD(int id)
         {
             var contractSql = @"SELECT * FROM EstateContracts WHERE Id = @Id";
+
             var participantsSql = @"SELECT * FROM AccountContracts WHERE ContractId = @ContractId";
             var renterSql = @"SELECT * FROM Renters WHERE ContractId = @ContractId";
             var tenantSql = @"SELECT * FROM Tenants WHERE ContractId = @ContractId";
@@ -53,6 +54,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                    new { ContractId = id });
 
             var contractEntity = contractFromDb.EntityFromModel();
+
             var participantEntities = participantsFromDb?.Select(c => c.EntityFromModel()).ToList();
             var renterEntities = rentersFromDb?.Select(c => c.EntityFromModel()).ToList();
             var tenantEntities = tenantsFromDb?.Select(c => c.EntityFromModel()).ToList();
@@ -113,6 +115,57 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                     },
                     _context.Transaction);
         }
+
+        public EstateContractEntity InsertTest(EstateContractEntity contract)
+        {
+            string sql = @"INSERT INTO [EstateContracts](
+                                [ContractName],
+							    [Street],
+							    [Neighborhood],
+							    [City],
+							    [CEP],
+							    [State],
+							    [PropertyRegistrationNumber],
+							    [RentPrice],
+							    [RentDueDate],
+							    [ContractStartDate],
+							    [ContractEndDate])
+                        OUTPUT INSERTED.*
+                        VALUES(
+                                @ContractName,
+								@Street,
+								@Neighborhood,
+								@City,
+								@CEP,
+								@State,
+								@PropertyRegistrationNumber,
+								@RentPrice,
+								@RentDueDate,
+								@ContractStartDate,
+								@ContractEndDate);";
+
+            var estateContractFromDb = _context.Connection.QuerySingle<GetEstateContractForCUD>(sql,
+                    new
+                    {
+                        contract.ContractName,
+                        contract.Address.Street,
+                        contract.Address.Neighborhood,
+                        contract.Address.City,
+                        contract.Address.CEP,
+                        contract.Address.State,
+                        PropertyRegistrationNumber = contract.PropertyRegistrationNumber.Number,
+                        RentPrice = contract.RentPrice.Price,
+                        contract.RentDueDate,
+                        contract.ContractStartDate,
+                        contract.ContractEndDate
+                    },
+                    _context.Transaction);
+
+            var contractEntityFromDb = estateContractFromDb.EntityFromModel();
+
+            return contractEntityFromDb;
+        }
+
         public void Update(int id, EstateContractEntity contract)
         {
             var sql = @"UPDATE 

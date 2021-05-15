@@ -16,7 +16,7 @@ namespace Rentering.WebAPI.Migrations
             Create.Table("AccountContracts")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
                 .WithColumn("AccountId").AsInt32().NotNullable().ForeignKey("Accounts", "Id")
-                .WithColumn("ContractId").AsInt32().NotNullable().ForeignKey("Accounts", "Id")
+                .WithColumn("ContractId").AsInt32().NotNullable().ForeignKey("EstateContracts", "Id")
                 .WithColumn("ParticipantRole").AsInt32().NotNullable()
                 .WithColumn("Status").AsInt32().NotNullable();
         }
