@@ -146,7 +146,10 @@ namespace Rentering.Contracts.Application.Handlers
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
             contractEntity.ExecutePayment(command.Month);
+
+            AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
@@ -173,6 +176,8 @@ namespace Rentering.Contracts.Application.Handlers
 
             contractEntity.AcceptPayment(command.Month);
 
+            AddNotifications(contractEntity.Notifications);
+
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
@@ -197,6 +202,8 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
             contractEntity.RejectPayment(command.Month);
+
+            AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });

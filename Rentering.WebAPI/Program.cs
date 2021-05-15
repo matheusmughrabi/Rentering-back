@@ -150,7 +150,7 @@ namespace Rentering.WebAPI
   -> Modelar melhor AccountContracts OK
   -> Criar Migration de AccountContracts Table OK
 
-  -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts
+  -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
  */
 
 // BUGS
