@@ -56,6 +56,9 @@ namespace Rentering.Accounts.Application.Handlers
             var id = command.Id;
             var accountEntity = _accountUnitOfWork.AccountCUD.GetAccountForCUD(command.Id);
 
+            if (accountEntity == null)
+                return new CommandResult(false, "Account not found", new { });
+
             accountEntity.AssignAdminRole();
 
             AddNotifications(accountEntity.Notifications);

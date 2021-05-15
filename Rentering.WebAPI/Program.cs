@@ -153,17 +153,16 @@ namespace Rentering.WebAPI
   -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
   -> Quando o contrato for criado o owner já tem que vir com o status Aceito OK
   -> Fluxo para aceitar ou recusar participação no contrato OK
-  -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser ON GOING
-  -> Definir melhor a lógica de aceitar ou recusar participação no contrato
+  -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser OK
  */
 
 // BUGS - Sábado (15/05/2021)
-// Login null exception no método GetForLoginCUD
-// If(entity == null) em Create e Update dos repositórios
-// Adicionar try-catch padrão do AspNetCore
+// Login null exception no método GetForLoginCUD OK
+// If(entity == null) em Create e Update dos repositórios OK
+// CheckIfExists
 // Verificar TODOs no código
 // Datas não devem aparecer as horas, minutos e segundos
-// CheckIfExists
+// Adicionar try-catch padrão do AspNetCore
 
 // AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
 // Estudar como será feita a autenticação

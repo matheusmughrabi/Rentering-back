@@ -35,6 +35,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public GuarantorEntity Create(GuarantorEntity guarantor)
         {
+            if (guarantor == null)
+                return null;
+
             var sql = @"INSERT INTO [Guarantors] (
 								[ContractId],
 								[Status],
@@ -111,6 +114,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public GuarantorEntity Update(int id, GuarantorEntity guarantor)
         {
+            if (guarantor == null)
+                return null;
+
             var sql = @"UPDATE 
 								Guarantors
 							SET

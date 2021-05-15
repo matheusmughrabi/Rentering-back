@@ -24,6 +24,9 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Id = id }).FirstOrDefault();
 
+            if (accountFromDb == null)
+                return null;
+
             var accountEntity = accountFromDb.EntityFromModel();
 
             return accountEntity;
@@ -37,6 +40,9 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Username = username }).FirstOrDefault();
 
+            if (accountFromDb == null)
+                return null;
+
             var accountEntity = accountFromDb.EntityFromModel();
 
             return accountEntity;
@@ -44,6 +50,9 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
 
         public AccountEntity Create(AccountEntity accountEntity)
         {
+            if (accountEntity == null)
+                return null;
+
             var sql = @" INSERT INTO [Accounts] (
                                 [Email], 
                                 [Username], 
@@ -72,6 +81,9 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
 
         public AccountEntity Update(int id, AccountEntity accountEntity)
         {
+            if (accountEntity == null)
+                return null;
+
             var sql = @"UPDATE 
 		                        Accounts
 	                        SET 

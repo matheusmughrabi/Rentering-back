@@ -37,6 +37,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public AccountContractsEntity Create(AccountContractsEntity entity)
         {
+            if (entity == null)
+                return null;
+
             var sql = @"INSERT INTO [AccountContracts] (
 							[AccountId], 
 							[ContractId],
@@ -66,6 +69,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public AccountContractsEntity Update(int id, AccountContractsEntity entity)
         {
+            if (entity == null)
+                return null;
+
             var sql = @"UPDATE 
 							AccountContracts
 						SET
@@ -90,6 +96,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return accountContractsEntity;
         }
 
+        // TODO - Implementar Lógica de delete?
         public AccountContractsEntity Delete(int id)
         {
             throw new NotImplementedException();

@@ -35,6 +35,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public RenterEntity Create(RenterEntity renter)
         {
+            if (renter == null)
+                return null;
+
             var sql = @"INSERT INTO [Renters] (
 								[ContractId],
 								[Status],
@@ -109,6 +112,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public RenterEntity Update(int id, RenterEntity renter)
         {
+            if (renter == null)
+                return null;
+
             var sql = @"UPDATE 
 								Renters
 							SET

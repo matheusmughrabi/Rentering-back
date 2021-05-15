@@ -72,6 +72,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public EstateContractEntity Create(EstateContractEntity contract)
         {
+            if (contract == null)
+                return null;
+
             string sql = @"INSERT INTO [EstateContracts](
                                 [ContractName],
 							    [Street],
@@ -122,6 +125,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public EstateContractEntity Update(int id, EstateContractEntity contract)
         {
+            if (contract == null)
+                return null;
+
             var sql = @"UPDATE 
 							EstateContracts
 						SET

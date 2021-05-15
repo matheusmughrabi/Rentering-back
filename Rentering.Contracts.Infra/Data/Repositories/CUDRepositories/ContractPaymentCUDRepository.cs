@@ -17,6 +17,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public ContractPaymentEntity Create(ContractPaymentEntity payment)
         {
+            if (payment == null)
+                return null;
+
             var sql = @"INSERT INTO [ContractPayments] (
 								[ContractId], 
 								[Month],
@@ -49,6 +52,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 
         public ContractPaymentEntity Update(int id, ContractPaymentEntity payment)
         {
+            if (payment == null)
+                return null;
+
             var sql = @"UPDATE 
 							ContractPayments
 						SET
