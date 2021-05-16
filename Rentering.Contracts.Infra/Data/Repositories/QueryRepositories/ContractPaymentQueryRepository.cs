@@ -3,7 +3,6 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories

@@ -7,12 +7,8 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryRe
 {
     public class GetEstateContractQueryResult : IQueryResult
     {
-        // TODO - Corrigir RenterId, TenantId, GuarantorId aqui
         public int Id { get; set; }
         public string ContractName { get; set; }
-        public int RenterId { get; set; }
-        public int TenantId { get; set; }
-        public int GuarantorId { get; set; }
         public string Street { get; set; }
         public string Neighborhood { get; set; }
         public string City { get; set; }

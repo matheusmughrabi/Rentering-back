@@ -73,38 +73,5 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
             return renterFromDb;
         }
-
-        // TODO - Remover
-        public IEnumerable<GetTenantQueryResult> GetTenantProfilesOfCurrentUser(int accountId)
-        {
-            var sql = @"SELECT 
-							Id,
-                            ContractId,
-                            Status,
-                            FirstName,
-                            LastName,
-                            Nationality,
-                            Ocupation,
-                            MaritalStatus,
-                            IdentityRG,
-                            CPF,
-                            Street,
-                            SpouseFirstName,
-                            SpouseLastName,
-                            SpouseNationality,
-                            SpouseOcupation,
-                            SpouseIdentityRG,
-                            SpouseCPF
-						FROM 
-							Tenants
-						WHERE 
-							[AccountId] = @AccountId;";
-
-            var rentersFromDb = _context.Connection.Query<GetTenantQueryResult>(
-                    sql,
-                    new { AccountId = accountId });
-
-            return rentersFromDb;
-        }
     }
 }

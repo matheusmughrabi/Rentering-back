@@ -57,10 +57,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT 
 							Id, 
-                            ContractName, 
-                            RenterId, 
-                            TenantId, 
-                            GuarantorId, 
+                            ContractName,  
                             Street, 
                             Neighborhood, 
                             City, 
@@ -81,13 +78,9 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
         public GetEstateContractQueryResult GetById(int id)
         {
-            // TODO - Corrigir RenterId, TenantId e GuarantorId
             var sql = @"SELECT
 							Id, 
-                            ContractName, 
-                            RenterId, 
-                            TenantId, 
-                            GuarantorId, 
+                            ContractName,
                             Street, 
                             Neighborhood, 
                             City, 

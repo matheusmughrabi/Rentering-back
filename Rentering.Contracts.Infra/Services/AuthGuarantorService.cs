@@ -1,5 +1,6 @@
 ﻿using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
+using System;
 using System.Linq;
 
 namespace Rentering.Contracts.Infra.Services
@@ -15,11 +16,13 @@ namespace Rentering.Contracts.Infra.Services
 
         public bool IsCurrentUserGuarantorProfileOwner(int accountId, int guarantorProfileId)
         {
-            var guarantorProfilesOfTheCurrentUser = _guarantorQueryRepository.GetGuarantorProfilesOfCurrentUser(accountId);
+            throw new NotImplementedException();
 
-            bool containsPassedGuarantorProfileId = guarantorProfilesOfTheCurrentUser.ToList().Any(c => c.Id == guarantorProfileId);
+            //var guarantorProfilesOfTheCurrentUser = _guarantorQueryRepository.GetGuarantorProfilesOfCurrentUser(accountId);
 
-            return containsPassedGuarantorProfileId;
+            //bool containsPassedGuarantorProfileId = guarantorProfilesOfTheCurrentUser.ToList().Any(c => c.Id == guarantorProfileId);
+
+            //return containsPassedGuarantorProfileId;
         }
     }
 }

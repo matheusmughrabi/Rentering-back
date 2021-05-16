@@ -156,13 +156,14 @@ namespace Rentering.WebAPI
   -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser OK
  */
 
-// BUGS - Sábado (15/05/2021)
+// BUGS - Domingo (16/05/2021)
 // Login null exception no método GetForLoginCUD OK
 // If(entity == null) em Create e Update dos repositórios OK
-// CheckIfExists
-// Verificar TODOs no código
-// Datas não devem aparecer as horas, minutos e segundos
+// CheckIfExists OK
+// Verificar TODOs no código OK
 // Adicionar try-catch padrão do AspNetCore
+
+// Endpoint para cálculo de valor do aluguel
 
 // AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
 // Estudar como será feita a autenticação

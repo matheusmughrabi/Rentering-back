@@ -37,10 +37,7 @@ namespace Rentering.Accounts.Domain.Data.Repositories.CUDRepositories.GetForCUD
         {
             var email = new EmailValueObject(Email);
             var username = new UsernameValueObject(Username);
-
-            // TODO - Retirar isto
-            var passwordFromDb = "123";
-            var password = new PasswordValueObject(passwordFromDb);
+            var password = new PasswordValueObject(Password);
             var role = Role;
             var id = Id;
 

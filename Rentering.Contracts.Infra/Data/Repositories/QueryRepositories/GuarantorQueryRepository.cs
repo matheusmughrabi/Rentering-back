@@ -73,38 +73,5 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
 
             return guarantorFromDb;
         }
-
-        // TODO - Remover
-        public IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId)
-        {
-            var sql = @"SELECT 
-							Id,
-                            ContractId,
-                            Status,
-                            FirstName,
-                            LastName,
-                            Nationality,
-                            Ocupation,
-                            MaritalStatus,
-                            IdentityRG,
-                            CPF,
-                            Street,
-                            SpouseFirstName,
-                            SpouseLastName,
-                            SpouseNationality,
-                            SpouseOcupation,
-                            SpouseIdentityRG,
-                            SpouseCPF
-						FROM 
-							Guarantors
-						WHERE 
-							[AccountId] = @AccountId;";
-
-            var guarantorsFromDb = _context.Connection.Query<GetGuarantorQueryResult>(
-                    sql,
-                    new { AccountId = accountId });
-
-            return guarantorsFromDb;
-        }
     }
 }
