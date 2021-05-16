@@ -163,7 +163,7 @@ namespace Rentering.WebAPI
 // Verificar TODOs no código OK
 // Adicionar try-catch padrão do AspNetCore ON GOING
 
-// Endpoint para cálculo de valor do aluguel
+// Endpoint para cálculo de valor do aluguel -> CurrentOwedAmount OK
 
 // AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
 // Estudar como será feita a autenticação
