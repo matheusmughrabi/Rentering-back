@@ -161,7 +161,7 @@ namespace Rentering.WebAPI
 // If(entity == null) em Create e Update dos repositórios OK
 // CheckIfExists OK
 // Verificar TODOs no código OK
-// Adicionar try-catch padrão do AspNetCore
+// Adicionar try-catch padrão do AspNetCore ON GOING
 
 // Endpoint para cálculo de valor do aluguel
 

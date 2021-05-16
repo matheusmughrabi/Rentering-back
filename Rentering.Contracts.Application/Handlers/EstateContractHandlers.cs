@@ -18,7 +18,8 @@ namespace Rentering.Contracts.Application.Handlers
         IHandler<AcceptPaymentCommand>,
         IHandler<RejectPaymentCommand>,
         IHandler<AcceptToParticipateCommand>,
-        IHandler<RejectToParticipateCommand>
+        IHandler<RejectToParticipateCommand>,
+        IHandler<GetCurrentOwedAmountCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
@@ -269,6 +270,28 @@ namespace Rentering.Contracts.Application.Handlers
             });
 
             return participant;
+        }
+
+        public ICommandResult Handle(GetCurrentOwedAmountCommand command)
+        {
+            var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var currentOwedAmount = contractEntity.CurrentOwedAmount();
+
+            AddNotifications(contractEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            var result = new CommandResult(true, "Current owed amount calculated successfuly", new
+            {
+                CurrentOwedAmount = currentOwedAmount
+            });
+
+            return result;
         }
     }
 }

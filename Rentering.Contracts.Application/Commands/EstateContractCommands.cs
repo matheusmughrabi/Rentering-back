@@ -131,4 +131,14 @@ namespace Rentering.Contracts.Application.Commands
         public int AccountId { get; set; }
         public int ContractId { get; set; }
     }
+
+    public class GetCurrentOwedAmountCommand : ICommand
+    {
+        public GetCurrentOwedAmountCommand(int contractId)
+        {
+            ContractId = contractId;
+        }
+
+        public int ContractId { get; set; }
+    }
 }

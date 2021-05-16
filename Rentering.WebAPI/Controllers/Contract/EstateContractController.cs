@@ -92,6 +92,22 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("v1/CalculateCurrentOwedAmount")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(getCurrentOwedAmountCommand);
+
+            return Ok(result);
+        }
+
         [HttpPut]
         [Route("v1/InviteParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]

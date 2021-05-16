@@ -173,6 +173,12 @@ namespace Rentering.Contracts.Domain.Entities
                 .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.NONE)
                 .FirstOrDefault();
 
+            if (currentPayment == null)
+            {
+                AddNotification("CurrentPayment", $"There are no open rents anymore");
+                return 0M;
+            }
+
             var currentOwedAmount = currentPayment.CalculateOwedAmount(RentDueDate);
             return currentOwedAmount;
         }
