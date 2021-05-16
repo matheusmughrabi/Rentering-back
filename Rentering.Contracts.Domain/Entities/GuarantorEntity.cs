@@ -7,7 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class GuarantorEntity : Entity
     {
         public GuarantorEntity(
-            int accountId,
+            int contractId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -15,13 +15,15 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG, 
             CPFValueObject cpf, 
             AddressValueObject address, 
-            NameValueObject spouseName, 
-            string spouseNationality, 
-            string spouseOcupation, 
-            IdentityRGValueObject spouseIdentityRG,
-            CPFValueObject spouseCPF)
+            NameValueObject spouseName = null, 
+            string spouseNationality = null, 
+            string spouseOcupation = null, 
+            IdentityRGValueObject spouseIdentityRG = null,
+            CPFValueObject spouseCPF = null,
+            e_ContractParticipantStatus? guarantorStatus = null,
+            int? id = null) : base(id)
         {
-            AccountId = accountId;
+            ContractId = contractId;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -34,9 +36,15 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseOcupation = spouseOcupation;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
+
+            if (guarantorStatus == null)
+                GuarantorStatus = e_ContractParticipantStatus.None;
+            else
+                GuarantorStatus = (e_ContractParticipantStatus)guarantorStatus;
         }
 
-        public int AccountId { get; private set; }
+        public int ContractId { get; private set; }
+        public e_ContractParticipantStatus GuarantorStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
@@ -49,5 +57,38 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseOcupation { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
+
+        public void AcceptToParticipate()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Aceito)
+            {
+                AddNotification("GuarantorStatus", "The status is already accepted");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Aceito;
+        }
+
+        public void RefuseToParticipate()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Recusado)
+            {
+                AddNotification("GuarantorStatus", "The status is already refused");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Recusado;
+        }
+
+        public void UpdateGuarantorStatusToAwaiting()
+        {
+            if (GuarantorStatus == e_ContractParticipantStatus.Pendente)
+            {
+                AddNotification("GuarantorStatus", "The status is already awaiting");
+                return;
+            }
+
+            GuarantorStatus = e_ContractParticipantStatus.Pendente;
+        }
     }
 }

@@ -12,14 +12,12 @@ namespace Rentering.Common.Infra
             Connection.Open();
         }
 
-        public SqlConnection Connection { get; set; }
+        public IDbConnection Connection { get; set; }
+        public IDbTransaction Transaction { get; set; }
 
         public void Dispose()
         {
-            if (Connection.State != ConnectionState.Closed)
-            {
-                Connection.Close();
-            }
+            Connection?.Dispose();
         }
     }
 }

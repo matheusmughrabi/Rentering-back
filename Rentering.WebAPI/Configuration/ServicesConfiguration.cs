@@ -3,18 +3,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Rentering.Accounts.Domain.Repositories.CUDRepositories;
-using Rentering.Accounts.Domain.Repositories.QueryRepositories;
-using Rentering.Accounts.Infra.Repositories.CUDRepositories;
-using Rentering.Accounts.Infra.Repositories.QueryRepositories;
+using Rentering.Accounts.Domain.Data;
+using Rentering.Accounts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
+using Rentering.Accounts.Infra.Data;
+using Rentering.Accounts.Infra.Data.Repositories.CUDRepositories;
+using Rentering.Accounts.Infra.Data.Repositories.QueryRepositories;
 using Rentering.Common.Infra;
-using Rentering.Contracts.Domain.Repositories.AuthRepositories;
-using Rentering.Contracts.Domain.Repositories.CUDRepositories;
-using Rentering.Contracts.Domain.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.Data;
+using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Services;
-using Rentering.Contracts.Infra.Repositories.AuthRepositories;
-using Rentering.Contracts.Infra.Repositories.CUDRepositories;
-using Rentering.Contracts.Infra.Repositories.QueryRepositories;
+using Rentering.Contracts.Infra.Data;
+using Rentering.Contracts.Infra.Data.Repositories.CUDRepositories;
+using Rentering.Contracts.Infra.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 using System.Reflection;
@@ -28,35 +30,36 @@ namespace Rentering.WebAPI.Configuration
         {
             services.AddScoped<RenteringDataContext, RenteringDataContext>();
 
+            #region Accounts
+            services.AddScoped<IAccountUnitOfWork, AccountUnitOfWork>();
+
             services.AddTransient<IAccountCUDRepository, AccountCUDRepository>();
             services.AddTransient<IAccountQueryRepository, AccountQueryRepository>();
+            #endregion
+
+            #region Contracts
+            services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
+
+            services.AddTransient<IAccountContractsCUDRepository, AccountContractsCUDRepository>();
 
             services.AddTransient<IRenterCUDRepository, RenterCUDRepository>();
             services.AddTransient<IRenterQueryRepository, RenterQueryRepository>();
-            services.AddTransient<IRenterAuthRepository, RenterAuthRepository>();
             services.AddTransient<IAuthRenterService, AuthRenterService>();
 
             services.AddTransient<ITenantCUDRepository, TenantCUDRepository>();
             services.AddTransient<ITenantQueryRepository, TenantQueryRepository>();
-            services.AddTransient<ITenantAuthRepository, TenantAuthRepository>();
             services.AddTransient<IAuthTenantService, AuthTenantService>();
 
             services.AddTransient<IGuarantorCUDRepository, GuarantorCUDRepository>();
             services.AddTransient<IGuarantorQueryRepository, GuarantorQueryRepository>();
-            services.AddTransient<IGuarantorAuthRepository, GuarantorAuthRepository>();
             services.AddTransient<IAuthGuarantorService, AuthGuarantorService>();
 
-            services.AddTransient<IContractAuthRepository, ContractAuthRepository>();
-
-            services.AddTransient<IContractUserProfileCUDRepository, ContractUserProfileCUDRepository>();
-            services.AddTransient<IContractUserProfileQueryRepository, ContractUserQueryRepository>();
-
-            services.AddTransient<IContractCUDRepository, ContractCUDRepository>();
-            services.AddTransient<IContractQueryRepository, ContractQueryRepository>();
-            services.AddTransient<IAuthContractService, AuthContractService>();
+            services.AddTransient<IEstateContractCUDRepository, EstateContractCUDRepository>();
+            services.AddTransient<IEstateContractQueryRepository, EstateContractQueryRepository>();
 
             services.AddTransient<IContractPaymentCUDRepository, ContractPaymentCUDRepository>();
             services.AddTransient<IContractPaymentQueryRepository, ContractPaymentQueryRepository>();
+            #endregion
         }
 
         public static void RegisterFluentMigrator(this IServiceCollection services)

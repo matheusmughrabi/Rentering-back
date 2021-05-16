@@ -7,7 +7,7 @@
         ACCEPTED = 2
     }
 
-    public enum e_TentantPaymentStatus
+    public enum e_TenantPaymentStatus
     {
         NONE = 0,
         EXECUTED = 1

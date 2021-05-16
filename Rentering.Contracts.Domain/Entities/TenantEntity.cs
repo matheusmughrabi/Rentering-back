@@ -7,7 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class TenantEntity : Entity
     {
         public TenantEntity(
-            int accountId,
+            int contractId,
             NameValueObject name, 
             string nationality, 
             string ocupation,
@@ -15,13 +15,16 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG, 
             CPFValueObject cpf, 
             AddressValueObject address, 
-            NameValueObject spouseName,
-            string spouseNationality, 
-            string spouseOcupation, 
-            IdentityRGValueObject spouseIdentityRG, 
-            CPFValueObject spouseCPF)
+            NameValueObject spouseName = null,
+            string spouseNationality = null, 
+            string spouseOcupation = null, 
+            IdentityRGValueObject spouseIdentityRG = null, 
+            CPFValueObject spouseCPF = null,
+            e_ContractParticipantStatus? tenantStatus = null,
+            int? id = null) : base(id)
         {
-            AccountId = accountId;
+            ContractId = contractId;
+            TenantStatus = e_ContractParticipantStatus.Pendente;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -34,9 +37,15 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseOcupation = spouseOcupation;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
+
+            if (tenantStatus == null)
+                TenantStatus = e_ContractParticipantStatus.None;
+            else
+                TenantStatus = (e_ContractParticipantStatus)tenantStatus;
         }
 
-        public int AccountId { get; private set; }
+        public int ContractId { get; private set; }
+        public e_ContractParticipantStatus TenantStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
@@ -49,5 +58,38 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseOcupation { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
+
+        public void AcceptToParticipate()
+        {
+            if (TenantStatus == e_ContractParticipantStatus.Aceito)
+            {
+                AddNotification("TenantStatus", "The status is already accepted");
+                return;
+            }
+
+            TenantStatus = e_ContractParticipantStatus.Aceito;
+        }
+
+        public void RefuseToParticipate()
+        {
+            if (TenantStatus == e_ContractParticipantStatus.Recusado)
+            {
+                AddNotification("TenantStatus", "The status is already refused");
+                return;
+            }
+
+            TenantStatus = e_ContractParticipantStatus.Recusado;
+        }
+
+        public void UpdateTenantStatusToAwaiting()
+        {
+            if (TenantStatus == e_ContractParticipantStatus.Pendente)
+            {
+                AddNotification("TenantStatus", "The status is already awaiting");
+                return;
+            }
+
+            TenantStatus = e_ContractParticipantStatus.Pendente;
+        }
     }
 }

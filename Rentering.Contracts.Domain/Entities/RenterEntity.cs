@@ -7,7 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class RenterEntity : Entity
     {
         public RenterEntity(
-            int accountId,
+            int contractId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -15,12 +15,14 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject identityRG,
             CPFValueObject cpf, 
             AddressValueObject address,
-            NameValueObject spouseName, 
-            string spouseNationality,
-            IdentityRGValueObject spouseIdentityRG, 
-            CPFValueObject spouseCPF)
+            NameValueObject spouseName = null, 
+            string spouseNationality = null,
+            IdentityRGValueObject spouseIdentityRG = null,
+            CPFValueObject spouseCPF = null,
+            e_ContractParticipantStatus? renterStatus = null,
+            int? id = null) : base(id)
         {
-            AccountId = accountId;
+            ContractId = contractId;            
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -32,9 +34,15 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseNationality = spouseNationality;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
+
+            if (renterStatus == null)
+                RenterStatus = e_ContractParticipantStatus.None;
+            else
+                RenterStatus = (e_ContractParticipantStatus)renterStatus;
         }
 
-        public int AccountId { get; private set; }
+        public int ContractId { get; private set; }
+        public e_ContractParticipantStatus RenterStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
@@ -46,5 +54,38 @@ namespace Rentering.Contracts.Domain.Entities
         public string SpouseNationality { get; private set; }
         public IdentityRGValueObject SpouseIdentityRG { get; private set; }
         public CPFValueObject SpouseCPF { get; private set; }
+
+        public void AcceptToParticipate()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Aceito)
+            {
+                AddNotification("RenterStatus", "The status is already accepted");
+                return;
+            }               
+
+            RenterStatus = e_ContractParticipantStatus.Aceito;
+        }
+
+        public void RefuseToParticipate()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Recusado)
+            {
+                AddNotification("RenterStatus", "The status is already refused");
+                return;
+            }
+
+            RenterStatus = e_ContractParticipantStatus.Recusado;
+        }
+
+        public void UpdateRenterStatusToAwaiting()
+        {
+            if (RenterStatus == e_ContractParticipantStatus.Pendente)
+            {
+                AddNotification("RenterStatus", "The status is already awaiting");
+                return;
+            }
+
+            RenterStatus = e_ContractParticipantStatus.Pendente;
+        }
     }
 }
