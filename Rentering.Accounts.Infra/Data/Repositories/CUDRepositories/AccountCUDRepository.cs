@@ -24,10 +24,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Id = id }).FirstOrDefault();
 
-            if (accountFromDb == null)
-                return null;
-
-            var accountEntity = accountFromDb.EntityFromModel();
+            var accountEntity = accountFromDb?.EntityFromModel();
 
             return accountEntity;
         }
@@ -40,10 +37,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Username = username }).FirstOrDefault();
 
-            if (accountFromDb == null)
-                return null;
-
-            var accountEntity = accountFromDb.EntityFromModel();
+            var accountEntity = accountFromDb?.EntityFromModel();
 
             return accountEntity;
         }
