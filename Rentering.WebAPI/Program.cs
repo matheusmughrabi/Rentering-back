@@ -164,6 +164,8 @@ namespace Rentering.WebAPI
 // Adicionar try-catch padrão do AspNetCore ON GOING
 
 // Endpoint para cálculo de valor do aluguel -> CurrentOwedAmount OK
+// Revisão de tudo
+// Criar Account UnitTests -> Entity, Handlers
 
 // AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
 // Estudar como será feita a autenticação
@@ -172,7 +174,6 @@ namespace Rentering.WebAPI
 // Verificar TODOs no código
 
 // TESTES DE UNIDADE -> Até sexta-feira à noite (21/05/2021)
-// Criar Account UnitTests -> Entity, Handlers
 // Criar Renter UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar Tenant UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar Guarantor UnitTests -> Entity, Handlers, AuthHandlers e AuthService

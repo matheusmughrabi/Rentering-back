@@ -152,24 +152,19 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            contractEntity.ExecutePayment(command.Month);
+            var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
+            AddNotifications(rejectedPaymentEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var executedPaymentEntity = contractEntity.Payments
-                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
+            _contractUnitOfWork.ContractPaymentCUD.Update(rejectedPaymentEntity.Id, rejectedPaymentEntity);
 
-            _contractUnitOfWork.ContractPaymentCUD.Update(executedPaymentEntity.Id, executedPaymentEntity);
+            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
 
-            var executedPayment = new CommandResult(true, "Payment executed successfuly", new
-            {
-                executedPaymentEntity
-            });
-
-            return executedPayment;
+            return rejectedPayment;
         }
 
         public ICommandResult Handle(AcceptPaymentCommand command)
@@ -179,22 +174,17 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            contractEntity.AcceptPayment(command.Month);
+            var acceptedPaymentEntity = contractEntity.AcceptPayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
+            AddNotifications(acceptedPaymentEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var acceptedPaymentEntity = contractEntity.Payments
-                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
-
             _contractUnitOfWork.ContractPaymentCUD.Update(acceptedPaymentEntity.Id, acceptedPaymentEntity);
 
-            var acceptedPayment = new CommandResult(true, "Payment accepted successfuly", new
-            {
-                acceptedPaymentEntity
-            });
+            var acceptedPayment = new CommandResult(true, "Payment accepted successfuly");
 
             return acceptedPayment;
         }
@@ -206,22 +196,17 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            contractEntity.RejectPayment(command.Month);
+            var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
+            AddNotifications(rejectedPaymentEntity.Notifications);
 
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            var rejectedPaymentEntity = contractEntity.Payments
-                .Where(c => c.Month.ToShortDateString() == command.Month.ToShortDateString()).FirstOrDefault();
-
             _contractUnitOfWork.ContractPaymentCUD.Update(rejectedPaymentEntity.Id, rejectedPaymentEntity);
 
-            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly", new
-            {
-                rejectedPaymentEntity
-            });
+            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
 
             return rejectedPayment;
         }

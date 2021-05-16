@@ -128,43 +128,46 @@ namespace Rentering.Contracts.Domain.Entities
             }
         }
 
-        public void ExecutePayment(DateTime month)
+        public ContractPaymentEntity ExecutePayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
-                
+
             payment.ExecutePayment();
+            return payment;
         }
 
-        public void AcceptPayment(DateTime month)
+        public ContractPaymentEntity AcceptPayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
 
             payment.AcceptPayment();
+            return payment;
         }
 
-        public void RejectPayment(DateTime month)
+        public ContractPaymentEntity RejectPayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
 
             payment.RejectPayment();
+            return payment;
         }
 
         public decimal CurrentOwedAmount()
