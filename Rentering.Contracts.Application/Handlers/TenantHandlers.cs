@@ -32,10 +32,16 @@ namespace Rentering.Contracts.Application.Handlers
             var tenantEntity = new TenantEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            // TODO - Criar CheckIfContractExists
-            //if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
+            AddNotifications(name.Notifications);
+            AddNotifications(identityRG.Notifications);
+            AddNotifications(cpf.Notifications);
+            AddNotifications(address.Notifications);
+            AddNotifications(spouseName.Notifications);
+            AddNotifications(spouseIdentityRG.Notifications);
+            AddNotifications(spouseCPF.Notifications);
             AddNotifications(tenantEntity.Notifications);
 
             if (Invalid)
@@ -81,9 +87,8 @@ namespace Rentering.Contracts.Application.Handlers
 
             var tenantEntity = new TenantEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            // TODO - Criar CheckIfContractExists
-            //if (_contractUnitOfWork.TenantQuery.CheckIfAccountExists(command.AccountId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -127,6 +132,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(DeleteTenantCommand command)
         {
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.Id) == false)
+            {
+                AddNotification("ContractId", "This Contract does not exist");
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+            }
+
             _contractUnitOfWork.TenantCUD.Delete(command.Id);
 
             var deletedTenant = new CommandResult(true, "Tenant deleted successfuly", new

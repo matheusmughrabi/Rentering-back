@@ -86,6 +86,8 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
+            // TODO - CheckIfAccountExists
+
             contractEntity.InviteParticipant(command.AccountId, command.ParticipantRole);
             var invitedParticipant = contractEntity.Participants.Last();
 

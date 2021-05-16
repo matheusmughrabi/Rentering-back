@@ -35,6 +35,24 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             return contractNameExists;
         }
 
+        public bool CheckIfContractExists(int contractId)
+        {
+            var sql = @"SELECT CASE WHEN EXISTS (
+		                        SELECT [Id]
+		                        FROM [EstateContracts]
+		                        WHERE [Id] = @Id
+	                        )
+	                        THEN CAST(1 AS BIT)
+	                        ELSE CAST(0 AS BIT)
+                            END;";
+
+            var contractNameExists = _context.Connection.Query<bool>(
+                    sql,
+                    new { Id = contractId }).FirstOrDefault();
+
+            return contractNameExists;
+        }
+
         public IEnumerable<GetEstateContractQueryResult> GetAll()
         {
             var sql = @"SELECT 

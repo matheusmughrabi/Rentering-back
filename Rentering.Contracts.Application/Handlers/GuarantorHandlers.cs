@@ -32,10 +32,16 @@ namespace Rentering.Contracts.Application.Handlers
             var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            // TODO - CheckIfContractExists
-            //if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.ContractId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
+            AddNotifications(name.Notifications);
+            AddNotifications(identityRG.Notifications);
+            AddNotifications(cpf.Notifications);
+            AddNotifications(address.Notifications);
+            AddNotifications(spouseName.Notifications);
+            AddNotifications(spouseIdentityRG.Notifications);
+            AddNotifications(spouseCPF.Notifications);
             AddNotifications(guarantorEntity.Notifications);
 
             if (Invalid)
@@ -81,9 +87,8 @@ namespace Rentering.Contracts.Application.Handlers
 
             var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            // TODO - CheckIfContractExists
-            //if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.ContractId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -127,6 +132,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(DeleteGuarantorCommand command)
         {
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.Id) == false)
+            {
+                AddNotification("ContractId", "This Contract does not exist");
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+            }
+
             _contractUnitOfWork.GuarantorCUD.Delete(command.Id);
 
             var deletedGuarantor = new CommandResult(true, "Guarantor deleted successfuly", new

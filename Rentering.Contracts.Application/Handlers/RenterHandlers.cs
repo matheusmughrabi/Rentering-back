@@ -33,9 +33,8 @@ namespace Rentering.Contracts.Application.Handlers
             var renterEntity = new RenterEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            // TODO - CheckIfContractExists
-            //if (_contractUnitOfWork.RenterQuery.CheckIfAccountExists(command.AccountId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -88,9 +87,8 @@ namespace Rentering.Contracts.Application.Handlers
 
             var renterEntity = new RenterEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            // TODO - CheckIfContractExists
-            //if (_contractUnitOfWork.RenterQuery.CheckIfAccountExists(command.AccountId) == false)
-            //    AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -133,6 +131,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(DeleteRenterCommand command)
         {
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.Id) == false)
+            {
+                AddNotification("ContractId", "This Contract does not exist");
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+            }
+
             _contractUnitOfWork.RenterCUD.Delete(command.Id);
 
             var deletedRenter = new CommandResult(true, "Renter deleted successfuly", new
