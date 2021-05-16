@@ -1,6 +1,8 @@
-﻿namespace Rentering.Common.Shared.Data
+﻿using System;
+
+namespace Rentering.Common.Shared.Data
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         void BeginTransaction();
         void Commit();

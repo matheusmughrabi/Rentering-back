@@ -46,7 +46,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
@@ -72,38 +72,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
                    new { Id = id }).FirstOrDefault();
 
             return guarantorFromDb;
-        }
-
-        public IEnumerable<GetGuarantorQueryResult> GetGuarantorProfilesOfCurrentUser(int accountId)
-        {
-            var sql = @"SELECT 
-							Id,
-                            AccountId,
-                            Status,
-                            FirstName,
-                            LastName,
-                            Nationality,
-                            Ocupation,
-                            MaritalStatus,
-                            IdentityRG,
-                            CPF,
-                            Street,
-                            SpouseFirstName,
-                            SpouseLastName,
-                            SpouseNationality,
-                            SpouseOcupation,
-                            SpouseIdentityRG,
-                            SpouseCPF
-						FROM 
-							Guarantors
-						WHERE 
-							[AccountId] = @AccountId;";
-
-            var guarantorsFromDb = _context.Connection.Query<GetGuarantorQueryResult>(
-                    sql,
-                    new { AccountId = accountId });
-
-            return guarantorsFromDb;
         }
     }
 }

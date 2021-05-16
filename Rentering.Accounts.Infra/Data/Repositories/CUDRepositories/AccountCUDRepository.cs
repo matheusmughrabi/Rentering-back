@@ -24,7 +24,7 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Id = id }).FirstOrDefault();
 
-            var accountEntity = accountFromDb.EntityFromModel();
+            var accountEntity = accountFromDb?.EntityFromModel();
 
             return accountEntity;
         }
@@ -37,26 +37,30 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                     sql,
                     new { Username = username }).FirstOrDefault();
 
-            var accountEntity = accountFromDb.EntityFromModel();
+            var accountEntity = accountFromDb?.EntityFromModel();
 
             return accountEntity;
         }
 
-        public void Create(AccountEntity accountEntity)
+        public AccountEntity Create(AccountEntity accountEntity)
         {
+            if (accountEntity == null)
+                return null;
+
             var sql = @" INSERT INTO [Accounts] (
                                 [Email], 
                                 [Username], 
                                 [Password],
-		                        [Role]
-                            ) VALUES (
+		                        [Role]) 
+                        OUTPUT INSERTED.*
+                        VALUES (
                                 @Email,
                                 @Username,
                                 @Password,
 		                        @Role
                             );";
 
-            _context.Connection.Execute(sql,
+            var accountFromDb = _context.Connection.QuerySingle<GetAccountForCUD>(sql,
                      new
                      {
                          accountEntity.Email.Email,
@@ -64,20 +68,27 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                          accountEntity.Password.Password,
                          accountEntity.Role
                      });
+
+            var createdAccountEntity = accountFromDb.EntityFromModel();
+            return createdAccountEntity;
         }
 
-        public void Update(int id, AccountEntity accountEntity)
+        public AccountEntity Update(int id, AccountEntity accountEntity)
         {
+            if (accountEntity == null)
+                return null;
+
             var sql = @"UPDATE 
 		                        Accounts
 	                        SET 
 		                        Email = @Email,
 		                        Username = @Username,
 		                        Role = @Role
+                            OUTPUT INSERTED.*
 	                        WHERE 
 		                        Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var accountFromDb = _context.Connection.QuerySingle<GetAccountForCUD>(sql,
                     new
                     {
                         Id = id,
@@ -85,20 +96,27 @@ namespace Rentering.Accounts.Infra.Data.Repositories.CUDRepositories
                         accountEntity.Username.Username,
                         accountEntity.Role
                     });
+
+            var updatedAccountEntity = accountFromDb.EntityFromModel();
+            return updatedAccountEntity;
         }
 
-        public void Delete(int id)
+        public AccountEntity Delete(int id)
         {
             var sql = @"DELETE FROM 
 		                        Accounts
+                            OUTPUT INSERTED.*
 	                        WHERE 
 		                        Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var accountFromDb = _context.Connection.QuerySingle<GetAccountForCUD>(sql,
                     new
                     { 
                         Id = id 
                     });
+
+            var deletedAccountEntity = accountFromDb.EntityFromModel();
+            return deletedAccountEntity;
         }
     }
 }

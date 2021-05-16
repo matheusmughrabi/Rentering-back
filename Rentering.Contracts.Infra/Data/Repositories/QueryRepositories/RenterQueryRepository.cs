@@ -46,7 +46,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT 
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
@@ -71,37 +71,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
                     new { Id = id }).FirstOrDefault();
 
             return renterFromDb;
-        }
-
-        public IEnumerable<GetRenterQueryResult> GetRenterProfilesOfCurrentUser(int accountId)
-        {
-            var sql = @"SELECT 
-							Id,
-                            AccountId,
-                            Status,
-                            FirstName,
-                            LastName,
-                            Nationality,
-                            Ocupation,
-                            MaritalStatus,
-                            IdentityRG,
-                            CPF,
-                            Street,
-                            SpouseFirstName,
-                            SpouseLastName,
-                            SpouseNationality,
-                            SpouseIdentityRG,
-                            SpouseCPF
-						FROM 
-							Renters
-						WHERE 
-							[AccountId] = @AccountId;";
-
-            var rentersFromDb = _context.Connection.Query<GetRenterQueryResult>(
-                    sql,
-                    new { AccountId = accountId });
-
-            return rentersFromDb;
         }
     }
 }

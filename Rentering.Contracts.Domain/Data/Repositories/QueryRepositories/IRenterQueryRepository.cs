@@ -7,6 +7,5 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories
     public interface IRenterQueryRepository : IGenericQueryRepository<GetRenterQueryResult>
     {
         bool CheckIfAccountExists(int accountId);
-        IEnumerable<GetRenterQueryResult> GetRenterProfilesOfCurrentUser(int accountId);
     }
 }

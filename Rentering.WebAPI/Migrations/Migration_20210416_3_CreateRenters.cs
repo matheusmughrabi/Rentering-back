@@ -3,8 +3,8 @@ using FluentMigrator.SqlServer;
 
 namespace Rentering.WebAPI.Migrations
 {
-    [Migration(20210416_2, "CreateRenters")]
-    public class Migration_20210416_2_CreateRenters : Migration
+    [Migration(20210416_3, "CreateRenters")]
+    public class Migration_20210416_3_CreateRenters : Migration
     {
         public override void Down()
         {
@@ -15,7 +15,7 @@ namespace Rentering.WebAPI.Migrations
         {
             Create.Table("Renters")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
-                .WithColumn("AccountId").AsInt32().NotNullable().ForeignKey("Accounts", "Id")
+                .WithColumn("ContractId").AsInt32().NotNullable().ForeignKey("EstateContracts", "Id")
                 .WithColumn("Status").AsInt32().NotNullable()
                 .WithColumn("FirstName").AsString().NotNullable()
                 .WithColumn("LastName").AsString().NotNullable()

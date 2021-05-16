@@ -3,7 +3,6 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResults;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
@@ -47,7 +46,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var sql = @"SELECT 
 							Id,
-                            AccountId,
+                            ContractId,
                             Status,
                             FirstName,
                             LastName,
@@ -73,38 +72,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
                    new { Id = id }).FirstOrDefault();
 
             return renterFromDb;
-        }
-
-        public IEnumerable<GetTenantQueryResult> GetTenantProfilesOfCurrentUser(int accountId)
-        {
-            var sql = @"SELECT 
-							Id,
-                            AccountId,
-                            Status,
-                            FirstName,
-                            LastName,
-                            Nationality,
-                            Ocupation,
-                            MaritalStatus,
-                            IdentityRG,
-                            CPF,
-                            Street,
-                            SpouseFirstName,
-                            SpouseLastName,
-                            SpouseNationality,
-                            SpouseOcupation,
-                            SpouseIdentityRG,
-                            SpouseCPF
-						FROM 
-							Tenants
-						WHERE 
-							[AccountId] = @AccountId;";
-
-            var rentersFromDb = _context.Connection.Query<GetTenantQueryResult>(
-                    sql,
-                    new { AccountId = accountId });
-
-            return rentersFromDb;
         }
     }
 }

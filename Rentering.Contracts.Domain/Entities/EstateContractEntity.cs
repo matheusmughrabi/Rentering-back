@@ -11,6 +11,10 @@ namespace Rentering.Contracts.Domain.Entities
 {
     public class EstateContractEntity : Entity
     {
+        private List<AccountContractsEntity> _participants;
+        private List<RenterEntity> _renters;
+        private List<TenantEntity> _tenants;
+        private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
 
         public EstateContractEntity(
@@ -21,10 +25,7 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime rentDueDate,
             DateTime contractStartDate,
             DateTime contractEndDate,
-            int? id = null,
-            int? renterId = null,
-            int? tenantId = null,
-            int? guarantorId = null)
+            int? id = null) : base(id)
         {
             ContractName = contractName;
             Address = address;
@@ -34,80 +35,56 @@ namespace Rentering.Contracts.Domain.Entities
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
-
-            if (id != null)
-                AssignId((int)id);
-
-            if (renterId != null)
-                RenterId = (int)renterId;
-
-            if (tenantId != null)
-                TenantId = (int)tenantId;
-
-            if (guarantorId != null)
-                GuarantorId = (int)guarantorId;
+            _participants = new List<AccountContractsEntity>();
+            _renters = new List<RenterEntity>();
+            _tenants = new List<TenantEntity>();
+            _guarantors = new List<GuarantorEntity>();
+            _payments = new List<ContractPaymentEntity>();
 
             ApplyValidations();
         }
 
         public string ContractName { get; private set; }
-        public int RenterId { get; private set; }
-        public int TenantId { get; private set; }
-        public int GuarantorId { get; private set; }
         public AddressValueObject Address { get; private set; }
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
+        public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
+        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // TODO - Criar IParticipante -> Renter, Tenant, Guarantor
+        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray();
+        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray();
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
-        public void InviteRenter(RenterEntity renter)
+        public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            if (renter.RenterStatus != e_ContractParticipantStatus.None)
+            if (Id == 0)
             {
-                AddNotification("Renter", "This renter is already associated to another contract");
+                AddNotification("Id", "ContractId cannot be zero");
                 return;
             }
 
-            renter.UpdateRenterStatusToAwaiting();
+            var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
-            if (renter.Valid == false)
-                return;
-
-            RenterId = renter.Id;
-        }
-
-        public void InviteTenant(TenantEntity tenant)
-        {
-            if (tenant.TenantStatus != e_ContractParticipantStatus.None)
+            if (isParticipantAlreadyInThisRole)
             {
-                AddNotification("Tenant", "This tenant is already associated to another contract");
+                AddNotification("AccountId", $"This account is already { participantRole } in this contract");
                 return;
             }
 
-            tenant.UpdateTenantStatusToAwaiting();
+            var contractId = Id;
 
-            if (tenant.Valid == false)
-                return;
-
-            TenantId = tenant.Id;
-        }
-
-        public void InviteGuarantor(GuarantorEntity guarantor)
-        {
-            if (guarantor.GuarantorStatus != e_ContractParticipantStatus.None)
+            if (_participants.Count() == 0)
             {
-                AddNotification("Guarantor", "This guarantor is already associated to another contract");
-                return;
+                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole, e_ParticipantStatus.Accepted);
+                _participants.Add(accountContractsEntity);
             }
-
-            guarantor.UpdateGuarantorStatusToAwaiting();
-
-            if (guarantor.Valid == false)
-                return;
-
-            GuarantorId = guarantor.Id;
+            else
+            {
+                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
+                _participants.Add(accountContractsEntity);
+            }
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
@@ -119,13 +96,6 @@ namespace Rentering.Contracts.Domain.Entities
             }
 
             RentPrice = rentPrice;
-        }
-
-        // TODO - This method should not exist, instead the list of payments should be included in a way similar to EF
-        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
-        {
-            if (payments != null)
-                _payments = payments;
         }
 
         public void CreatePaymentCycle()
@@ -158,43 +128,46 @@ namespace Rentering.Contracts.Domain.Entities
             }
         }
 
-        public void ExecutePayment(DateTime month)
+        public ContractPaymentEntity ExecutePayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
-                
+
             payment.ExecutePayment();
+            return payment;
         }
 
-        public void AcceptPayment(DateTime month)
+        public ContractPaymentEntity AcceptPayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
 
             payment.AcceptPayment();
+            return payment;
         }
 
-        public void RejectPayment(DateTime month)
+        public ContractPaymentEntity RejectPayment(DateTime month)
         {
-            var payment = Payments.Where(p => p.Month.ToShortDateString() == month.ToShortDateString()).FirstOrDefault();
+            var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
             {
                 AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
-                return;
+                return null;
             }
 
             payment.RejectPayment();
+            return payment;
         }
 
         public decimal CurrentOwedAmount()
@@ -203,8 +176,99 @@ namespace Rentering.Contracts.Domain.Entities
                 .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.NONE)
                 .FirstOrDefault();
 
+            if (currentPayment == null)
+            {
+                AddNotification("CurrentPayment", $"There are no open rents anymore");
+                return 0M;
+            }
+
             var currentOwedAmount = currentPayment.CalculateOwedAmount(RentDueDate);
             return currentOwedAmount;
+        }
+
+        public void IncludeParticipants(List<AccountContractsEntity> participants)
+        {
+            if (participants == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = participants.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Participants", $"You have provided a participant that does not belong to this contract");
+                return;
+            }
+
+            _participants = participants;
+        }
+
+        public void IncludeRenters(List<RenterEntity> renters)
+        {
+            if (renters == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = renters.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Renters", $"You have provided a renter that does not belong to this contract");
+                return;
+            }
+
+            _renters = renters;
+        }
+
+        public void IncludeTenants(List<TenantEntity> tenants)
+        {
+            if (tenants == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = tenants.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Tenants", $"You have provided a tenant that does not belong to this contract");
+                return;
+            }
+
+            _tenants = tenants;
+        }
+
+        public void IncludeGuarantors(List<GuarantorEntity> guarantors)
+        {
+            if (guarantors == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = guarantors.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Guarantors", $"You have provided a guarantor that does not belong to this contract");
+                return;
+            }
+
+            _guarantors = guarantors;
+        }
+
+        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
+        {
+            if (payments == null)
+                return;
+
+            var contractId = Id;
+            bool isThereBadInput = payments.Any(c => c.ContractId != contractId);
+
+            if (isThereBadInput)
+            {
+                AddNotification("Payments", $"You have provided a payment that does not belong to this contract");
+                return;
+            }
+
+            _payments = payments;
         }
 
         private void ApplyValidations()

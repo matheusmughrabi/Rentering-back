@@ -28,6 +28,9 @@ namespace Rentering.Common.Infra
             Dispose();
         }
 
-        public void Dispose() => _session.Transaction?.Dispose();
+        public void Dispose() 
+        {
+            _session.Transaction?.Dispose();
+        }
     }
 }

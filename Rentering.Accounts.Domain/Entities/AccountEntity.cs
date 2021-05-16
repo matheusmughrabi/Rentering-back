@@ -7,14 +7,11 @@ namespace Rentering.Accounts.Domain.Entities
     public class AccountEntity : Entity
     {
         public AccountEntity(EmailValueObject email, UsernameValueObject username,
-            PasswordValueObject password = null, e_Roles? role = null, int? id = null)
+            PasswordValueObject password = null, e_Roles? role = null, int? id = null) : base(id)
         {
             Email = email;
             Username = username;
             Password = password;
-
-            if (id != null)
-                AssignId((int)id);
 
             if (role != null)
                 Role = (e_Roles)role;

@@ -33,10 +33,13 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return guarantorEntity;
         }
 
-        public void Create(GuarantorEntity guarantor)
+        public GuarantorEntity Create(GuarantorEntity guarantor)
         {
+            if (guarantor == null)
+                return null;
+
             var sql = @"INSERT INTO [Guarantors] (
-								[AccountId],
+								[ContractId],
 								[Status],
 								[FirstName], 
 								[LastName],
@@ -55,9 +58,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseNationality],
 								[SpouseOcupation],
 								[SpouseIdentityRG],
-								[SpouseCPF]
-							) VALUES (
-								@AccountId,
+								[SpouseCPF])
+                        OUTPUT INSERTED.*
+                        VALUES (
+								@ContractId,
 								@Status,
 								@FirstName,
 								@LastName,
@@ -79,10 +83,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@SpouseCPF
 							);";
 
-            _context.Connection.Execute(sql,
+            var createdGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                     new
                     {
-                        guarantor.AccountId,
+                        guarantor.ContractId,
                         Status = guarantor.GuarantorStatus,
                         guarantor.Name.FirstName,
                         guarantor.Name.LastName,
@@ -103,14 +107,20 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = guarantor.SpouseCPF.CPF
                     });
+
+            var createdGuarantorEntity = createdGuarantorFromDb.EntityFromModel();
+            return createdGuarantorEntity;
         }
 
-        public void Update(int id, GuarantorEntity guarantor)
+        public GuarantorEntity Update(int id, GuarantorEntity guarantor)
         {
+            if (guarantor == null)
+                return null;
+
             var sql = @"UPDATE 
 								Guarantors
 							SET
-								[AccountId] = @AccountId,
+								[ContractId] = @ContractId,
 								[Status] = @Status,
 								[FirstName] = @FirstName, 
 								[LastName] = @LastName,
@@ -130,14 +140,15 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseOcupation] = @SpouseOcupation,
 								[SpouseIdentityRG] = @SpouseIdentityRG,
 								[SpouseCPF] = @SpouseCPF
+                            OUTPUT INSERTED.*
 							WHERE 
 								Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var updatedGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                    new
                    {
                        Id = id,
-                       guarantor.AccountId,
+                       guarantor.ContractId,
                        Status = guarantor.GuarantorStatus,
                        guarantor.Name.FirstName,
                        guarantor.Name.LastName,
@@ -158,21 +169,28 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                        SpouseIdentityRG = guarantor.SpouseIdentityRG.IdentityRG,
                        SpouseCPF = guarantor.SpouseCPF.CPF
                    });
+
+            var updatedGuarantorEntity = updatedGuarantorFromDb.EntityFromModel();
+            return updatedGuarantorEntity;
         }
 
-        public void Delete(int id)
+        public GuarantorEntity Delete(int id)
         {
             var sql = @"DELETE 
                         FROM 
 							Guarantors
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var deletedGuarantorFromDb = _context.Connection.QuerySingle<GetGuarantorForCUD>(sql,
                     new
                     {
                         Id = id
                     });
+
+            var deletedGuarantorEntity = deletedGuarantorFromDb.EntityFromModel();
+            return deletedGuarantorEntity;
         }
     }
 }

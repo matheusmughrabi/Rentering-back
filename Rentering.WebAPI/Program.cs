@@ -126,33 +126,66 @@ namespace Rentering.WebAPI
 
 /* Refatoração dos repositórios 
      -> Passar storedProcedures para o C# OK
-     -> Criar uma consulta específica para cada cenário ON GOING
+     -> Criar uma consulta específica para cada cenário OK
      -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos OK
-     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse
-     -> Testar tudo
+     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse OK
+     -> Testar tudo OK
  */
 
-// POSSIBILIDADES ADICIONAIS
+// POSSIBILIDADES ADICIONAIS -> Até Domingo à noite (16/05/2021)
 /*
   -> Criar tabela intermediária com os campos AccountId, ContractId e UserRoleInTheContractId 
      (Owner, Participant OU ENTÃO Owner, Renter, Tenant and Guarantor)
   -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
   -> Refatorar nomenclatura para EstateContract OK
+
+  -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole) OK
+  -> Alterar cada entity de participante para ter ContractId OK
+  -> Refatorar nos locais que forem necessários do código OK
+  -> Refatorar Migrations existentes OK
+  
+  -> Criar IReadOnlyCollection de cada participante em EstateContractEntity OK
+  -> Verificar se precisa atualizar GetForCUD OK
+
+  -> Modelar melhor AccountContracts OK
+  -> Criar Migration de AccountContracts Table OK
+
+  -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
+  -> Quando o contrato for criado o owner já tem que vir com o status Aceito OK
+  -> Fluxo para aceitar ou recusar participação no contrato OK
+  -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser OK
  */
 
+// BUGS - Domingo (16/05/2021)
+// Login null exception no método GetForLoginCUD OK
+// If(entity == null) em Create e Update dos repositórios OK
+// CheckIfExists OK
+// Verificar TODOs no código OK
+// Adicionar try-catch padrão do AspNetCore ON GOING
+
+// Endpoint para cálculo de valor do aluguel -> CurrentOwedAmount OK
+// Revisão de tudo
+// Criar Account UnitTests -> Entity, Handlers
+
+// AUTENTICAÇÃO -> Até Quarta-feira à noite (18/05/2021)
+// Estudar como será feita a autenticação
 // Criar auth commands, IService e handlers
 // Implementar Service
+// Verificar TODOs no código
 
-// Criar Account UnitTests -> Entity, Handlers
+// TESTES DE UNIDADE -> Até sexta-feira à noite (21/05/2021)
 // Criar Renter UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar Tenant UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar Guarantor UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar EstateContract UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 // Criar ContractPayment UnitTests -> Entity, Handlers, AuthHandlers e AuthService
 
-// Testar módulo de contratos inteiro -> Relizar teste que possam gerar exceções para ver se o sistema está robusto
+// TESTE E MERGE -> Até sábado à noite (22/05/2021)
+// Verificar TODOs no código
+// Testar módulo de contratos inteiro -> Relizar testes que possam gerar exceções para ver se o sistema está robusto
 // Revisão Geral
 // Mergear e liberar versão 1.2.1 da API
 
+// DATA FINAL -> 22/05/2021
 
 

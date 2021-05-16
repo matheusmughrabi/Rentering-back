@@ -33,10 +33,13 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
             return tenantEntity;
         }
 
-        public void Create(TenantEntity tenant)
+        public TenantEntity Create(TenantEntity tenant)
         {
+            if (tenant == null)
+                return null;
+
             var sql = @"INSERT INTO [Tenants] (
-								[AccountId],
+								[ContractId],
 								[Status],
 								[FirstName], 
 								[LastName],
@@ -55,9 +58,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								[SpouseNationality],
 								[SpouseOcupation],
 								[SpouseIdentityRG],
-								[SpouseCPF]
-							) VALUES (
-								@AccountId,
+								[SpouseCPF]) 
+                        OUTPUT INSERTED.*
+                        VALUES (
+								@ContractId,
 								@Status,
 								@FirstName,
 								@LastName,
@@ -79,10 +83,10 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 								@SpouseCPF
 							);";
 
-            _context.Connection.Execute(sql,
+            var tenantFromDb = _context.Connection.QuerySingle<GetTenantForCUD>(sql,
                     new
                     {
-                        tenant.AccountId,
+                        tenant.ContractId,
                         Status = tenant.TenantStatus,
                         tenant.Name.FirstName,
                         tenant.Name.LastName,
@@ -103,14 +107,20 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseIdentityRG = tenant.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = tenant.SpouseCPF.CPF
                     });
+
+            var tenantEntity = tenantFromDb.EntityFromModel();
+            return tenantEntity;
         }
 
-        public void Update(int id, TenantEntity tenant)
+        public TenantEntity Update(int id, TenantEntity tenant)
         {
+            if (tenant == null)
+                return null;
+
             var sql = @"UPDATE 
 							Tenants
 						SET
-							[AccountId] = @AccountId,
+							[ContractId] = @ContractId,
 							[Status] = @Status,
 							[FirstName] = @FirstName, 
 							[LastName] = @LastName,
@@ -130,14 +140,15 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
 							[SpouseOcupation] = @SpouseOcupation,
 							[SpouseIdentityRG] = @SpouseIdentityRG,
 							[SpouseCPF] = @SpouseCPF
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var tenantFromDb = _context.Connection.QuerySingle<GetTenantForCUD>(sql,
                     new
                     {
                         Id = id,
-                        tenant.AccountId,
+                        tenant.ContractId,
                         Status = tenant.TenantStatus,
                         tenant.Name.FirstName,
                         tenant.Name.LastName,
@@ -158,21 +169,28 @@ namespace Rentering.Contracts.Infra.Data.Repositories.CUDRepositories
                         SpouseIdentityRG = tenant.SpouseIdentityRG.IdentityRG,
                         SpouseCPF = tenant.SpouseCPF.CPF
                     });
+
+            var tenantEntity = tenantFromDb.EntityFromModel();
+            return tenantEntity;
         }
 
-        public void Delete(int id)
+        public TenantEntity Delete(int id)
         {
             var sql = @"DELETE 
                         FROM 
 							Tenants
+                        OUTPUT INSERTED.*
 						WHERE 
 							Id = @Id;";
 
-            _context.Connection.Execute(sql,
+            var tenantFromDb = _context.Connection.QuerySingle<GetTenantForCUD>(sql,
                     new
                     {
                         Id = id
                     });
+
+            var tenantEntity = tenantFromDb.EntityFromModel();
+            return tenantEntity;
         }
     }
 }

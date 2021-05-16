@@ -4,8 +4,8 @@ namespace Rentering.Common.Shared.Data.Repositories
 {
     public interface IGenericCUDRepository<T> where T : IEntity
     {
-        void Create(T entity);
-        void Update(int id, T entity);
-        void Delete(int id);
+        T Create(T entity);
+        T Update(int id, T entity);
+        T Delete(int id);
     }
 }

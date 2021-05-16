@@ -7,7 +7,7 @@ namespace Rentering.Contracts.Domain.Entities
     public class GuarantorEntity : Entity
     {
         public GuarantorEntity(
-            int accountId,
+            int contractId,
             NameValueObject name, 
             string nationality, 
             string ocupation, 
@@ -21,9 +21,9 @@ namespace Rentering.Contracts.Domain.Entities
             IdentityRGValueObject spouseIdentityRG = null,
             CPFValueObject spouseCPF = null,
             e_ContractParticipantStatus? guarantorStatus = null,
-            int? id = null)
+            int? id = null) : base(id)
         {
-            AccountId = accountId;
+            ContractId = contractId;
             Name = name;
             Nationality = nationality;
             Ocupation = ocupation;
@@ -37,16 +37,13 @@ namespace Rentering.Contracts.Domain.Entities
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
 
-            if (id != null)
-                AssignId((int)id);
-
             if (guarantorStatus == null)
                 GuarantorStatus = e_ContractParticipantStatus.None;
             else
                 GuarantorStatus = (e_ContractParticipantStatus)guarantorStatus;
         }
 
-        public int AccountId { get; private set; }
+        public int ContractId { get; private set; }
         public e_ContractParticipantStatus GuarantorStatus { get; private set; }
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }

@@ -1,12 +1,12 @@
 ﻿using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Domain.Enums;
-using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
     public class CreateGuarantorCommand : ICommand
     {
         public CreateGuarantorCommand(
+            int contractId,
             string firstName,
             string lastName,
             string nationality,
@@ -26,6 +26,7 @@ namespace Rentering.Contracts.Application.Commands
             string spouseIdentityRG,
             string spouseCPF)
         {
+            ContractId = contractId;
             FirstName = firstName;
             LastName = lastName;
             Nationality = nationality;
@@ -46,8 +47,7 @@ namespace Rentering.Contracts.Application.Commands
             SpouseCPF = spouseCPF;
         }
 
-        [JsonIgnore]
-        public int AccountId { get; set; }
+        public int ContractId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Nationality { get; set; }
@@ -72,6 +72,7 @@ namespace Rentering.Contracts.Application.Commands
     {
         public UpdateGuarantorCommand(
             int id,
+            int contractId,
             string firstName,
             string lastName,
             string nationality,
@@ -92,6 +93,7 @@ namespace Rentering.Contracts.Application.Commands
             string spouseCPF)
         {
             Id = id;
+            ContractId = contractId;
             FirstName = firstName;
             LastName = lastName;
             Nationality = nationality;
@@ -113,8 +115,7 @@ namespace Rentering.Contracts.Application.Commands
         }
 
         public int Id { get; set; }
-        [JsonIgnore]
-        public int AccountId { get; set; }
+        public int ContractId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Nationality { get; set; }

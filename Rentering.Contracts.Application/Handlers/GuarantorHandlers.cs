@@ -29,12 +29,19 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG);
             var spouseCPF = new CPFValueObject(command.SpouseCPF);
 
-            var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
+            var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG,
                 cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
+            AddNotifications(name.Notifications);
+            AddNotifications(identityRG.Notifications);
+            AddNotifications(cpf.Notifications);
+            AddNotifications(address.Notifications);
+            AddNotifications(spouseName.Notifications);
+            AddNotifications(spouseIdentityRG.Notifications);
+            AddNotifications(spouseCPF.Notifications);
             AddNotifications(guarantorEntity.Notifications);
 
             if (Invalid)
@@ -44,7 +51,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,
@@ -78,10 +85,10 @@ namespace Rentering.Contracts.Application.Handlers
             var spouseIdentityRG = new IdentityRGValueObject(command.SpouseIdentityRG, false);
             var spouseCPF = new CPFValueObject(command.SpouseCPF, false);
 
-            var guarantorEntity = new GuarantorEntity(command.AccountId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
+            var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            if (_contractUnitOfWork.GuarantorQuery.CheckIfAccountExists(command.AccountId) == false)
-                AddNotification("AccountId", "This Account does not exist");
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.ContractId) == false)
+                AddNotification("ContractId", "This Contract does not exist");
 
             AddNotifications(name.Notifications);
             AddNotifications(identityRG.Notifications);
@@ -99,7 +106,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var updatedGuarantor = new CommandResult(true, "Guarantor updated successfuly", new
             {
-                command.AccountId,
+                command.ContractId,
                 command.FirstName,
                 command.LastName,
                 command.Nationality,
@@ -125,6 +132,12 @@ namespace Rentering.Contracts.Application.Handlers
 
         public ICommandResult Handle(DeleteGuarantorCommand command)
         {
+            if (_contractUnitOfWork.EstateContractQuery.CheckIfContractExists(command.Id) == false)
+            {
+                AddNotification("ContractId", "This Contract does not exist");
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+            }
+
             _contractUnitOfWork.GuarantorCUD.Delete(command.Id);
 
             var deletedGuarantor = new CommandResult(true, "Guarantor deleted successfuly", new
