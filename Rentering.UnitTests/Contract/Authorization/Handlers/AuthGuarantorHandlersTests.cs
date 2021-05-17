@@ -4,7 +4,7 @@ using Rentering.Contracts.Application.Authorization.Commands;
 using Rentering.Contracts.Application.Authorization.Handlers;
 using Rentering.Contracts.Domain.Services;
 
-namespace Rentering.UnitTests.ContractContext.Authorization.Handlers
+namespace Rentering.UnitTests.Contract.Authorization.Handlers
 {
     [TestClass]
     public class AuthGuarantorHandlersTests

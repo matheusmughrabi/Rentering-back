@@ -3,71 +3,71 @@ using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 
-namespace Rentering.UnitTests.ContractContext.Entities
+namespace Rentering.UnitTests.Contract.Entities
 {
     [TestClass]
-    public class TenantEntityTests
+    public class GuarantorEntityTests
     {
         [TestMethod]
-        public void ShouldNotAcceptToParticipate_WhenTenantStatusIsAlreadyAccepted()
+        public void ShouldNotAcceptToParticipate_WhenGuarantorStatusIsAlreadyAccepted()
         {
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
             var identityCPF = new CPFValueObject("43126701884");
             var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
-            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
 
-            tenant.AcceptToParticipate();
-            tenant.AcceptToParticipate();
+            guarantor.AcceptToParticipate();
+            guarantor.AcceptToParticipate();
 
-            Assert.AreEqual(false, tenant.Valid);
+            Assert.AreEqual(false, guarantor.Valid);
         }
 
         [TestMethod]
-        public void ShouldAcceptToParticipate_WhenTenantStatusIsNotAcceptedYet()
+        public void ShouldAcceptToParticipate_WhenGuarantorStatusIsNotAcceptedYet()
         {
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
             var identityCPF = new CPFValueObject("43126701884");
             var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
-            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
 
-            tenant.AcceptToParticipate();
-            tenant.RefuseToParticipate();
-            tenant.AcceptToParticipate();
+            guarantor.AcceptToParticipate();
+            guarantor.RefuseToParticipate();
+            guarantor.AcceptToParticipate();
 
-            Assert.AreEqual(true, tenant.Valid);
+            Assert.AreEqual(true, guarantor.Valid);
         }
 
         [TestMethod]
-        public void ShouldNotRefuseToParticipate_WhenTenantStatusIsAlreadyRefused()
+        public void ShouldNotRefuseToParticipate_WhenGuarantorStatusIsAlreadyRefused()
         {
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
             var identityCPF = new CPFValueObject("43126701884");
             var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
-            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
 
-            tenant.RefuseToParticipate();
-            tenant.RefuseToParticipate();
+            guarantor.RefuseToParticipate();
+            guarantor.RefuseToParticipate();
 
-            Assert.AreEqual(false, tenant.Valid);
+            Assert.AreEqual(false, guarantor.Valid);
         }
 
         [TestMethod]
-        public void ShouldRefuseToParticipate_WhenTenantStatusIsNotRefusedYet()
+        public void ShouldRefuseToParticipate_WhenGuarantorStatusIsNotRefusedYet()
         {
             var name = new NameValueObject("Meg", "Magson");
             var identityRG = new IdentityRGValueObject("123456789");
             var identityCPF = new CPFValueObject("43126701884");
             var address = new AddressValueObject("Dom Pedro", "Vila Nova", "São Paulo", "08032-200", e_BrazilStates.SP);
-            var tenant = new TenantEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
+            var guarantor = new GuarantorEntity(1, name, "Brasileira", "Dev", e_MaritalStatus.Single, identityRG, identityCPF, address);
 
-            tenant.RefuseToParticipate();
-            tenant.AcceptToParticipate();
-            tenant.RefuseToParticipate();
+            guarantor.RefuseToParticipate();
+            guarantor.AcceptToParticipate();
+            guarantor.RefuseToParticipate();
 
-            Assert.AreEqual(true, tenant.Valid);
+            Assert.AreEqual(true, guarantor.Valid);
         }
     }
 }

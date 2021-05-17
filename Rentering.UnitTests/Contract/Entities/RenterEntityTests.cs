@@ -3,7 +3,7 @@ using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 
-namespace Rentering.UnitTests.ContractContext.Entities
+namespace Rentering.UnitTests.Contract.Entities
 {
     [TestClass]
     public class RenterEntityTests
