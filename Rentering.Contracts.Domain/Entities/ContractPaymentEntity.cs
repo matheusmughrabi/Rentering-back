@@ -1,75 +1,87 @@
 ﻿using Rentering.Common.Shared.Entities;
 using Rentering.Contracts.Domain.Enums;
+using Rentering.Contracts.Domain.ValueObjects;
 using System;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class ContractPaymentEntity : BaseEntity
+    public class ContractPaymentEntity : Entity
     {
-        public ContractPaymentEntity(int contractId, DateTime month)
+        public ContractPaymentEntity(
+            int contractId, 
+            DateTime month, 
+            PriceValueObject rentPrice, 
+            int? id = null, 
+            e_RenterPaymentStatus? renterPaymentStatus = null, 
+            e_TenantPaymentStatus? tenantPaymentStatus = null) : base(id)
         {
             ContractId = contractId;
             Month = month;
-            RenterPaymentStatus = RenterPaymentStatus.NONE;
-            TenantPaymentStatus = TentantPaymentStatus.NONE;
+            RentPrice = rentPrice;
+
+            TenantPaymentStatus = e_TenantPaymentStatus.NONE;
+
+            if (renterPaymentStatus != null)
+                RenterPaymentStatus = (e_RenterPaymentStatus)renterPaymentStatus;
+            else
+                RenterPaymentStatus = e_RenterPaymentStatus.NONE;
+
+            if (tenantPaymentStatus != null)
+                TenantPaymentStatus = (e_TenantPaymentStatus)tenantPaymentStatus;
+            else
+                TenantPaymentStatus = e_TenantPaymentStatus.NONE;
         }
 
-        public ContractPaymentEntity(int contractId, DateTime month, RenterPaymentStatus renterPaymentStatus, TentantPaymentStatus tenantPaymentStatus)
-        {
-            ContractId = contractId;
-            Month = month;
-            RenterPaymentStatus = renterPaymentStatus;
-            TenantPaymentStatus = tenantPaymentStatus;
-        }
-
-        public int ContractId { get; private set; }
+        public int ContractId { get; set; }
         public DateTime Month { get; private set; }
-        public RenterPaymentStatus RenterPaymentStatus { get; private set; }
-        public TentantPaymentStatus TenantPaymentStatus { get; private set; }
+        public PriceValueObject RentPrice { get; private set; }
+        public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }
+        public e_TenantPaymentStatus TenantPaymentStatus { get; private set; }
 
-        public void PayRent()
+        public void ExecutePayment()
         {
-            if (TenantPaymentStatus == TentantPaymentStatus.EXECUTED)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
             {
-                AddNotification("TenantPaymentStatus", "Payment of this month is already executed");
+                AddNotification("TenantPaymentStatus", "Payment has been executed already");
                 return;
             }
 
-            TenantPaymentStatus = TentantPaymentStatus.EXECUTED;
+            TenantPaymentStatus = e_TenantPaymentStatus.EXECUTED;
         }
 
         public void AcceptPayment()
         {
-            if (TenantPaymentStatus == TentantPaymentStatus.NONE)
+            if (RenterPaymentStatus == e_RenterPaymentStatus.ACCEPTED)
             {
-                AddNotification("TentantPaymentStatus", "You cannot accept this payment because the tenant has not executed it yet");
+                AddNotification("RenterPaymentStatus", "Payment is accepted already");
                 return;
             }
 
-            if (RenterPaymentStatus == RenterPaymentStatus.ACCEPTED)
-            {
-                AddNotification("RenterPaymentStatus", "Payment of this month is already accepted");
-                return;
-            }
-
-            RenterPaymentStatus = RenterPaymentStatus.ACCEPTED;
+            RenterPaymentStatus = e_RenterPaymentStatus.ACCEPTED;
         }
 
         public void RejectPayment()
         {
-            if (TenantPaymentStatus == TentantPaymentStatus.NONE)
+            if (RenterPaymentStatus == e_RenterPaymentStatus.REJECTED)
             {
-                AddNotification("TentantPaymentStatus", "You cannot accept this payment because the tenant has not executed it yet");
+                AddNotification("RenterPaymentStatus", "Payment is rejected already");
                 return;
             }
 
-            if (RenterPaymentStatus == RenterPaymentStatus.REJECTED)
-            {
-                AddNotification("RenterPaymentStatus", "Payment of this month is already rejected");
-                return;
-            }
+            RenterPaymentStatus = e_RenterPaymentStatus.REJECTED;
+        }
 
-            RenterPaymentStatus = RenterPaymentStatus.REJECTED;
+        public decimal CalculateOwedAmount(DateTime dueDate)
+        {
+            if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
+                return 0M;
+
+            var daysLate = (DateTime.Now - dueDate).Days;
+
+            var factor = (decimal) 0.1 * daysLate;
+
+            var owedAmount = RentPrice.Price * (1 + factor);
+            return owedAmount;
         }
     }
 }
