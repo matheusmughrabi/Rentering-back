@@ -273,10 +273,13 @@ namespace Rentering.Contracts.Domain.Entities
 
         private void ApplyValidations()
         {
+            var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
+
             AddNotifications(new ValidationContract()
                 .Requires()
                 .HasMinLen(ContractName, 3, "ContractName", "Contract name must have at least 3 letters")
                 .HasMaxLen(ContractName, 40, "ContractName", "Contract name must have less than 40 letters")
+                .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "Contract month span must be at least 1 month")
             );
 
             AddNotifications(Address.Notifications);

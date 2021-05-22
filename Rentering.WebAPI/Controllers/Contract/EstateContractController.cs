@@ -21,7 +21,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
         [HttpGet]
         [Route("v1/Contract/{id}")]
-        [Authorize(Roles = "RegularUser,Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetContractById(int id)
         {
             var result = _contractUnitOfWork.EstateContractQuery.GetById(id);
@@ -32,7 +32,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpGet]
         [Route("v1/GetContractsOfCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetContract()
+        public IActionResult GetContractsOfCurrentUser()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
@@ -55,6 +55,9 @@ namespace Rentering.WebAPI.Controllers.Contract
                 return BadRequest("Invalid logged in user");
 
             var contract = _contractUnitOfWork.EstateContractQuery.GetContractDetailed(contractId);
+
+            if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
+                return BadRequest("You are not a participant of this contract");
 
             return Ok(contract);
         }
@@ -102,6 +105,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
+            getCurrentOwedAmountCommand.CurrentUserId = accountId;
+
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(getCurrentOwedAmountCommand);
 
@@ -111,15 +116,17 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpPut]
         [Route("v1/InviteParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult InviteRenter([FromBody] InviteParticipantCommand inviteParticipantCommand)
+        public IActionResult InviteParticipant([FromBody] InviteParticipantCommand inviteParticipantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            if (accountId == inviteParticipantCommand.AccountId)
+            if (accountId == inviteParticipantCommand.ParticipantAccountId)
                 return BadRequest("You cannot invite yourself to a contract");
+
+            inviteParticipantCommand.CurrentUserId = accountId;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);
@@ -136,6 +143,8 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
+
+            createContractPaymentCycleCommand.CurrentUserId = accountId;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractPaymentCycleCommand);

@@ -50,15 +50,17 @@ namespace Rentering.Contracts.Application.Commands
     
     public class InviteParticipantCommand : ICommand
     {
-        public InviteParticipantCommand(int contractId, int accountId, e_ParticipantRole participantRole)
+        public InviteParticipantCommand(int contractId, int participantAccountId, e_ParticipantRole participantRole)
         {
             ContractId = contractId;
-            AccountId = accountId;
+            ParticipantAccountId = participantAccountId;
             ParticipantRole = participantRole;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
-        public int AccountId { get; set; }
+        public int ParticipantAccountId { get; set; }
         public e_ParticipantRole ParticipantRole { get; set; }
     }
 
@@ -69,6 +71,8 @@ namespace Rentering.Contracts.Application.Commands
             ContractId = contractId;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
     }
 
@@ -80,6 +84,8 @@ namespace Rentering.Contracts.Application.Commands
             Month = month;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
         public DateTime Month { get; set; }
     }
@@ -92,6 +98,8 @@ namespace Rentering.Contracts.Application.Commands
             Month = month;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
         public DateTime Month { get; set; }
     }
@@ -104,6 +112,8 @@ namespace Rentering.Contracts.Application.Commands
             Month = month;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
         public DateTime Month { get; set; }
     }
@@ -139,6 +149,8 @@ namespace Rentering.Contracts.Application.Commands
             ContractId = contractId;
         }
 
+        [JsonIgnore]
+        public int CurrentUserId { get; set; }
         public int ContractId { get; set; }
     }
 }

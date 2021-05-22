@@ -22,7 +22,7 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpGet]
         [Route("v1/Accounts/GetAllAccounts")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetAllAccount()
+        public IActionResult GetAllAccounts()
         {
             var result = _accountUnitOfWork.AccountQuery.GetAllAccounts_AdminUsageOnly();
 

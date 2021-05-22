@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Contracts.Application.Authorization.Commands;
-using Rentering.Contracts.Application.Authorization.Handlers;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
-using Rentering.Contracts.Domain.Services;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -14,14 +11,11 @@ namespace Rentering.WebAPI.Controllers.Contract
     public class GuarantorController : ControllerBase
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
-        private readonly IAuthGuarantorService _authGuarantorService;
 
         public GuarantorController(
-            IContractUnitOfWork contractUnitOfWork, 
-            IAuthGuarantorService authGuarantorService)
+            IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
-            _authGuarantorService = authGuarantorService;
         }
 
 
@@ -36,32 +30,15 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(result);
         }
 
-        //[HttpGet]
-        //[Route("v1/Guarantors")]
-        //[Authorize(Roles = "RegularUser,Admin")]
-        //public IActionResult GetGuarantorProfilesOfCurrentUser()
-        //{
-        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-        //    if (isParsingSuccesful == false)
-        //        return BadRequest("Invalid logged in user");
-
-        //    var result = _contractUnitOfWork.GuarantorQuery.GetGuarantorProfilesOfCurrentUser(accountId);
-
-        //    return Ok(result);
-        //}
-
         [HttpPost]
         [Route("v1/CreateGuarantor")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateGuarantor([FromBody] CreateGuarantorCommand createGuarantorCommand)
         {
-            //var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-            //if (isParsingSuccesful == false)
-            //    return BadRequest("Invalid logged in user");
-
-            //createGuarantorCommand.AccountId = accountId;
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
 
             var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(createGuarantorCommand);
@@ -79,15 +56,6 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            //var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(accountId, updateGuarantorCommand.Id);
-            //var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
-            //var authResult = authHandler.Handle(authGuarantorCommand);
-
-            //if (authResult.Success == false)
-            //    return Unauthorized(authResult);
-
-            //updateGuarantorCommand.AccountId = accountId;
-
             var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(updateGuarantorCommand);
 
@@ -101,15 +69,8 @@ namespace Rentering.WebAPI.Controllers.Contract
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int authenticatedUserId);
 
-            //if (isParsingSuccesful == false)
-            //    return BadRequest("Invalid logged in user");
-
-            //var authGuarantorCommand = new AuthCurrentUserAndProfileGuarantorMatchCommand(authenticatedUserId, deleteGuarantorCommand.Id);
-            //var authHandler = new AuthGuarantorHandlers(_authGuarantorService);
-            //var authResult = authHandler.Handle(authGuarantorCommand);
-
-            //if (authResult.Success == false)
-            //    return Unauthorized(authResult);
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
 
             var handler = new GuarantorHandlers(_contractUnitOfWork);
             var result = handler.Handle(deleteGuarantorCommand);

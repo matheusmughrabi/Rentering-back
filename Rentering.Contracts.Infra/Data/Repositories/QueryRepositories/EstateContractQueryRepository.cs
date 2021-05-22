@@ -107,7 +107,7 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
         {
             var query = @"
                 SELECT * FROM EstateContracts WHERE Id = @ContractId
-                SELECT A.Username, AC.ParticipantRole, AC.Status
+                SELECT AC.AccountId, A.Username, AC.ParticipantRole, AC.Status
                 FROM AccountContracts AS AC
                 INNER JOIN Accounts AS A ON A.Id = AC.AccountId
                 WHERE AC.ContractId = @ContractId;

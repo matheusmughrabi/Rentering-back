@@ -13,11 +13,9 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
-using Rentering.Contracts.Domain.Services;
 using Rentering.Contracts.Infra.Data;
 using Rentering.Contracts.Infra.Data.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Data.Repositories.QueryRepositories;
-using Rentering.Contracts.Infra.Services;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -41,18 +39,16 @@ namespace Rentering.WebAPI.Configuration
             services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
 
             services.AddTransient<IAccountContractsCUDRepository, AccountContractsCUDRepository>();
+            services.AddTransient<IAccountContractsQueryRepository, AccountContractsQueryRepository>();
 
             services.AddTransient<IRenterCUDRepository, RenterCUDRepository>();
             services.AddTransient<IRenterQueryRepository, RenterQueryRepository>();
-            services.AddTransient<IAuthRenterService, AuthRenterService>();
 
             services.AddTransient<ITenantCUDRepository, TenantCUDRepository>();
             services.AddTransient<ITenantQueryRepository, TenantQueryRepository>();
-            services.AddTransient<IAuthTenantService, AuthTenantService>();
 
             services.AddTransient<IGuarantorCUDRepository, GuarantorCUDRepository>();
             services.AddTransient<IGuarantorQueryRepository, GuarantorQueryRepository>();
-            services.AddTransient<IAuthGuarantorService, AuthGuarantorService>();
 
             services.AddTransient<IEstateContractCUDRepository, EstateContractCUDRepository>();
             services.AddTransient<IEstateContractQueryRepository, EstateContractQueryRepository>();

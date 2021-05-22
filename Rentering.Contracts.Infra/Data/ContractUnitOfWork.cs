@@ -10,6 +10,7 @@ namespace Rentering.Contracts.Infra.Data
         public ContractUnitOfWork(
             RenteringDataContext renteringDataContext,
             IAccountContractsCUDRepository accountContractsCUD,
+            IAccountContractsQueryRepository accountContractsQuery,
             IRenterCUDRepository renterCUD,
             IRenterQueryRepository renterQuery,
             ITenantCUDRepository tenantCUD,
@@ -22,6 +23,7 @@ namespace Rentering.Contracts.Infra.Data
             IContractPaymentQueryRepository contractPaymentQuery) : base(renteringDataContext)
         {
             AccountContractsCUD = accountContractsCUD;
+            AccountContractsQuery = accountContractsQuery;
 
             RenterCUD = renterCUD;
             RenterQuery = renterQuery;
@@ -40,6 +42,7 @@ namespace Rentering.Contracts.Infra.Data
         }
 
         public IAccountContractsCUDRepository AccountContractsCUD { get; }
+        public IAccountContractsQueryRepository AccountContractsQuery { get; }
 
         public IRenterCUDRepository RenterCUD { get; }
         public IRenterQueryRepository RenterQuery { get; }
