@@ -168,20 +168,16 @@ namespace Rentering.WebAPI
 // Acertar Migrations -> Nullable, DataTypes
 
 // AUTENTICAÇÃO -> Até Sábado à noite (22/05/2021)
-// Estudar como será feita a autenticação
-// Criar auth commands, IService e handlers
-// Implementar Service
-// Criar unit tests
-// Verificar TODOs no código
+// Estudar como será feita a autenticação OK
+// Verificar TODOs no código OK
 
-// TESTE E MERGE -> Até sábado à noite (23/05/2021)
+// TESTE E MERGE -> Até sábado à noite (22/05/2021)
 // Verificar TODOs no código
 // Testar módulo de contratos inteiro -> Relizar testes que possam gerar exceções para ver se o sistema está robusto
 // Revisão Geral
 // Mergear e liberar versão 1.2.1 da API
 
 // DATA FINAL -> 23/05/2021
-
 
 // TESTES DE UNIDADE -> Até quinta-feira à noite (20/05/2021)
 // Criar Account UnitTests -> Entity, Handlers OK
