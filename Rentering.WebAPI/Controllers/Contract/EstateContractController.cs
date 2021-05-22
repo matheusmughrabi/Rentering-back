@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -20,7 +21,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
         [HttpGet]
         [Route("v1/Contract/{id}")]
-        [Authorize(Roles = "RegularUser,Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetContractById(int id)
         {
             var result = _contractUnitOfWork.EstateContractQuery.GetById(id);
@@ -31,7 +32,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpGet]
         [Route("v1/GetContractsOfCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult GetContract()
+        public IActionResult GetContractsOfCurrentUser()
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
@@ -54,6 +55,9 @@ namespace Rentering.WebAPI.Controllers.Contract
                 return BadRequest("Invalid logged in user");
 
             var contract = _contractUnitOfWork.EstateContractQuery.GetContractDetailed(contractId);
+
+            if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
+                return BadRequest("You are not a participant of this contract");
 
             return Ok(contract);
         }
