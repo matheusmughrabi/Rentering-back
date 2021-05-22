@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
-using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -102,6 +101,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
+            getCurrentOwedAmountCommand.CurrentUserId = accountId;
+
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(getCurrentOwedAmountCommand);
 
@@ -111,15 +112,17 @@ namespace Rentering.WebAPI.Controllers.Contract
         [HttpPut]
         [Route("v1/InviteParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult InviteRenter([FromBody] InviteParticipantCommand inviteParticipantCommand)
+        public IActionResult InviteParticipant([FromBody] InviteParticipantCommand inviteParticipantCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            if (accountId == inviteParticipantCommand.AccountId)
+            if (accountId == inviteParticipantCommand.ParticipantAccountId)
                 return BadRequest("You cannot invite yourself to a contract");
+
+            inviteParticipantCommand.CurrentUserId = accountId;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);
@@ -136,6 +139,8 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
+
+            createContractPaymentCycleCommand.CurrentUserId = accountId;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractPaymentCycleCommand);

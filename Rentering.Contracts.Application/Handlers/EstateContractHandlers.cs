@@ -87,10 +87,16 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
-            if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.AccountId) == false)
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
+
+            if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.ParticipantAccountId) == false)
                 return new CommandResult(false, "Fix erros below", new { Message = "Account not found" });
 
-            contractEntity.InviteParticipant(command.AccountId, command.ParticipantRole);
+            contractEntity.InviteParticipant(command.ParticipantAccountId, command.ParticipantRole);
             var invitedParticipant = contractEntity.Participants.Last();
 
             AddNotifications(contractEntity.Notifications);
@@ -126,6 +132,12 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to create payment cycles" });
+
             contractEntity.CreatePaymentCycle();
 
             AddNotifications(contractEntity.Notifications);
@@ -153,6 +165,12 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
+            var isCurrentUserTheContractTenant = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Tenant && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractTenant.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract tenants are allowed to execute payments" });
+
             var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
@@ -175,6 +193,12 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
 
+            var isCurrentUserTheContractRenter = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractRenter.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to accept payments" });
+
             var acceptedPaymentEntity = contractEntity.AcceptPayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
@@ -196,6 +220,12 @@ namespace Rentering.Contracts.Application.Handlers
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractRenter = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractRenter.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to reject payments" });
 
             var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
 
@@ -261,6 +291,10 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(GetCurrentOwedAmountCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUD.GetContractForCUD(command.ContractId);
+
+            var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
+            if (isCurrentUserParticipant == false)
+                return new CommandResult(false, "Fix erros below", new { Message = "You are not a participant of this contract" });
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
