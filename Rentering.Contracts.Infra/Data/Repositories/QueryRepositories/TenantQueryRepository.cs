@@ -16,27 +16,6 @@ namespace Rentering.Contracts.Infra.Data.Repositories.QueryRepositories
             _context = context;
         }
 
-        public bool CheckIfAccountExists(int accountId)
-        {
-            var sql = @"SELECT CASE WHEN EXISTS (
-		                        SELECT [Id]
-		                        FROM [Accounts]
-		                        WHERE [Id] = @Id
-	                        )
-	                        THEN CAST(1 AS BIT)
-	                        ELSE CAST(0 AS BIT)
-                            END;";
-
-            var accountExists = _context.Connection.Query<bool>(
-                    sql,
-                    new
-                    {
-                        Id = accountId
-                    }).FirstOrDefault();
-
-            return accountExists;
-        }
-
         public IEnumerable<GetTenantQueryResult> GetAll()
         {
             throw new System.NotImplementedException();

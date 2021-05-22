@@ -15,8 +15,8 @@ namespace Rentering.WebAPI.Migrations
         {
             Create.Table("Accounts")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity(1, 1)
-                .WithColumn("Email").AsString().NotNullable()
-                .WithColumn("Username").AsString().NotNullable()
+                .WithColumn("Email").AsString(100).NotNullable().Unique()
+                .WithColumn("Username").AsString(100).NotNullable().Unique()
                 .WithColumn("Password").AsString().NotNullable()
                 .WithColumn("Role").AsInt32().NotNullable();
         }

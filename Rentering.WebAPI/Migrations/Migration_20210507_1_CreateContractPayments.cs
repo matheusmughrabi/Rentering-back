@@ -20,6 +20,10 @@ namespace Rentering.WebAPI.Migrations
                 .WithColumn("RentPrice").AsDecimal().NotNullable()
                 .WithColumn("RenterPaymentStatus").AsInt32().NotNullable()
                 .WithColumn("TenantPaymentStatus").AsInt32().NotNullable();
+
+            Create.UniqueConstraint("ContractIdAndMonth")
+                  .OnTable("ContractPayments")
+                  .Columns("ContractId", "Month");
         }
     }
 }

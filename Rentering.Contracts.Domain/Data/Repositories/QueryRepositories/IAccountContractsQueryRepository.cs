@@ -3,7 +3,8 @@ using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories.QueryResult
 
 namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories
 {
-    public interface IRenterQueryRepository : IGenericQueryRepository<GetRenterQueryResult>
+    public interface IAccountContractsQueryRepository : IGenericQueryRepository<GetAccountContractsQueryResults>
     {
+        bool CheckIfAccountExists(int accountId);
     }
 }

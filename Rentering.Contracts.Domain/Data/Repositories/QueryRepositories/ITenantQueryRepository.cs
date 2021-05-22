@@ -5,6 +5,5 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryRepositories
 {
     public interface ITenantQueryRepository : IGenericQueryRepository<GetTenantQueryResult>
     {
-        bool CheckIfAccountExists(int accountId);
     }
 }

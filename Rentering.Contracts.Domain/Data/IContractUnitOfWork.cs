@@ -7,6 +7,7 @@ namespace Rentering.Contracts.Domain.Data
     public interface IContractUnitOfWork : IUnitOfWork
     {
         IAccountContractsCUDRepository AccountContractsCUD { get; }
+        IAccountContractsQueryRepository AccountContractsQuery { get; }
 
         IRenterCUDRepository RenterCUD { get; }
         IRenterQueryRepository RenterQuery { get; }
