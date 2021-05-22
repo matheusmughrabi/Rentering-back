@@ -4,18 +4,14 @@ using Rentering.Common.Shared.Entities;
 
 namespace Rentering.Accounts.Domain.Entities
 {
-    public class AccountEntity : BaseEntity
+    public class AccountEntity : Entity
     {
-        public AccountEntity(NameValueObject name, EmailValueObject email, UsernameValueObject username,
-            PasswordValueObject password = null, e_Roles? role = null, int? id = null)
+        public AccountEntity(EmailValueObject email, UsernameValueObject username,
+            PasswordValueObject password = null, e_Roles? role = null, int? id = null) : base(id)
         {
-            Name = name;
             Email = email;
             Username = username;
             Password = password;
-
-            if (id != null)
-                AssignId((int)id);
 
             if (role != null)
                 Role = (e_Roles)role;
@@ -23,7 +19,6 @@ namespace Rentering.Accounts.Domain.Entities
                 Role = e_Roles.RegularUser;
         }
 
-        public NameValueObject Name { get; private set; }
         public EmailValueObject Email { get; private set; }
         public UsernameValueObject Username { get; private set; }
         public PasswordValueObject Password { get; private set; }
