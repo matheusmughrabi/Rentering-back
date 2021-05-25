@@ -19,172 +19,28 @@ namespace Rentering.WebAPI
     }
 }
 
-// ====== NOVA BRANCH -> features/accounts ======
-// Create Guarantor command, handler, CUDrepository and tests OK
-// Alterar accounts para ter apenas email, username and password OK
-// Alterar BD accounts OK
-// Testar OK
+// ============= RELEASE 1.2.2 =============
+// EntityFramework
+// AspNetIdentity
+// Sistema de autorização de dados
+// Criar todos os testes
+// Corrigir eventuais bugs
+// [TALVEZ] Mediatr
 
+// ============= Implementação Entity Framework =============
+// Estudar projeto exemplo -> NerdStore ON GOING
+// Implementar projeto exemplo com alteração de estado em mais de uma classe -> testar se um SaveChanges já salva tudo ON GOING
+// Aprofundamento em Entity Framework ON GOING
 
-// ====== NOVA BRANCH -> features/renter-crud ======
-// Criar tabela Renter OK
-// Criar Stored Procedures Renter OK
-// Implementar Repositorios Renter OK
-// Criar unit tests OK
-// Testar OK 
-// Merge com release-1.2.1 OK
+// Implementar EF em Accounts ON GOING
+// Criar novo projeto Accounts.ApplicationEF e um AccountEFController com o objetivo de implementar sem quebrar nada e pegar o jeito do EF Core
+// Implementar AccountUnitOfWork
 
+// Implementar EF em Contracts
+// Criar novo projeto Contracts.ApplicationEF e um ContractEFController
+// Implementar ContractUnitOfWork
 
-// ====== NOVA BRANCH -> features/renter-add-validations ======
-// Adicionar validações nos ValueObjects OK
-// Spouse atributos nao precisa se não for casado OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/refactoring-repositories ======
-// Adicionar Fluent Migrator OK
-// Organizar BD, StoredProcedures, Versionamento BD OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/refactoring-namings ======
-// Corrigir commandHandlers nomes para Handlers OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/check-if-account ======
-// Implementar checkIfAccounts OK
-// Criar UnitTests para handlers OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/general-improvements ======
-// Nomenclaturas OK
-// Migrationg OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/tenant-functionality ======
-// Criar handlers OK
-// Criar unit tests OK
-// Criar tabela Tenant OK
-// Criar Stored Procedures Tenant OK
-// Implementar Repositorios Tenant OK
-// Testar ON GOING -> Corrigir bugs em renterService e tenantService, além disso é preciso criar testes para estes services OK
-// Criar query repositories e controllers
-// Testar
-// Merge com release-1.2.1
-
-
-// ====== NOVA BRANCH -> feature/guarantor-functionality ======
-// Criar handlers OK
-// Criar unit tests OK
-// Criar auth handlers OK
-// Criar auth unit tests OK
-// Implementar GuarantorService OK
-// Criar unit tests para guarantorService OK
-// Criar tabela Guarantor OK
-// Criar Stored Procedures Guarantor OK
-// Implementar Repositorios Guarantor OK
-// Criar controller OK
-// Testar OK
-// Merge com release-1.2.1 OK
-
-
-// ====== NOVA BRANCH -> features/estate-contracts ======
-// Criar ContractWithGuarantorEntity OK
-// Criar testes de unidade OK
-
-// Criar migration de tabela ContractsWithGuarantor OK
-// Criar StoredProcedures OK
-
-// Criar commands, IRepository e handlers OK
-// Implementar CUDRepository OK
-// Implementar QueryRepository OK
-
-// OBS:
-// 1) Precisa incluir campo de status do Renter, Tenant e Guarantor nas tabelas do BD OK
-// 2) Precisa garantir que eles já não estejam associados a outro contrato OK
-
-// Implementar InviteRenter OK
-// Implementar InviteTenant OK
-// Implementar InviteGuarantor OK
-
-// Estudar implementações de UnitOfWork com dapper OK
-// Implementar ContractUnitOfWork OK
-// Implementar AccountUnitOfWork OK
-
-// Modelar melhor como será feita a criação de ciclos de contrato OK
-// Implementar nova modelagem OK
-// Implementar ContractPaymentController OK
-// ExecutePayment, Accept e Reject OK
-
-/* Refatoração dos repositórios 
-     -> Passar storedProcedures para o C# OK
-     -> Criar uma consulta específica para cada cenário OK
-     -> Com relação a etapa anterior, uma das consultas de contratos por exemplo terá que alimentar a entidade com seus campos e também com a lista de pagamentos OK
-     -> Com relação aos repositórios Query, é preciso trazer os dados de maneira mais otimizada. Para isso os dados serão filtrados com Where e também serão utilizados os devidos Select. Nota-se também que será necessário criar um GetQueryResult específico para cada cenário, apenas com os campos de interesse OK
-     -> Testar tudo OK
- */
-
-// POSSIBILIDADES ADICIONAIS -> Até Domingo à noite (16/05/2021)
-/*
-  -> Criar tabela intermediária com os campos AccountId, ContractId e UserRoleInTheContractId 
-     (Owner, Participant OU ENTÃO Owner, Renter, Tenant and Guarantor)
-  -> Renter, Tenant e Guarantor não terão mais o campo AccountId, mas sim o campo ContractId 
-  -> Refatorar nomenclatura para EstateContract OK
-
-  -> Criar AccountContractsEntity (Id, AccountId, ContractId, ParticipantRole) OK
-  -> Alterar cada entity de participante para ter ContractId OK
-  -> Refatorar nos locais que forem necessários do código OK
-  -> Refatorar Migrations existentes OK
-  
-  -> Criar IReadOnlyCollection de cada participante em EstateContractEntity OK
-  -> Verificar se precisa atualizar GetForCUD OK
-
-  -> Modelar melhor AccountContracts OK
-  -> Criar Migration de AccountContracts Table OK
-
-  -> Criar lógica para setar usuário criador do contrato como owner -> Precisa do ContractId para salvar em AccountContracts OK
-  -> Quando o contrato for criado o owner já tem que vir com o status Aceito OK
-  -> Fluxo para aceitar ou recusar participação no contrato OK
-  -> Criar GetContractsOfCurrentUser, GetContractDetailed, GetPendingInvitationsOfCurrentUser OK
- */
-
-// BUGS - Domingo (16/05/2021)
-// Login null exception no método GetForLoginCUD OK
-// If(entity == null) em Create e Update dos repositórios OK
-// CheckIfExists OK
-// Verificar TODOs no código OK
-// Adicionar try-catch padrão do AspNetCore ON GOING
-
-// Endpoint para cálculo de valor do aluguel -> CurrentOwedAmount OK
-// Revisão de tudo OK
-// Acertar Migrations -> Nullable, DataTypes
-
-// AUTENTICAÇÃO -> Até Sábado à noite (22/05/2021)
-// Estudar como será feita a autenticação OK
-// Verificar TODOs no código OK
-
-// TESTE E MERGE -> Até sábado à noite (22/05/2021)
-// Verificar TODOs no código
-// Testar módulo de contratos inteiro -> Relizar testes que possam gerar exceções para ver se o sistema está robusto
-// Revisão Geral
-// Mergear e liberar versão 1.2.1 da API
-
-// DATA FINAL -> 23/05/2021
-
-// TESTES DE UNIDADE -> Até quinta-feira à noite (20/05/2021)
-// Criar Account UnitTests -> Entity, Handlers OK
-// Criar EstateContract UnitTests -> Entity, Handlers ON GOING
-// Criar Renter UnitTests -> Entity, Handlers
-// Criar Tenant UnitTests -> Entity, Handlers
-// Criar Guarantor UnitTests -> Entity, Handlers
-// Criar ContractPayment UnitTests -> Entity, Handlers
+// Analisar estrutura e comparar com Dapper
+// Criar uma estrutura limpa e que facilite a troca EF <---> Dapper
 
 

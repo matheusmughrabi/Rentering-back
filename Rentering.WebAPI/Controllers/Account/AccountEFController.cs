@@ -1,23 +1,24 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Accounts.Application.Commands;
-using Rentering.Accounts.Application.Handlers;
-using Rentering.Accounts.Domain.Data;
+using Microsoft.EntityFrameworkCore;
+using Rentering.Accounts.ApplicationEF.Commands.Accounts;
+using Rentering.Accounts.ApplicationEF.Handlers;
+using Rentering.Accounts.InfraEF;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : RenteringBaseController
+    public class AccountEFController : RenteringBaseController
     {
-        private readonly IAccountUnitOfWork _accountUnitOfWork;
+        private readonly AccountsDbContext _accountsDbContext;
 
-        public AccountController(IAccountUnitOfWork accountUnitOfWork)
+        public AccountEFController(AccountsDbContext accountsDbContext)
         {
-            _accountUnitOfWork = accountUnitOfWork;
+            _accountsDbContext = accountsDbContext;
         }
 
         [HttpGet]
@@ -25,7 +26,9 @@ namespace Rentering.WebAPI.Controllers.Account
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts()
         {
-            var result = _accountUnitOfWork.AccountQuery.GetAllAccounts_AdminUsageOnly();
+            var result = _accountsDbContext.Account.AsNoTracking().ToList();
+
+            _accountsDbContext.Dispose();
 
             return Ok(result);
         }
@@ -40,19 +43,24 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _accountUnitOfWork.AccountQuery.GetAccountById(currentUserId);
+            var result = _accountsDbContext.Account
+                .AsNoTracking()
+                .Where(c => c.Id == currentUserId)
+                .FirstOrDefault();
+
+            _accountsDbContext.Dispose();
 
             return Ok(result);
         }
 
         [HttpPost]
         [Route("v1/Accounts/Create")]
-        public IActionResult CreateAccount([FromBody] CreateAccountCommand accountCommand)
+        public IActionResult CreateAccount([FromBody] CreateAccountCommandEF accountCommand)
         {
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
 
-            var handler = new AccountHandlers(_accountUnitOfWork);
+            var handler = new AccountHandlers(_accountsDbContext);
             var result = handler.Handle(accountCommand);
 
             return Ok(result);
@@ -61,9 +69,14 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpPost]
         [Route("v1/Accounts/Login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
+        public ActionResult<dynamic> Login([FromBody] LoginAccountCommandEF loginCommand)
         {
-            var accountEntity = _accountUnitOfWork.AccountCUD.GetAccountForLoginCUD(loginCommand.Username);
+            var accountEntity = _accountsDbContext.Account
+                .AsNoTracking()
+                .Where(c => c.Username.Username == loginCommand.Username)
+                .FirstOrDefault();
+
+            _accountsDbContext.Dispose();
 
             if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
@@ -75,10 +88,10 @@ namespace Rentering.WebAPI.Controllers.Account
 
         [HttpPatch]
         [Route("v1/Accounts/AssignAdminRole")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult AssignAdminRole([FromBody] AssignAccountCommand assignAdminRoleCommand)
+        //[Authorize(Roles = "Admin")]
+        public IActionResult AssignAdminRole([FromBody] AssignAdminRoleAccountCommandEF assignAdminRoleCommand)
         {
-            var handler = new AccountHandlers(_accountUnitOfWork);
+            var handler = new AccountHandlers(_accountsDbContext);
             var result = handler.Handle(assignAdminRoleCommand);
 
             return Ok(result);
@@ -94,7 +107,9 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            _accountUnitOfWork.AccountCUD.Delete(accountId);
+            var accountEntity = _accountsDbContext.Account.Where(c => c.Id == accountId).FirstOrDefault();
+            _accountsDbContext.Remove(accountEntity);
+            _accountsDbContext.Dispose();
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });
@@ -105,5 +120,3 @@ namespace Rentering.WebAPI.Controllers.Account
         }
     }
 }
-
-
