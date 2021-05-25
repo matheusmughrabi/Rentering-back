@@ -23,6 +23,7 @@ namespace Rentering.WebAPI
             DatabaseSettings.connectionString = Configuration.GetConnectionString("DefaultConnection");
             Settings.secret = Configuration.GetValue<string>("SecretKey");
 
+            services.RegisterEntityFramework();
             services.RegisterRepositoriesAndServices();
             services.RegisterSwagger();
             services.RegisterAuthenticationAndAuthorization();

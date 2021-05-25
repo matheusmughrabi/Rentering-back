@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Common.Infra", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Common.Shared", "Rentering.Common.Shared\Rentering.Common.Shared.csproj", "{9296C2DB-49C2-42C9-B768-ACD8B950C851}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentering.Accounts.InfraEF", "Rentering.Accounts.InfraEF\Rentering.Accounts.InfraEF.csproj", "{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{9296C2DB-49C2-42C9-B768-ACD8B950C851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9296C2DB-49C2-42C9-B768-ACD8B950C851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9296C2DB-49C2-42C9-B768-ACD8B950C851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{05A81A05-583C-4195-A8D9-BB0150959F6F} = {72837DF6-FC2D-4BFE-8A26-280D36AC03CA}
 		{F6689390-DDD4-48D5-9AED-ACCCF0FAA808} = {377F0EA3-00E5-4F5C-88C1-1113C3AD5642}
 		{9296C2DB-49C2-42C9-B768-ACD8B950C851} = {377F0EA3-00E5-4F5C-88C1-1113C3AD5642}
+		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939} = {67EEE968-7967-49CF-9360-DE274E759726}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C75668-7F42-4E1E-A89E-2B1417D739BD}

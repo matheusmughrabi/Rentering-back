@@ -1,5 +1,6 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,6 +10,7 @@ using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Accounts.Infra.Data;
 using Rentering.Accounts.Infra.Data.Repositories.CUDRepositories;
 using Rentering.Accounts.Infra.Data.Repositories.QueryRepositories;
+using Rentering.Accounts.InfraEF;
 using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
@@ -24,6 +26,12 @@ namespace Rentering.WebAPI.Configuration
 {
     public static class ServicesConfiguration
     {
+        public static void RegisterEntityFramework(this IServiceCollection services)
+        {
+            services.AddDbContext<AccountsDbContext>(options =>
+                options.UseSqlServer(DatabaseSettings.connectionString));
+        }
+
         public static void RegisterRepositoriesAndServices(this IServiceCollection services)
         {
             services.AddScoped<RenteringDataContext, RenteringDataContext>();

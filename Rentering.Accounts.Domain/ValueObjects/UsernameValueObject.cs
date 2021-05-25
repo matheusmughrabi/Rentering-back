@@ -5,6 +5,10 @@ namespace Rentering.Accounts.Domain.ValueObjects
 {
     public class UsernameValueObject : BaseValueObject
     {
+        private UsernameValueObject()
+        {
+        }
+
         public UsernameValueObject(string username)
         {
             Username = username;
