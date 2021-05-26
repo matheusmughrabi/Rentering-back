@@ -24,7 +24,7 @@ namespace Rentering.WebAPI.Controllers.Contract
 
         [HttpPost]
         [Route("v1/CreateContract")]
-        [Authorize(Roles = "RegularUser,Admin")]
+        //[Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateContract([FromBody] CreateEstateContractCommandEF createContractGuarantorCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
@@ -36,6 +36,27 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
             var result = handler.Handle(createContractGuarantorCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("v1/InviteParticipant")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult InviteParticipant([FromBody] InviteParticipantCommandEF inviteParticipantCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            if (accountId == inviteParticipantCommand.ParticipantAccountId)
+                return BadRequest("You cannot invite yourself to a contract");
+
+            inviteParticipantCommand.CurrentUserId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
+            var result = handler.Handle(inviteParticipantCommand);
 
             return Ok(result);
         }

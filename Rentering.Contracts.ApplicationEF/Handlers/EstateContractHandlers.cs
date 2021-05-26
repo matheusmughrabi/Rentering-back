@@ -66,12 +66,41 @@ namespace Rentering.Contracts.ApplicationEF.Handlers
             return createdContract;
         }
 
-        public ICommandResult Handle(CreatePaymentCycleCommandEF command)
+        public ICommandResult Handle(InviteParticipantCommandEF command)
         {
-            throw new NotImplementedException();
+            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
+
+            //if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.ParticipantAccountId) == false)
+            //    return new CommandResult(false, "Fix erros below", new { Message = "Account not found" });
+
+            contractEntity.InviteParticipant(command.ParticipantAccountId, command.ParticipantRole);
+            //var invitedParticipant = contractEntity.Participants.Last();
+
+            AddNotifications(contractEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWorkEF.Save();
+
+            var updatedContract = new CommandResult(true, "Participant invited successfuly", new
+            {
+                contractEntity.ContractName
+            });
+
+            return updatedContract;
         }
 
-        public ICommandResult Handle(InviteParticipantCommandEF command)
+        public ICommandResult Handle(CreatePaymentCycleCommandEF command)
         {
             throw new NotImplementedException();
         }

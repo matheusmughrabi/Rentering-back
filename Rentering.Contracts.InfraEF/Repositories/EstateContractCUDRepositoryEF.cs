@@ -30,7 +30,10 @@ namespace Rentering.Contracts.InfraEF.Repositories
 
         public bool ContractNameExists(string contractName)
         {
-            var contractNameExists = _contractsDbContext.Contract.Any(c => c.ContractName == contractName);
+            var contractNameExists = _contractsDbContext.Contract
+                .AsNoTracking()
+                .Any(c => c.ContractName == contractName);
+
             return contractNameExists;
         }
 
