@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.ApplicationEF.Commands.Accounts;
 using Rentering.Accounts.ApplicationEF.Handlers;
+using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.InfraEF;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
@@ -14,11 +15,11 @@ namespace Rentering.WebAPI.Controllers.Account
     [ApiController]
     public class AccountEFController : RenteringBaseController
     {
-        private readonly AccountsDbContext _accountsDbContext;
+        private readonly IAccountUnitOfWorkEF _accountUnitOfWorkEF;
 
-        public AccountEFController(AccountsDbContext accountsDbContext)
+        public AccountEFController(IAccountUnitOfWorkEF accountUnitOfWorkEF)
         {
-            _accountsDbContext = accountsDbContext;
+            _accountUnitOfWorkEF = accountUnitOfWorkEF;
         }
 
         [HttpGet]
@@ -26,11 +27,9 @@ namespace Rentering.WebAPI.Controllers.Account
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts()
         {
-            var result = _accountsDbContext.Account.AsNoTracking().ToList();
+            var accountQueryResults = _accountUnitOfWorkEF.AccountQueryRepositoryEF.GetAllAccounts_AdminUsageOnly();
 
-            _accountsDbContext.Dispose();
-
-            return Ok(result);
+            return Ok(accountQueryResults);
         }
 
         [HttpGet]
@@ -43,14 +42,9 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var result = _accountsDbContext.Account
-                .AsNoTracking()
-                .Where(c => c.Id == currentUserId)
-                .FirstOrDefault();
+            var accountQueryResult = _accountUnitOfWorkEF.AccountQueryRepositoryEF.GetAccountById(currentUserId);
 
-            _accountsDbContext.Dispose();
-
-            return Ok(result);
+            return Ok(accountQueryResult);
         }
 
         [HttpPost]
@@ -60,7 +54,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
 
-            var handler = new AccountHandlers(_accountsDbContext);
+            var handler = new AccountHandlers(_accountUnitOfWorkEF);
             var result = handler.Handle(accountCommand);
 
             return Ok(result);
@@ -71,12 +65,8 @@ namespace Rentering.WebAPI.Controllers.Account
         [AllowAnonymous]
         public ActionResult<dynamic> Login([FromBody] LoginAccountCommandEF loginCommand)
         {
-            var accountEntity = _accountsDbContext.Account
-                .AsNoTracking()
-                .Where(c => c.Username.Username == loginCommand.Username)
-                .FirstOrDefault();
+            var accountEntity = _accountUnitOfWorkEF.AccountCUDRepositoryEF.GetAccountForLogin(loginCommand.Username);
 
-            _accountsDbContext.Dispose();
 
             if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
@@ -91,7 +81,7 @@ namespace Rentering.WebAPI.Controllers.Account
         //[Authorize(Roles = "Admin")]
         public IActionResult AssignAdminRole([FromBody] AssignAdminRoleAccountCommandEF assignAdminRoleCommand)
         {
-            var handler = new AccountHandlers(_accountsDbContext);
+            var handler = new AccountHandlers(_accountUnitOfWorkEF);
             var result = handler.Handle(assignAdminRoleCommand);
 
             return Ok(result);
@@ -107,9 +97,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var accountEntity = _accountsDbContext.Account.Where(c => c.Id == accountId).FirstOrDefault();
-            _accountsDbContext.Remove(accountEntity);
-            _accountsDbContext.Dispose();
+            var accountEntity = _accountUnitOfWorkEF.AccountCUDRepositoryEF.Delete(accountId);
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });

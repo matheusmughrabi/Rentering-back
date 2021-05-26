@@ -30,6 +30,8 @@ namespace Rentering.WebAPI.Configuration
         {
             services.AddDbContext<AccountsDbContext>(options =>
                 options.UseSqlServer(DatabaseSettings.connectionString));
+
+            services.AddScoped<IAccountUnitOfWorkEF, AccountUnitOfWorkEF>();
         }
 
         public static void RegisterRepositoriesAndServices(this IServiceCollection services)

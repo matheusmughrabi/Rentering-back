@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories;
 using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+using Rentering.Accounts.Domain.Data.RespositoriesEF.QueryResults;
 using Rentering.Common.Infra;
 using System.Collections.Generic;
 using System.Linq;

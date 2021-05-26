@@ -1,4 +1,5 @@
 ﻿using Rentering.Accounts.Domain.Data.Repositories.QueryRepositories.QueryResults;
+using Rentering.Accounts.Domain.Data.RespositoriesEF.QueryResults;
 using System.Collections.Generic;
 
 namespace Rentering.Accounts.Domain.Data.Repositories.QueryRepositories
