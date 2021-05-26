@@ -20,7 +20,10 @@
     <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
     <ProjectReference Include="..\Rentering.Accounts.InfraEF\Rentering.Accounts.InfraEF.csproj" />
     <ProjectReference Include="..\Rentering.Accounts.Infra\Rentering.Accounts.Infra.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.ApplicationEF\Rentering.Contracts.ApplicationEF.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Application\Rentering.Contracts.Application.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.InfraEF\Rentering.Contracts.InfraEF.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Infra\Rentering.Contracts.Infra.csproj" />
   </ItemGroup>
 

@@ -5,6 +5,10 @@ namespace Rentering.Contracts.Domain.Entities
 {
     public class AccountContractsEntity : Entity
     {
+        protected AccountContractsEntity()
+        {
+        }
+
         public AccountContractsEntity(
             int accountId,
             int contractId,

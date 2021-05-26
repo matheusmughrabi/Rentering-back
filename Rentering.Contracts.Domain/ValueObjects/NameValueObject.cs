@@ -5,6 +5,10 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class NameValueObject : BaseValueObject
     {
+        protected NameValueObject()
+        {
+        }
+
         public NameValueObject(
             string firstName, 
             string lastName, 

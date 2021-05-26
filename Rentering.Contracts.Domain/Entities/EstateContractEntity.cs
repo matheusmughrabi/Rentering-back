@@ -5,6 +5,7 @@ using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Rentering.Contracts.Domain.Entities
@@ -16,6 +17,10 @@ namespace Rentering.Contracts.Domain.Entities
         private List<TenantEntity> _tenants;
         private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
+
+        protected EstateContractEntity()
+        {
+        }
 
         public EstateContractEntity(
             string contractName,
@@ -45,8 +50,11 @@ namespace Rentering.Contracts.Domain.Entities
         }
 
         public string ContractName { get; private set; }
+        [Required]
         public AddressValueObject Address { get; private set; }
+        [Required]
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
+        [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
@@ -59,11 +67,11 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            if (Id == 0)
-            {
-                AddNotification("Id", "ContractId cannot be zero");
-                return;
-            }
+            //if (Id == 0)
+            //{
+            //    AddNotification("Id", "ContractId cannot be zero");
+            //    return;
+            //}
 
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 

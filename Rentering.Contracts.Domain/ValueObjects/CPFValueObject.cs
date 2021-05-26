@@ -5,6 +5,10 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class CPFValueObject : BaseValueObject
     {
+        protected CPFValueObject()
+        {
+        }
+
         public CPFValueObject(string cpf, bool cpfRequired = true)
         {
             CPF = cpf;

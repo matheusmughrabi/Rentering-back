@@ -15,9 +15,11 @@ using Rentering.Common.Infra;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Data.Repositories.CUDRepositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryRepositories;
+using Rentering.Contracts.Domain.DataEF;
 using Rentering.Contracts.Infra.Data;
 using Rentering.Contracts.Infra.Data.Repositories.CUDRepositories;
 using Rentering.Contracts.Infra.Data.Repositories.QueryRepositories;
+using Rentering.Contracts.InfraEF;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -31,7 +33,11 @@ namespace Rentering.WebAPI.Configuration
             services.AddDbContext<AccountsDbContext>(options =>
                 options.UseSqlServer(DatabaseSettings.connectionString));
 
+            services.AddDbContext<ContractsDbContext>(options =>
+                options.UseSqlServer(DatabaseSettings.connectionString));
+
             services.AddScoped<IAccountUnitOfWorkEF, AccountUnitOfWorkEF>();
+            services.AddScoped<IContractUnitOfWorkEF, ContractUnitOfWorkEF>();
         }
 
         public static void RegisterRepositoriesAndServices(this IServiceCollection services)
