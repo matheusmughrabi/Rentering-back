@@ -60,5 +60,71 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("v1/CreatePaymentCycle")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CreatePaymentCycle([FromBody] CreatePaymentCycleCommandEF createPaymentCycleCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            createPaymentCycleCommand.CurrentUserId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
+            var result = handler.Handle(createPaymentCycleCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [Route("v1/ExecutePayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult ExecutePayment([FromBody] ExecutePaymentCommandEF executePaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
+            var result = handler.Handle(executePaymentCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [Route("v1/AcceptPayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AcceptPayment([FromBody] AcceptPaymentCommandEF acceptPaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
+            var result = handler.Handle(acceptPaymentCommand);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [Route("v1/RejectPayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RejectPayment([FromBody] RejectPaymentCommandEF rejectPaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            var handler = new EstateContractHandlers(_contractUnitOfWorkEF);
+            var result = handler.Handle(rejectPaymentCommand);
+
+            return Ok(result);
+        }
     }
 }

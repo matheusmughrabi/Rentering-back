@@ -102,22 +102,116 @@ namespace Rentering.Contracts.ApplicationEF.Handlers
 
         public ICommandResult Handle(CreatePaymentCycleCommandEF command)
         {
-            throw new NotImplementedException();
+            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to create payment cycles" });
+
+            contractEntity.CreatePaymentCycle();
+
+            AddNotifications(contractEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWorkEF.Save();
+
+            var createdPayments = new CommandResult(true, "Payment cycle created successfuly", new
+            {
+                contractEntity.Payments
+            });
+
+            return createdPayments;
         }
 
         public ICommandResult Handle(ExecutePaymentCommandEF command)
         {
-            throw new NotImplementedException();
+            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractTenant = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Tenant && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractTenant.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract tenants are allowed to execute payments" });
+
+            var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
+
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(rejectedPaymentEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWorkEF.Save();
+
+            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
+
+            return rejectedPayment;
         }
 
         public ICommandResult Handle(AcceptPaymentCommandEF command)
         {
-            throw new NotImplementedException();
+            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractRenter = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractRenter.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to accept payments" });
+
+            var acceptedPaymentEntity = contractEntity.AcceptPayment(command.Month);
+
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(acceptedPaymentEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWorkEF.Save();
+
+            var acceptedPayment = new CommandResult(true, "Payment accepted successfuly");
+
+            return acceptedPayment;
         }
 
         public ICommandResult Handle(RejectPaymentCommandEF command)
         {
-            throw new NotImplementedException();
+            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractRenter = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractRenter.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to reject payments" });
+
+            var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
+
+            AddNotifications(contractEntity.Notifications);
+            AddNotifications(rejectedPaymentEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWorkEF.Save();
+
+            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
+
+            return rejectedPayment;
         }
 
         public ICommandResult Handle(AcceptToPaticipateCommandEF command)

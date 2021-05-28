@@ -132,7 +132,8 @@ namespace Rentering.Contracts.Domain.Entities
                     continue;
                 }
 
-                _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, RentPrice));
+                // TODO - new PriceValueObject(RentPrice.Price)
+                _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, new PriceValueObject(RentPrice.Price)));
             }
         }
 

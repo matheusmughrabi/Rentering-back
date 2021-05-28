@@ -1,4 +1,5 @@
 ﻿using Rentering.Contracts.Domain.Entities;
+using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.DataEF.Repositories
 {
