@@ -95,6 +95,75 @@ namespace Rentering.Contracts.Domain.Entities
             }
         }
 
+        public void AddRenter(RenterEntity renter)
+        {
+            if (renter == null)
+            {
+                AddNotification("renter", "Renter cannot be null");
+                return;
+            }
+
+            if (_renters.Any(c => c.Name.FirstName == renter.Name.FirstName && c.Name.LastName == renter.Name.LastName))
+                AddNotification("FullName", "Renter with this name and last name already exists in this contract");
+
+            if (_renters.Any(c => c.IdentityRG.IdentityRG == renter.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Renter with this IdentityRG already exists in this contract");
+
+            if (_renters.Any(c => c.CPF.CPF == renter.CPF.CPF))
+                AddNotification("CPF", "Renter with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _renters.Add(renter);
+        }
+
+        public void AddTenant(TenantEntity tenant)
+        {
+            if (tenant == null)
+            {
+                AddNotification("tenant", "Tenant cannot be null");
+                return;
+            }
+
+            if (_tenants.Any(c => c.Name.FirstName == tenant.Name.FirstName && c.Name.LastName == tenant.Name.LastName))
+                AddNotification("FullName", "Tenant with this name and last name already exists in this contract");
+
+            if (_tenants.Any(c => c.IdentityRG.IdentityRG == tenant.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Tenant with this IdentityRG already exists in this contract");
+
+            if (_tenants.Any(c => c.CPF.CPF == tenant.CPF.CPF))
+                AddNotification("CPF", "Tenant with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _tenants.Add(tenant);
+        }
+
+        public void AddGuarantor(GuarantorEntity guarantor)
+        {
+            if (guarantor == null)
+            {
+                AddNotification("guarantor", "Guarantor cannot be null");
+                return;
+            }
+
+            if (_guarantors.Any(c => c.Name.FirstName == guarantor.Name.FirstName && c.Name.LastName == guarantor.Name.LastName))
+                AddNotification("FullName", "Guarantor with this name and last name already exists in this contract");
+
+            if (_guarantors.Any(c => c.IdentityRG.IdentityRG == guarantor.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Guarantor with this IdentityRG already exists in this contract");
+
+            if (_guarantors.Any(c => c.CPF.CPF == guarantor.CPF.CPF))
+                AddNotification("CPF", "Guarantor with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _guarantors.Add(guarantor);
+        }
+
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
             if (rentPrice.Price < 0)

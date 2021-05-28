@@ -13,9 +13,11 @@ namespace Rentering.Contracts.InfraEF
             _contractsDbContext = contractsDbContext;
 
             EstateContractCUDRepositoryEF = new EstateContractCUDRepositoryEF(_contractsDbContext);
+            AccountContractCUDRepositoryEF = new AccountContractCUDRepositoryEF(_contractsDbContext);
         }
 
         public IEstateContractCUDRepositoryEF EstateContractCUDRepositoryEF { get; private set; }
+        public IAccountContractCUDRepositoryEF AccountContractCUDRepositoryEF { get; private set; }
 
         public void Dispose()
         {

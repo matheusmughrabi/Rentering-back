@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.ApplicationEF.Commands
 {
-    public class AcceptToPaticipateCommandEF : ICommand
+    public class AcceptToParticipateCommandEF : ICommand
     {
-        public AcceptToPaticipateCommandEF(int contractId)
+        public AcceptToParticipateCommandEF(int contractId)
         {
             ContractId = contractId;
         }
