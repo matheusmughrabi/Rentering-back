@@ -206,11 +206,13 @@ namespace Rentering.Contracts.InfraEF.Migrations
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.AccountContractsEntity", b =>
                 {
-                    b.HasOne("Rentering.Contracts.Domain.Entities.EstateContractEntity", null)
+                    b.HasOne("Rentering.Contracts.Domain.Entities.EstateContractEntity", "EstateContract")
                         .WithMany("Participants")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EstateContract");
                 });
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.ContractPaymentEntity", b =>

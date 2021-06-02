@@ -24,6 +24,9 @@ namespace Rentering.Accounts.InfraEF.Data.Repositories
                  .Select(c => new { c.Email.Email, c.Username.Username })
                  .FirstOrDefault();
 
+            if (accountRetrieved == null)
+                return null;
+
             var accountQueryResult = new GetAccountQueryResultEF()
             {
                 Email = accountRetrieved.Email,
@@ -40,7 +43,7 @@ namespace Rentering.Accounts.InfraEF.Data.Repositories
                 .ToList();
 
             var accountQueryResults = new List<GetAccountQueryResult_AdminUsageOnlyEF>();
-            accountRetrieved.ForEach(c => accountQueryResults.Add(new GetAccountQueryResult_AdminUsageOnlyEF()
+            accountRetrieved?.ForEach(c => accountQueryResults.Add(new GetAccountQueryResult_AdminUsageOnlyEF()
             {
                 Id = c.Id,
                 Email = c.Email.Email,

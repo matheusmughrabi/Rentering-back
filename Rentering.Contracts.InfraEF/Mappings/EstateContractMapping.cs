@@ -79,7 +79,7 @@ namespace Rentering.Contracts.InfraEF.Mappings
 
             // 1 : N => Categorias : Produtos
             builder.HasMany(c => c.Participants)
-                .WithOne()
+                .WithOne(u => u.EstateContract)
                 .HasForeignKey(p => p.ContractId);
 
             builder.HasMany(c => c.Renters)

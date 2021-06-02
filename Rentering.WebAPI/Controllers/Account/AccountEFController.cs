@@ -64,7 +64,6 @@ namespace Rentering.WebAPI.Controllers.Account
         {
             var accountEntity = _accountUnitOfWorkEF.AccountCUDRepositoryEF.GetAccountForLogin(loginCommand.Username);
 
-
             if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
 
