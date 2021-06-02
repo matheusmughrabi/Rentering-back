@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Contracts.ApplicationEF.Commands;
 using Rentering.Contracts.ApplicationEF.Handlers;
 using Rentering.Contracts.Domain.DataEF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Rentering.WebAPI.Controllers.Contract
 {
@@ -39,6 +34,69 @@ namespace Rentering.WebAPI.Controllers.Contract
 
             return Ok(result);
         }
+
+        //[HttpGet]
+        //[Route("v1/GetContractsOfCurrentUser")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetContractsOfCurrentUser()
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
+
+        //    var contracts = _contractUnitOfWork.EstateContractQuery.GetContractsOfCurrentUser(accountId);
+
+        //    return Ok(contracts);
+        //}
+
+        //[HttpGet]
+        //[Route("v1/GetContractDetailed/{contractId}")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetContractDetailed(int contractId)
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
+
+        //    var contract = _contractUnitOfWork.EstateContractQuery.GetContractDetailed(contractId);
+
+        //    if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
+        //        return BadRequest("You are not a participant of this contract");
+
+        //    return Ok(contract);
+        //}
+
+        //[HttpGet]
+        //[Route("v1/GetCurrentUserPendingInvitations")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetCurrentUserPendingInvitations()
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
+
+        //    var pendingInvitations = _contractUnitOfWork.EstateContractQuery.GetPendingInvitations(accountId);
+
+        //    return Ok(pendingInvitations);
+        //}
+
+        //[HttpGet]
+        //[Route("v1/GetPaymentsOfContract")]
+        //[Authorize(Roles = "RegularUser,Admin")]
+        //public IActionResult GetPaymentsOfContract(int contractId)
+        //{
+        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+        //    if (isParsingSuccesful == false)
+        //        return BadRequest("Invalid logged in user");
+
+        //    var result = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(contractId).ToList();
+
+        //    return Ok(result);
+        //}
 
         [HttpPost]
         [Route("v1/CreateContract")]

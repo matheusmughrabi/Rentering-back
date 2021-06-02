@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.ApplicationEF.Commands.Accounts;
 using Rentering.Accounts.ApplicationEF.Handlers;
 using Rentering.Accounts.Domain.Data;
-using Rentering.Accounts.InfraEF;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
-using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {

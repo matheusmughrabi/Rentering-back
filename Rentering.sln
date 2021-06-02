@@ -17,17 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Accounts.Domain", "Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj", "{5421E9A0-3E1D-4F85-B255-EE5724D11A8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Accounts.Application", "Rentering.Accounts.Application\Rentering.Accounts.Application.csproj", "{D7668DE0-59CB-4491-AA53-E47658657DCD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Accounts.Infra", "Rentering.Accounts.Infra\Rentering.Accounts.Infra.csproj", "{DA233686-1196-41A0-8115-A761354A39A1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{377F0EA3-00E5-4F5C-88C1-1113C3AD5642}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Contracts.Application", "Rentering.Contracts.Application\Rentering.Contracts.Application.csproj", "{CE47401B-A185-49D5-A5D3-00FF34CBB78D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Contracts.Domain", "Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj", "{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Contracts.Infra", "Rentering.Contracts.Infra\Rentering.Contracts.Infra.csproj", "{05A81A05-583C-4195-A8D9-BB0150959F6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4EF03B86-97D0-4DE2-8B55-5F2D78BCDFD1}"
 EndProject
@@ -37,11 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Common.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Accounts.InfraEF", "Rentering.Accounts.InfraEF\Rentering.Accounts.InfraEF.csproj", "{24A467B4-4EFF-4C39-9BDD-1B29ACE71939}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentering.Accounts.ApplicationEF", "Rentering.Accounts.ApplicationEF\Rentering.Accounts.ApplicationEF.csproj", "{8FC5116E-A6F0-47A1-B962-AB00047739E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Accounts.ApplicationEF", "Rentering.Accounts.ApplicationEF\Rentering.Accounts.ApplicationEF.csproj", "{8FC5116E-A6F0-47A1-B962-AB00047739E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentering.Contracts.InfraEF", "Rentering.Contracts.InfraEF\Rentering.Contracts.InfraEF.csproj", "{D4442856-3DF0-494E-AFD3-5B3420BB6055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Contracts.InfraEF", "Rentering.Contracts.InfraEF\Rentering.Contracts.InfraEF.csproj", "{D4442856-3DF0-494E-AFD3-5B3420BB6055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentering.Contracts.ApplicationEF", "Rentering.Contracts.ApplicationEF\Rentering.Contracts.ApplicationEF.csproj", "{995994C9-9BDA-46D6-81FC-E032EB4D20CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rentering.Contracts.ApplicationEF", "Rentering.Contracts.ApplicationEF\Rentering.Contracts.ApplicationEF.csproj", "{995994C9-9BDA-46D6-81FC-E032EB4D20CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,26 +53,10 @@ Global
 		{5421E9A0-3E1D-4F85-B255-EE5724D11A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5421E9A0-3E1D-4F85-B255-EE5724D11A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5421E9A0-3E1D-4F85-B255-EE5724D11A8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7668DE0-59CB-4491-AA53-E47658657DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7668DE0-59CB-4491-AA53-E47658657DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7668DE0-59CB-4491-AA53-E47658657DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7668DE0-59CB-4491-AA53-E47658657DCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA233686-1196-41A0-8115-A761354A39A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA233686-1196-41A0-8115-A761354A39A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA233686-1196-41A0-8115-A761354A39A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA233686-1196-41A0-8115-A761354A39A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE47401B-A185-49D5-A5D3-00FF34CBB78D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE47401B-A185-49D5-A5D3-00FF34CBB78D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE47401B-A185-49D5-A5D3-00FF34CBB78D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE47401B-A185-49D5-A5D3-00FF34CBB78D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05A81A05-583C-4195-A8D9-BB0150959F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05A81A05-583C-4195-A8D9-BB0150959F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05A81A05-583C-4195-A8D9-BB0150959F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05A81A05-583C-4195-A8D9-BB0150959F6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6689390-DDD4-48D5-9AED-ACCCF0FAA808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6689390-DDD4-48D5-9AED-ACCCF0FAA808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6689390-DDD4-48D5-9AED-ACCCF0FAA808}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -115,12 +91,8 @@ Global
 		{67EEE968-7967-49CF-9360-DE274E759726} = {859C3DD3-4475-467F-BD3F-06EB6C7C67B0}
 		{72837DF6-FC2D-4BFE-8A26-280D36AC03CA} = {859C3DD3-4475-467F-BD3F-06EB6C7C67B0}
 		{5421E9A0-3E1D-4F85-B255-EE5724D11A8F} = {67EEE968-7967-49CF-9360-DE274E759726}
-		{D7668DE0-59CB-4491-AA53-E47658657DCD} = {67EEE968-7967-49CF-9360-DE274E759726}
-		{DA233686-1196-41A0-8115-A761354A39A1} = {67EEE968-7967-49CF-9360-DE274E759726}
 		{377F0EA3-00E5-4F5C-88C1-1113C3AD5642} = {859C3DD3-4475-467F-BD3F-06EB6C7C67B0}
-		{CE47401B-A185-49D5-A5D3-00FF34CBB78D} = {72837DF6-FC2D-4BFE-8A26-280D36AC03CA}
 		{8FABCA4F-5BB9-4709-B67C-6DA2E13BDFD1} = {72837DF6-FC2D-4BFE-8A26-280D36AC03CA}
-		{05A81A05-583C-4195-A8D9-BB0150959F6F} = {72837DF6-FC2D-4BFE-8A26-280D36AC03CA}
 		{F6689390-DDD4-48D5-9AED-ACCCF0FAA808} = {377F0EA3-00E5-4F5C-88C1-1113C3AD5642}
 		{9296C2DB-49C2-42C9-B768-ACD8B950C851} = {377F0EA3-00E5-4F5C-88C1-1113C3AD5642}
 		{24A467B4-4EFF-4C39-9BDD-1B29ACE71939} = {67EEE968-7967-49CF-9360-DE274E759726}

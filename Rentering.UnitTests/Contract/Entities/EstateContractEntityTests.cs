@@ -50,7 +50,7 @@ namespace Rentering.UnitTests.ContractContext.Entities
             var participants = new List<AccountContractsEntity>();
             participants.Add(participant);
 
-            contract.IncludeParticipants(participants);
+            //contract.IncludeParticipants(participants);
 
             contract.InviteParticipant(1, e_ParticipantRole.Renter);
 
