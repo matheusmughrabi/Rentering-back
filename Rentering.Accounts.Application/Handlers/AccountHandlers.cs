@@ -1,11 +1,11 @@
 ﻿using FluentValidator;
-using Rentering.Accounts.ApplicationEF.Commands.Accounts;
+using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
 
-namespace Rentering.Accounts.ApplicationEF.Handlers
+namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
         IHandler<CreateAccountCommandEF>,
@@ -23,7 +23,7 @@ namespace Rentering.Accounts.ApplicationEF.Handlers
             var email = new EmailValueObject(command.Email);
             var username = new UsernameValueObject(command.Username);
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
-            var accountEntity = new AccountEntity(email, username, password);  
+            var accountEntity = new AccountEntity(email, username, password);
 
             if (_accountsUnitOfWorkEF.AccountCUDRepositoryEF.EmailExists(command.Email))
                 AddNotification("Email", "This Email is already registered");

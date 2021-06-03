@@ -1,7 +1,7 @@
 ﻿using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Domain.Enums;
 
-namespace Rentering.Contracts.ApplicationEF.Commands
+namespace Rentering.Contracts.Application.Commands
 {
     public class AddTenantToContractCommandEF : ICommand
     {

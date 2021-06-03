@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Rentering.Contracts.ApplicationEF.Commands
+namespace Rentering.Contracts.Application.Commands
 {
     public class CreatePaymentCycleCommandEF : ICommand
     {

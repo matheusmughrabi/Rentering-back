@@ -1,11 +1,11 @@
 ﻿using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Domain.Enums;
 
-namespace Rentering.Contracts.ApplicationEF.Commands
+namespace Rentering.Contracts.Application.Commands
 {
-    public class AddGuarantorToContractCommandEF : ICommand
+    public class AddRenterToContractCommandEF : ICommand
     {
-        public AddGuarantorToContractCommandEF(
+        public AddRenterToContractCommandEF(
             int contractId,
             string firstName,
             string lastName,
@@ -22,7 +22,6 @@ namespace Rentering.Contracts.ApplicationEF.Commands
             string spouseFirstName,
             string spouseLastName,
             string spouseNationality,
-            string spouseOcupation,
             string spouseIdentityRG,
             string spouseCPF)
         {
@@ -42,7 +41,6 @@ namespace Rentering.Contracts.ApplicationEF.Commands
             SpouseFirstName = spouseFirstName;
             SpouseLastName = spouseLastName;
             SpouseNationality = spouseNationality;
-            SpouseOcupation = spouseOcupation;
             SpouseIdentityRG = spouseIdentityRG;
             SpouseCPF = spouseCPF;
         }
@@ -63,7 +61,6 @@ namespace Rentering.Contracts.ApplicationEF.Commands
         public string SpouseFirstName { get; set; }
         public string SpouseLastName { get; set; }
         public string SpouseNationality { get; set; }
-        public string SpouseOcupation { get; set; }
         public string SpouseIdentityRG { get; set; }
         public string SpouseCPF { get; set; }
     }

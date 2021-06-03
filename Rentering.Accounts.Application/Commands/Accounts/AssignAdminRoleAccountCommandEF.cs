@@ -1,6 +1,6 @@
 ﻿using Rentering.Common.Shared.Commands;
 
-namespace Rentering.Accounts.ApplicationEF.Commands.Accounts
+namespace Rentering.Accounts.Application.Commands.Accounts
 {
     public class AssignAdminRoleAccountCommandEF : ICommand
     {
