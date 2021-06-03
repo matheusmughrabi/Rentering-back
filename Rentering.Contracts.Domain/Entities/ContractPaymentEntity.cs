@@ -2,11 +2,16 @@
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rentering.Contracts.Domain.Entities
 {
     public class ContractPaymentEntity : Entity
     {
+        protected ContractPaymentEntity()
+        {
+        }
+
         public ContractPaymentEntity(
             int contractId, 
             DateTime month, 
@@ -34,6 +39,7 @@ namespace Rentering.Contracts.Domain.Entities
 
         public int ContractId { get; set; }
         public DateTime Month { get; private set; }
+        [Required]
         public PriceValueObject RentPrice { get; private set; }
         public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }
         public e_TenantPaymentStatus TenantPaymentStatus { get; private set; }

@@ -5,6 +5,7 @@ using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Rentering.Contracts.Domain.Entities
@@ -16,6 +17,10 @@ namespace Rentering.Contracts.Domain.Entities
         private List<TenantEntity> _tenants;
         private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
+
+        protected EstateContractEntity()
+        {
+        }
 
         public EstateContractEntity(
             string contractName,
@@ -45,8 +50,11 @@ namespace Rentering.Contracts.Domain.Entities
         }
 
         public string ContractName { get; private set; }
+        [Required]
         public AddressValueObject Address { get; private set; }
+        [Required]
         public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
+        [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
@@ -59,11 +67,11 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            if (Id == 0)
-            {
-                AddNotification("Id", "ContractId cannot be zero");
-                return;
-            }
+            //if (Id == 0)
+            //{
+            //    AddNotification("Id", "ContractId cannot be zero");
+            //    return;
+            //}
 
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
@@ -85,6 +93,75 @@ namespace Rentering.Contracts.Domain.Entities
                 var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
                 _participants.Add(accountContractsEntity);
             }
+        }
+
+        public void AddRenter(RenterEntity renter)
+        {
+            if (renter == null)
+            {
+                AddNotification("renter", "Renter cannot be null");
+                return;
+            }
+
+            if (_renters.Any(c => c.Name.FirstName == renter.Name.FirstName && c.Name.LastName == renter.Name.LastName))
+                AddNotification("FullName", "Renter with this name and last name already exists in this contract");
+
+            if (_renters.Any(c => c.IdentityRG.IdentityRG == renter.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Renter with this IdentityRG already exists in this contract");
+
+            if (_renters.Any(c => c.CPF.CPF == renter.CPF.CPF))
+                AddNotification("CPF", "Renter with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _renters.Add(renter);
+        }
+
+        public void AddTenant(TenantEntity tenant)
+        {
+            if (tenant == null)
+            {
+                AddNotification("tenant", "Tenant cannot be null");
+                return;
+            }
+
+            if (_tenants.Any(c => c.Name.FirstName == tenant.Name.FirstName && c.Name.LastName == tenant.Name.LastName))
+                AddNotification("FullName", "Tenant with this name and last name already exists in this contract");
+
+            if (_tenants.Any(c => c.IdentityRG.IdentityRG == tenant.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Tenant with this IdentityRG already exists in this contract");
+
+            if (_tenants.Any(c => c.CPF.CPF == tenant.CPF.CPF))
+                AddNotification("CPF", "Tenant with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _tenants.Add(tenant);
+        }
+
+        public void AddGuarantor(GuarantorEntity guarantor)
+        {
+            if (guarantor == null)
+            {
+                AddNotification("guarantor", "Guarantor cannot be null");
+                return;
+            }
+
+            if (_guarantors.Any(c => c.Name.FirstName == guarantor.Name.FirstName && c.Name.LastName == guarantor.Name.LastName))
+                AddNotification("FullName", "Guarantor with this name and last name already exists in this contract");
+
+            if (_guarantors.Any(c => c.IdentityRG.IdentityRG == guarantor.IdentityRG.IdentityRG))
+                AddNotification("CPF", "Guarantor with this IdentityRG already exists in this contract");
+
+            if (_guarantors.Any(c => c.CPF.CPF == guarantor.CPF.CPF))
+                AddNotification("CPF", "Guarantor with this CPF already exists in this contract");
+
+            if (Invalid)
+                return;
+
+            _guarantors.Add(guarantor);
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
@@ -124,7 +201,8 @@ namespace Rentering.Contracts.Domain.Entities
                     continue;
                 }
 
-                _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, RentPrice));
+                // TODO - new PriceValueObject(RentPrice.Price)
+                _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, new PriceValueObject(RentPrice.Price)));
             }
         }
 
@@ -184,91 +262,6 @@ namespace Rentering.Contracts.Domain.Entities
 
             var currentOwedAmount = currentPayment.CalculateOwedAmount(RentDueDate);
             return currentOwedAmount;
-        }
-
-        public void IncludeParticipants(List<AccountContractsEntity> participants)
-        {
-            if (participants == null)
-                return;
-
-            var contractId = Id;
-            bool isThereBadInput = participants.Any(c => c.ContractId != contractId);
-
-            if (isThereBadInput)
-            {
-                AddNotification("Participants", $"You have provided a participant that does not belong to this contract");
-                return;
-            }
-
-            _participants = participants;
-        }
-
-        public void IncludeRenters(List<RenterEntity> renters)
-        {
-            if (renters == null)
-                return;
-
-            var contractId = Id;
-            bool isThereBadInput = renters.Any(c => c.ContractId != contractId);
-
-            if (isThereBadInput)
-            {
-                AddNotification("Renters", $"You have provided a renter that does not belong to this contract");
-                return;
-            }
-
-            _renters = renters;
-        }
-
-        public void IncludeTenants(List<TenantEntity> tenants)
-        {
-            if (tenants == null)
-                return;
-
-            var contractId = Id;
-            bool isThereBadInput = tenants.Any(c => c.ContractId != contractId);
-
-            if (isThereBadInput)
-            {
-                AddNotification("Tenants", $"You have provided a tenant that does not belong to this contract");
-                return;
-            }
-
-            _tenants = tenants;
-        }
-
-        public void IncludeGuarantors(List<GuarantorEntity> guarantors)
-        {
-            if (guarantors == null)
-                return;
-
-            var contractId = Id;
-            bool isThereBadInput = guarantors.Any(c => c.ContractId != contractId);
-
-            if (isThereBadInput)
-            {
-                AddNotification("Guarantors", $"You have provided a guarantor that does not belong to this contract");
-                return;
-            }
-
-            _guarantors = guarantors;
-        }
-
-        public void IncludeContractPayments(List<ContractPaymentEntity> payments)
-        {
-            if (payments == null)
-                return;
-
-            var contractId = Id;
-            bool isThereBadInput = payments.Any(c => c.ContractId != contractId);
-
-            if (isThereBadInput)
-            {
-                AddNotification("Payments", $"You have provided a payment that does not belong to this contract");
-                return;
-            }
-
-            _payments = payments;
         }
 
         private void ApplyValidations()

@@ -7,6 +7,10 @@ namespace Rentering.Accounts.Domain.ValueObjects
     {
         private readonly string _confirmPassword;
 
+        private PasswordValueObject()
+        {
+        }
+
         public PasswordValueObject(string password)
         {
             Password = password;

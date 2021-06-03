@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rentering.Accounts.Application\Rentering.Accounts.Application.csproj" />
-    <ProjectReference Include="..\Rentering.Contracts.Application\Rentering.Contracts.Application.csproj" />
+    <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
   </ItemGroup>
 
 </Project>
