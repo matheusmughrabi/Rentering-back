@@ -1,11 +1,16 @@
 ﻿using Rentering.Common.Shared.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rentering.Contracts.Domain.Entities
 {
     public class TenantEntity : Entity
     {
+        protected TenantEntity()
+        {
+        }
+
         public TenantEntity(
             int contractId,
             NameValueObject name, 
@@ -46,12 +51,16 @@ namespace Rentering.Contracts.Domain.Entities
 
         public int ContractId { get; private set; }
         public e_ContractParticipantStatus TenantStatus { get; private set; }
+        [Required]
         public NameValueObject Name { get; private set; }
         public string Nationality { get; private set; }
         public string Ocupation { get; private set; }
         public e_MaritalStatus MaritalStatus { get; private set; }
+        [Required]
         public IdentityRGValueObject IdentityRG { get; private set; }
+        [Required]
         public CPFValueObject CPF { get; private set; }
+        [Required]
         public AddressValueObject Address { get; private set; }
         public NameValueObject SpouseName { get; private set; }
         public string SpouseNationality { get; private set; }

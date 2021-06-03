@@ -7,15 +7,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Rentering.Accounts.Application\Rentering.Accounts.Application.csproj" />
     <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
-    <ProjectReference Include="..\Rentering.Accounts.Infra\Rentering.Accounts.Infra.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Application\Rentering.Contracts.Application.csproj" />
-    <ProjectReference Include="..\Rentering.Contracts.Infra\Rentering.Contracts.Infra.csproj" />
+    <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
+    <ProjectReference Include="..\Rentering.Infra\Rentering.Infra.csproj" />
   </ItemGroup>
 
 </Project>

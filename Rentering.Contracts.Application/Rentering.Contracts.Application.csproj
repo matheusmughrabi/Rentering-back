@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
-    <ProjectReference Include="..\Rentering.Contracts.Infra\Rentering.Contracts.Infra.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,10 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class PropertyRegistrationNumberValueObject : Notifiable
     {
+        protected PropertyRegistrationNumberValueObject()
+        {
+        }
+
         public PropertyRegistrationNumberValueObject(int number)
         {
             Number = number;
