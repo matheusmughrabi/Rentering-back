@@ -36,11 +36,8 @@ namespace Rentering.WebAPI
 // Criar novo projeto Accounts.ApplicationEF e um AccountEFController com o objetivo de implementar sem quebrar nada e pegar o jeito do EF Core OK
 // Implementar AccountUnitOfWork OK
 
-// Implementar EF em Contracts ON GOING -> Falta apenas query results e revisão
+// Implementar EF em Contracts OK
 // Criar novo projeto Contracts.ApplicationEF e um ContractEFController OK
 // Implementar ContractUnitOfWork OK
-
-// Analisar estrutura e comparar com Dapper
-// Criar uma estrutura limpa e que facilite a troca EF <---> Dapper
 
 
