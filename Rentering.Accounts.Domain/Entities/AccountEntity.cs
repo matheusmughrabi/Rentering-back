@@ -1,11 +1,16 @@
 using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rentering.Accounts.Domain.Entities
 {
     public class AccountEntity : Entity
     {
+        protected AccountEntity()
+        {
+        }
+
         public AccountEntity(EmailValueObject email, UsernameValueObject username,
             PasswordValueObject password = null, e_Roles? role = null, int? id = null) : base(id)
         {
@@ -19,8 +24,11 @@ namespace Rentering.Accounts.Domain.Entities
                 Role = e_Roles.RegularUser;
         }
 
+        [Required]
         public EmailValueObject Email { get; private set; }
+        [Required]
         public UsernameValueObject Username { get; private set; }
+        [Required]
         public PasswordValueObject Password { get; private set; }
         public e_Roles Role { get; private set; }
         public string Token { get; private set; }

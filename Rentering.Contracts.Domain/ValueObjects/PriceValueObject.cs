@@ -5,6 +5,10 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class PriceValueObject : BaseValueObject
     {
+        protected PriceValueObject()
+        {
+        }
+
         public PriceValueObject(decimal price)
         {
             Price = price;

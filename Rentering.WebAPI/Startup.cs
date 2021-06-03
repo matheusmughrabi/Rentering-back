@@ -20,13 +20,11 @@ namespace Rentering.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            DatabaseSettings.connectionString = Configuration.GetConnectionString("DefaultConnection");
             Settings.secret = Configuration.GetValue<string>("SecretKey");
 
-            services.RegisterRepositoriesAndServices();
+            services.RegisterEntityFramework(Configuration.GetConnectionString("DefaultConnection"));
             services.RegisterSwagger();
             services.RegisterAuthenticationAndAuthorization();
-            services.RegisterFluentMigrator();
 
             services.AddControllers();           
             services.AddCors();   
@@ -64,7 +62,7 @@ namespace Rentering.WebAPI
                 endpoints.MapControllers();
             });
 
-            app.Migrate();
+            //app.Migrate();
         }
     }
 }

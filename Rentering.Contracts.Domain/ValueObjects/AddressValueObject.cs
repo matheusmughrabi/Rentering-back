@@ -5,6 +5,10 @@ namespace Rentering.Contracts.Domain.ValueObjects
 {
     public class AddressValueObject : BaseValueObject
     {
+        protected AddressValueObject()
+        {
+        }
+
         public AddressValueObject(string street, string neighborhood, string city, string cep, e_BrazilStates state)
         {
             Street = street;

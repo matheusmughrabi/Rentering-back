@@ -93,8 +93,8 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractOwner.Count() == 0)
                 return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
 
-            if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.ParticipantAccountId) == false)
-                return new CommandResult(false, "Fix erros below", new { Message = "Account not found" });
+            //if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.ParticipantAccountId) == false)
+            //    return new CommandResult(false, "Fix erros below", new { Message = "Account not found" });
 
             contractEntity.InviteParticipant(command.ParticipantAccountId, command.ParticipantRole);
             var invitedParticipant = contractEntity.Participants.Last();
