@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Rentering.Common.Infra;
 using Rentering.WebAPI.Configuration;
 
 namespace Rentering.WebAPI
