@@ -17,11 +17,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Rentering.Accounts.ApplicationEF\Rentering.Accounts.ApplicationEF.csproj" />
     <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
-    <ProjectReference Include="..\Rentering.Accounts.InfraEF\Rentering.Accounts.InfraEF.csproj" />
     <ProjectReference Include="..\Rentering.Common.Infra\Rentering.Common.Infra.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.ApplicationEF\Rentering.Contracts.ApplicationEF.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
-    <ProjectReference Include="..\Rentering.Contracts.InfraEF\Rentering.Contracts.InfraEF.csproj" />
+    <ProjectReference Include="..\Rentering.Infra\Rentering.Infra.csproj" />
   </ItemGroup>
 
 </Project>

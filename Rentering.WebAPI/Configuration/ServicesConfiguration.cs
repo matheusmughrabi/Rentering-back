@@ -4,9 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Rentering.Accounts.Domain.Data;
-using Rentering.Accounts.InfraEF;
 using Rentering.Contracts.Domain.DataEF;
-using Rentering.Contracts.InfraEF;
+using Rentering.Infra;
+using Rentering.Infra.Accounts;
+using Rentering.Infra.Contracts;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,10 +17,7 @@ namespace Rentering.WebAPI.Configuration
     {
         public static void RegisterEntityFramework(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<AccountsDbContext>(options =>
-                options.UseSqlServer(connectionString));
-
-            services.AddDbContext<ContractsDbContext>(options =>
+            services.AddDbContext<RenteringDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
             services.AddScoped<IAccountUnitOfWorkEF, AccountUnitOfWorkEF>();
