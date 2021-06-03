@@ -1,6 +1,6 @@
 ﻿using FluentValidator;
 using Rentering.Common.Shared.Commands;
-using Rentering.Contracts.ApplicationEF.Commands;
+using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.DataEF;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
@@ -8,7 +8,7 @@ using Rentering.Contracts.Domain.ValueObjects;
 using System;
 using System.Linq;
 
-namespace Rentering.Contracts.ApplicationEF.Handlers
+namespace Rentering.Contracts.Application.Handlers
 {
     public class EstateContractHandlers : Notifiable,
         IHandler<CreateEstateContractCommandEF>,

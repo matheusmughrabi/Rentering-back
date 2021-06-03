@@ -2,7 +2,7 @@
 using Rentering.Contracts.Domain.Enums;
 using System.Text.Json.Serialization;
 
-namespace Rentering.Contracts.ApplicationEF.Commands
+namespace Rentering.Contracts.Application.Commands
 {
     public class InviteParticipantCommandEF : ICommand
     {

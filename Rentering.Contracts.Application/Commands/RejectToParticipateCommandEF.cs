@@ -1,7 +1,7 @@
 ﻿using Rentering.Common.Shared.Commands;
 using System.Text.Json.Serialization;
 
-namespace Rentering.Contracts.ApplicationEF.Commands
+namespace Rentering.Contracts.Application.Commands
 {
     public class RejectToParticipateCommandEF : ICommand
     {
