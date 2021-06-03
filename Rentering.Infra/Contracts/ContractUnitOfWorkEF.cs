@@ -1,5 +1,6 @@
 ﻿using Rentering.Contracts.Domain.DataEF;
-using Rentering.Contracts.Domain.DataEF.Repositories;
+using Rentering.Contracts.Domain.DataEF.CUDRepositories;
+using Rentering.Contracts.Domain.DataEF.QueryRepositories;
 using Rentering.Infra.Contracts.CUDRepositories;
 using Rentering.Infra.Contracts.QueryRepositories;
 

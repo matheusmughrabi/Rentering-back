@@ -1,11 +1,7 @@
 ﻿using Rentering.Contracts.Domain.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Rentering.Contracts.Domain.DataEF.Repositories.QueryResults
+namespace Rentering.Contracts.Domain.DataEF.QueryRepositories.QueryResults
 {
     public class GetContractDetailedQueryResult
     {

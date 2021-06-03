@@ -1,7 +1,7 @@
 ﻿using Rentering.Contracts.Domain.Entities;
 using System.Collections.Generic;
 
-namespace Rentering.Contracts.Domain.DataEF.Repositories
+namespace Rentering.Contracts.Domain.DataEF.CUDRepositories
 {
     public interface IEstateContractCUDRepositoryEF
     {

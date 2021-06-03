@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rentering.Contracts.Domain.DataEF.Repositories.QueryResults
+namespace Rentering.Contracts.Domain.DataEF.QueryRepositories.QueryResults
 {
     public class GetContractsOfCurrentUserQueryResult
     {

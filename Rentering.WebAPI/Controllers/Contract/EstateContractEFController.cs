@@ -83,20 +83,20 @@ namespace Rentering.WebAPI.Controllers.Contract
             return Ok(pendingInvitations);
         }
 
-        //[HttpGet]
-        //[Route("v1/GetPaymentsOfContract")]
-        //[Authorize(Roles = "RegularUser,Admin")]
-        //public IActionResult GetPaymentsOfContract(int contractId)
-        //{
-        //    var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+        [HttpGet]
+        [Route("v1/GetPaymentsOfContract")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetPaymentsOfContract(int contractId)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
-        //    if (isParsingSuccesful == false)
-        //        return BadRequest("Invalid logged in user");
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
 
-        //    var result = _contractUnitOfWork.ContractPaymentQuery.GetPaymentsFromContract(contractId).ToList();
+            var result = _contractUnitOfWorkEF.EstateContractQueryRepositoryEF.GetPaymentsOfContract(contractId);
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
 
         [HttpPost]
         [Route("v1/CreateContract")]

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rentering.Contracts.Domain.DataEF.Repositories;
+using Rentering.Contracts.Domain.DataEF.CUDRepositories;
 using Rentering.Contracts.Domain.Entities;
 using System.Linq;
 

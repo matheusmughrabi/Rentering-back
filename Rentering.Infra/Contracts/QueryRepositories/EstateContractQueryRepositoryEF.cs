@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rentering.Contracts.Domain.DataEF.Repositories;
-using Rentering.Contracts.Domain.DataEF.Repositories.QueryResults;
+using Rentering.Contracts.Domain.DataEF.QueryRepositories;
+using Rentering.Contracts.Domain.DataEF.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +63,26 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             }));
 
             return contractsQueryResults;
+        }
+
+        public IEnumerable<GetPaymentsOfContractQueryResult> GetPaymentsOfContract(int contractId)
+        {
+            var paymentsOfContractEntities = _renteringDbContext.ContractPayment
+                .AsNoTracking()
+                .Where(c => c.ContractId == contractId)
+                .ToList();
+
+            var paymentsOfContractQueryResults = new List<GetPaymentsOfContractQueryResult>();
+            paymentsOfContractEntities?.ForEach(c => paymentsOfContractQueryResults.Add(new GetPaymentsOfContractQueryResult() 
+            {
+                ContractId = c.ContractId,
+                Month = c.Month,
+                RentPrice = c.RentPrice.Price,
+                RenterPaymentStatus = c.RenterPaymentStatus,
+                TenantPaymentStatus = c.TenantPaymentStatus
+            }));
+
+            return paymentsOfContractQueryResults;
         }
 
         public IEnumerable<GetPendingInvitationsQueryResult> GetPendingInvitations(int accountId)
