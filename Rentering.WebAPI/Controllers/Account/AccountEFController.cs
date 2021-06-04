@@ -12,11 +12,11 @@ namespace Rentering.WebAPI.Controllers.Account
     [ApiController]
     public class AccountEFController : RenteringBaseController
     {
-        private readonly IAccountUnitOfWorkEF _accountUnitOfWorkEF;
+        private readonly IAccountUnitOfWork _accountUnitOfWork;
 
-        public AccountEFController(IAccountUnitOfWorkEF accountUnitOfWorkEF)
+        public AccountEFController(IAccountUnitOfWork accountUnitOfWork)
         {
-            _accountUnitOfWorkEF = accountUnitOfWorkEF;
+            _accountUnitOfWork = accountUnitOfWork;
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace Rentering.WebAPI.Controllers.Account
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts()
         {
-            var accountQueryResults = _accountUnitOfWorkEF.AccountQueryRepositoryEF.GetAllAccounts_AdminUsageOnly();
+            var accountQueryResults = _accountUnitOfWork.AccountQueryRepository.GetAllAccounts_AdminUsageOnly();
 
             return Ok(accountQueryResults);
         }
@@ -39,19 +39,19 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var accountQueryResult = _accountUnitOfWorkEF.AccountQueryRepositoryEF.GetAccountById(currentUserId);
+            var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(currentUserId);
 
             return Ok(accountQueryResult);
         }
 
         [HttpPost]
         [Route("v1/Accounts/Create")]
-        public IActionResult CreateAccount([FromBody] CreateAccountCommandEF accountCommand)
+        public IActionResult CreateAccount([FromBody] CreateAccountCommand accountCommand)
         {
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
 
-            var handler = new AccountHandlers(_accountUnitOfWorkEF);
+            var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(accountCommand);
 
             return Ok(result);
@@ -60,9 +60,9 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpPost]
         [Route("v1/Accounts/Login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Login([FromBody] LoginAccountCommandEF loginCommand)
+        public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var accountEntity = _accountUnitOfWorkEF.AccountCUDRepositoryEF.GetAccountForLogin(loginCommand.Username);
+            var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(loginCommand.Username);
 
             if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
                 return NotFound(new { Message = "Invalid username or password" });
@@ -75,9 +75,9 @@ namespace Rentering.WebAPI.Controllers.Account
         [HttpPatch]
         [Route("v1/Accounts/AssignAdminRole")]
         //[Authorize(Roles = "Admin")]
-        public IActionResult AssignAdminRole([FromBody] AssignAdminRoleAccountCommandEF assignAdminRoleCommand)
+        public IActionResult AssignAdminRole([FromBody] AssignAdminRoleAccountCommand assignAdminRoleCommand)
         {
-            var handler = new AccountHandlers(_accountUnitOfWorkEF);
+            var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(assignAdminRoleCommand);
 
             return Ok(result);
@@ -93,7 +93,7 @@ namespace Rentering.WebAPI.Controllers.Account
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            var accountEntity = _accountUnitOfWorkEF.AccountCUDRepositoryEF.Delete(accountId);
+            var accountEntity = _accountUnitOfWork.AccountCUDRepository.Delete(accountId);
 
             var deletedAccount = new CommandResult(true, "Account deleted successfuly",
                 new { UserId = accountId });
