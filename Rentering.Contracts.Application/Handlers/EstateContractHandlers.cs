@@ -1,7 +1,7 @@
 ﻿using FluentValidator;
 using Rentering.Common.Shared.Commands;
 using Rentering.Contracts.Application.Commands;
-using Rentering.Contracts.Domain.DataEF;
+using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
@@ -11,28 +11,27 @@ using System.Linq;
 namespace Rentering.Contracts.Application.Handlers
 {
     public class EstateContractHandlers : Notifiable,
-        IHandler<CreateEstateContractCommandEF>,
-        IHandler<AddRenterToContractCommandEF>,
-        IHandler<AddTenantToContractCommandEF>,
-        IHandler<AddGuarantorToContractCommandEF>,
-        IHandler<CreatePaymentCycleCommandEF>,
-        IHandler<InviteParticipantCommandEF>,
-        IHandler<ExecutePaymentCommandEF>,
-        IHandler<AcceptPaymentCommandEF>,
-        IHandler<RejectPaymentCommandEF>,
-        IHandler<AcceptToParticipateCommandEF>,
-        IHandler<RejectToParticipateCommandEF>,
-        IHandler<GetCurrentOwedAmountCommandEF>
+        IHandler<CreateEstateContractCommand>,
+        IHandler<AddRenterToContractCommand>,
+        IHandler<AddTenantToContractCommand>,
+        IHandler<AddGuarantorToContractCommand>,
+        IHandler<CreatePaymentCycleCommand>,
+        IHandler<InviteParticipantCommand>,
+        IHandler<ExecutePaymentCommand>,
+        IHandler<AcceptPaymentCommand>,
+        IHandler<RejectPaymentCommand>,
+        IHandler<AcceptToParticipateCommand>,
+        IHandler<RejectToParticipateCommand>,
+        IHandler<GetCurrentOwedAmountCommand>
     {
-        private readonly IContractUnitOfWorkEF _contractUnitOfWorkEF;
+        private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public EstateContractHandlers(
-            IContractUnitOfWorkEF contractUnitOfWorkEF)
+        public EstateContractHandlers(IContractUnitOfWork contractUnitOfWork)
         {
-            _contractUnitOfWorkEF = contractUnitOfWorkEF;
+            _contractUnitOfWork = contractUnitOfWork;
         }
 
-        public ICommandResult Handle(CreateEstateContractCommandEF command)
+        public ICommandResult Handle(CreateEstateContractCommand command)
         {
             var contractName = command.ContractName;
             var address = new AddressValueObject(command.Street, command.Neighborhood, command.City, command.CEP, command.State);
@@ -46,7 +45,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             contractEntity?.InviteParticipant(command.AccountId, e_ParticipantRole.Owner);
 
-            if (_contractUnitOfWorkEF.EstateContractCUDRepositoryEF.ContractNameExists(command.ContractName))
+            if (_contractUnitOfWork.EstateContractCUDRepository.ContractNameExists(command.ContractName))
                 AddNotification("ContractName", "This ContractName is already registered");
 
             AddNotifications(address.Notifications);
@@ -57,8 +56,8 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.Add(contractEntity);
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.EstateContractCUDRepository.Add(contractEntity);
+            _contractUnitOfWork.Save();
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
@@ -69,9 +68,9 @@ namespace Rentering.Contracts.Application.Handlers
             return createdContract;
         }
 
-        public ICommandResult Handle(InviteParticipantCommandEF command)
+        public ICommandResult Handle(InviteParticipantCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -93,7 +92,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var updatedContract = new CommandResult(true, "Participant invited successfuly", new
             {
@@ -103,7 +102,7 @@ namespace Rentering.Contracts.Application.Handlers
             return updatedContract;
         }
 
-        public ICommandResult Handle(AddRenterToContractCommandEF command)
+        public ICommandResult Handle(AddRenterToContractCommand command)
         {
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
@@ -115,7 +114,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var renterEntity = new RenterEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, spouseIdentityRG, spouseCPF);
 
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
             contractEntity?.AddRenter(renterEntity);
 
             if (contractEntity == null)
@@ -134,7 +133,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var createdRenter = new CommandResult(true, "Renter created successfuly", new
             {
@@ -161,7 +160,7 @@ namespace Rentering.Contracts.Application.Handlers
             return createdRenter;
         }
 
-        public ICommandResult Handle(AddTenantToContractCommandEF command)
+        public ICommandResult Handle(AddTenantToContractCommand command)
         {
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
@@ -173,7 +172,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var tenantEntity = new TenantEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
             contractEntity?.AddTenant(tenantEntity);
 
             if (contractEntity == null)
@@ -192,7 +191,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var createdTenant = new CommandResult(true, "Tenant created successfuly", new
             {
@@ -219,7 +218,7 @@ namespace Rentering.Contracts.Application.Handlers
             return createdTenant;
         }
 
-        public ICommandResult Handle(AddGuarantorToContractCommandEF command)
+        public ICommandResult Handle(AddGuarantorToContractCommand command)
         {
             var name = new NameValueObject(command.FirstName, command.LastName);
             var identityRG = new IdentityRGValueObject(command.IdentityRG);
@@ -231,7 +230,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var guarantorEntity = new GuarantorEntity(command.ContractId, name, command.Nationality, command.Ocupation, command.MaritalStatus, identityRG, cpf, address, spouseName, command.SpouseNationality, command.SpouseOcupation, spouseIdentityRG, spouseCPF);
 
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
             contractEntity?.AddGuarantor(guarantorEntity);
 
             if (contractEntity == null)
@@ -250,7 +249,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var createdGuarantor = new CommandResult(true, "Guarantor created successfuly", new
             {
@@ -277,9 +276,9 @@ namespace Rentering.Contracts.Application.Handlers
             return createdGuarantor;
         }
 
-        public ICommandResult Handle(CreatePaymentCycleCommandEF command)
+        public ICommandResult Handle(CreatePaymentCycleCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -297,7 +296,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var createdPayments = new CommandResult(true, "Payment cycle created successfuly", new
             {
@@ -307,9 +306,9 @@ namespace Rentering.Contracts.Application.Handlers
             return createdPayments;
         }
 
-        public ICommandResult Handle(ExecutePaymentCommandEF command)
+        public ICommandResult Handle(ExecutePaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -328,16 +327,16 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
 
             return rejectedPayment;
         }
 
-        public ICommandResult Handle(AcceptPaymentCommandEF command)
+        public ICommandResult Handle(AcceptPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -356,16 +355,16 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var acceptedPayment = new CommandResult(true, "Payment accepted successfuly");
 
             return acceptedPayment;
         }
 
-        public ICommandResult Handle(RejectPaymentCommandEF command)
+        public ICommandResult Handle(RejectPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
@@ -384,16 +383,16 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
 
             return rejectedPayment;
         }
 
-        public ICommandResult Handle(AcceptToParticipateCommandEF command)
+        public ICommandResult Handle(AcceptToParticipateCommand command)
         {
-            var participantForCUD = _contractUnitOfWorkEF.AccountContractCUDRepositoryEF.GetAccountContractForCUD(command.AccountId, command.ContractId);
+            var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
 
             if (participantForCUD == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
@@ -405,7 +404,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var participant = new CommandResult(true, "You have accepted to participate in the contract successfuly", new
             {
@@ -414,9 +413,9 @@ namespace Rentering.Contracts.Application.Handlers
             return participant;
         }
 
-        public ICommandResult Handle(RejectToParticipateCommandEF command)
+        public ICommandResult Handle(RejectToParticipateCommand command)
         {
-            var participantForCUD = _contractUnitOfWorkEF.AccountContractCUDRepositoryEF.GetAccountContractForCUD(command.AccountId, command.ContractId);
+            var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
 
             if (participantForCUD == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
@@ -428,7 +427,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Fix erros below", new { Notifications });
 
-            _contractUnitOfWorkEF.Save();
+            _contractUnitOfWork.Save();
 
             var participant = new CommandResult(true, "You have rejected to participate in the contract successfuly", new
             {
@@ -437,9 +436,9 @@ namespace Rentering.Contracts.Application.Handlers
             return participant;
         }
 
-        public ICommandResult Handle(GetCurrentOwedAmountCommandEF command)
+        public ICommandResult Handle(GetCurrentOwedAmountCommand command)
         {
-            var contractEntity = _contractUnitOfWorkEF.EstateContractCUDRepositoryEF.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
 

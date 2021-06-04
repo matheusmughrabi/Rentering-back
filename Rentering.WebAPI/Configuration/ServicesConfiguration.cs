@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Rentering.Accounts.Domain.Data;
-using Rentering.Contracts.Domain.DataEF;
+using Rentering.Contracts.Domain.Data;
 using Rentering.Infra;
 using Rentering.Infra.Accounts;
 using Rentering.Infra.Contracts;
@@ -20,8 +20,8 @@ namespace Rentering.WebAPI.Configuration
             services.AddDbContext<RenteringDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            services.AddScoped<IAccountUnitOfWorkEF, AccountUnitOfWorkEF>();
-            services.AddScoped<IContractUnitOfWorkEF, ContractUnitOfWorkEF>();
+            services.AddScoped<IAccountUnitOfWork, AccountUnitOfWork>();
+            services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
         }
 
         public static void RegisterSwagger(this IServiceCollection services)
