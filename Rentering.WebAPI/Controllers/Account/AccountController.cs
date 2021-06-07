@@ -10,11 +10,11 @@ namespace Rentering.WebAPI.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountEFController : RenteringBaseController
+    public class AccountController : RenteringBaseController
     {
         private readonly IAccountUnitOfWork _accountUnitOfWork;
 
-        public AccountEFController(IAccountUnitOfWork accountUnitOfWork)
+        public AccountController(IAccountUnitOfWork accountUnitOfWork)
         {
             _accountUnitOfWork = accountUnitOfWork;
         }
@@ -45,7 +45,7 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpPost]
-        [Route("v1/Accounts/Create")]
+        [Route("Create")]
         public IActionResult CreateAccount([FromBody] CreateAccountCommand accountCommand)
         {
             if (User.Identity.IsAuthenticated)
@@ -58,9 +58,9 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpPost]
-        [Route("v1/Accounts/Login")]
+        [Route("Login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
+        public IActionResult Login([FromBody] LoginAccountCommand loginCommand)
         {
             var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(loginCommand.Username);
 
@@ -69,7 +69,9 @@ namespace Rentering.WebAPI.Controllers.Account
 
             var userInfo = TokenService.GenerateToken(accountEntity);
 
-            return new { userInfo };
+            var response = new CommandResult(true, "Token generated", userInfo);
+
+            return Ok(response);
         }
 
         [HttpPatch]

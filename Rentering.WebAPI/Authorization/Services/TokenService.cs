@@ -29,7 +29,7 @@ namespace Rentering.WebAPI.Authorization.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var userInfoModel = new UserInfoModel(account.Id, account.Username.ToString(), tokenHandler.WriteToken(token));
+            var userInfoModel = new UserInfoModel(account.Id, account.Username.ToString(), tokenHandler.WriteToken(token), account.Role);
 
             return userInfoModel;
         }

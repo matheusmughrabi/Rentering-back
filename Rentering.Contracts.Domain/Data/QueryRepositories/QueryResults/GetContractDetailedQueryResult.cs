@@ -6,7 +6,6 @@ namespace Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults
     public class GetContractDetailedQueryResult
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
         public string ContractName { get; set; }
         public string Street { get; set; }
         public string Neighborhood { get; set; }

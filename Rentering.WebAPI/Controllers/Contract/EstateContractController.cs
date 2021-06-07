@@ -8,11 +8,11 @@ namespace Rentering.WebAPI.Controllers.Contract
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EstateContractEFController : RenteringBaseController
+    public class EstateContractController : RenteringBaseController
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public EstateContractEFController(IContractUnitOfWork contractUnitOfWork)
+        public EstateContractController(IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
         }
