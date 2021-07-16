@@ -28,7 +28,7 @@ namespace Rentering.Contracts.Domain.Entities
 
         public int AccountId { get; private set; }
         public int ContractId { get; private set; }
-        public virtual EstateContractEntity EstateContract { get; private set; }
+        public virtual ContractEntity EstateContract { get; private set; }
         public e_ParticipantRole ParticipantRole { get; private set; }
         public e_ParticipantStatus Status { get; private set; }
 

@@ -10,16 +10,16 @@ using System.Linq;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class EstateContractEntity : Entity
+    public class ContractEntity : Entity
     {
         private List<AccountContractsEntity> _participants;
         private List<ContractPaymentEntity> _payments;
 
-        protected EstateContractEntity()
+        protected ContractEntity()
         {
         }
 
-        public EstateContractEntity(
+        public ContractEntity(
             string contractName,
             PriceValueObject rentPrice,
             DateTime rentDueDate,
@@ -40,6 +40,7 @@ namespace Rentering.Contracts.Domain.Entities
         }
 
         public string ContractName { get; private set; }
+        public e_ContractState ContractState { get; private set; } = e_ContractState.NotEnoughParticipants;
         [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
@@ -50,6 +51,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
             if (isParticipantAlreadyInThisRole)
@@ -58,22 +65,31 @@ namespace Rentering.Contracts.Domain.Entities
                 return;
             }
 
-            var contractId = Id;
-
             if (_participants.Count() == 0)
             {
-                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole, e_ParticipantStatus.Accepted);
+                var accountContractsEntity = new AccountContractsEntity(accountId, Id, participantRole, e_ParticipantStatus.Accepted);
                 _participants.Add(accountContractsEntity);
             }
             else
             {
-                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
+                var accountContractsEntity = new AccountContractsEntity(accountId, Id, participantRole);
                 _participants.Add(accountContractsEntity);
             }
+
+            const int minNumberOfParticipants = 2;
+
+            if (Participants.Count() == minNumberOfParticipants)
+                ContractState = e_ContractState.WaitingParticipantsAccept;
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
             if (rentPrice.Price < 0)
             {
                 AddNotifications(rentPrice.Notifications);
@@ -85,6 +101,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void CreatePaymentCycle()
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
             if (Id == 0)
             {
                 AddNotification("Id", "ContractId cannot be null");
@@ -116,6 +138,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity ExecutePayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active};
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -130,6 +158,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity AcceptPayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -144,6 +178,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity RejectPayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -158,6 +198,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public decimal CurrentOwedAmount()
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return 0M;
+
             var currentPayment = Payments.OrderBy(c => c.Month)
                 .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.NONE)
                 .FirstOrDefault();
@@ -184,6 +230,19 @@ namespace Rentering.Contracts.Domain.Entities
             );
 
             AddNotifications(RentPrice.Notifications);
+        }
+
+        private bool IsProcessAllowedInCurrentContractState(e_ContractState[] contractStatesAllowed)
+        {
+            var isAllowed = true;
+
+            if (contractStatesAllowed.Contains(ContractState) == false)
+            {
+                AddNotification("ContractState", $"Contratos com estado {ContractState} não podem realizar esta ação");
+                isAllowed = false;
+            }
+
+            return isAllowed;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Rentering.Contracts.Application.Handlers
             var contractStartDate = command.ContractStartDate;
             var contractEndDate = command.ContractEndDate;
 
-            var contractEntity = new EstateContractEntity(contractName, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+            var contractEntity = new ContractEntity(contractName, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
             contractEntity?.InviteParticipant(command.AccountId, e_ParticipantRole.Owner);
 

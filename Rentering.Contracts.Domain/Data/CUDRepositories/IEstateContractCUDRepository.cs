@@ -4,10 +4,10 @@ namespace Rentering.Contracts.Domain.Data.CUDRepositories
 {
     public interface IEstateContractCUDRepository
     {
-        EstateContractEntity GetEstateContractForCUD(int estateContractId);
+        ContractEntity GetEstateContractForCUD(int estateContractId);
         bool ContractNameExists(string contractName);
-        EstateContractEntity Add(EstateContractEntity estateContractEntity);
-        EstateContractEntity Delete(EstateContractEntity estateContractEntity);
-        EstateContractEntity Delete(int id);
+        ContractEntity Add(ContractEntity estateContractEntity);
+        ContractEntity Delete(ContractEntity estateContractEntity);
+        ContractEntity Delete(int id);
     }
 }

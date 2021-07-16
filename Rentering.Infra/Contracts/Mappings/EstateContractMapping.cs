@@ -1,19 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Enums;
 using System;
 
 namespace Rentering.Infra.Contracts.Mappings
 {
-    public class EstateContractMapping : IEntityTypeConfiguration<EstateContractEntity>
+    public class EstateContractMapping : IEntityTypeConfiguration<ContractEntity>
     {
-        public void Configure(EntityTypeBuilder<EstateContractEntity> builder)
+        public void Configure(EntityTypeBuilder<ContractEntity> builder)
         {
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.ContractName)
                 .IsRequired()
                 .HasColumnType("nvarchar(100)");
+
+            builder.Property(c => c.ContractState)
+                .IsRequired()
+                .HasColumnType("int");
 
             builder.OwnsOne(c => c.RentPrice, p =>
             {

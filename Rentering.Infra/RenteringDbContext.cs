@@ -14,7 +14,7 @@ namespace Rentering.Infra
 
         public DbSet<AccountEntity> Account { get; set; }
 
-        public DbSet<EstateContractEntity> Contract { get; set; }
+        public DbSet<ContractEntity> Contract { get; set; }
         public DbSet<ContractPaymentEntity> ContractPayment { get; set; }
         public DbSet<AccountContractsEntity> AccountContracts { get; set; }
 
