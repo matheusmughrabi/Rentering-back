@@ -5,10 +5,11 @@ using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {
-    [Route("api/[controller]")]
+    [Route("api/Account")]
     [ApiController]
     public class AccountController : RenteringBaseController
     {
@@ -21,7 +22,8 @@ namespace Rentering.WebAPI.Controllers.Account
 
         [HttpGet]
         [Route("v1/Accounts/GetAllAccounts")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts()
         {
             var accountQueryResults = _accountUnitOfWork.AccountQueryRepository.GetAllAccounts_AdminUsageOnly();
