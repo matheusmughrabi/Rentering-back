@@ -51,7 +51,8 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             contractsEntity?.ForEach(c => contractsQueryResults.Add(new GetContractsOfCurrentUserQueryResult()
             {
                 Id = c.Id,
-                Name = c.ContractName,
+                ContractName = c.ContractName,
+                ContractState = c.ContractState,
                 ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole,
                 RentPrice = c.RentPrice.Price,
                 RentDueDate = c.RentDueDate,

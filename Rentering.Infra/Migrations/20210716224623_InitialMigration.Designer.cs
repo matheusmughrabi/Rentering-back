@@ -10,8 +10,8 @@ using Rentering.Infra;
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    [Migration("20210716214032_ContractState")]
-    partial class ContractState
+    [Migration("20210716224623_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
