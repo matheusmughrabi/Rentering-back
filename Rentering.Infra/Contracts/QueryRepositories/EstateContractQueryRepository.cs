@@ -21,6 +21,8 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             var contractEntity = _renteringDbContext.Contract
                 .AsNoTracking()
                 .Where(c => c.Id == contractId)
+                .Include(u => u.Participants.Where(p => p.ContractId == contractId))
+                .Include(u => u.Payments.Where(p => p.ContractId == contractId))
                 .FirstOrDefault();
 
             if (contractEntity == null)
@@ -33,7 +35,26 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                 RentPrice = contractEntity.RentPrice.Price,
                 RentDueDate = contractEntity.RentDueDate,
                 ContractStartDate = contractEntity.ContractStartDate,
-                ContractEndDate = contractEntity.ContractEndDate
+                ContractEndDate = contractEntity.ContractEndDate,
+
+                Participants = contractEntity.Participants
+                    .Select(c => new Participant() 
+                    { 
+                        AccountId = c.AccountId, 
+                        Status = c.Status, 
+                        ParticipantRole = c.ParticipantRole
+                    })
+                    .ToList(),
+
+                ContractPayments = contractEntity.Payments
+                    .Select(c => new ContractPayment() 
+                    { 
+                        Month = c.Month, 
+                        RentPrice = c.RentPrice.Price, 
+                        RenterPaymentStatus = c.RenterPaymentStatus, 
+                        TenantPaymentStatus = c.TenantPaymentStatus 
+                    })
+                    .ToList(),
             };
 
             return contractQueryResult;
