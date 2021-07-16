@@ -21,9 +21,6 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             var contractEntity = _renteringDbContext.Contract
                 .AsNoTracking()
                 .Where(c => c.Id == contractId)
-                .Include(c => c.Renters)
-                .Include(c => c.Tenants)
-                .Include(c => c.Guarantors)
                 .FirstOrDefault();
 
             if (contractEntity == null)
@@ -33,21 +30,11 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             {
                 Id = contractEntity.Id,
                 ContractName = contractEntity.ContractName,
-                Street = contractEntity.Address.Street,
-                Neighborhood = contractEntity.Address.Neighborhood,
-                City = contractEntity.Address.City,
-                CEP = contractEntity.Address.CEP,
-                State = contractEntity.Address.State,
-                PropertyRegistrationNumber = contractEntity.PropertyRegistrationNumber.Number,
                 RentPrice = contractEntity.RentPrice.Price,
                 RentDueDate = contractEntity.RentDueDate,
                 ContractStartDate = contractEntity.ContractStartDate,
                 ContractEndDate = contractEntity.ContractEndDate
             };
-
-            contractEntity.Renters.ToList().ForEach(c => contractQueryResult.Renters.Add(new Renters(c.Name.FirstName, c.Name.LastName)));
-            contractEntity.Tenants.ToList().ForEach(c => contractQueryResult.Tenants.Add(new Tenants(c.Name.FirstName, c.Name.LastName)));
-            contractEntity.Guarantors.ToList().ForEach(c => contractQueryResult.Guarantors.Add(new Guarantors(c.Name.FirstName, c.Name.LastName)));
 
             return contractQueryResult;
         }

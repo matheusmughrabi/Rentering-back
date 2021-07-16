@@ -138,54 +138,6 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPost]
-        [Route("v1/AddRenterToContract")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult AddRenterToContract([FromBody] AddRenterToContractCommand addRenterToContractCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(addRenterToContractCommand);
-
-            return Ok(result);
-        }
-
-        [HttpPost]
-        [Route("v1/AddTenantToContract")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult AddTenantToContract([FromBody] AddTenantToContractCommand addTenantToContractCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(addTenantToContractCommand);
-
-            return Ok(result);
-        }
-
-        [HttpPost]
-        [Route("v1/AddGuarantorToContract")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult AddGuarantorToContract([FromBody] AddGuarantorToContractCommand addGuarantorToContractCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(addGuarantorToContractCommand);
-
-            return Ok(result);
-        }
-
-        [HttpPost]
         [Route("v1/CreatePaymentCycle")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreatePaymentCycle([FromBody] CreatePaymentCycleCommand createPaymentCycleCommand)

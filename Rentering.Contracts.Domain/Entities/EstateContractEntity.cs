@@ -13,9 +13,6 @@ namespace Rentering.Contracts.Domain.Entities
     public class EstateContractEntity : Entity
     {
         private List<AccountContractsEntity> _participants;
-        private List<RenterEntity> _renters;
-        private List<TenantEntity> _tenants;
-        private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
 
         protected EstateContractEntity()
@@ -24,8 +21,6 @@ namespace Rentering.Contracts.Domain.Entities
 
         public EstateContractEntity(
             string contractName,
-            AddressValueObject address,
-            PropertyRegistrationNumberValueObject propertyRegistrationNumber,
             PriceValueObject rentPrice,
             DateTime rentDueDate,
             DateTime contractStartDate,
@@ -33,17 +28,12 @@ namespace Rentering.Contracts.Domain.Entities
             int? id = null) : base(id)
         {
             ContractName = contractName;
-            Address = address;
-            PropertyRegistrationNumber = propertyRegistrationNumber;
             RentPrice = rentPrice;
             RentDueDate = rentDueDate;
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
             _participants = new List<AccountContractsEntity>();
-            _renters = new List<RenterEntity>();
-            _tenants = new List<TenantEntity>();
-            _guarantors = new List<GuarantorEntity>();
             _payments = new List<ContractPaymentEntity>();
 
             ApplyValidations();
@@ -51,28 +41,15 @@ namespace Rentering.Contracts.Domain.Entities
 
         public string ContractName { get; private set; }
         [Required]
-        public AddressValueObject Address { get; private set; } // Remover
-        [Required]
-        public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; } // Remover
-        [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
         public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
-        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // Remover
-        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray(); // Remover
-        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray(); // Remover
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            //if (Id == 0)
-            //{
-            //    AddNotification("Id", "ContractId cannot be zero");
-            //    return;
-            //}
-
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
             if (isParticipantAlreadyInThisRole)
@@ -93,75 +70,6 @@ namespace Rentering.Contracts.Domain.Entities
                 var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
                 _participants.Add(accountContractsEntity);
             }
-        }
-
-        public void AddRenter(RenterEntity renter)
-        {
-            if (renter == null)
-            {
-                AddNotification("renter", "Renter cannot be null");
-                return;
-            }
-
-            if (_renters.Any(c => c.Name.FirstName == renter.Name.FirstName && c.Name.LastName == renter.Name.LastName))
-                AddNotification("FullName", "Renter with this name and last name already exists in this contract");
-
-            if (_renters.Any(c => c.IdentityRG.IdentityRG == renter.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Renter with this IdentityRG already exists in this contract");
-
-            if (_renters.Any(c => c.CPF.CPF == renter.CPF.CPF))
-                AddNotification("CPF", "Renter with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _renters.Add(renter);
-        }
-
-        public void AddTenant(TenantEntity tenant)
-        {
-            if (tenant == null)
-            {
-                AddNotification("tenant", "Tenant cannot be null");
-                return;
-            }
-
-            if (_tenants.Any(c => c.Name.FirstName == tenant.Name.FirstName && c.Name.LastName == tenant.Name.LastName))
-                AddNotification("FullName", "Tenant with this name and last name already exists in this contract");
-
-            if (_tenants.Any(c => c.IdentityRG.IdentityRG == tenant.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Tenant with this IdentityRG already exists in this contract");
-
-            if (_tenants.Any(c => c.CPF.CPF == tenant.CPF.CPF))
-                AddNotification("CPF", "Tenant with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _tenants.Add(tenant);
-        }
-
-        public void AddGuarantor(GuarantorEntity guarantor)
-        {
-            if (guarantor == null)
-            {
-                AddNotification("guarantor", "Guarantor cannot be null");
-                return;
-            }
-
-            if (_guarantors.Any(c => c.Name.FirstName == guarantor.Name.FirstName && c.Name.LastName == guarantor.Name.LastName))
-                AddNotification("FullName", "Guarantor with this name and last name already exists in this contract");
-
-            if (_guarantors.Any(c => c.IdentityRG.IdentityRG == guarantor.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Guarantor with this IdentityRG already exists in this contract");
-
-            if (_guarantors.Any(c => c.CPF.CPF == guarantor.CPF.CPF))
-                AddNotification("CPF", "Guarantor with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _guarantors.Add(guarantor);
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
@@ -275,8 +183,6 @@ namespace Rentering.Contracts.Domain.Entities
                 .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "Contract month span must be at least 1 month")
             );
 
-            AddNotifications(Address.Notifications);
-            AddNotifications(PropertyRegistrationNumber.Notifications);
             AddNotifications(RentPrice.Notifications);
         }
     }

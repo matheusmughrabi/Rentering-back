@@ -8,8 +8,7 @@ using Rentering.Common.Shared.Commands;
 namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
-        IHandler<CreateAccountCommand>,
-        IHandler<AssignAdminRoleAccountCommand>
+        IHandler<CreateAccountCommand>
     {
         private readonly IAccountUnitOfWork _accountsUnitOfWork;
 
@@ -50,32 +49,6 @@ namespace Rentering.Accounts.Application.Handlers
             });
 
             return createdUser;
-        }
-
-        public ICommandResult Handle(AssignAdminRoleAccountCommand command)
-        {
-            var accountEntity = _accountsUnitOfWork.AccountCUDRepository.GetAccountForCUD(command.Id);
-
-            if (accountEntity == null)
-                return new CommandResult(false, "Account not found", new { });
-
-            accountEntity.AssignAdminRole();
-
-            AddNotifications(accountEntity.Notifications);
-
-            if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
-
-            _accountsUnitOfWork.Save();
-
-            var adminRoleAssignedUser = new CommandResult(true, "Admin role assigned successfuly", new
-            {
-                accountEntity.Email.Email,
-                accountEntity.Username.Username,
-                accountEntity.Role
-            });
-
-            return adminRoleAssignedUser;
         }
     }
 }

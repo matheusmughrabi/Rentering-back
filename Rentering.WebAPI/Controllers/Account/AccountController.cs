@@ -21,17 +21,6 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpGet]
-        [Route("v1/Accounts/GetAllAccounts")]
-        [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
-        public IActionResult GetAllAccounts()
-        {
-            var accountQueryResults = _accountUnitOfWork.AccountQueryRepository.GetAllAccounts_AdminUsageOnly();
-
-            return Ok(accountQueryResults);
-        }
-
-        [HttpGet]
         [Route("v1/Accounts/GetCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCurrentUser()
@@ -74,17 +63,6 @@ namespace Rentering.WebAPI.Controllers.Account
             var response = new CommandResult(true, "Token generated", userInfo);
 
             return Ok(response);
-        }
-
-        [HttpPatch]
-        [Route("v1/Accounts/AssignAdminRole")]
-        //[Authorize(Roles = "Admin")]
-        public IActionResult AssignAdminRole([FromBody] AssignAdminRoleAccountCommand assignAdminRoleCommand)
-        {
-            var handler = new AccountHandlers(_accountUnitOfWork);
-            var result = handler.Handle(assignAdminRoleCommand);
-
-            return Ok(result);
         }
 
         [HttpDelete]

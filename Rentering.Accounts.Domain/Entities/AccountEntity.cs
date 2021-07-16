@@ -66,16 +66,5 @@ namespace Rentering.Accounts.Domain.Entities
 
             Username = username;
         }
-
-        public void AssignAdminRole()
-        {
-            if (Role == e_Roles.Admin)
-            {
-                AddNotification("Role", "This user is already admin");
-                return;
-            }
-
-            Role = e_Roles.Admin;
-        }
     }
 }

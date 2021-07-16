@@ -19,9 +19,6 @@ namespace Rentering.Infra.Contracts.CUDRepositories
             var estateContractEntity = _renteringDbContext.Contract
                 .Where(c => c.Id == estateContractId)
                 .Include(c => c.Participants)
-                .Include(c => c.Renters)
-                .Include(c => c.Tenants)
-                .Include(c => c.Guarantors)
                 .Include(c => c.Payments)
                 .FirstOrDefault();
 

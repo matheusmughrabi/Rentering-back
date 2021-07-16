@@ -15,9 +15,6 @@ namespace Rentering.Infra
         public DbSet<AccountEntity> Account { get; set; }
 
         public DbSet<EstateContractEntity> Contract { get; set; }
-        public DbSet<RenterEntity> Renter { get; set; }
-        public DbSet<TenantEntity> Tenant { get; set; }
-        public DbSet<GuarantorEntity> Guarantor { get; set; }
         public DbSet<ContractPaymentEntity> ContractPayment { get; set; }
         public DbSet<AccountContractsEntity> AccountContracts { get; set; }
 
@@ -28,9 +25,6 @@ namespace Rentering.Infra
 
             modelBuilder.ApplyConfiguration(new EstateContractMapping());
             modelBuilder.ApplyConfiguration(new AccountContractsMapping());
-            modelBuilder.ApplyConfiguration(new RenterMapping());
-            modelBuilder.ApplyConfiguration(new TenantMapping());
-            modelBuilder.ApplyConfiguration(new GuarantorMapping());
             modelBuilder.ApplyConfiguration(new ContractPaymentMapping());       
 
             base.OnModelCreating(modelBuilder);

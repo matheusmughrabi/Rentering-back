@@ -1,5 +1,4 @@
 ﻿using Rentering.Contracts.Domain.Entities;
-using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Data.CUDRepositories
 {

@@ -97,29 +97,5 @@ namespace Rentering.UnitTests.Account.Entities
 
             Assert.AreEqual(true, renter.Invalid);
         }
-
-        [TestMethod]
-        public void ShouldNotAssignAdminRole_WhenUserIsAlreadyAdmin()
-        {
-            var email = new EmailValueObject("matheu@gmail.com");
-            var username = new UsernameValueObject("matheus");
-            var accountEntity = new AccountEntity(email, username, role: e_Roles.Admin);
-
-            accountEntity.AssignAdminRole();
-
-            Assert.AreEqual(true, accountEntity.Invalid);
-        }
-
-        [TestMethod]
-        public void ShouldAssignAdminRole_WhenUserIsNotAdminYet()
-        {
-            var email = new EmailValueObject("matheu@gmail.com");
-            var username = new UsernameValueObject("matheus");
-            var accountEntity = new AccountEntity(email, username, role: e_Roles.RegularUser);
-
-            accountEntity.AssignAdminRole();
-
-            Assert.AreEqual(true, accountEntity.Valid);
-        }
     }
 }
