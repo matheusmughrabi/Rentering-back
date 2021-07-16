@@ -5,11 +5,10 @@ using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
-using System.Linq;
 
-namespace Rentering.WebAPI.Controllers.Account
+namespace Rentering.WebAPI.Controllers.V1.Account
 {
-    [Route("api/Account")]
+    [Route("api/v1/Accounts")]
     [ApiController]
     public class AccountController : RenteringBaseController
     {
@@ -21,7 +20,7 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpGet]
-        [Route("v1/Accounts/GetCurrentUser")]
+        [Route("GetCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCurrentUser()
         {
@@ -36,8 +35,8 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpPost]
-        [Route("Create")]
-        public IActionResult CreateAccount([FromBody] CreateAccountCommand accountCommand)
+        [Route("Register")]
+        public IActionResult Register([FromBody] RegisterCommand accountCommand)
         {
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Logout before creating new account");
@@ -66,7 +65,7 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpDelete]
-        [Route("v1/Accounts/Delete")]
+        [Route("Delete")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult Delete()
         {

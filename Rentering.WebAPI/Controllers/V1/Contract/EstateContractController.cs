@@ -4,9 +4,9 @@ using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Application.Handlers;
 using Rentering.Contracts.Domain.Data;
 
-namespace Rentering.WebAPI.Controllers.Contract
+namespace Rentering.WebAPI.Controllers.V1.Contract
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/contracts")]
     [ApiController]
     public class EstateContractController : RenteringBaseController
     {
@@ -17,26 +17,8 @@ namespace Rentering.WebAPI.Controllers.Contract
             _contractUnitOfWork = contractUnitOfWork;
         }
 
-        [HttpPost]
-        [Route("v1/CalculateCurrentOwedAmount")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            getCurrentOwedAmountCommand.CurrentUserId = accountId;
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(getCurrentOwedAmountCommand);
-
-            return Ok(result);
-        }
-
         [HttpGet]
-        [Route("v1/GetContractsOfCurrentUser")]
+        [Route("UserContracts")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetContractsOfCurrentUser()
         {
@@ -51,7 +33,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/GetContractDetailed/{contractId}")]
+        [Route("ContractDetailed/{contractId}")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetContractDetailed(int contractId)
         {
@@ -69,7 +51,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/GetPendingInvitations")]
+        [Route("PendingInvitations")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetPendingInvitations()
         {
@@ -84,7 +66,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpGet]
-        [Route("v1/GetPaymentsOfContract")]
+        [Route("PaymentsOfContract")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetPaymentsOfContract(int contractId)
         {
@@ -99,7 +81,25 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPost]
-        [Route("v1/CreateContract")]
+        [Route("CalculateOwedAmount")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            getCurrentOwedAmountCommand.CurrentUserId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(getCurrentOwedAmountCommand);
+
+            return Ok(result);
+        }              
+
+        [HttpPost]
+        [Route("CreateContract")]
         //[Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateContract([FromBody] CreateEstateContractCommand createContractGuarantorCommand)
         {
@@ -117,7 +117,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPut]
-        [Route("v1/InviteParticipant")]
+        [Route("InviteParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult InviteParticipant([FromBody] InviteParticipantCommand inviteParticipantCommand)
         {
@@ -138,7 +138,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPost]
-        [Route("v1/CreatePaymentCycle")]
+        [Route("CreatePaymentCycle")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreatePaymentCycle([FromBody] CreatePaymentCycleCommand createPaymentCycleCommand)
         {
@@ -156,7 +156,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPatch]
-        [Route("v1/ExecutePayment")]
+        [Route("ExecutePayment")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult ExecutePayment([FromBody] ExecutePaymentCommand executePaymentCommand)
         {
@@ -172,7 +172,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPatch]
-        [Route("v1/AcceptPayment")]
+        [Route("AcceptPayment")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult AcceptPayment([FromBody] AcceptPaymentCommand acceptPaymentCommand)
         {
@@ -188,7 +188,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPatch]
-        [Route("v1/RejectPayment")]
+        [Route("RejectPayment")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RejectPayment([FromBody] RejectPaymentCommand rejectPaymentCommand)
         {
@@ -204,7 +204,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPatch]
-        [Route("v1/AcceptToParticipate")]
+        [Route("AcceptToParticipate")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult AcceptToParticipate([FromBody] AcceptToParticipateCommand acceptToParticipateCommand)
         {
@@ -222,7 +222,7 @@ namespace Rentering.WebAPI.Controllers.Contract
         }
 
         [HttpPatch]
-        [Route("v1/RejectToParticipate")]
+        [Route("RejectToParticipate")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RejectToParticipate([FromBody] RejectToParticipateCommand rejectToParticipateCommand)
         {

@@ -8,7 +8,7 @@ using Rentering.Common.Shared.Commands;
 namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
-        IHandler<CreateAccountCommand>
+        IHandler<RegisterCommand>
     {
         private readonly IAccountUnitOfWork _accountsUnitOfWork;
 
@@ -17,7 +17,7 @@ namespace Rentering.Accounts.Application.Handlers
             _accountsUnitOfWork = accountsUnitOfWork;
         }
 
-        public ICommandResult Handle(CreateAccountCommand command)
+        public ICommandResult Handle(RegisterCommand command)
         {
             var email = new EmailValueObject(command.Email);
             var username = new UsernameValueObject(command.Username);

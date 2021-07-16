@@ -2,9 +2,9 @@
 
 namespace Rentering.Accounts.Application.Commands.Accounts
 {
-    public class CreateAccountCommand : ICommand
+    public class RegisterCommand : ICommand
     {
-        public CreateAccountCommand(string email, string username, string password, string confirmPassword)
+        public RegisterCommand(string email, string username, string password, string confirmPassword)
         {
             Email = email;
             Username = username;
