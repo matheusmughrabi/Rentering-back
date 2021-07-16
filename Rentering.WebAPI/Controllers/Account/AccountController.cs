@@ -5,23 +5,25 @@ using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Authorization.Services;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.Account
 {
-    [Route("api/[controller]")]
+    [Route("api/Account")]
     [ApiController]
-    public class AccountEFController : RenteringBaseController
+    public class AccountController : RenteringBaseController
     {
         private readonly IAccountUnitOfWork _accountUnitOfWork;
 
-        public AccountEFController(IAccountUnitOfWork accountUnitOfWork)
+        public AccountController(IAccountUnitOfWork accountUnitOfWork)
         {
             _accountUnitOfWork = accountUnitOfWork;
         }
 
         [HttpGet]
         [Route("v1/Accounts/GetAllAccounts")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts()
         {
             var accountQueryResults = _accountUnitOfWork.AccountQueryRepository.GetAllAccounts_AdminUsageOnly();
@@ -45,7 +47,7 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpPost]
-        [Route("v1/Accounts/Create")]
+        [Route("Create")]
         public IActionResult CreateAccount([FromBody] CreateAccountCommand accountCommand)
         {
             if (User.Identity.IsAuthenticated)
@@ -58,9 +60,9 @@ namespace Rentering.WebAPI.Controllers.Account
         }
 
         [HttpPost]
-        [Route("v1/Accounts/Login")]
+        [Route("Login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Login([FromBody] LoginAccountCommand loginCommand)
+        public IActionResult Login([FromBody] LoginAccountCommand loginCommand)
         {
             var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(loginCommand.Username);
 
@@ -69,7 +71,9 @@ namespace Rentering.WebAPI.Controllers.Account
 
             var userInfo = TokenService.GenerateToken(accountEntity);
 
-            return new { userInfo };
+            var response = new CommandResult(true, "Token generated", userInfo);
+
+            return Ok(response);
         }
 
         [HttpPatch]

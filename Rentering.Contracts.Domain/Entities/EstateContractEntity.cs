@@ -51,18 +51,18 @@ namespace Rentering.Contracts.Domain.Entities
 
         public string ContractName { get; private set; }
         [Required]
-        public AddressValueObject Address { get; private set; }
+        public AddressValueObject Address { get; private set; } // Remover
         [Required]
-        public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; }
+        public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; } // Remover
         [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
         public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
-        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // TODO - Criar IParticipante -> Renter, Tenant, Guarantor
-        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray();
-        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray();
+        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // Remover
+        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray(); // Remover
+        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray(); // Remover
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)

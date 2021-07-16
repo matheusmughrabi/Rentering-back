@@ -61,6 +61,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var createdContract = new CommandResult(true, "Contract created successfuly", new
             {
+                contractEntity.Id,
                 contractEntity.ContractName,
                 contractEntity.RentPrice.Price
             });
