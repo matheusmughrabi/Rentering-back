@@ -18,47 +18,43 @@ namespace Rentering.Infra.Contracts.QueryRepositories
 
         public GetContractDetailedQueryResult GetContractDetailed(int contractId)
         {
-            var contractEntity = _renteringDbContext.Contract
+            var contractDetailed = _renteringDbContext.Contract
                 .AsNoTracking()
                 .Where(c => c.Id == contractId)
-                .Include(u => u.Participants.Where(p => p.ContractId == contractId))
                 .Include(u => u.Payments.Where(p => p.ContractId == contractId))
-                .FirstOrDefault();
+                .Include(u => u.Participants.Where(p => p.ContractId == contractId))
+                .Select(c => new GetContractDetailedQueryResult() 
+                    {
+                    Id = c.Id,
+                    ContractName = c.ContractName,
+                    ContractState = c.ContractState,
+                    RentPrice = c.RentPrice.Price,
+                    RentDueDate = c.RentDueDate,
+                    ContractStartDate = c.ContractStartDate,
+                    ContractEndDate = c.ContractEndDate,
 
-            if (contractEntity == null)
-                return null;
+                    Participants = c.Participants
+                        .Select(p => new Participant()
+                            {
+                                AccountId = p.AccountId,
+                                Username = _renteringDbContext.Account.Where(u => u.Id == p.AccountId).Select(s => s.Username.Username).FirstOrDefault(),
+                                Status = p.Status,
+                                ParticipantRole = p.ParticipantRole
+                            })
+                            .ToList(),
 
-            var contractQueryResult = new GetContractDetailedQueryResult()
-            {
-                Id = contractEntity.Id,
-                ContractName = contractEntity.ContractName,
-                ContractState = contractEntity.ContractState,
-                RentPrice = contractEntity.RentPrice.Price,
-                RentDueDate = contractEntity.RentDueDate,
-                ContractStartDate = contractEntity.ContractStartDate,
-                ContractEndDate = contractEntity.ContractEndDate,
+                     ContractPayments = c.Payments
+                        .Select(c => new ContractPayment()
+                            {
+                                Month = c.Month,
+                                RentPrice = c.RentPrice.Price,
+                                RenterPaymentStatus = c.RenterPaymentStatus,
+                                TenantPaymentStatus = c.TenantPaymentStatus
+                            })
+                            .ToList()
+                }).FirstOrDefault();
 
-                Participants = contractEntity.Participants
-                    .Select(c => new Participant() 
-                    { 
-                        AccountId = c.AccountId, 
-                        Status = c.Status, 
-                        ParticipantRole = c.ParticipantRole
-                    })
-                    .ToList(),
-
-                ContractPayments = contractEntity.Payments
-                    .Select(c => new ContractPayment() 
-                    { 
-                        Month = c.Month, 
-                        RentPrice = c.RentPrice.Price, 
-                        RenterPaymentStatus = c.RenterPaymentStatus, 
-                        TenantPaymentStatus = c.TenantPaymentStatus 
-                    })
-                    .ToList(),
-            };
-
-            return contractQueryResult;
+            return contractDetailed;
         }
 
         public IEnumerable<GetContractsOfCurrentUserQueryResult> GetContractsOfCurrentUser(int accountId)

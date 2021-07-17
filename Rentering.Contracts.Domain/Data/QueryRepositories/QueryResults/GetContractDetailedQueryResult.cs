@@ -20,6 +20,7 @@ namespace Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults
     public class Participant
     {
         public int AccountId { get; set; }
+        public string Username { get; set; }
         public e_ParticipantRole ParticipantRole { get; set; }
         public e_ParticipantStatus Status { get; set; }
     }
