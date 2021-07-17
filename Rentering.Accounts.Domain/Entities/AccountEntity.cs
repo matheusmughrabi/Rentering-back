@@ -11,9 +11,15 @@ namespace Rentering.Accounts.Domain.Entities
         {
         }
 
-        public AccountEntity(EmailValueObject email, UsernameValueObject username,
-            PasswordValueObject password = null, e_Roles? role = null, int? id = null) : base(id)
+        public AccountEntity(
+            PersonNameValueObject name,
+            EmailValueObject email, 
+            UsernameValueObject username,
+            PasswordValueObject password = null, 
+            e_Roles? role = null, 
+            int? id = null) : base(id)
         {
+            Name = name;
             Email = email;
             Username = username;
             Password = password;
@@ -24,6 +30,8 @@ namespace Rentering.Accounts.Domain.Entities
                 Role = e_Roles.RegularUser;
         }
 
+        [Required]
+        public PersonNameValueObject Name { get; private set; }
         [Required]
         public EmailValueObject Email { get; private set; }
         [Required]

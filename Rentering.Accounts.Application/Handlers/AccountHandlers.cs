@@ -19,10 +19,11 @@ namespace Rentering.Accounts.Application.Handlers
 
         public ICommandResult Handle(RegisterCommand command)
         {
+            var name = new PersonNameValueObject(command.FirstName, command.LastName);
             var email = new EmailValueObject(command.Email);
             var username = new UsernameValueObject(command.Username);
             var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
-            var accountEntity = new AccountEntity(email, username, password);
+            var accountEntity = new AccountEntity(name, email, username, password);
 
             if (_accountsUnitOfWork.AccountCUDRepository.EmailExists(command.Email))
                 AddNotification("Email", "This Email is already registered");
@@ -30,6 +31,7 @@ namespace Rentering.Accounts.Application.Handlers
             if (_accountsUnitOfWork.AccountCUDRepository.UsernameExists(command.Username))
                 AddNotification("Username", "This Username is already registered");
 
+            AddNotifications(name.Notifications);
             AddNotifications(email.Notifications);
             AddNotifications(username.Notifications);
             AddNotifications(password.Notifications);

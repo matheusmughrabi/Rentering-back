@@ -38,7 +38,11 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                         .Select(p => new Participant()
                             {
                                 AccountId = p.AccountId,
-                                Username = _renteringDbContext.Account.Where(u => u.Id == p.AccountId).Select(s => s.Username.Username).FirstOrDefault(),
+                                FullName = _renteringDbContext.Account
+                                    .AsNoTracking()
+                                    .Where(u => u.Id == p.AccountId)
+                                    .Select(s => s.Name.ToString())
+                                    .FirstOrDefault(),
                                 Status = p.Status.ToDescriptionString(),
                                 ParticipantRole = p.ParticipantRole.ToDescriptionString()
                             })
