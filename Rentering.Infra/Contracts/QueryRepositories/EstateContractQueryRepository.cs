@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rentering.Common.Shared.Enums;
 using Rentering.Contracts.Domain.Data.QueryRepositories;
 using Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;
@@ -27,7 +28,7 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                     {
                     Id = c.Id,
                     ContractName = c.ContractName,
-                    ContractState = c.ContractState,
+                    ContractState = c.ContractState.ToDescriptionString(),
                     RentPrice = c.RentPrice.Price,
                     RentDueDate = c.RentDueDate,
                     ContractStartDate = c.ContractStartDate,
@@ -38,8 +39,8 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                             {
                                 AccountId = p.AccountId,
                                 Username = _renteringDbContext.Account.Where(u => u.Id == p.AccountId).Select(s => s.Username.Username).FirstOrDefault(),
-                                Status = p.Status,
-                                ParticipantRole = p.ParticipantRole
+                                Status = p.Status.ToDescriptionString(),
+                                ParticipantRole = p.ParticipantRole.ToDescriptionString()
                             })
                             .ToList(),
 
@@ -48,9 +49,9 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                             {
                                 Month = c.Month,
                                 RentPrice = c.RentPrice.Price,
-                                RenterPaymentStatus = c.RenterPaymentStatus,
-                                TenantPaymentStatus = c.TenantPaymentStatus
-                            })
+                                RenterPaymentStatus = c.RenterPaymentStatus.ToDescriptionString(),
+                                TenantPaymentStatus = c.TenantPaymentStatus.ToDescriptionString()
+                        })
                             .ToList()
                 }).FirstOrDefault();
 
