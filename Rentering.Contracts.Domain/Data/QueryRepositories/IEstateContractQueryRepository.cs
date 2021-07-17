@@ -9,5 +9,6 @@ namespace Rentering.Contracts.Domain.Data.QueryRepositories
         GetContractDetailedQueryResult GetContractDetailed(int contractId);
         IEnumerable<GetPendingInvitationsQueryResult> GetPendingInvitations(int accountId);
         IEnumerable<GetPaymentsOfContractQueryResult> GetPaymentsOfContract(int contractId);
+        int GetAccountIdByEmail(string email);
     }
 }

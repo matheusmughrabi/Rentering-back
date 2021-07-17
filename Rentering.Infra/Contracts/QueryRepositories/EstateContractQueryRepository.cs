@@ -122,5 +122,16 @@ namespace Rentering.Infra.Contracts.QueryRepositories
 
             return contractsQueryResults;
         }
+
+        public int GetAccountIdByEmail(string email)
+        {
+            var accountId = _renteringDbContext.Account
+                .AsNoTracking()
+                .Where(c => c.Email.Email == email)
+                .Select(p => p.Id)
+                .FirstOrDefault();
+
+            return accountId;
+        }
     }
 }

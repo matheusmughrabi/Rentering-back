@@ -126,10 +126,8 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest("Invalid logged in user");
 
-            if (accountId == inviteParticipantCommand.ParticipantAccountId)
-                return BadRequest("You cannot invite yourself to a contract");
-
             inviteParticipantCommand.CurrentUserId = accountId;
+            inviteParticipantCommand.ContractId = 1;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);

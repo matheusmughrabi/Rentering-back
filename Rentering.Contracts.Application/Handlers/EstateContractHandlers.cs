@@ -64,9 +64,13 @@ namespace Rentering.Contracts.Application.Handlers
         public ICommandResult Handle(InviteParticipantCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var newParticipantAccountId = _contractUnitOfWork.EstateContractQueryRepository.GetAccountIdByEmail(command.Email);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            if (newParticipantAccountId == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Este email não está vinculado a uma conta" });
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
@@ -74,11 +78,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractOwner.Count() == 0)
                 return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
 
-            //if (_contractUnitOfWork.AccountContractsQuery.CheckIfAccountExists(command.ParticipantAccountId) == false)
-            //    return new CommandResult(false, "Fix erros below", new { Message = "Account not found" });
-
-            contractEntity?.InviteParticipant(command.ParticipantAccountId, command.ParticipantRole);
-            //var invitedParticipant = contractEntity.Participants.Last();
+            contractEntity?.InviteParticipant(newParticipantAccountId, (e_ParticipantRole)command.ParticipantRole);
 
             AddNotifications(contractEntity.Notifications);
 
