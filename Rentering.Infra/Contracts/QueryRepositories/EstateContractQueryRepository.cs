@@ -32,6 +32,7 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             {
                 Id = contractEntity.Id,
                 ContractName = contractEntity.ContractName,
+                ContractState = contractEntity.ContractState,
                 RentPrice = contractEntity.RentPrice.Price,
                 RentDueDate = contractEntity.RentDueDate,
                 ContractStartDate = contractEntity.ContractStartDate,
