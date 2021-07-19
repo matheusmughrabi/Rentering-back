@@ -13,6 +13,7 @@ namespace Rentering.Contracts.Application.Handlers
         IHandler<CreateEstateContractCommand>,
         IHandler<CreatePaymentCycleCommand>,
         IHandler<InviteParticipantCommand>,
+        IHandler<RemoveParticipantCommand>,
         IHandler<ExecutePaymentCommand>,
         IHandler<AcceptPaymentCommand>,
         IHandler<RejectPaymentCommand>,
@@ -27,6 +28,7 @@ namespace Rentering.Contracts.Application.Handlers
             _contractUnitOfWork = contractUnitOfWork;
         }
 
+        #region Create Contract
         public ICommandResult Handle(CreateEstateContractCommand command)
         {
             var contractName = command.ContractName;
@@ -60,7 +62,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return createdContract;
         }
+        #endregion
 
+        #region Invite Participant
         public ICommandResult Handle(InviteParticipantCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -94,7 +98,44 @@ namespace Rentering.Contracts.Application.Handlers
 
             return updatedContract;
         }
+        #endregion
 
+        #region Remove Participant
+        public ICommandResult Handle(RemoveParticipantCommand command)
+        {
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
+
+            if (command.AccountId == command.CurrentUserId)
+                return new CommandResult(false, "Fix erros below", new { Message = "Você é o criador deste contrato e não pode ser removido." });
+
+            contractEntity?.RemoveParticipant(command.AccountId);
+
+            AddNotifications(contractEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Fix erros below", new { Notifications });
+
+            _contractUnitOfWork.Save();
+
+            var updatedContract = new CommandResult(true, "Participant invited successfuly", new
+            {
+                contractEntity.ContractName
+            });
+
+            return updatedContract;
+        }
+        #endregion
+
+        #region Create Payment Cycle
         public ICommandResult Handle(CreatePaymentCycleCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -124,7 +165,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return createdPayments;
         }
+        #endregion
 
+        #region Execute Payment
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -152,7 +195,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return rejectedPayment;
         }
+        #endregion
 
+        #region Accept Payment
         public ICommandResult Handle(AcceptPaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -180,7 +225,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return acceptedPayment;
         }
+        #endregion
 
+        #region Reject Payment
         public ICommandResult Handle(RejectPaymentCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -208,7 +255,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return rejectedPayment;
         }
+        #endregion
 
+        #region Accept to Participate
         public ICommandResult Handle(AcceptToParticipateCommand command)
         {
             var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
@@ -231,7 +280,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return participant;
         }
+        #endregion
 
+        #region Reject to Participate
         public ICommandResult Handle(RejectToParticipateCommand command)
         {
             var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
@@ -254,7 +305,9 @@ namespace Rentering.Contracts.Application.Handlers
 
             return participant;
         }
+        #endregion
 
+        #region Get Current Owed Amount
         public ICommandResult Handle(GetCurrentOwedAmountCommand command)
         {
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
@@ -281,5 +334,6 @@ namespace Rentering.Contracts.Application.Handlers
 
             return result;
         }
+        #endregion
     }
 }

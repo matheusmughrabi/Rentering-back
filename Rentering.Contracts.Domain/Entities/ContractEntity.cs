@@ -82,6 +82,22 @@ namespace Rentering.Contracts.Domain.Entities
                 ContractState = e_ContractState.WaitingParticipantsAccept;
         }
 
+        public void RemoveParticipant(int accountId)
+        {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
+            var participantToRemove = _participants.Where(c => c.AccountId == accountId).FirstOrDefault();
+
+            if (participantToRemove == null)
+                AddNotification("Participante", "O participante informado não faz parte deste contrato");
+
+            _participants.Remove(participantToRemove);
+        }
+
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };

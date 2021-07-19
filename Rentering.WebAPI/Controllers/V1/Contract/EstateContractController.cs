@@ -134,6 +134,24 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             return Ok(result);
         }
 
+        [HttpPut]
+        [Route("RemoveParticipant")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RemoveParticipant([FromBody] RemoveParticipantCommand removeParticipantCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest("Invalid logged in user");
+
+            removeParticipantCommand.CurrentUserId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(removeParticipantCommand);
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("CreatePaymentCycle")]
         [Authorize(Roles = "RegularUser,Admin")]
