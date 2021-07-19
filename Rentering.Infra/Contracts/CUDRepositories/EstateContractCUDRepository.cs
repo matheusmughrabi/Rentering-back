@@ -14,14 +14,11 @@ namespace Rentering.Infra.Contracts.CUDRepositories
             _renteringDbContext = renteringDbContext;
         }
 
-        public EstateContractEntity GetEstateContractForCUD(int estateContractId)
+        public ContractEntity GetEstateContractForCUD(int estateContractId)
         {
             var estateContractEntity = _renteringDbContext.Contract
                 .Where(c => c.Id == estateContractId)
                 .Include(c => c.Participants)
-                .Include(c => c.Renters)
-                .Include(c => c.Tenants)
-                .Include(c => c.Guarantors)
                 .Include(c => c.Payments)
                 .FirstOrDefault();
 
@@ -37,7 +34,7 @@ namespace Rentering.Infra.Contracts.CUDRepositories
             return contractNameExists;
         }
 
-        public EstateContractEntity Add(EstateContractEntity estateContractEntity)
+        public ContractEntity Add(ContractEntity estateContractEntity)
         {
             if (estateContractEntity == null)
                 return null;
@@ -46,7 +43,7 @@ namespace Rentering.Infra.Contracts.CUDRepositories
             return addedEstateContractEntity;
         }
 
-        public EstateContractEntity Delete(EstateContractEntity estateContractEntity)
+        public ContractEntity Delete(ContractEntity estateContractEntity)
         {
             if (estateContractEntity == null)
                 return null;
@@ -55,7 +52,7 @@ namespace Rentering.Infra.Contracts.CUDRepositories
             return deletedEstateContractEntity;
         }
 
-        public EstateContractEntity Delete(int id)
+        public ContractEntity Delete(int id)
         {
             var estateContractEntity = _renteringDbContext.Contract
                 .Where(c => c.Id == id)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentering.Infra;
 
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    partial class RenteringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210716224623_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,31 +158,6 @@ namespace Rentering.Infra.Migrations
                                 .HasForeignKey("AccountEntityId");
                         });
 
-                    b.OwnsOne("Rentering.Accounts.Domain.ValueObjects.PersonNameValueObject", "Name", b1 =>
-                        {
-                            b1.Property<int>("AccountEntityId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("FirstName");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("LastName");
-
-                            b1.HasKey("AccountEntityId");
-
-                            b1.ToTable("Account");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AccountEntityId");
-                        });
-
                     b.OwnsOne("Rentering.Accounts.Domain.ValueObjects.UsernameValueObject", "Username", b1 =>
                         {
                             b1.Property<int>("AccountEntityId")
@@ -202,9 +179,6 @@ namespace Rentering.Infra.Migrations
                         });
 
                     b.Navigation("Email")
-                        .IsRequired();
-
-                    b.Navigation("Name")
                         .IsRequired();
 
                     b.Navigation("Password")

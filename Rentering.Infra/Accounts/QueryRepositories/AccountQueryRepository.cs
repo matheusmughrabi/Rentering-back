@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.Domain.Data.QueryRepositories;
 using Rentering.Accounts.Domain.Data.QueryRepositories.QueryResults;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Infra.Accounts.QueryRepositories
@@ -34,25 +32,6 @@ namespace Rentering.Infra.Accounts.QueryRepositories
             };
 
             return accountQueryResult;
-        }
-
-        public IEnumerable<GetAccountQueryResult_AdminUsageOnlyEF> GetAllAccounts_AdminUsageOnly()
-        {
-            var accountRetrieved = _renteringDbContext.Account
-                .AsNoTracking()
-                .ToList();
-
-            var accountQueryResults = new List<GetAccountQueryResult_AdminUsageOnlyEF>();
-            accountRetrieved?.ForEach(c => accountQueryResults.Add(new GetAccountQueryResult_AdminUsageOnlyEF()
-            {
-                Id = c.Id,
-                Email = c.Email.Email,
-                Username = c.Username.Username,
-                Password = c.Password.Password,
-                Role = c.Role
-            }));
-
-            return accountQueryResults;
         }
     }
 }

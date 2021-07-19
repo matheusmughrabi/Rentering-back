@@ -10,22 +10,17 @@ using System.Linq;
 
 namespace Rentering.Contracts.Domain.Entities
 {
-    public class EstateContractEntity : Entity
+    public class ContractEntity : Entity
     {
         private List<AccountContractsEntity> _participants;
-        private List<RenterEntity> _renters;
-        private List<TenantEntity> _tenants;
-        private List<GuarantorEntity> _guarantors;
         private List<ContractPaymentEntity> _payments;
 
-        protected EstateContractEntity()
+        protected ContractEntity()
         {
         }
 
-        public EstateContractEntity(
+        public ContractEntity(
             string contractName,
-            AddressValueObject address,
-            PropertyRegistrationNumberValueObject propertyRegistrationNumber,
             PriceValueObject rentPrice,
             DateTime rentDueDate,
             DateTime contractStartDate,
@@ -33,45 +28,34 @@ namespace Rentering.Contracts.Domain.Entities
             int? id = null) : base(id)
         {
             ContractName = contractName;
-            Address = address;
-            PropertyRegistrationNumber = propertyRegistrationNumber;
             RentPrice = rentPrice;
             RentDueDate = rentDueDate;
             ContractStartDate = contractStartDate;
             ContractEndDate = contractEndDate;
 
             _participants = new List<AccountContractsEntity>();
-            _renters = new List<RenterEntity>();
-            _tenants = new List<TenantEntity>();
-            _guarantors = new List<GuarantorEntity>();
             _payments = new List<ContractPaymentEntity>();
 
             ApplyValidations();
         }
 
         public string ContractName { get; private set; }
-        [Required]
-        public AddressValueObject Address { get; private set; } // Remover
-        [Required]
-        public PropertyRegistrationNumberValueObject PropertyRegistrationNumber { get; private set; } // Remover
+        public e_ContractState ContractState { get; private set; } = e_ContractState.NotEnoughParticipants;
         [Required]
         public PriceValueObject RentPrice { get; private set; }
         public DateTime RentDueDate { get; private set; }
         public DateTime ContractStartDate { get; private set; }
         public DateTime ContractEndDate { get; private set; }
         public IReadOnlyCollection<AccountContractsEntity> Participants => _participants.ToArray();
-        public IReadOnlyCollection<RenterEntity> Renters => _renters.ToArray(); // Remover
-        public IReadOnlyCollection<TenantEntity> Tenants => _tenants.ToArray(); // Remover
-        public IReadOnlyCollection<GuarantorEntity> Guarantors => _guarantors.ToArray(); // Remover
         public IReadOnlyCollection<ContractPaymentEntity> Payments => _payments.ToArray();
 
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
-            //if (Id == 0)
-            //{
-            //    AddNotification("Id", "ContractId cannot be zero");
-            //    return;
-            //}
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
 
             var isParticipantAlreadyInThisRole = Participants.Any(c => c.AccountId == accountId && c.ParticipantRole == participantRole);
 
@@ -81,91 +65,31 @@ namespace Rentering.Contracts.Domain.Entities
                 return;
             }
 
-            var contractId = Id;
-
             if (_participants.Count() == 0)
             {
-                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole, e_ParticipantStatus.Accepted);
+                var accountContractsEntity = new AccountContractsEntity(accountId, Id, participantRole, e_ParticipantStatus.Accepted);
                 _participants.Add(accountContractsEntity);
             }
             else
             {
-                var accountContractsEntity = new AccountContractsEntity(accountId, contractId, participantRole);
+                var accountContractsEntity = new AccountContractsEntity(accountId, Id, participantRole);
                 _participants.Add(accountContractsEntity);
             }
-        }
 
-        public void AddRenter(RenterEntity renter)
-        {
-            if (renter == null)
-            {
-                AddNotification("renter", "Renter cannot be null");
-                return;
-            }
+            const int minNumberOfParticipants = 2;
 
-            if (_renters.Any(c => c.Name.FirstName == renter.Name.FirstName && c.Name.LastName == renter.Name.LastName))
-                AddNotification("FullName", "Renter with this name and last name already exists in this contract");
-
-            if (_renters.Any(c => c.IdentityRG.IdentityRG == renter.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Renter with this IdentityRG already exists in this contract");
-
-            if (_renters.Any(c => c.CPF.CPF == renter.CPF.CPF))
-                AddNotification("CPF", "Renter with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _renters.Add(renter);
-        }
-
-        public void AddTenant(TenantEntity tenant)
-        {
-            if (tenant == null)
-            {
-                AddNotification("tenant", "Tenant cannot be null");
-                return;
-            }
-
-            if (_tenants.Any(c => c.Name.FirstName == tenant.Name.FirstName && c.Name.LastName == tenant.Name.LastName))
-                AddNotification("FullName", "Tenant with this name and last name already exists in this contract");
-
-            if (_tenants.Any(c => c.IdentityRG.IdentityRG == tenant.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Tenant with this IdentityRG already exists in this contract");
-
-            if (_tenants.Any(c => c.CPF.CPF == tenant.CPF.CPF))
-                AddNotification("CPF", "Tenant with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _tenants.Add(tenant);
-        }
-
-        public void AddGuarantor(GuarantorEntity guarantor)
-        {
-            if (guarantor == null)
-            {
-                AddNotification("guarantor", "Guarantor cannot be null");
-                return;
-            }
-
-            if (_guarantors.Any(c => c.Name.FirstName == guarantor.Name.FirstName && c.Name.LastName == guarantor.Name.LastName))
-                AddNotification("FullName", "Guarantor with this name and last name already exists in this contract");
-
-            if (_guarantors.Any(c => c.IdentityRG.IdentityRG == guarantor.IdentityRG.IdentityRG))
-                AddNotification("CPF", "Guarantor with this IdentityRG already exists in this contract");
-
-            if (_guarantors.Any(c => c.CPF.CPF == guarantor.CPF.CPF))
-                AddNotification("CPF", "Guarantor with this CPF already exists in this contract");
-
-            if (Invalid)
-                return;
-
-            _guarantors.Add(guarantor);
+            if (Participants.Count() == minNumberOfParticipants)
+                ContractState = e_ContractState.WaitingParticipantsAccept;
         }
 
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
             if (rentPrice.Price < 0)
             {
                 AddNotifications(rentPrice.Notifications);
@@ -177,6 +101,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void CreatePaymentCycle()
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return;
+
             if (Id == 0)
             {
                 AddNotification("Id", "ContractId cannot be null");
@@ -208,6 +138,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity ExecutePayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active};
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -222,6 +158,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity AcceptPayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -236,6 +178,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public ContractPaymentEntity RejectPayment(DateTime month)
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return null;
+
             var payment = Payments.Where(p => p.Month.Year == month.Year && p.Month.Month == month.Month).FirstOrDefault();
 
             if (payment == null)
@@ -250,6 +198,12 @@ namespace Rentering.Contracts.Domain.Entities
 
         public decimal CurrentOwedAmount()
         {
+            e_ContractState[] acceptedStates = { e_ContractState.Active };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+
+            if (isAllowed == false)
+                return 0M;
+
             var currentPayment = Payments.OrderBy(c => c.Month)
                 .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.NONE)
                 .FirstOrDefault();
@@ -275,9 +229,20 @@ namespace Rentering.Contracts.Domain.Entities
                 .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "Contract month span must be at least 1 month")
             );
 
-            AddNotifications(Address.Notifications);
-            AddNotifications(PropertyRegistrationNumber.Notifications);
             AddNotifications(RentPrice.Notifications);
+        }
+
+        private bool IsProcessAllowedInCurrentContractState(e_ContractState[] contractStatesAllowed)
+        {
+            var isAllowed = true;
+
+            if (contractStatesAllowed.Contains(ContractState) == false)
+            {
+                AddNotification("ContractState", $"Contratos com estado {ContractState} não podem realizar esta ação");
+                isAllowed = false;
+            }
+
+            return isAllowed;
         }
     }
 }

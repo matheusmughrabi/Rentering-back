@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Contracts.Domain.Enums;
 using System;
 
 namespace Rentering.Infra.Contracts.Mappings
 {
-    public class EstateContractMapping : IEntityTypeConfiguration<EstateContractEntity>
+    public class EstateContractMapping : IEntityTypeConfiguration<ContractEntity>
     {
-        public void Configure(EntityTypeBuilder<EstateContractEntity> builder)
+        public void Configure(EntityTypeBuilder<ContractEntity> builder)
         {
             builder.HasKey(c => c.Id);
 
@@ -15,45 +16,9 @@ namespace Rentering.Infra.Contracts.Mappings
                 .IsRequired()
                 .HasColumnType("nvarchar(100)");
 
-            builder.OwnsOne(c => c.Address, p =>
-            {
-                p.Property(u => u.Street)
-                    .IsRequired()
-                    .HasColumnName("Street")
-                    .HasColumnType("nvarchar(100)");
-
-                p.Property(u => u.Neighborhood)
-                    .IsRequired()
-                    .HasColumnName("Neighborhood")
-                    .HasColumnType("nvarchar(100)");
-
-                p.Property(u => u.City)
-                    .IsRequired()
-                    .HasColumnName("City")
-                    .HasColumnType("nvarchar(100)");
-
-                p.Property(u => u.CEP)
-                    .IsRequired()
-                    .HasColumnName("CEP")
-                    .HasColumnType("nvarchar(100)");
-
-                p.Property(u => u.State)
-                    .IsRequired()
-                    .HasColumnName("State")
-                    .HasColumnType("int");
-
-                p.Ignore(u => u.Notifications);
-            });
-
-            builder.OwnsOne(c => c.PropertyRegistrationNumber, p =>
-            {
-                p.Property(u => u.Number)
-                    .IsRequired()
-                    .HasColumnName("Number")
-                    .HasColumnType("int");
-
-                p.Ignore(u => u.Notifications);
-            });
+            builder.Property(c => c.ContractState)
+                .IsRequired()
+                .HasColumnType("int");
 
             builder.OwnsOne(c => c.RentPrice, p =>
             {
@@ -77,21 +42,8 @@ namespace Rentering.Infra.Contracts.Mappings
                .IsRequired()
                .HasColumnType("date");
 
-            // 1 : N => Categorias : Produtos
             builder.HasMany(c => c.Participants)
                 .WithOne(u => u.EstateContract)
-                .HasForeignKey(p => p.ContractId);
-
-            builder.HasMany(c => c.Renters)
-                .WithOne()
-                .HasForeignKey(p => p.ContractId);
-
-            builder.HasMany(c => c.Tenants)
-                .WithOne()
-                .HasForeignKey(p => p.ContractId);
-
-            builder.HasMany(c => c.Guarantors)
-                .WithOne()
                 .HasForeignKey(p => p.ContractId);
 
             builder.HasMany(c => c.Payments)

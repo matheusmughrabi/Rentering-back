@@ -6,6 +6,5 @@ namespace Rentering.Accounts.Domain.Data.QueryRepositories
     public interface IAccountQueryRepository
     {
         GetAccountQueryResultEF GetAccountById(int id);
-        IEnumerable<GetAccountQueryResult_AdminUsageOnlyEF> GetAllAccounts_AdminUsageOnly();
     }
 }
