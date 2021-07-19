@@ -127,7 +127,6 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
                 return BadRequest("Invalid logged in user");
 
             inviteParticipantCommand.CurrentUserId = accountId;
-            inviteParticipantCommand.ContractId = 1;
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);

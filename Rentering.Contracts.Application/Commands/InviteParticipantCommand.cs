@@ -8,7 +8,6 @@ namespace Rentering.Contracts.Application.Commands
     {
         [JsonIgnore]
         public int CurrentUserId { get; set; }
-        [JsonIgnore]
         public int ContractId { get; set; }
         public string Email { get; set; }
         public int ParticipantRole { get; set; }
