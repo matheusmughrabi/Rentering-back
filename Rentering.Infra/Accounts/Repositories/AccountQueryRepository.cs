@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rentering.Accounts.Domain.Data.QueryRepositories;
-using Rentering.Accounts.Domain.Data.QueryRepositories.QueryResults;
+using Rentering.Accounts.Domain.Data.Repositories;
+using Rentering.Accounts.Domain.Data.Repositories.QueryResults;
 using System.Linq;
 
-namespace Rentering.Infra.Accounts.QueryRepositories
+namespace Rentering.Infra.Accounts.Repositories
 {
     public class AccountQueryRepository : IAccountQueryRepository
     {
@@ -14,7 +14,7 @@ namespace Rentering.Infra.Accounts.QueryRepositories
             _renteringDbContext = renteringDbContext;
         }
 
-        public GetAccountQueryResultEF GetAccountById(int id)
+        public GetAccountQueryResult GetAccountById(int id)
         {
             var accountRetrieved = _renteringDbContext.Account
                  .AsNoTracking()
@@ -25,7 +25,7 @@ namespace Rentering.Infra.Accounts.QueryRepositories
             if (accountRetrieved == null)
                 return null;
 
-            var accountQueryResult = new GetAccountQueryResultEF()
+            var accountQueryResult = new GetAccountQueryResult()
             {
                 Email = accountRetrieved.Email,
                 Username = accountRetrieved.Username

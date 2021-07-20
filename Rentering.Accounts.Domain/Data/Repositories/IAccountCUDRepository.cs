@@ -1,6 +1,6 @@
 ﻿using Rentering.Accounts.Domain.Entities;
 
-namespace Rentering.Accounts.Domain.Data.CUDRepositories
+namespace Rentering.Accounts.Domain.Data.Repositories
 {
     public interface IAccountCUDRepository
     {

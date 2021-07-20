@@ -1,8 +1,6 @@
 ﻿using Rentering.Contracts.Domain.Data;
-using Rentering.Contracts.Domain.Data.CUDRepositories;
-using Rentering.Contracts.Domain.Data.QueryRepositories;
-using Rentering.Infra.Contracts.CUDRepositories;
-using Rentering.Infra.Contracts.QueryRepositories;
+using Rentering.Contracts.Domain.Data.Repositories;
+using Rentering.Infra.Contracts.Repositories;
 
 namespace Rentering.Infra.Contracts
 {

@@ -1,7 +1,7 @@
-﻿using Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults;
+﻿using Rentering.Contracts.Domain.Data.Repositories.QueryResults;
 using System.Collections.Generic;
 
-namespace Rentering.Contracts.Domain.Data.QueryRepositories
+namespace Rentering.Contracts.Domain.Data.Repositories
 {
     public interface IContractQueryRepository
     {

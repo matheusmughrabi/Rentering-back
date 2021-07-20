@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Enums;
-using Rentering.Contracts.Domain.Data.QueryRepositories;
-using Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults;
+using Rentering.Contracts.Domain.Data.Repositories;
+using Rentering.Contracts.Domain.Data.Repositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Rentering.Infra.Contracts.QueryRepositories
+namespace Rentering.Infra.Contracts.Repositories
 {
     public class ContractQueryRepository : IContractQueryRepository
     {
@@ -24,8 +24,8 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                 .Where(c => c.Id == contractId)
                 .Include(u => u.Payments.Where(p => p.ContractId == contractId))
                 .Include(u => u.Participants.Where(p => p.ContractId == contractId))
-                .Select(c => new GetContractDetailedQueryResult() 
-                    {
+                .Select(c => new GetContractDetailedQueryResult()
+                {
                     Id = c.Id,
                     ContractName = c.ContractName,
                     ContractState = c.ContractState.ToDescriptionString(),
@@ -36,25 +36,25 @@ namespace Rentering.Infra.Contracts.QueryRepositories
 
                     Participants = c.Participants
                         .Select(p => new Participant()
-                            {
-                                AccountId = p.AccountId,
-                                FullName = _renteringDbContext.Account
+                        {
+                            AccountId = p.AccountId,
+                            FullName = _renteringDbContext.Account
                                     .AsNoTracking()
                                     .Where(u => u.Id == p.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                                Status = p.Status.ToDescriptionString(),
-                                ParticipantRole = p.ParticipantRole.ToDescriptionString()
-                            })
+                            Status = p.Status.ToDescriptionString(),
+                            ParticipantRole = p.ParticipantRole.ToDescriptionString()
+                        })
                             .ToList(),
 
-                     ContractPayments = c.Payments
+                    ContractPayments = c.Payments
                         .Select(c => new ContractPayment()
-                            {
-                                Month = c.Month,
-                                RentPrice = c.RentPrice.Price,
-                                RenterPaymentStatus = c.RenterPaymentStatus.ToDescriptionString(),
-                                TenantPaymentStatus = c.TenantPaymentStatus.ToDescriptionString()
+                        {
+                            Month = c.Month,
+                            RentPrice = c.RentPrice.Price,
+                            RenterPaymentStatus = c.RenterPaymentStatus.ToDescriptionString(),
+                            TenantPaymentStatus = c.TenantPaymentStatus.ToDescriptionString()
                         })
                             .ToList()
                 }).FirstOrDefault();
@@ -94,7 +94,7 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                 .ToList();
 
             var paymentsOfContractQueryResults = new List<GetPaymentsOfContractQueryResult>();
-            paymentsOfContractEntities?.ForEach(c => paymentsOfContractQueryResults.Add(new GetPaymentsOfContractQueryResult() 
+            paymentsOfContractEntities?.ForEach(c => paymentsOfContractQueryResults.Add(new GetPaymentsOfContractQueryResult()
             {
                 ContractId = c.ContractId,
                 Month = c.Month,
@@ -112,17 +112,17 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                 .AsNoTracking()
                 .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Pending)
                 .Include(c => c.Contract)
-                .Select(p => new GetPendingInvitationsQueryResult() 
-                    { 
-                        Id = p.ContractId,
-                        ContractName = p.Contract.ContractName,
-                        ContractOwner = "Matheus Campanini Mughrabi Mockado",
-                        ContractState = p.Contract.ContractState.ToDescriptionString(),
-                        ParticipantRole = p.ParticipantRole.ToDescriptionString(),
-                        RentPrice = p.Contract.RentPrice.Price,
-                        RentDueDate = p.Contract.RentDueDate,
-                        ContractStartDate = p.Contract.ContractStartDate,
-                        ContractEndDate = p.Contract.ContractEndDate
+                .Select(p => new GetPendingInvitationsQueryResult()
+                {
+                    Id = p.ContractId,
+                    ContractName = p.Contract.ContractName,
+                    ContractOwner = "Matheus Campanini Mughrabi Mockado",
+                    ContractState = p.Contract.ContractState.ToDescriptionString(),
+                    ParticipantRole = p.ParticipantRole.ToDescriptionString(),
+                    RentPrice = p.Contract.RentPrice.Price,
+                    RentDueDate = p.Contract.RentDueDate,
+                    ContractStartDate = p.Contract.ContractStartDate,
+                    ContractEndDate = p.Contract.ContractEndDate
                 })
                 .ToList();
 

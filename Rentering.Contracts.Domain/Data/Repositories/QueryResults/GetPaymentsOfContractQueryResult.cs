@@ -1,7 +1,7 @@
 ﻿using Rentering.Contracts.Domain.Enums;
 using System;
 
-namespace Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults
+namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
 {
     public class GetPaymentsOfContractQueryResult
     {

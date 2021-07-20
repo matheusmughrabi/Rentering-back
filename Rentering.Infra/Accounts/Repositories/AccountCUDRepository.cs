@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rentering.Accounts.Domain.Data.CUDRepositories;
+using Rentering.Accounts.Domain.Data.Repositories;
 using Rentering.Accounts.Domain.Entities;
 using System.Linq;
 
-namespace Rentering.Infra.Accounts.CUDRepositories
+namespace Rentering.Infra.Accounts.Repositories
 {
     public class AccountCUDRepository : IAccountCUDRepository
     {
