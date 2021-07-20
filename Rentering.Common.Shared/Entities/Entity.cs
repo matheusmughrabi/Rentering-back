@@ -15,7 +15,7 @@ namespace Rentering.Common.Shared.Entities
         public virtual void AssignId(int id)
         {
             if (id <= 0)
-                AddNotification("Id", "Id must be greater than zero");
+                AddNotification("Id", "O id precisa ser maior do que zero");
 
             Id = id;
         }
