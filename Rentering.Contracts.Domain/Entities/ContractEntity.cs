@@ -1,5 +1,6 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Entities;
+using Rentering.Common.Shared.Enums;
 using Rentering.Common.Shared.Extensions;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
@@ -52,7 +53,7 @@ namespace Rentering.Contracts.Domain.Entities
         public void InviteParticipant(int accountId, e_ParticipantRole participantRole)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível convidar novo participante, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -61,7 +62,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (isParticipantAlreadyInThisRole)
             {
-                AddNotification("AccountId", $"This account is already { participantRole } in this contract");
+                AddNotification("AccountId", $"Esta conta já faz parte deste contrato como { participantRole.ToDescriptionString() }.");
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace Rentering.Contracts.Domain.Entities
         public void RemoveParticipant(int accountId)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível convidar novo participante, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -93,7 +94,7 @@ namespace Rentering.Contracts.Domain.Entities
             var participantToRemove = _participants.Where(c => c.AccountId == accountId).FirstOrDefault();
 
             if (participantToRemove == null)
-                AddNotification("Participante", "O participante informado não faz parte deste contrato");
+                AddNotification("Participante", "O participante informado não faz parte deste contrato.");
 
             _participants.Remove(participantToRemove);
         }
@@ -101,7 +102,7 @@ namespace Rentering.Contracts.Domain.Entities
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível atualizar o preço do contrato, pois o estado atual é {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -118,14 +119,14 @@ namespace Rentering.Contracts.Domain.Entities
         public void CreatePaymentCycle()
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível criar um ciclo de pagamento, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
 
             if (Id == 0)
             {
-                AddNotification("Id", "ContractId cannot be null");
+                AddNotification("Id", "O id do contrato não pode ser nulo");
                 return;
             }
 
@@ -133,7 +134,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (monthSpan < 0)
             {
-                AddNotification("monthSpan", "Month span must an integer greater than zero");
+                AddNotification("monthSpan", "O período mínimo para criação de um ciclo de pagamento é 1 mês");
                 return;
             }
 
@@ -143,11 +144,10 @@ namespace Rentering.Contracts.Domain.Entities
 
                 if (_payments.Any(c => c.Month == monthToBeAdded))
                 {
-                    AddNotification("monthSpan", $"{monthToBeAdded} is already registered in the payment cycle");
+                    AddNotification("monthSpan", $"{monthToBeAdded} já está registrado no ciclo de pagamento do contrato");
                     continue;
                 }
 
-                // TODO - new PriceValueObject(RentPrice.Price)
                 _payments.Add(new ContractPaymentEntity(Id, monthToBeAdded, new PriceValueObject(RentPrice.Price)));
             }
         }
@@ -155,7 +155,7 @@ namespace Rentering.Contracts.Domain.Entities
         public ContractPaymentEntity ExecutePayment(DateTime month)
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active};
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível executar pagamento, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return null;
@@ -164,7 +164,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (payment == null)
             {
-                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                AddNotification("monthSpan", $"{month} não faz parte do ciclo de pagamentos deste contrato.");
                 return null;
             }
 
@@ -175,7 +175,7 @@ namespace Rentering.Contracts.Domain.Entities
         public ContractPaymentEntity AcceptPayment(DateTime month)
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível aceitar pagamento, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return null;
@@ -195,7 +195,7 @@ namespace Rentering.Contracts.Domain.Entities
         public ContractPaymentEntity RejectPayment(DateTime month)
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível recusar pagamento, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return null;
@@ -215,7 +215,7 @@ namespace Rentering.Contracts.Domain.Entities
         public decimal CurrentOwedAmount()
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates);
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, "Impossível calcular o valor devido atualmente, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return 0M;
@@ -226,7 +226,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (currentPayment == null)
             {
-                AddNotification("CurrentPayment", $"There are no open rents anymore");
+                AddNotification("CurrentPayment", $"Não existem pagamentos em aberto.");
                 return 0M;
             }
 
@@ -240,21 +240,21 @@ namespace Rentering.Contracts.Domain.Entities
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(ContractName, 3, "ContractName", "Contract name must have at least 3 letters")
-                .HasMaxLen(ContractName, 40, "ContractName", "Contract name must have less than 40 letters")
-                .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "Contract month span must be at least 1 month")
+                .HasMinLen(ContractName, 3, "ContractName", "O nome do contrato precisa ter no mínimo 3 letras.")
+                .HasMaxLen(ContractName, 40, "ContractName", "O nome do contrato precisa ter no máximo 40 letras.")
+                .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "O período do contrato deve ser de pelo menos 1 mês.")
             );
 
             AddNotifications(RentPrice.Notifications);
         }
 
-        private bool IsProcessAllowedInCurrentContractState(e_ContractState[] contractStatesAllowed)
+        private bool IsProcessAllowedInCurrentContractState(e_ContractState[] contractStatesAllowed, string message)
         {
             var isAllowed = true;
 
             if (contractStatesAllowed.Contains(ContractState) == false)
             {
-                AddNotification("ContractState", $"Contratos com estado {ContractState} não podem realizar esta ação");
+                AddNotification("ContractState", message);
                 isAllowed = false;
             }
 

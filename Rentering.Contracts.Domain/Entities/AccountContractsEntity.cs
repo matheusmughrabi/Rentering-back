@@ -36,13 +36,13 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (Status == e_ParticipantStatus.Rejected)
             {
-                AddNotification("Status", "You have already rejected to participate in this contract");
+                AddNotification("Status", "Não é possível aceitar a participação no contrato, pois você já recusou participar.");
                 return;
             }
 
             if (Status == e_ParticipantStatus.Accepted)
             {
-                AddNotification("Status", "You have already accepted to participate in this contract");
+                AddNotification("Status", "Não é possível aceitar novamente a participação no contrato.");
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (Status == e_ParticipantStatus.Rejected)
             {
-                AddNotification("Status", "You have already rejected to participate in this contract");
+                AddNotification("Status", "Não é possível recusar novamente a participação no contrato.");
                 return;
             }
 

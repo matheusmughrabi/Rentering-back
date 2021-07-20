@@ -48,7 +48,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (TenantPaymentStatus == e_TenantPaymentStatus.Executed)
             {
-                AddNotification("TenantPaymentStatus", "Payment has been executed already");
+                AddNotification("TenantPaymentStatus", "Este pagamento já foi executado.");
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (RenterPaymentStatus == e_RenterPaymentStatus.Accepted)
             {
-                AddNotification("RenterPaymentStatus", "Payment is accepted already");
+                AddNotification("RenterPaymentStatus", "Este pagamento já foi aceito.");
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (RenterPaymentStatus == e_RenterPaymentStatus.Rejected)
             {
-                AddNotification("RenterPaymentStatus", "Payment is rejected already");
+                AddNotification("RenterPaymentStatus", "Este pagamento já foi recusado.");
                 return;
             }
 
