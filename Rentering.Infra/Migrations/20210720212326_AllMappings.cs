@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rentering.Infra.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class AllMappings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,6 +13,8 @@ namespace Rentering.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", nullable: false),

@@ -117,7 +117,10 @@ namespace Rentering.Contracts.Domain.Entities
             var allParticipantsAccepted = !_participants.Any(c => c.Status == e_ParticipantStatus.Pending || c.Status == e_ParticipantStatus.Rejected);
 
             if (allParticipantsAccepted)
+            {
+                ContractState = e_ContractState.Active;
                 CreatePaymentCycle();
+            }
         }
 
         public void RejectToParticipate(int accountId)

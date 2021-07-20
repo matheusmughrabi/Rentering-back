@@ -10,8 +10,8 @@ using Rentering.Infra;
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    [Migration("20210716224623_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210720212326_AllMappings")]
+    partial class AllMappings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,10 +103,10 @@ namespace Rentering.Infra.Migrations
                     b.Property<DateTime>("Month")
                         .HasColumnType("Date");
 
-                    b.Property<int>("ReceiverPaymentStatus")
+                    b.Property<int>("PayerPaymentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PayerPaymentStatus")
+                    b.Property<int>("ReceiverPaymentStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -158,6 +158,31 @@ namespace Rentering.Infra.Migrations
                                 .HasForeignKey("AccountEntityId");
                         });
 
+                    b.OwnsOne("Rentering.Accounts.Domain.ValueObjects.PersonNameValueObject", "Name", b1 =>
+                        {
+                            b1.Property<int>("AccountEntityId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("AccountEntityId");
+
+                            b1.ToTable("Account");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountEntityId");
+                        });
+
                     b.OwnsOne("Rentering.Accounts.Domain.ValueObjects.UsernameValueObject", "Username", b1 =>
                         {
                             b1.Property<int>("AccountEntityId")
@@ -179,6 +204,9 @@ namespace Rentering.Infra.Migrations
                         });
 
                     b.Navigation("Email")
+                        .IsRequired();
+
+                    b.Navigation("Name")
                         .IsRequired();
 
                     b.Navigation("Password")
