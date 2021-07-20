@@ -8,11 +8,11 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 {
     [Route("api/v1/contracts")]
     [ApiController]
-    public class EstateContractController : RenteringBaseController
+    public class ContractController : RenteringBaseController
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public EstateContractController(IContractUnitOfWork contractUnitOfWork)
+        public ContractController(IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
         }
@@ -28,7 +28,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var contracts = _contractUnitOfWork.EstateContractQueryRepository.GetContractsOfCurrentUser(accountId);
+            var contracts = _contractUnitOfWork.ContractQueryRepository.GetContractsOfCurrentUser(accountId);
 
             return Ok(contracts);
         }
@@ -45,7 +45,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var contract = _contractUnitOfWork.EstateContractQueryRepository.GetContractDetailed(contractId);
+            var contract = _contractUnitOfWork.ContractQueryRepository.GetContractDetailed(contractId);
 
             //if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
             //    return BadRequest("You are not a participant of this contract");
@@ -65,7 +65,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var pendingInvitations = _contractUnitOfWork.EstateContractQueryRepository.GetPendingInvitations(accountId);
+            var pendingInvitations = _contractUnitOfWork.ContractQueryRepository.GetPendingInvitations(accountId);
 
             return Ok(pendingInvitations);
         }
@@ -82,7 +82,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var result = _contractUnitOfWork.EstateContractQueryRepository.GetPaymentsOfContract(contractId);
+            var result = _contractUnitOfWork.ContractQueryRepository.GetPaymentsOfContract(contractId);
 
             return Ok(result);
         }
@@ -92,7 +92,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [HttpPost]
         [Route("CreateContract")]
         //[Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreateContract([FromBody] CreateEstateContractCommand createContractGuarantorCommand)
+        public IActionResult CreateContract([FromBody] CreateContractCommand createContractGuarantorCommand)
         {
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
@@ -101,7 +101,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             createContractGuarantorCommand.AccountId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractGuarantorCommand);
 
             return Ok(result);
@@ -121,7 +121,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             inviteParticipantCommand.CurrentUserId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);
 
             return Ok(result);
@@ -141,7 +141,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             removeParticipantCommand.CurrentUserId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(removeParticipantCommand);
 
             return Ok(result);
@@ -161,7 +161,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             acceptToParticipateCommand.AccountId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptToParticipateCommand);
 
             return Ok(result);
@@ -181,7 +181,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             rejectToParticipateCommand.AccountId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectToParticipateCommand);
 
             return Ok(result);
@@ -201,7 +201,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             getCurrentOwedAmountCommand.CurrentUserId = accountId;
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(getCurrentOwedAmountCommand);
 
             return Ok(result);
@@ -219,7 +219,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(executePaymentCommand);
 
             return Ok(result);
@@ -237,7 +237,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptPaymentCommand);
 
             return Ok(result);
@@ -255,7 +255,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);
 
             return Ok(result);

@@ -87,7 +87,7 @@ namespace Rentering.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EstateContracts");
+                    b.ToTable("Contracts");
                 });
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.ContractPaymentEntity", b =>
@@ -190,13 +190,13 @@ namespace Rentering.Infra.Migrations
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.AccountContractsEntity", b =>
                 {
-                    b.HasOne("Rentering.Contracts.Domain.Entities.ContractEntity", "EstateContract")
+                    b.HasOne("Rentering.Contracts.Domain.Entities.ContractEntity", "Contract")
                         .WithMany("Participants")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EstateContract");
+                    b.Navigation("Contract");
                 });
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.ContractEntity", b =>
@@ -214,7 +214,7 @@ namespace Rentering.Infra.Migrations
 
                             b1.HasKey("ContractEntityId");
 
-                            b1.ToTable("EstateContracts");
+                            b1.ToTable("Contracts");
 
                             b1.WithOwner()
                                 .HasForeignKey("ContractEntityId");

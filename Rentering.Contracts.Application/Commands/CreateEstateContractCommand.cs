@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class CreateEstateContractCommand : ICommand
+    public class CreateContractCommand : ICommand
     {
-        public CreateEstateContractCommand(
+        public CreateContractCommand(
             string contractName,
             decimal rentPrice,
             DateTime rentDueDate,

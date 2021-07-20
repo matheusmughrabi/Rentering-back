@@ -90,7 +90,6 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             return Ok(deletedAccount);
         }
-        [
-        #endregion]
+        #endregion
     }
 }

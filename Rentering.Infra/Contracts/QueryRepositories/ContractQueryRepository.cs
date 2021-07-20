@@ -3,17 +3,16 @@ using Rentering.Common.Shared.Enums;
 using Rentering.Contracts.Domain.Data.QueryRepositories;
 using Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Infra.Contracts.QueryRepositories
 {
-    public class EstateContractQueryRepository : IEstateContractQueryRepository
+    public class ContractQueryRepository : IContractQueryRepository
     {
         private readonly RenteringDbContext _renteringDbContext;
 
-        public EstateContractQueryRepository(RenteringDbContext renteringDbContext)
+        public ContractQueryRepository(RenteringDbContext renteringDbContext)
         {
             _renteringDbContext = renteringDbContext;
         }
@@ -112,18 +111,18 @@ namespace Rentering.Infra.Contracts.QueryRepositories
             var result = _renteringDbContext.AccountContracts
                 .AsNoTracking()
                 .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Pending)
-                .Include(c => c.EstateContract)
+                .Include(c => c.Contract)
                 .Select(p => new GetPendingInvitationsQueryResult() 
                     { 
                         Id = p.ContractId,
-                        ContractName = p.EstateContract.ContractName,
+                        ContractName = p.Contract.ContractName,
                         ContractOwner = "Matheus Campanini Mughrabi Mockado",
-                        ContractState = p.EstateContract.ContractState.ToDescriptionString(),
+                        ContractState = p.Contract.ContractState.ToDescriptionString(),
                         ParticipantRole = p.ParticipantRole.ToDescriptionString(),
-                        RentPrice = p.EstateContract.RentPrice.Price,
-                        RentDueDate = p.EstateContract.RentDueDate,
-                        ContractStartDate = p.EstateContract.ContractStartDate,
-                        ContractEndDate = p.EstateContract.ContractEndDate
+                        RentPrice = p.Contract.RentPrice.Price,
+                        RentDueDate = p.Contract.RentDueDate,
+                        ContractStartDate = p.Contract.ContractStartDate,
+                        ContractEndDate = p.Contract.ContractEndDate
                 })
                 .ToList();
 

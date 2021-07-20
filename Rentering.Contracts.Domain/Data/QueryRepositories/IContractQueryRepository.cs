@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rentering.Contracts.Domain.Data.QueryRepositories
 {
-    public interface IEstateContractQueryRepository
+    public interface IContractQueryRepository
     {
         IEnumerable<GetContractsOfCurrentUserQueryResult> GetContractsOfCurrentUser(int accountId);
         GetContractDetailedQueryResult GetContractDetailed(int contractId);

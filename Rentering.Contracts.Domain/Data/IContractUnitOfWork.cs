@@ -6,9 +6,8 @@ namespace Rentering.Contracts.Domain.Data
 {
     public interface IContractUnitOfWork : IDisposable
     {
-        IEstateContractCUDRepository EstateContractCUDRepository { get; }
-        IEstateContractQueryRepository EstateContractQueryRepository { get; }
-        IAccountContractCUDRepository AccountContractCUDRepository { get; }
+        IContractCUDRepository ContractCUDRepository { get; }
+        IContractQueryRepository ContractQueryRepository { get; }
 
         void Save();
     }

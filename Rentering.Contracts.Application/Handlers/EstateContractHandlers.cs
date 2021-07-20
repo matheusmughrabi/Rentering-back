@@ -9,8 +9,8 @@ using System.Linq;
 
 namespace Rentering.Contracts.Application.Handlers
 {
-    public class EstateContractHandlers : Notifiable,
-        IHandler<CreateEstateContractCommand>,
+    public class ContractHandlers : Notifiable,
+        IHandler<CreateContractCommand>,
         IHandler<InviteParticipantCommand>,
         IHandler<RemoveParticipantCommand>,
         IHandler<ExecutePaymentCommand>,
@@ -22,13 +22,13 @@ namespace Rentering.Contracts.Application.Handlers
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
-        public EstateContractHandlers(IContractUnitOfWork contractUnitOfWork)
+        public ContractHandlers(IContractUnitOfWork contractUnitOfWork)
         {
             _contractUnitOfWork = contractUnitOfWork;
         }
 
         #region Create Contract
-        public ICommandResult Handle(CreateEstateContractCommand command)
+        public ICommandResult Handle(CreateContractCommand command)
         {
             var contractName = command.ContractName;
             var rentPrice = new PriceValueObject(command.RentPrice);
@@ -40,7 +40,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             contractEntity?.InviteParticipant(command.AccountId, e_ParticipantRole.Owner);
 
-            if (_contractUnitOfWork.EstateContractCUDRepository.ContractNameExists(command.ContractName))
+            if (_contractUnitOfWork.ContractCUDRepository.ContractNameExists(command.ContractName))
                 AddNotification("ContractName", "Este nome de contrato já existe. Por favor, tente um nome diferente.");
 
             AddNotifications(contractEntity.Notifications);
@@ -48,7 +48,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (Invalid)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
-            _contractUnitOfWork.EstateContractCUDRepository.Add(contractEntity);
+            _contractUnitOfWork.ContractCUDRepository.Add(contractEntity);
             _contractUnitOfWork.Save();
 
             var createdContract = new CommandResult(true, "Contrato criado com sucesso!", new
@@ -65,8 +65,8 @@ namespace Rentering.Contracts.Application.Handlers
         #region Invite Participant
         public ICommandResult Handle(InviteParticipantCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
-            var newParticipantAccountId = _contractUnitOfWork.EstateContractQueryRepository.GetAccountIdByEmail(command.Email);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
+            var newParticipantAccountId = _contractUnitOfWork.ContractQueryRepository.GetAccountIdByEmail(command.Email);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado." });
@@ -101,7 +101,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Remove Participant
         public ICommandResult Handle(RemoveParticipantCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contracto não encontrado" });
@@ -136,7 +136,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Execute Payment
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
@@ -166,7 +166,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Accept Payment
         public ICommandResult Handle(AcceptPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
@@ -196,7 +196,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Reject Payment
         public ICommandResult Handle(RejectPaymentCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não foi encontrado" });
@@ -226,7 +226,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Accept to Participate
         public ICommandResult Handle(AcceptToParticipateCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
@@ -251,7 +251,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Reject to Participate
         public ICommandResult Handle(RejectToParticipateCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
@@ -276,7 +276,7 @@ namespace Rentering.Contracts.Application.Handlers
         #region Get Current Owed Amount
         public ICommandResult Handle(GetCurrentOwedAmountCommand command)
         {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
 

@@ -23,7 +23,7 @@ namespace Rentering.Infra
         {
             modelBuilder.ApplyConfiguration(new AccountMapping());
 
-            modelBuilder.ApplyConfiguration(new EstateContractMapping());
+            modelBuilder.ApplyConfiguration(new ContractMapping());
             modelBuilder.ApplyConfiguration(new AccountContractsMapping());
             modelBuilder.ApplyConfiguration(new ContractPaymentMapping());       
 

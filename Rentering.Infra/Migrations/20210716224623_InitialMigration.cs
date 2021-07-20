@@ -24,7 +24,7 @@ namespace Rentering.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EstateContracts",
+                name: "Contracts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -38,7 +38,7 @@ namespace Rentering.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EstateContracts", x => x.Id);
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,9 +56,9 @@ namespace Rentering.Infra.Migrations
                 {
                     table.PrimaryKey("PK_AccountContracts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccountContracts_EstateContracts_ContractId",
+                        name: "FK_AccountContracts_Contracts_ContractId",
                         column: x => x.ContractId,
-                        principalTable: "EstateContracts",
+                        principalTable: "Contracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -79,9 +79,9 @@ namespace Rentering.Infra.Migrations
                 {
                     table.PrimaryKey("PK_ContractPayments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContractPayments_EstateContracts_ContractId",
+                        name: "FK_ContractPayments_Contracts_ContractId",
                         column: x => x.ContractId,
-                        principalTable: "EstateContracts",
+                        principalTable: "Contracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -109,7 +109,7 @@ namespace Rentering.Infra.Migrations
                 name: "ContractPayments");
 
             migrationBuilder.DropTable(
-                name: "EstateContracts");
+                name: "Contracts");
         }
     }
 }

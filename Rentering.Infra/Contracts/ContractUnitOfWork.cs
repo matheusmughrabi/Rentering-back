@@ -14,14 +14,12 @@ namespace Rentering.Infra.Contracts
         {
             _renteringDbContext = contractsDbContext;
 
-            EstateContractCUDRepository = new EstateContractCUDRepository(_renteringDbContext);
-            EstateContractQueryRepository = new EstateContractQueryRepository(_renteringDbContext);
-            AccountContractCUDRepository = new AccountContractCUDRepository(_renteringDbContext);
+            ContractCUDRepository = new ContractCUDRepository(_renteringDbContext);
+            ContractQueryRepository = new ContractQueryRepository(_renteringDbContext);
         }
 
-        public IEstateContractCUDRepository EstateContractCUDRepository { get; private set; }
-        public IEstateContractQueryRepository EstateContractQueryRepository { get; private set; }
-        public IAccountContractCUDRepository AccountContractCUDRepository { get; private set; }
+        public IContractCUDRepository ContractCUDRepository { get; private set; }
+        public IContractQueryRepository ContractQueryRepository { get; private set; }
 
         public void Dispose()
         {

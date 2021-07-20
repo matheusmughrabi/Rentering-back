@@ -6,7 +6,7 @@ using System;
 
 namespace Rentering.Infra.Contracts.Mappings
 {
-    public class EstateContractMapping : IEntityTypeConfiguration<ContractEntity>
+    public class ContractMapping : IEntityTypeConfiguration<ContractEntity>
     {
         public void Configure(EntityTypeBuilder<ContractEntity> builder)
         {
@@ -43,7 +43,7 @@ namespace Rentering.Infra.Contracts.Mappings
                .HasColumnType("date");
 
             builder.HasMany(c => c.Participants)
-                .WithOne(u => u.EstateContract)
+                .WithOne(u => u.Contract)
                 .HasForeignKey(p => p.ContractId);
 
             builder.HasMany(c => c.Payments)
@@ -52,7 +52,7 @@ namespace Rentering.Infra.Contracts.Mappings
 
             builder.Ignore(c => c.Notifications);
 
-            builder.ToTable("EstateContracts");
+            builder.ToTable("Contracts");
         }
     }
 }
