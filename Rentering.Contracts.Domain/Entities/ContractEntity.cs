@@ -99,6 +99,43 @@ namespace Rentering.Contracts.Domain.Entities
             _participants.Remove(participantToRemove);
         }
 
+        public void AcceptToParticipate(int accountId)
+        {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível aceitar participação, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var participant = _participants.Where(c => c.AccountId == accountId && c.ContractId == Id).FirstOrDefault();
+
+            if (participant == null)
+                AddNotification("Participante", "O participante informado não faz parte deste contrato.");
+
+            participant.AcceptToParticipate();
+
+            var allParticipantsAccepted = !_participants.Any(c => c.Status == e_ParticipantStatus.Pending || c.Status == e_ParticipantStatus.Rejected);
+
+            if (allParticipantsAccepted)
+                CreatePaymentCycle();
+        }
+
+        public void RejectToParticipate(int accountId)
+        {
+            e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível aceitar participação, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var participant = _participants.Where(c => c.AccountId == accountId && c.ContractId == Id).FirstOrDefault();
+
+            if (participant == null)
+                AddNotification("Participante", "O participante informado não faz parte deste contrato.");
+
+            participant.RejectToParticipate();
+        }
+
         public void UpdateRentPrice(PriceValueObject rentPrice)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
@@ -116,7 +153,7 @@ namespace Rentering.Contracts.Domain.Entities
             RentPrice = rentPrice;
         }
 
-        public void CreatePaymentCycle()
+        private void CreatePaymentCycle()
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
             bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível criar um ciclo de pagamento, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");

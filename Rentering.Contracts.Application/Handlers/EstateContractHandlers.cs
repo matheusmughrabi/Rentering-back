@@ -11,7 +11,6 @@ namespace Rentering.Contracts.Application.Handlers
 {
     public class EstateContractHandlers : Notifiable,
         IHandler<CreateEstateContractCommand>,
-        IHandler<CreatePaymentCycleCommand>,
         IHandler<InviteParticipantCommand>,
         IHandler<RemoveParticipantCommand>,
         IHandler<ExecutePaymentCommand>,
@@ -134,38 +133,6 @@ namespace Rentering.Contracts.Application.Handlers
         }
         #endregion
 
-        #region Create Payment Cycle
-        public ICommandResult Handle(CreatePaymentCycleCommand command)
-        {
-            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
-
-            if (contractEntity == null)
-                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
-
-            var isCurrentUserTheContractOwner = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
-
-            if (isCurrentUserTheContractOwner.Count() == 0)
-                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas o dono do contrato pode criar o ciclo de pagamento." });
-
-            contractEntity.CreatePaymentCycle();
-
-            AddNotifications(contractEntity.Notifications);
-
-            if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
-
-            _contractUnitOfWork.Save();
-
-            var createdPayments = new CommandResult(true, "Ciclo de pagamento criado com sucesso!", new
-            {
-                contractEntity.Payments
-            });
-
-            return createdPayments;
-        }
-        #endregion
-
         #region Execute Payment
         public ICommandResult Handle(ExecutePaymentCommand command)
         {
@@ -259,14 +226,14 @@ namespace Rentering.Contracts.Application.Handlers
         #region Accept to Participate
         public ICommandResult Handle(AcceptToParticipateCommand command)
         {
-            var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
-            if (participantForCUD == null)
+            if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
 
-            participantForCUD.AcceptToParticipate();
+            contractEntity.AcceptToParticipate(command.AccountId);
 
-            AddNotifications(participantForCUD);
+            AddNotifications(contractEntity);
 
             if (Invalid)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
@@ -284,14 +251,14 @@ namespace Rentering.Contracts.Application.Handlers
         #region Reject to Participate
         public ICommandResult Handle(RejectToParticipateCommand command)
         {
-            var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
+            var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
-            if (participantForCUD == null)
-                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Participante não encontrado." });
+            if (contractEntity == null)
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
 
-            participantForCUD.RejectToParticipate();
+            contractEntity.RejectToParticipate(command.AccountId);
 
-            AddNotifications(participantForCUD);
+            AddNotifications(contractEntity);
 
             if (Invalid)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });

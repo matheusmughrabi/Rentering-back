@@ -152,24 +152,6 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("CreatePaymentCycle")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CreatePaymentCycle([FromBody] CreatePaymentCycleCommand createPaymentCycleCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            createPaymentCycleCommand.CurrentUserId = accountId;
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(createPaymentCycleCommand);
-
-            return Ok(result);
-        }
-
         [HttpPatch]
         [Route("ExecutePayment")]
         [Authorize(Roles = "RegularUser,Admin")]
