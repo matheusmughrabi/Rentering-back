@@ -25,7 +25,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var contracts = _contractUnitOfWork.EstateContractQueryRepository.GetContractsOfCurrentUser(accountId);
 
@@ -40,7 +40,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var contract = _contractUnitOfWork.EstateContractQueryRepository.GetContractDetailed(contractId);
 
@@ -58,7 +58,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var pendingInvitations = _contractUnitOfWork.EstateContractQueryRepository.GetPendingInvitations(accountId);
 
@@ -73,7 +73,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var result = _contractUnitOfWork.EstateContractQueryRepository.GetPaymentsOfContract(contractId);
 
@@ -88,7 +88,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             getCurrentOwedAmountCommand.CurrentUserId = accountId;
 
@@ -106,7 +106,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             createContractGuarantorCommand.AccountId = accountId;
 
@@ -124,7 +124,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             inviteParticipantCommand.CurrentUserId = accountId;
 
@@ -142,7 +142,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             removeParticipantCommand.CurrentUserId = accountId;
 
@@ -160,7 +160,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             createPaymentCycleCommand.CurrentUserId = accountId;
 
@@ -178,7 +178,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(executePaymentCommand);
@@ -194,7 +194,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptPaymentCommand);
@@ -210,7 +210,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             var handler = new EstateContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);
@@ -226,7 +226,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest("authenticatedUserMessage");
 
             acceptToParticipateCommand.AccountId = accountId;
 
@@ -244,7 +244,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
+                return BadRequest(authenticatedUserMessage);
 
             rejectToParticipateCommand.AccountId = accountId;
 

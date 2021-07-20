@@ -44,7 +44,6 @@ namespace Rentering.Contracts.Application.Handlers
             if (_contractUnitOfWork.EstateContractCUDRepository.ContractNameExists(command.ContractName))
                 AddNotification("ContractName", "Este nome de contrato já existe. Por favor, tente um nome diferente.");
 
-            AddNotifications(rentPrice.Notifications);
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
