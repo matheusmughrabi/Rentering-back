@@ -226,7 +226,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
 
             if (isParsingSuccesful == false)
-                return BadRequest("authenticatedUserMessage");
+                return BadRequest(authenticatedUserMessage);
 
             acceptToParticipateCommand.AccountId = accountId;
 
