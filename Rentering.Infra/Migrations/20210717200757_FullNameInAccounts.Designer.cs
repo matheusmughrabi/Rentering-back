@@ -103,10 +103,10 @@ namespace Rentering.Infra.Migrations
                     b.Property<DateTime>("Month")
                         .HasColumnType("Date");
 
-                    b.Property<int>("RenterPaymentStatus")
+                    b.Property<int>("ReceiverPaymentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("TenantPaymentStatus")
+                    b.Property<int>("PayerPaymentStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

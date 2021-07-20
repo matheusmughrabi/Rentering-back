@@ -53,8 +53,8 @@ namespace Rentering.Infra.Contracts.Repositories
                         {
                             Month = c.Month,
                             RentPrice = c.RentPrice.Price,
-                            RenterPaymentStatus = c.RenterPaymentStatus.ToDescriptionString(),
-                            TenantPaymentStatus = c.TenantPaymentStatus.ToDescriptionString()
+                            ReceiverPaymentStatus = c.ReceiverPaymentStatus.ToDescriptionString(),
+                            PayerPaymentStatus = c.PayerPaymentStatus.ToDescriptionString()
                         })
                             .ToList()
                 }).FirstOrDefault();
@@ -99,8 +99,8 @@ namespace Rentering.Infra.Contracts.Repositories
                 ContractId = c.ContractId,
                 Month = c.Month,
                 RentPrice = c.RentPrice.Price,
-                RenterPaymentStatus = c.RenterPaymentStatus,
-                TenantPaymentStatus = c.TenantPaymentStatus
+                ReceiverPaymentStatus = c.ReceiverPaymentStatus,
+                PayerPaymentStatus = c.PayerPaymentStatus
             }));
 
             return paymentsOfContractQueryResults;

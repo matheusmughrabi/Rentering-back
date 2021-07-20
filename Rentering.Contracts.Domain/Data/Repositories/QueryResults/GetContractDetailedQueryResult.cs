@@ -28,7 +28,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
     {
         public DateTime Month { get; set; }
         public decimal RentPrice { get; set; }
-        public string RenterPaymentStatus { get; set; }
-        public string TenantPaymentStatus { get; set; }
+        public string ReceiverPaymentStatus { get; set; }
+        public string PayerPaymentStatus { get; set; }
     }
 }

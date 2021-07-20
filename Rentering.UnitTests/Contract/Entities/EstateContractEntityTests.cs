@@ -149,7 +149,7 @@
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_TenantPaymentStatus.EXECUTED, payment.TenantPaymentStatus);
+//            Assert.AreEqual(e_PayerPaymentStatus.EXECUTED, payment.PayerPaymentStatus);
 //        }
 
 //        [TestMethod]
@@ -173,7 +173,7 @@
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_RenterPaymentStatus.ACCEPTED, payment.RenterPaymentStatus);
+//            Assert.AreEqual(e_ReceiverPaymentStatus.ACCEPTED, payment.ReceiverPaymentStatus);
 //        }
 
 //        [TestMethod]
@@ -197,7 +197,7 @@
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_RenterPaymentStatus.REJECTED, payment.RenterPaymentStatus);
+//            Assert.AreEqual(e_ReceiverPaymentStatus.REJECTED, payment.ReceiverPaymentStatus);
 //        }
 
 //        [TestMethod]

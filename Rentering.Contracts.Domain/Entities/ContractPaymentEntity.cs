@@ -17,69 +17,69 @@ namespace Rentering.Contracts.Domain.Entities
             DateTime month, 
             PriceValueObject rentPrice, 
             int? id = null, 
-            e_RenterPaymentStatus? renterPaymentStatus = null, 
-            e_TenantPaymentStatus? tenantPaymentStatus = null) : base(id)
+            e_ReceiverPaymentStatus? receiverPaymentStatus = null, 
+            e_PayerPaymentStatus? payerPaymentStatus = null) : base(id)
         {
             ContractId = contractId;
             Month = month;
             RentPrice = rentPrice;
 
-            TenantPaymentStatus = e_TenantPaymentStatus.None;
+            PayerPaymentStatus = e_PayerPaymentStatus.None;
 
-            if (renterPaymentStatus != null)
-                RenterPaymentStatus = (e_RenterPaymentStatus)renterPaymentStatus;
+            if (receiverPaymentStatus != null)
+                ReceiverPaymentStatus = (e_ReceiverPaymentStatus)receiverPaymentStatus;
             else
-                RenterPaymentStatus = e_RenterPaymentStatus.None;
+                ReceiverPaymentStatus = e_ReceiverPaymentStatus.None;
 
-            if (tenantPaymentStatus != null)
-                TenantPaymentStatus = (e_TenantPaymentStatus)tenantPaymentStatus;
+            if (payerPaymentStatus != null)
+                PayerPaymentStatus = (e_PayerPaymentStatus)payerPaymentStatus;
             else
-                TenantPaymentStatus = e_TenantPaymentStatus.None;
+                PayerPaymentStatus = e_PayerPaymentStatus.None;
         }
 
         public int ContractId { get; set; }
         public DateTime Month { get; private set; }
         [Required]
         public PriceValueObject RentPrice { get; private set; }
-        public e_RenterPaymentStatus RenterPaymentStatus { get; private set; }
-        public e_TenantPaymentStatus TenantPaymentStatus { get; private set; }
+        public e_ReceiverPaymentStatus ReceiverPaymentStatus { get; private set; }
+        public e_PayerPaymentStatus PayerPaymentStatus { get; private set; }
 
         public void ExecutePayment()
         {
-            if (TenantPaymentStatus == e_TenantPaymentStatus.Executed)
+            if (PayerPaymentStatus == e_PayerPaymentStatus.Executed)
             {
-                AddNotification("TenantPaymentStatus", "Este pagamento já foi executado.");
+                AddNotification("PayerPaymentStatus", "Este pagamento já foi executado.");
                 return;
             }
 
-            TenantPaymentStatus = e_TenantPaymentStatus.Executed;
+            PayerPaymentStatus = e_PayerPaymentStatus.Executed;
         }
 
         public void AcceptPayment()
         {
-            if (RenterPaymentStatus == e_RenterPaymentStatus.Accepted)
+            if (ReceiverPaymentStatus == e_ReceiverPaymentStatus.Accepted)
             {
-                AddNotification("RenterPaymentStatus", "Este pagamento já foi aceito.");
+                AddNotification("ReceiverPaymentStatus", "Este pagamento já foi aceito.");
                 return;
             }
 
-            RenterPaymentStatus = e_RenterPaymentStatus.Accepted;
+            ReceiverPaymentStatus = e_ReceiverPaymentStatus.Accepted;
         }
 
         public void RejectPayment()
         {
-            if (RenterPaymentStatus == e_RenterPaymentStatus.Rejected)
+            if (ReceiverPaymentStatus == e_ReceiverPaymentStatus.Rejected)
             {
-                AddNotification("RenterPaymentStatus", "Este pagamento já foi recusado.");
+                AddNotification("ReceiverPaymentStatus", "Este pagamento já foi recusado.");
                 return;
             }
 
-            RenterPaymentStatus = e_RenterPaymentStatus.Rejected;
+            ReceiverPaymentStatus = e_ReceiverPaymentStatus.Rejected;
         }
 
         public decimal CalculateOwedAmount(DateTime dueDate)
         {
-            if (TenantPaymentStatus == e_TenantPaymentStatus.Executed)
+            if (PayerPaymentStatus == e_PayerPaymentStatus.Executed)
                 return 0M;
 
             var daysLate = (DateTime.Now - dueDate).Days;

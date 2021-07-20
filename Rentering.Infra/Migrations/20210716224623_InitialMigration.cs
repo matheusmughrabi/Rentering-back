@@ -72,8 +72,8 @@ namespace Rentering.Infra.Migrations
                     ContractId = table.Column<int>(type: "int", nullable: false),
                     Month = table.Column<DateTime>(type: "Date", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(19,5)", nullable: false),
-                    RenterPaymentStatus = table.Column<int>(type: "int", nullable: false),
-                    TenantPaymentStatus = table.Column<int>(type: "int", nullable: false)
+                    ReceiverPaymentStatus = table.Column<int>(type: "int", nullable: false),
+                    PayerPaymentStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

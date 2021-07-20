@@ -141,10 +141,10 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
 
-            var isCurrentUserTheContractTenant = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Tenant && c.Status == e_ParticipantStatus.Accepted);
+            var isCurrentUserTheContractPayer = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Payer && c.Status == e_ParticipantStatus.Accepted);
 
-            if (isCurrentUserTheContractTenant.Count() == 0)
+            if (isCurrentUserTheContractPayer.Count() == 0)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas locatários do contrato podem realizar pagamentos." });
 
             var rejectedPaymentEntity = contractEntity.ExecutePayment(command.Month);
@@ -172,7 +172,7 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas os locadores do contrato podem aceitar pagamentos." });
@@ -202,7 +202,7 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não foi encontrado" });
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas locadores do contrato podem recusar pagamentos." });
