@@ -42,18 +42,18 @@ namespace Rentering.Contracts.Application.Handlers
             contractEntity?.InviteParticipant(command.AccountId, e_ParticipantRole.Owner);
 
             if (_contractUnitOfWork.EstateContractCUDRepository.ContractNameExists(command.ContractName))
-                AddNotification("ContractName", "This ContractName is already registered");
+                AddNotification("ContractName", "Este nome de contrato já existe. Por favor, tente um nome diferente.");
 
             AddNotifications(rentPrice.Notifications);
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.EstateContractCUDRepository.Add(contractEntity);
             _contractUnitOfWork.Save();
 
-            var createdContract = new CommandResult(true, "Contract created successfuly", new
+            var createdContract = new CommandResult(true, "Contrato criado com sucesso!", new
             {
                 contractEntity.Id,
                 contractEntity.ContractName,
@@ -71,27 +71,27 @@ namespace Rentering.Contracts.Application.Handlers
             var newParticipantAccountId = _contractUnitOfWork.EstateContractQueryRepository.GetAccountIdByEmail(command.Email);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado." });
 
             if (newParticipantAccountId == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Este email não está vinculado a uma conta" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Este email não está vinculado a uma conta" });
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas o criador do contrato pode convidar participantes." });
 
             contractEntity?.InviteParticipant(newParticipantAccountId, (e_ParticipantRole)command.ParticipantRole);
 
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var updatedContract = new CommandResult(true, "Participant invited successfuly", new
+            var updatedContract = new CommandResult(true, "Participante convidado com sucesso!", new
             {
                 contractEntity.ContractName
             });
@@ -106,27 +106,27 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contracto não encontrado" });
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to invite participants" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas o do contrato pode remover participantes." });
 
             if (command.AccountId == command.CurrentUserId)
-                return new CommandResult(false, "Fix erros below", new { Message = "Você é o criador deste contrato e não pode ser removido." });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Você é o criador deste contrato e não pode ser removido." });
 
             contractEntity?.RemoveParticipant(command.AccountId);
 
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var updatedContract = new CommandResult(true, "Participant invited successfuly", new
+            var updatedContract = new CommandResult(true, "Participante removido com sucesso.", new
             {
                 contractEntity.ContractName
             });
@@ -141,24 +141,24 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only contract owners are allowed to create payment cycles" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas o dono do contrato pode criar o ciclo de pagamento." });
 
             contractEntity.CreatePaymentCycle();
 
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var createdPayments = new CommandResult(true, "Payment cycle created successfuly", new
+            var createdPayments = new CommandResult(true, "Ciclo de pagamento criado com sucesso!", new
             {
                 contractEntity.Payments
             });
@@ -173,25 +173,25 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
 
             var isCurrentUserTheContractTenant = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Tenant && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractTenant.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract tenants are allowed to execute payments" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas locatários do contrato podem realizar pagamentos." });
 
-            var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
+            var rejectedPaymentEntity = contractEntity.ExecutePayment(command.Month);
 
             AddNotifications(contractEntity.Notifications);
             AddNotifications(rejectedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
+            var rejectedPayment = new CommandResult(true, "Pagamento realizado com sucesso!");
 
             return rejectedPayment;
         }
@@ -203,13 +203,13 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado" });
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to accept payments" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas os locadores do contrato podem aceitar pagamentos." });
 
             var acceptedPaymentEntity = contractEntity.AcceptPayment(command.Month);
 
@@ -217,7 +217,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(acceptedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
@@ -233,13 +233,13 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.EstateContractCUDRepository.GetEstateContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não foi encontrado" });
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Renter && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
-                return new CommandResult(false, "Fix erros below", new { Message = "Only the contract renters are allowed to reject payments" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas locadores do contrato podem recusar pagamentos." });
 
             var rejectedPaymentEntity = contractEntity.RejectPayment(command.Month);
 
@@ -247,11 +247,11 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(rejectedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var rejectedPayment = new CommandResult(true, "Payment rejected successfuly");
+            var rejectedPayment = new CommandResult(true, "Pagamento recusado com sucesso!");
 
             return rejectedPayment;
         }
@@ -263,18 +263,18 @@ namespace Rentering.Contracts.Application.Handlers
             var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
 
             if (participantForCUD == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
 
             participantForCUD.AcceptToParticipate();
 
             AddNotifications(participantForCUD);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var participant = new CommandResult(true, "You have accepted to participate in the contract successfuly", new
+            var participant = new CommandResult(true, "Você aceitou participar do contrato com sucesso!", new
             {
             });
 
@@ -288,18 +288,18 @@ namespace Rentering.Contracts.Application.Handlers
             var participantForCUD = _contractUnitOfWork.AccountContractCUDRepository.GetAccountContractForCUD(command.AccountId, command.ContractId);
 
             if (participantForCUD == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Participant not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Participante não encontrado." });
 
             participantForCUD.RejectToParticipate();
 
             AddNotifications(participantForCUD);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
             _contractUnitOfWork.Save();
 
-            var participant = new CommandResult(true, "You have rejected to participate in the contract successfuly", new
+            var participant = new CommandResult(true, "Você recusou participar do contrato com sucesso!", new
             {
             });
 
@@ -315,19 +315,19 @@ namespace Rentering.Contracts.Application.Handlers
             var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
 
             if (isCurrentUserParticipant == false)
-                return new CommandResult(false, "Fix erros below", new { Message = "You are not a participant of this contract" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Você não é um participate deste contrato." });
 
             if (contractEntity == null)
-                return new CommandResult(false, "Fix erros below", new { Message = "Contract not found" });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Contrato não encontrado." });
 
             var currentOwedAmount = contractEntity.CurrentOwedAmount();
 
             AddNotifications(contractEntity);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
 
-            var result = new CommandResult(true, "Current owed amount calculated successfuly", new
+            var result = new CommandResult(true, "Valor devido calculador com sucesso!", new
             {
                 CurrentOwedAmount = currentOwedAmount
             });
