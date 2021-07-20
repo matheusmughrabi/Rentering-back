@@ -23,7 +23,7 @@ namespace Rentering.Contracts.Domain.Entities
             if (status != null)
                 Status = (e_ParticipantStatus)status;
             else
-                Status = e_ParticipantStatus.Invited;
+                Status = e_ParticipantStatus.Pending;
         }
 
         public int AccountId { get; private set; }

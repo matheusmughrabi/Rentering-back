@@ -221,7 +221,7 @@ namespace Rentering.Contracts.Domain.Entities
                 return 0M;
 
             var currentPayment = Payments.OrderBy(c => c.Month)
-                .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.NONE)
+                .Where(c => c.TenantPaymentStatus == e_TenantPaymentStatus.None)
                 .FirstOrDefault();
 
             if (currentPayment == null)

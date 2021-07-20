@@ -24,17 +24,17 @@ namespace Rentering.Contracts.Domain.Entities
             Month = month;
             RentPrice = rentPrice;
 
-            TenantPaymentStatus = e_TenantPaymentStatus.NONE;
+            TenantPaymentStatus = e_TenantPaymentStatus.None;
 
             if (renterPaymentStatus != null)
                 RenterPaymentStatus = (e_RenterPaymentStatus)renterPaymentStatus;
             else
-                RenterPaymentStatus = e_RenterPaymentStatus.NONE;
+                RenterPaymentStatus = e_RenterPaymentStatus.None;
 
             if (tenantPaymentStatus != null)
                 TenantPaymentStatus = (e_TenantPaymentStatus)tenantPaymentStatus;
             else
-                TenantPaymentStatus = e_TenantPaymentStatus.NONE;
+                TenantPaymentStatus = e_TenantPaymentStatus.None;
         }
 
         public int ContractId { get; set; }
@@ -46,40 +46,40 @@ namespace Rentering.Contracts.Domain.Entities
 
         public void ExecutePayment()
         {
-            if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.Executed)
             {
                 AddNotification("TenantPaymentStatus", "Payment has been executed already");
                 return;
             }
 
-            TenantPaymentStatus = e_TenantPaymentStatus.EXECUTED;
+            TenantPaymentStatus = e_TenantPaymentStatus.Executed;
         }
 
         public void AcceptPayment()
         {
-            if (RenterPaymentStatus == e_RenterPaymentStatus.ACCEPTED)
+            if (RenterPaymentStatus == e_RenterPaymentStatus.Accepted)
             {
                 AddNotification("RenterPaymentStatus", "Payment is accepted already");
                 return;
             }
 
-            RenterPaymentStatus = e_RenterPaymentStatus.ACCEPTED;
+            RenterPaymentStatus = e_RenterPaymentStatus.Accepted;
         }
 
         public void RejectPayment()
         {
-            if (RenterPaymentStatus == e_RenterPaymentStatus.REJECTED)
+            if (RenterPaymentStatus == e_RenterPaymentStatus.Rejected)
             {
                 AddNotification("RenterPaymentStatus", "Payment is rejected already");
                 return;
             }
 
-            RenterPaymentStatus = e_RenterPaymentStatus.REJECTED;
+            RenterPaymentStatus = e_RenterPaymentStatus.Rejected;
         }
 
         public decimal CalculateOwedAmount(DateTime dueDate)
         {
-            if (TenantPaymentStatus == e_TenantPaymentStatus.EXECUTED)
+            if (TenantPaymentStatus == e_TenantPaymentStatus.Executed)
                 return 0M;
 
             var daysLate = (DateTime.Now - dueDate).Days;

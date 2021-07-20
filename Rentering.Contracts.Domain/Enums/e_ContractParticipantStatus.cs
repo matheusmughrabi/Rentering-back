@@ -8,12 +8,12 @@ namespace Rentering.Contracts.Domain.Enums
         None = 1,
 
         [Description("Pendente")]
-        Pendente = 2,
+        Pending = 2,
 
         [Description("Aceito")]
-        Aceito = 3,
+        Accepted = 3,
 
         [Description("Recusado")]
-        Recusado = 4
+        Rejected = 4
     }
 }

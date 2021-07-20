@@ -111,7 +111,7 @@ namespace Rentering.Infra.Contracts.QueryRepositories
         {
             var result = _renteringDbContext.AccountContracts
                 .AsNoTracking()
-                .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Invited)
+                .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Pending)
                 .Include(c => c.EstateContract)
                 .Select(p => new GetPendingInvitationsQueryResult() 
                     { 
