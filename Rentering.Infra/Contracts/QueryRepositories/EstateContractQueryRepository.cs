@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Enums;
 using Rentering.Contracts.Domain.Data.QueryRepositories;
 using Rentering.Contracts.Domain.Data.QueryRepositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -108,19 +109,25 @@ namespace Rentering.Infra.Contracts.QueryRepositories
 
         public IEnumerable<GetPendingInvitationsQueryResult> GetPendingInvitations(int accountId)
         {
-            var accountContractsEntitiesPending = _renteringDbContext.AccountContracts
+            var result = _renteringDbContext.AccountContracts
                 .AsNoTracking()
                 .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Invited)
                 .Include(c => c.EstateContract)
+                .Select(p => new GetPendingInvitationsQueryResult() 
+                    { 
+                        Id = p.ContractId,
+                        ContractName = p.EstateContract.ContractName,
+                        ContractOwner = "Meg Teste",
+                        ContractState = e_ContractState.WaitingParticipantsAccept.ToDescriptionString(),
+                        ParticipantRole = e_ParticipantRole.Renter.ToDescriptionString(),
+                        RentPrice = 1500M,
+                        RentDueDate = DateTime.Now,
+                        ContractStartDate = DateTime.Now,
+                        ContractEndDate = DateTime.Now.AddYears(1)
+                    })
                 .ToList();
 
-            var contractsQueryResults = new List<GetPendingInvitationsQueryResult>();
-            accountContractsEntitiesPending?.ForEach(c => contractsQueryResults.Add(new GetPendingInvitationsQueryResult()
-            {
-                ContractName = c.EstateContract.ContractName
-            }));
-
-            return contractsQueryResults;
+            return result;
         }
 
         public int GetAccountIdByEmail(string email)
