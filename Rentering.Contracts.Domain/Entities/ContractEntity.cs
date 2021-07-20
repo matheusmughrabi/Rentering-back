@@ -215,7 +215,7 @@ namespace Rentering.Contracts.Domain.Entities
         public decimal CurrentOwedAmount()
         {
             e_ContractState[] acceptedStates = { e_ContractState.Active };
-            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, "Impossível calcular o valor devido atualmente, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
+            bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível calcular o valor devido atualmente, pois o estado atual do contrato {ContractState.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return 0M;
