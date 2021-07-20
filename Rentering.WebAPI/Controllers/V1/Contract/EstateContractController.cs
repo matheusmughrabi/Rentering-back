@@ -17,6 +17,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             _contractUnitOfWork = contractUnitOfWork;
         }
 
+        #region GetContractsOfCurrentUser
         [HttpGet]
         [Route("UserContracts")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -31,7 +32,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(contracts);
         }
+        #endregion
 
+        #region GetContractDetailed
         [HttpGet]
         [Route("ContractDetailed/{contractId}")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -49,7 +52,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(contract);
         }
+        #endregion
 
+        #region GetPendingInvitations
         [HttpGet]
         [Route("PendingInvitations")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -64,7 +69,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(pendingInvitations);
         }
+        #endregion
 
+        #region GetPaymentsOfContract
         [HttpGet]
         [Route("PaymentsOfContract")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -79,25 +86,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
 
-        [HttpPost]
-        [Route("CalculateOwedAmount")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            getCurrentOwedAmountCommand.CurrentUserId = accountId;
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(getCurrentOwedAmountCommand);
-
-            return Ok(result);
-        }              
-
+        #region CreateContract
         [HttpPost]
         [Route("CreateContract")]
         //[Authorize(Roles = "RegularUser,Admin")]
@@ -115,7 +106,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
 
+        #region InviteParticipant
         [HttpPut]
         [Route("InviteParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -133,7 +126,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
 
+        #region RemoveParticipant
         [HttpPut]
         [Route("RemoveParticipant")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -151,55 +146,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
 
-        [HttpPatch]
-        [Route("ExecutePayment")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult ExecutePayment([FromBody] ExecutePaymentCommand executePaymentCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(executePaymentCommand);
-
-            return Ok(result);
-        }
-
-        [HttpPatch]
-        [Route("AcceptPayment")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult AcceptPayment([FromBody] AcceptPaymentCommand acceptPaymentCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(acceptPaymentCommand);
-
-            return Ok(result);
-        }
-
-        [HttpPatch]
-        [Route("RejectPayment")]
-        [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult RejectPayment([FromBody] RejectPaymentCommand rejectPaymentCommand)
-        {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var handler = new EstateContractHandlers(_contractUnitOfWork);
-            var result = handler.Handle(rejectPaymentCommand);
-
-            return Ok(result);
-        }
-
+        # region AcceptToParticipate
         [HttpPatch]
         [Route("AcceptToParticipate")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -217,7 +166,9 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
 
+        #region RejectToParticipate
         [HttpPatch]
         [Route("RejectToParticipate")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -235,5 +186,80 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             return Ok(result);
         }
+        #endregion
+
+        #region CalculateCurrentOwedAmount
+        [HttpPost]
+        [Route("CalculateOwedAmount")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest(authenticatedUserMessage);
+
+            getCurrentOwedAmountCommand.CurrentUserId = accountId;
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(getCurrentOwedAmountCommand);
+
+            return Ok(result);
+        }
+        #endregion
+
+        #region ExecutePayment
+        [HttpPatch]
+        [Route("ExecutePayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult ExecutePayment([FromBody] ExecutePaymentCommand executePaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest(authenticatedUserMessage);
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(executePaymentCommand);
+
+            return Ok(result);
+        }
+        #endregion
+
+        #region AcceptPayment
+        [HttpPatch]
+        [Route("AcceptPayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AcceptPayment([FromBody] AcceptPaymentCommand acceptPaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest(authenticatedUserMessage);
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(acceptPaymentCommand);
+
+            return Ok(result);
+        }
+        #endregion
+
+        #region RejectPayment
+        [HttpPatch]
+        [Route("RejectPayment")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RejectPayment([FromBody] RejectPaymentCommand rejectPaymentCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest(authenticatedUserMessage);
+
+            var handler = new EstateContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(rejectPaymentCommand);
+
+            return Ok(result);
+        }
+        #endregion
     }
 }

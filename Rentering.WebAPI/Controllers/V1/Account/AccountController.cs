@@ -19,6 +19,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             _accountUnitOfWork = accountUnitOfWork;
         }
 
+        #region GetCurrentUser
         [HttpGet]
         [Route("GetCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -33,7 +34,9 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             return Ok(accountQueryResult);
         }
+        #endregion
 
+        #region Register
         [HttpPost]
         [Route("Register")]
         public IActionResult Register([FromBody] RegisterCommand accountCommand)
@@ -46,7 +49,9 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             return Ok(result);
         }
+        #endregion
 
+        #region Login
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
@@ -63,7 +68,9 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             return Ok(response);
         }
+        #endregion
 
+        #region Delete
         [HttpDelete]
         [Route("Delete")]
         [Authorize(Roles = "RegularUser,Admin")]
@@ -83,5 +90,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             return Ok(deletedAccount);
         }
+        [
+        #endregion]
     }
 }
