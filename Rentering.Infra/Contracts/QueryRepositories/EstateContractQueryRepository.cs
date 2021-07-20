@@ -117,14 +117,14 @@ namespace Rentering.Infra.Contracts.QueryRepositories
                     { 
                         Id = p.ContractId,
                         ContractName = p.EstateContract.ContractName,
-                        ContractOwner = "Meg Teste",
-                        ContractState = e_ContractState.WaitingParticipantsAccept.ToDescriptionString(),
-                        ParticipantRole = e_ParticipantRole.Renter.ToDescriptionString(),
-                        RentPrice = 1500M,
-                        RentDueDate = DateTime.Now,
-                        ContractStartDate = DateTime.Now,
-                        ContractEndDate = DateTime.Now.AddYears(1)
-                    })
+                        ContractOwner = "Matheus Campanini Mughrabi Mockado",
+                        ContractState = p.EstateContract.ContractState.ToDescriptionString(),
+                        ParticipantRole = p.ParticipantRole.ToDescriptionString(),
+                        RentPrice = p.EstateContract.RentPrice.Price,
+                        RentDueDate = p.EstateContract.RentDueDate,
+                        ContractStartDate = p.EstateContract.ContractStartDate,
+                        ContractEndDate = p.EstateContract.ContractEndDate
+                })
                 .ToList();
 
             return result;
