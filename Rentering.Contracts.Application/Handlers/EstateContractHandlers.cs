@@ -231,7 +231,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
 
-            contractEntity.AcceptToParticipate(command.AccountId);
+            contractEntity.AcceptToParticipate(command.AccountContractId);
 
             AddNotifications(contractEntity);
 
@@ -256,7 +256,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
                 return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
 
-            contractEntity.RejectToParticipate(command.AccountId);
+            contractEntity.RejectToParticipate(command.AccountContractId);
 
             AddNotifications(contractEntity);
 

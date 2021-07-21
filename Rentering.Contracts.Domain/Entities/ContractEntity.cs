@@ -77,9 +77,11 @@ namespace Rentering.Contracts.Domain.Entities
                 _participants.Add(accountContractsEntity);
             }
 
-            const int minNumberOfParticipants = 2;
+            bool isContractReady = _participants
+                .Any(c => (c.ParticipantRole == e_ParticipantRole.Payer && c.Status == e_ParticipantStatus.Accepted)
+                    && (c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted));
 
-            if (Participants.Count() == minNumberOfParticipants)
+            if (isContractReady)
                 ContractState = e_ContractState.WaitingParticipantsAccept;
         }
 
@@ -99,7 +101,7 @@ namespace Rentering.Contracts.Domain.Entities
             _participants.Remove(participantToRemove);
         }
 
-        public void AcceptToParticipate(int accountId)
+        public void AcceptToParticipate(int accountContractId)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
             bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível aceitar participação, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
@@ -107,7 +109,7 @@ namespace Rentering.Contracts.Domain.Entities
             if (isAllowed == false)
                 return;
 
-            var participant = _participants.Where(c => c.AccountId == accountId && c.ContractId == Id).FirstOrDefault();
+            var participant = _participants.Where(c => c.Id == accountContractId).FirstOrDefault();
 
             if (participant == null)
                 AddNotification("Participante", "O participante informado não faz parte deste contrato.");
@@ -123,7 +125,7 @@ namespace Rentering.Contracts.Domain.Entities
             }
         }
 
-        public void RejectToParticipate(int accountId)
+        public void RejectToParticipate(int accountContractId)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
             bool isAllowed = IsProcessAllowedInCurrentContractState(acceptedStates, $"Impossível aceitar participação, pois o estado atual do contrato é {ContractState.ToDescriptionString()}.");
@@ -131,7 +133,7 @@ namespace Rentering.Contracts.Domain.Entities
             if (isAllowed == false)
                 return;
 
-            var participant = _participants.Where(c => c.AccountId == accountId && c.ContractId == Id).FirstOrDefault();
+            var participant = _participants.Where(c => c.Id == accountContractId).FirstOrDefault();
 
             if (participant == null)
                 AddNotification("Participante", "O participante informado não faz parte deste contrato.");
@@ -163,12 +165,6 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (isAllowed == false)
                 return;
-
-            if (Id == 0)
-            {
-                AddNotification("Id", "O id do contrato não pode ser nulo");
-                return;
-            }
 
             var monthSpan = (ContractEndDate - ContractStartDate).GetMonths();
 

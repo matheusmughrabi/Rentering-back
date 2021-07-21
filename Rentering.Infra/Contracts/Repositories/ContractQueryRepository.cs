@@ -117,7 +117,8 @@ namespace Rentering.Infra.Contracts.Repositories
                 .Include(c => c.Contract)
                 .Select(p => new GetPendingInvitationsQueryResult()
                 {
-                    Id = p.ContractId,
+                    AccountContractId = p.Id,
+                    ContractId = p.ContractId,
                     ContractName = p.Contract.ContractName,
                     ContractOwner = "Matheus Campanini Mughrabi Mockado",
                     ContractState = p.Contract.ContractState.ToDescriptionString(),

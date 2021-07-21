@@ -219,6 +219,8 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
+            executePaymentCommand.CurrentUserId = accountId;
+
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(executePaymentCommand);
 
@@ -237,6 +239,8 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
+            acceptPaymentCommand.CurrentUserId = accountId;
+
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptPaymentCommand);
 
@@ -254,6 +258,8 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
 
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
+
+            rejectPaymentCommand.CurrentUserId = accountId;
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);

@@ -5,7 +5,8 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
 {
     public class GetPendingInvitationsQueryResult
     {
-        public int Id { get; set; }
+        public int AccountContractId { get; set; }
+        public int ContractId { get; set; }
         public string ContractName { get; set; }
         public string ContractOwner { get; set; }
         public string ContractState { get; set; }
