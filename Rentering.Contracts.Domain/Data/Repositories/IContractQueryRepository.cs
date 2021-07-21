@@ -6,7 +6,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories
     public interface IContractQueryRepository
     {
         IEnumerable<GetContractsOfCurrentUserQueryResult> GetContractsOfCurrentUser(int accountId);
-        GetContractDetailedQueryResult GetContractDetailed(int contractId);
+        GetContractDetailedQueryResult GetContractDetailed(int accountId, int contractId);
         IEnumerable<GetPendingInvitationsQueryResult> GetPendingInvitations(int accountId);
         IEnumerable<GetPaymentsOfContractQueryResult> GetPaymentsOfContract(int contractId);
         int GetAccountIdByEmail(string email);

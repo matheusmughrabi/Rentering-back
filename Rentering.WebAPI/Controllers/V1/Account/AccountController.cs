@@ -4,6 +4,7 @@ using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
+using Rentering.WebAPI.Authorization.Models;
 using Rentering.WebAPI.Authorization.Services;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
@@ -47,7 +48,14 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(accountCommand);
 
-            return Ok(result);
+            if (result.Success == false)
+                return Ok(result);
+
+            var userInfo = PerformLogin(accountCommand.Username, accountCommand.Password);
+
+            var response = new CommandResult(true, "Token gerado", userInfo);
+
+            return Ok(response);
         }
         #endregion
 
@@ -57,12 +65,10 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(loginCommand.Username);
+            var userInfo = PerformLogin(loginCommand.Username, loginCommand.Password);
 
-            if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
-                return NotFound(new { Message = "Nome de usuário ou senha inválidos" });
-
-            var userInfo = TokenService.GenerateToken(accountEntity);
+            if (userInfo == null)
+                return NotFound("Usuário ou senha incorretos");
 
             var response = new CommandResult(true, "Token gerado", userInfo);
 
@@ -91,5 +97,16 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             return Ok(deletedAccount);
         }
         #endregion
+
+        private UserInfoModel PerformLogin(string username, string password)
+        {
+            var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(username);
+
+            if (accountEntity == null || accountEntity.Password.Password != password)
+                return null;
+
+            var userInfo = TokenService.GenerateToken(accountEntity);
+            return userInfo;
+        }
     }
 }

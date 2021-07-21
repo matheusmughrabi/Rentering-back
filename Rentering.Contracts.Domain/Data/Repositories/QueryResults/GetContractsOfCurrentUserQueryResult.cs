@@ -7,8 +7,8 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
     {
         public int Id { get; set; }
         public string ContractName { get; set; }
-        public e_ContractState ContractState { get; set; }
-        public e_ParticipantRole ParticipantRole { get; set; }
+        public string ContractState { get; set; }
+        public string ParticipantRole { get; set; }
         public decimal RentPrice { get; set; }
         public DateTime RentDueDate { get; set; }
         public DateTime ContractStartDate { get; set; }

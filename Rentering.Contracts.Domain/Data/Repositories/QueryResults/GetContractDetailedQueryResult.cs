@@ -7,6 +7,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
     {
         public int Id { get; set; }
         public string ContractName { get; set; }
+        public string CurrentUserRole { get; set; }
         public string ContractState { get; set; }
         public decimal RentPrice { get; set; }
         public DateTime RentDueDate { get; set; }

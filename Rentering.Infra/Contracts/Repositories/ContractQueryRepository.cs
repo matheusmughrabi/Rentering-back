@@ -17,7 +17,7 @@ namespace Rentering.Infra.Contracts.Repositories
             _renteringDbContext = renteringDbContext;
         }
 
-        public GetContractDetailedQueryResult GetContractDetailed(int contractId)
+        public GetContractDetailedQueryResult GetContractDetailed(int accountId, int contractId)
         {
             var contractDetailed = _renteringDbContext.Contract
                 .AsNoTracking()
@@ -27,6 +27,9 @@ namespace Rentering.Infra.Contracts.Repositories
                 .Select(c => new GetContractDetailedQueryResult()
                 {
                     Id = c.Id,
+                    CurrentUserRole = c.Participants.Where(c => c.AccountId == accountId)
+                        .Select(p => p.ParticipantRole.ToDescriptionString())
+                        .FirstOrDefault(),
                     ContractName = c.ContractName,
                     ContractState = c.ContractState.ToDescriptionString(),
                     RentPrice = c.RentPrice.Price,
@@ -75,8 +78,8 @@ namespace Rentering.Infra.Contracts.Repositories
             {
                 Id = c.Id,
                 ContractName = c.ContractName,
-                ContractState = c.ContractState,
-                ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole,
+                ContractState = c.ContractState.ToDescriptionString(),
+                ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole.ToDescriptionString(),
                 RentPrice = c.RentPrice.Price,
                 RentDueDate = c.RentDueDate,
                 ContractStartDate = c.ContractStartDate,

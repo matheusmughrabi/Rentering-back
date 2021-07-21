@@ -45,7 +45,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
             if (isParsingSuccesful == false)
                 return BadRequest(authenticatedUserMessage);
 
-            var contract = _contractUnitOfWork.ContractQueryRepository.GetContractDetailed(contractId);
+            var contract = _contractUnitOfWork.ContractQueryRepository.GetContractDetailed(accountId, contractId);
 
             //if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
             //    return BadRequest("You are not a participant of this contract");
