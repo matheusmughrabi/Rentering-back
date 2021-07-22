@@ -10,10 +10,13 @@ namespace Rentering.Contracts.Domain.Enums
         [Description("Aguardando todos a aceitação de todos os participantes")]
         WaitingParticipantsAccept = 2,
 
+        [Description("Pronto para ser ativado")]
+        ReadyForActivation = 3,
+
         [Description("Ativo")]
-        Active = 3,
+        Active = 4,
 
         [Description("Expirado")]
-        Expired = 4
+        Expired = 5
     }
 }

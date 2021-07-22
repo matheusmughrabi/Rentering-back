@@ -18,7 +18,8 @@ namespace Rentering.Contracts.Application.Handlers
         IHandler<RejectPaymentCommand>,
         IHandler<AcceptToParticipateCommand>,
         IHandler<RejectToParticipateCommand>,
-        IHandler<GetCurrentOwedAmountCommand>
+        IHandler<GetCurrentOwedAmountCommand>,
+        IHandler<ActivateContractCommand>
     {
         private readonly IContractUnitOfWork _contractUnitOfWork;
 
@@ -270,6 +271,37 @@ namespace Rentering.Contracts.Application.Handlers
             });
 
             return participant;
+        }
+        #endregion
+
+        #region Activate Contract
+        public ICommandResult Handle(ActivateContractCommand command)
+        {
+            var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
+
+            if (contractEntity == null)
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "A conta informada não foi encontrada." });
+
+            var isCurrentUserTheContractOwner = contractEntity.Participants
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+
+            if (isCurrentUserTheContractOwner.Count() == 0)
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Message = "Apenas o criador do contrato pode ativá-lo." });
+
+            contractEntity.ActivateContract();
+
+            AddNotifications(contractEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
+
+            _contractUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Você ativou o contrato com sucesso!", new
+            {
+            });
+
+            return result;
         }
         #endregion
 

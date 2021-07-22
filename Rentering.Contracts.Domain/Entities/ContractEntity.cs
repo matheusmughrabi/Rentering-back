@@ -77,11 +77,11 @@ namespace Rentering.Contracts.Domain.Entities
                 _participants.Add(accountContractsEntity);
             }
 
-            bool isContractReady = _participants
-                .Any(c => (c.ParticipantRole == e_ParticipantRole.Payer && c.Status == e_ParticipantStatus.Accepted)
-                    && (c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted));
+            bool contractHasMinimunPreRequisites = _participants
+                .Any(c => c.ParticipantRole == e_ParticipantRole.Payer) 
+                && _participants.Any(c => c.ParticipantRole == e_ParticipantRole.Receiver);
 
-            if (isContractReady)
+            if (contractHasMinimunPreRequisites)
                 ContractState = e_ContractState.WaitingParticipantsAccept;
         }
 
@@ -101,6 +101,18 @@ namespace Rentering.Contracts.Domain.Entities
             _participants.Remove(participantToRemove);
         }
 
+        public void ActivateContract()
+        {
+            if (ContractState != e_ContractState.ReadyForActivation)
+            {
+                AddNotification("ContractState", $"O contrato ainda não está pronto para ativação, pois está {ContractState}");
+                return;
+            }
+
+            ContractState = e_ContractState.Active;
+            CreatePaymentCycle();
+        }
+
         public void AcceptToParticipate(int accountContractId)
         {
             e_ContractState[] acceptedStates = { e_ContractState.NotEnoughParticipants, e_ContractState.WaitingParticipantsAccept };
@@ -116,13 +128,10 @@ namespace Rentering.Contracts.Domain.Entities
 
             participant.AcceptToParticipate();
 
-            var allParticipantsAccepted = !_participants.Any(c => c.Status == e_ParticipantStatus.Pending || c.Status == e_ParticipantStatus.Rejected);
+            bool pendingInvitations = _participants.Any(c => c.Status == e_ParticipantStatus.Pending || c.Status == e_ParticipantStatus.Rejected);
 
-            if (allParticipantsAccepted)
-            {
-                ContractState = e_ContractState.Active;
-                CreatePaymentCycle();
-            }
+            if (ContractState == e_ContractState.WaitingParticipantsAccept && pendingInvitations == false)
+                ContractState = e_ContractState.ReadyForActivation;
         }
 
         public void RejectToParticipate(int accountContractId)

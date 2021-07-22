@@ -188,6 +188,26 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         }
         #endregion
 
+        #region ActivateContract
+        [HttpPatch]
+        [Route("Activate")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult Activate([FromBody] ActivateContractCommand activateContractCommand)
+        {
+            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+
+            if (isParsingSuccesful == false)
+                return BadRequest(authenticatedUserMessage);
+
+            activateContractCommand.CurrentUserId = accountId;
+
+            var handler = new ContractHandlers(_contractUnitOfWork);
+            var result = handler.Handle(activateContractCommand);
+
+            return Ok(result);
+        }
+        #endregion
+
         #region CalculateCurrentOwedAmount
         [HttpPost]
         [Route("CalculateOwedAmount")]
