@@ -62,13 +62,13 @@ namespace Rentering.Accounts.Domain.Entities
         {
             if (username.ToString() == Username.ToString())
             {
-                AddNotification("Username", "Novo nome de usuário precisa ser diferente do atual.");
+                AddNotification("Usuário", "Novo nome de usuário precisa ser diferente do atual.");
                 return;
             }
 
             if (username.Invalid)
             {
-                AddNotification("Username", "Nome de usuário inválido.");
+                AddNotification("Usuário", "Nome de usuário inválido.");
                 return;
             }
 

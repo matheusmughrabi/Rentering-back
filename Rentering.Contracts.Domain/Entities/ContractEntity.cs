@@ -62,7 +62,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (isParticipantAlreadyInThisRole)
             {
-                AddNotification("AccountId", $"Esta conta já faz parte deste contrato como { participantRole.ToDescriptionString() }.");
+                AddNotification("Perfil", $"Esta conta já faz parte deste contrato como { participantRole.ToDescriptionString() }.");
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (ContractState != e_ContractState.ReadyForActivation)
             {
-                AddNotification("ContractState", $"O contrato ainda não está pronto para ativação, pois está {ContractState}");
+                AddNotification("Estado do contrato", $"O contrato ainda não está pronto para ativação, pois está {ContractState}");
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (monthSpan < 0)
             {
-                AddNotification("monthSpan", "O período mínimo para criação de um ciclo de pagamento é 1 mês");
+                AddNotification("Período em meses", "O período mínimo para criação de um ciclo de pagamento é 1 mês");
                 return;
             }
 
@@ -189,7 +189,7 @@ namespace Rentering.Contracts.Domain.Entities
 
                 if (_payments.Any(c => c.Month == monthToBeAdded))
                 {
-                    AddNotification("monthSpan", $"{monthToBeAdded} já está registrado no ciclo de pagamento do contrato");
+                    AddNotification("Período em meses", $"{monthToBeAdded} já está registrado no ciclo de pagamento do contrato");
                     continue;
                 }
 
@@ -209,7 +209,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (payment == null)
             {
-                AddNotification("monthSpan", $"{month} não faz parte do ciclo de pagamentos deste contrato.");
+                AddNotification("Período em meses", $"{month} não faz parte do ciclo de pagamentos deste contrato.");
                 return null;
             }
 
@@ -229,7 +229,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (payment == null)
             {
-                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                AddNotification("Período em meses", $"{month} is not registered in payment cycle of this contract");
                 return null;
             }
 
@@ -249,7 +249,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (payment == null)
             {
-                AddNotification("monthSpan", $"{month} is not registered in payment cycle of this contract");
+                AddNotification("Período em meses", $"{month} is not registered in payment cycle of this contract");
                 return null;
             }
 
@@ -271,7 +271,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (currentPayment == null)
             {
-                AddNotification("CurrentPayment", $"Não existem pagamentos em aberto.");
+                AddNotification("Pagamentos", $"Não existem pagamentos em aberto.");
                 return 0M;
             }
 
@@ -285,9 +285,9 @@ namespace Rentering.Contracts.Domain.Entities
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(ContractName, 3, "ContractName", "O nome do contrato precisa ter no mínimo 3 letras.")
-                .HasMaxLen(ContractName, 40, "ContractName", "O nome do contrato precisa ter no máximo 40 letras.")
-                .IsGreaterOrEqualsThan(monthSpan, 1, "MonthSpan", "O período do contrato deve ser de pelo menos 1 mês.")
+                .HasMinLen(ContractName, 3, "Nome do contrato", "O nome do contrato precisa ter no mínimo 3 letras.")
+                .HasMaxLen(ContractName, 40, "Nome do contrato", "O nome do contrato precisa ter no máximo 40 letras.")
+                .IsGreaterOrEqualsThan(monthSpan, 1, "Período em meses", "O período do contrato deve ser de pelo menos 1 mês.")
             );
 
             AddNotifications(RentPrice.Notifications);
@@ -299,7 +299,7 @@ namespace Rentering.Contracts.Domain.Entities
 
             if (contractStatesAllowed.Contains(ContractState) == false)
             {
-                AddNotification("ContractState", message);
+                AddNotification("Estado do contrato", message);
                 isAllowed = false;
             }
 
