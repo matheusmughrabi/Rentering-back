@@ -47,7 +47,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Erro ao criar contrato", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Erro ao criar contrato", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.ContractCUDRepository.Add(contractEntity);
             _contractUnitOfWork.Save();
@@ -72,13 +72,13 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não foi encontrado");
-                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
             if (newParticipantAccountId == 0)
             {
                 AddNotification("Email", "Não foi encontrado um usuário com este email.");
-                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
                 
 
@@ -88,7 +88,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
                 AddNotification("Autorização negada", "Apenas o criador do perfil pode convidar participantes");
-                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
             contractEntity?.InviteParticipant(newParticipantAccountId, (e_ParticipantRole)command.ParticipantRole);
@@ -96,7 +96,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -117,7 +117,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
@@ -126,13 +126,13 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
                 AddNotification("Autorização", "Apenas o do contrato pode remover participantes.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             if (command.AccountId == command.CurrentUserId)
             {
                 AddNotification("Autorização", "Você é o criador do contrato e não pode ser removido.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             contractEntity?.RemoveParticipant(command.AccountId);
@@ -140,7 +140,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(contractEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -161,7 +161,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserTheContractPayer = contractEntity.Participants
@@ -170,7 +170,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractPayer.Count() == 0)
             {
                 AddNotification("Ação negada.", "Você não é pagador deste contrato.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var rejectedPaymentEntity = contractEntity.ExecutePayment(command.Month);
@@ -179,7 +179,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(rejectedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -197,7 +197,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
@@ -206,7 +206,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractRenter.Count() == 0)
             {
                 AddNotification("Ação negada", "Apenas o locador do contrato pode aceitar pagamentos.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var acceptedPaymentEntity = contractEntity.AcceptPayment(command.Month);
@@ -215,7 +215,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(acceptedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -233,7 +233,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
@@ -242,7 +242,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractRenter.Count() == 0)
             {
                 AddNotification("Ação negada", "Apenas o locador do contrato pode recusar pagamentos.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var acceptedPaymentEntity = contractEntity.RejectPayment(command.Month);
@@ -251,7 +251,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(acceptedPaymentEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -269,7 +269,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             contractEntity.AcceptToParticipate(command.AccountContractId);
@@ -277,7 +277,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(contractEntity);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -293,14 +293,14 @@ namespace Rentering.Contracts.Application.Handlers
             var contractEntity = _contractUnitOfWork.ContractCUDRepository.GetContractForCUD(command.ContractId);
 
             if (contractEntity == null)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             contractEntity.RejectToParticipate(command.AccountContractId);
 
             AddNotifications(contractEntity);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -318,7 +318,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
@@ -327,7 +327,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
                 AddNotification("Contrato", "Somendo o criador do contrato pode ativá-lo.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             contractEntity.ActivateContract();
@@ -335,7 +335,7 @@ namespace Rentering.Contracts.Application.Handlers
             AddNotifications(contractEntity);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _contractUnitOfWork.Save();
 
@@ -353,7 +353,7 @@ namespace Rentering.Contracts.Application.Handlers
             if (contractEntity == null)
             {
                 AddNotification("Contrato", "Contrato não encontrado");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
@@ -361,18 +361,18 @@ namespace Rentering.Contracts.Application.Handlers
             if (isCurrentUserParticipant == false)
             {
                 AddNotification("Acesso negado.", "Você não participa deste contrato.");
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
             if (contractEntity == null)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             var currentOwedAmount = contractEntity.CurrentOwedAmount();
 
             AddNotifications(contractEntity);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             var result = new CommandResult(true, "Valor devido calculador com sucesso!", null, new
             {

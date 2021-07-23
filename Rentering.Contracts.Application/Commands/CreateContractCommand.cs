@@ -1,5 +1,4 @@
 ﻿using Rentering.Common.Shared.Commands;
-using Rentering.Contracts.Domain.Enums;
 using System;
 using System.Text.Json.Serialization;
 

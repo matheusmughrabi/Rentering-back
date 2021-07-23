@@ -38,7 +38,7 @@ namespace Rentering.Accounts.Application.Handlers
             AddNotifications(accountEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _accountsUnitOfWork.AccountCUDRepository.Add(accountEntity);
             _accountsUnitOfWork.Save();
