@@ -38,12 +38,12 @@ namespace Rentering.Accounts.Application.Handlers
             AddNotifications(accountEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Corrija os erros abaixo.", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertFluentToCommandNotifications(), null);
 
             _accountsUnitOfWork.AccountCUDRepository.Add(accountEntity);
             _accountsUnitOfWork.Save();
 
-            var createdUser = new CommandResult(true, "Usuário criado com sucesso!", new
+            var createdUser = new CommandResult(true, "Usuário criado com sucesso!", null, new
             {
                 command.Email,
                 command.Username,

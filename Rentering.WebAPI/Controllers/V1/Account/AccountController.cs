@@ -53,7 +53,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             var userInfo = PerformLogin(accountCommand.Username, accountCommand.Password);
 
-            var response = new CommandResult(true, "Token gerado", userInfo);
+            var response = new CommandResult(true, "Token gerado", null, userInfo);
 
             return Ok(response);
         }
@@ -70,7 +70,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             if (userInfo == null)
                 return NotFound("Usuário ou senha incorretos");
 
-            var response = new CommandResult(true, "Token gerado", userInfo);
+            var response = new CommandResult(true, "Token gerado", null, userInfo);
 
             return Ok(response);
         }
@@ -89,7 +89,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             var accountEntity = _accountUnitOfWork.AccountCUDRepository.Delete(accountId);
 
-            var deletedAccount = new CommandResult(true, "Conta deletada com sucesso!",
+            var deletedAccount = new CommandResult(true, "Conta deletada com sucesso!", null,
                 new { UserId = accountId });
 
             SignOut();
