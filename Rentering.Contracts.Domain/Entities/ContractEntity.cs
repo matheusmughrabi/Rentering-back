@@ -105,7 +105,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (ContractState != e_ContractState.ReadyForActivation)
             {
-                AddNotification("Estado do contrato", $"O contrato ainda não está pronto para ativação, pois está {ContractState}");
+                AddNotification("Estado do contrato", $"O contrato ainda não está pronto para ativação, pois está {ContractState.ToDescriptionString()}");
                 return;
             }
 

@@ -6,6 +6,7 @@ using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Security.Models;
 using Rentering.WebAPI.Security.Services;
+using System.Collections.Generic;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
 {
@@ -48,7 +49,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
 
             var userInfo = PerformLogin(accountCommand.Username, accountCommand.Password);
 
-            var response = new CommandResult(true, "Token gerado", null, userInfo);
+            var response = new CommandResult(true, "Usuário criado com sucesso!", null, userInfo);
 
             return Ok(response);
         }
@@ -63,9 +64,14 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             var userInfo = PerformLogin(loginCommand.Username, loginCommand.Password);
 
             if (userInfo == null)
-                return NotFound("Usuário ou senha incorretos");
+            {
+                var result = new CommandResult(false, "Impossível realizar login", null, userInfo);
+                result.AddNotification("Usuário ou senha incorretos.", "Não foi possível realizar o login");
 
-            var response = new CommandResult(true, "Token gerado", null, userInfo);
+                return Ok(result);
+            }     
+
+            var response = new CommandResult(true, "Token gerado!", null, userInfo);
 
             return Ok(response);
         }
