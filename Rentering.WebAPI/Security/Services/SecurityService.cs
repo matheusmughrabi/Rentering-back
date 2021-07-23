@@ -1,16 +1,16 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Rentering.Accounts.Domain.Entities;
-using Rentering.WebAPI.Authorization.Models;
+using Rentering.WebAPI.Security.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Rentering.WebAPI.Authorization.Services
+namespace Rentering.WebAPI.Security.Services
 {
-    public static class TokenService
+    public class SecurityService
     {
-        public static UserInfoModel GenerateToken(AccountEntity account)
+        public UserInfoModel GenerateToken(AccountEntity account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Settings.secret);

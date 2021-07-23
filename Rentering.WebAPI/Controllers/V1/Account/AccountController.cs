@@ -4,8 +4,8 @@ using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
-using Rentering.WebAPI.Authorization.Models;
-using Rentering.WebAPI.Authorization.Services;
+using Rentering.WebAPI.Security.Models;
+using Rentering.WebAPI.Security.Services;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
 {
@@ -26,12 +26,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCurrentUser()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int currentUserId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(currentUserId);
+            var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(GetCurrentUserId());
 
             return Ok(accountQueryResult);
         }
@@ -82,15 +77,9 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult Delete()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+            _accountUnitOfWork.AccountCUDRepository.Delete(GetCurrentUserId());
 
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var accountEntity = _accountUnitOfWork.AccountCUDRepository.Delete(accountId);
-
-            var deletedAccount = new CommandResult(true, "Conta deletada com sucesso!", null,
-                new { UserId = accountId });
+            var deletedAccount = new CommandResult(true, "Conta deletada com sucesso!", null, null);
 
             SignOut();
 
@@ -105,7 +94,7 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             if (accountEntity == null || accountEntity.Password.Password != password)
                 return null;
 
-            var userInfo = TokenService.GenerateToken(accountEntity);
+            var userInfo = new SecurityService().GenerateToken(accountEntity);
             return userInfo;
         }
     }

@@ -23,12 +23,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetContractsOfCurrentUser()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var contracts = _contractUnitOfWork.ContractQueryRepository.GetContractsOfCurrentUser(accountId);
+            var contracts = _contractUnitOfWork.ContractQueryRepository.GetContractsOfCurrentUser(GetCurrentUserId());
 
             return Ok(contracts);
         }
@@ -40,15 +35,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetContractDetailed(int contractId)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var contract = _contractUnitOfWork.ContractQueryRepository.GetContractDetailed(accountId, contractId);
-
-            //if (contract.Participants.Where(c => c.AccountId == accountId).Count() == 0)
-            //    return BadRequest("You are not a participant of this contract");
+            var contract = _contractUnitOfWork.ContractQueryRepository.GetContractDetailed(GetCurrentUserId(), contractId);
 
             return Ok(contract);
         }
@@ -60,12 +47,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetPendingInvitations()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var pendingInvitations = _contractUnitOfWork.ContractQueryRepository.GetPendingInvitations(accountId);
+            var pendingInvitations = _contractUnitOfWork.ContractQueryRepository.GetPendingInvitations(GetCurrentUserId());
 
             return Ok(pendingInvitations);
         }
@@ -77,12 +59,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetPaymentsOfContract(int contractId)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            var result = _contractUnitOfWork.ContractQueryRepository.GetPaymentsOfContract(contractId);
+            var result = _contractUnitOfWork.ContractQueryRepository.GetPaymentsOfContract(GetCurrentUserId());
 
             return Ok(result);
         }
@@ -91,15 +68,10 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         #region CreateContract
         [HttpPost]
         [Route("CreateContract")]
-        //[Authorize(Roles = "RegularUser,Admin")]
+        [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CreateContract([FromBody] CreateContractCommand createContractGuarantorCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            createContractGuarantorCommand.AccountId = accountId;
+            createContractGuarantorCommand.AccountId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(createContractGuarantorCommand);
@@ -114,12 +86,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult InviteParticipant([FromBody] InviteParticipantCommand inviteParticipantCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            inviteParticipantCommand.CurrentUserId = accountId;
+            inviteParticipantCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(inviteParticipantCommand);
@@ -134,12 +101,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RemoveParticipant([FromBody] RemoveParticipantCommand removeParticipantCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            removeParticipantCommand.CurrentUserId = accountId;
+            removeParticipantCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(removeParticipantCommand);
@@ -154,12 +116,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult AcceptToParticipate([FromBody] AcceptToParticipateCommand acceptToParticipateCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            acceptToParticipateCommand.AccountId = accountId;
+            acceptToParticipateCommand.AccountId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptToParticipateCommand);
@@ -174,12 +131,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RejectToParticipate([FromBody] RejectToParticipateCommand rejectToParticipateCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            rejectToParticipateCommand.AccountId = accountId;
+            rejectToParticipateCommand.AccountId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectToParticipateCommand);
@@ -194,12 +146,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult Activate([FromBody] ActivateContractCommand activateContractCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            activateContractCommand.CurrentUserId = accountId;
+            activateContractCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(activateContractCommand);
@@ -214,12 +161,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult CalculateCurrentOwedAmount([FromBody] GetCurrentOwedAmountCommand getCurrentOwedAmountCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            getCurrentOwedAmountCommand.CurrentUserId = accountId;
+            getCurrentOwedAmountCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(getCurrentOwedAmountCommand);
@@ -234,12 +176,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult ExecutePayment([FromBody] ExecutePaymentCommand executePaymentCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            executePaymentCommand.CurrentUserId = accountId;
+            executePaymentCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(executePaymentCommand);
@@ -254,12 +191,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult AcceptPayment([FromBody] AcceptPaymentCommand acceptPaymentCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            acceptPaymentCommand.CurrentUserId = accountId;
+            acceptPaymentCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(acceptPaymentCommand);
@@ -274,12 +206,7 @@ namespace Rentering.WebAPI.Controllers.V1.Contract
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RejectPayment([FromBody] RejectPaymentCommand rejectPaymentCommand)
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest(authenticatedUserMessage);
-
-            rejectPaymentCommand.CurrentUserId = accountId;
+            rejectPaymentCommand.CurrentUserId = GetCurrentUserId();
 
             var handler = new ContractHandlers(_contractUnitOfWork);
             var result = handler.Handle(rejectPaymentCommand);

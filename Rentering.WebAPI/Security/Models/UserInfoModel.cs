@@ -1,6 +1,6 @@
 ﻿using Rentering.Accounts.Domain.Enums;
 
-namespace Rentering.WebAPI.Authorization.Models
+namespace Rentering.WebAPI.Security.Models
 {
     public class UserInfoModel
     {
