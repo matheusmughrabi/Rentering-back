@@ -1,5 +1,4 @@
-﻿using Rentering.Accounts.Domain.Data.CUDRepositories;
-using Rentering.Accounts.Domain.Data.QueryRepositories;
+﻿using Rentering.Accounts.Domain.Data.Repositories;
 using System;
 
 namespace Rentering.Accounts.Domain.Data

@@ -4,7 +4,9 @@ using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Common.Shared.Commands;
-using Rentering.WebAPI.Authorization.Services;
+using Rentering.WebAPI.Security.Models;
+using Rentering.WebAPI.Security.Services;
+using System.Collections.Generic;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
 {
@@ -19,69 +21,87 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             _accountUnitOfWork = accountUnitOfWork;
         }
 
+        #region GetCurrentUser
         [HttpGet]
         [Route("GetCurrentUser")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCurrentUser()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int currentUserId);
-
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(currentUserId);
+            var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(GetCurrentUserId());
 
             return Ok(accountQueryResult);
         }
+        #endregion
 
+        #region Register
         [HttpPost]
         [Route("Register")]
         public IActionResult Register([FromBody] RegisterCommand accountCommand)
         {
             if (User.Identity.IsAuthenticated)
-                return Unauthorized("Logout before creating new account");
+                return Unauthorized("Faça logout antes de criar uma nova conta.");
 
             var handler = new AccountHandlers(_accountUnitOfWork);
             var result = handler.Handle(accountCommand);
 
-            return Ok(result);
-        }
+            if (result.Success == false)
+                return Ok(result);
 
+            var userInfo = PerformLogin(accountCommand.Username, accountCommand.Password);
+
+            var response = new CommandResult(true, "Usuário criado com sucesso!", null, userInfo);
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Login
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginAccountCommand loginCommand)
         {
-            var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(loginCommand.Username);
+            var userInfo = PerformLogin(loginCommand.Username, loginCommand.Password);
 
-            if (accountEntity == null || accountEntity.Password.Password != loginCommand.Password)
-                return NotFound(new { Message = "Invalid username or password" });
+            if (userInfo == null)
+            {
+                var result = new CommandResult(false, "Impossível realizar login", null, userInfo);
+                result.AddNotification("Usuário ou senha incorretos.", "Não foi possível realizar o login");
 
-            var userInfo = TokenService.GenerateToken(accountEntity);
+                return Ok(result);
+            }     
 
-            var response = new CommandResult(true, "Token generated", userInfo);
+            var response = new CommandResult(true, "Token gerado!", null, userInfo);
 
             return Ok(response);
         }
+        #endregion
 
+        #region Delete
         [HttpDelete]
         [Route("Delete")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult Delete()
         {
-            var isParsingSuccesful = int.TryParse(User.Identity.Name, out int accountId);
+            _accountUnitOfWork.AccountCUDRepository.Delete(GetCurrentUserId());
 
-            if (isParsingSuccesful == false)
-                return BadRequest("Invalid logged in user");
-
-            var accountEntity = _accountUnitOfWork.AccountCUDRepository.Delete(accountId);
-
-            var deletedAccount = new CommandResult(true, "Account deleted successfuly",
-                new { UserId = accountId });
+            var deletedAccount = new CommandResult(true, "Conta deletada com sucesso!", null, null);
 
             SignOut();
 
             return Ok(deletedAccount);
+        }
+        #endregion
+
+        private UserInfoModel PerformLogin(string username, string password)
+        {
+            var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(username);
+
+            if (accountEntity == null || accountEntity.Password.Password != password)
+                return null;
+
+            var userInfo = new SecurityService().GenerateToken(accountEntity);
+            return userInfo;
         }
     }
 }

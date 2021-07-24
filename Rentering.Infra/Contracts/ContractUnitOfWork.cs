@@ -1,8 +1,6 @@
 ﻿using Rentering.Contracts.Domain.Data;
-using Rentering.Contracts.Domain.Data.CUDRepositories;
-using Rentering.Contracts.Domain.Data.QueryRepositories;
-using Rentering.Infra.Contracts.CUDRepositories;
-using Rentering.Infra.Contracts.QueryRepositories;
+using Rentering.Contracts.Domain.Data.Repositories;
+using Rentering.Infra.Contracts.Repositories;
 
 namespace Rentering.Infra.Contracts
 {
@@ -14,14 +12,12 @@ namespace Rentering.Infra.Contracts
         {
             _renteringDbContext = contractsDbContext;
 
-            EstateContractCUDRepository = new EstateContractCUDRepository(_renteringDbContext);
-            EstateContractQueryRepository = new EstateContractQueryRepository(_renteringDbContext);
-            AccountContractCUDRepository = new AccountContractCUDRepository(_renteringDbContext);
+            ContractCUDRepository = new ContractCUDRepository(_renteringDbContext);
+            ContractQueryRepository = new ContractQueryRepository(_renteringDbContext);
         }
 
-        public IEstateContractCUDRepository EstateContractCUDRepository { get; private set; }
-        public IEstateContractQueryRepository EstateContractQueryRepository { get; private set; }
-        public IAccountContractCUDRepository AccountContractCUDRepository { get; private set; }
+        public IContractCUDRepository ContractCUDRepository { get; private set; }
+        public IContractQueryRepository ContractQueryRepository { get; private set; }
 
         public void Dispose()
         {

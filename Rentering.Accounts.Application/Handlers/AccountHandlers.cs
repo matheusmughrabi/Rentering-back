@@ -26,10 +26,10 @@ namespace Rentering.Accounts.Application.Handlers
             var accountEntity = new AccountEntity(name, email, username, password);
 
             if (_accountsUnitOfWork.AccountCUDRepository.EmailExists(command.Email))
-                AddNotification("Email", "This Email is already registered");
+                AddNotification("Email", "Este email já está registrado");
 
             if (_accountsUnitOfWork.AccountCUDRepository.UsernameExists(command.Username))
-                AddNotification("Username", "This Username is already registered");
+                AddNotification("Username", "Este nome de usuário já está registrado");
 
             AddNotifications(name.Notifications);
             AddNotifications(email.Notifications);
@@ -38,12 +38,12 @@ namespace Rentering.Accounts.Application.Handlers
             AddNotifications(accountEntity.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Fix erros below", new { Notifications });
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
 
             _accountsUnitOfWork.AccountCUDRepository.Add(accountEntity);
             _accountsUnitOfWork.Save();
 
-            var createdUser = new CommandResult(true, "User created successfuly", new
+            var createdUser = new CommandResult(true, "Usuário criado com sucesso!", null, new
             {
                 command.Email,
                 command.Username,

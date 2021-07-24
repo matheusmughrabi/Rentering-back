@@ -45,13 +45,13 @@ namespace Rentering.Accounts.Domain.Entities
         {
             if (email.ToString() == Email.ToString())
             {
-                AddNotification("Email", "New Email should be different than current one");
+                AddNotification("Email", "O novo email precisa ser diferente do atual.");
                 return;
             }
 
             if (email.Invalid)
             {
-                AddNotification("Email", "Email is invalid");
+                AddNotification("Email", "Email inválido");
                 return;
             }
 
@@ -62,13 +62,13 @@ namespace Rentering.Accounts.Domain.Entities
         {
             if (username.ToString() == Username.ToString())
             {
-                AddNotification("Username", "New Username should be different than current one");
+                AddNotification("Usuário", "Novo nome de usuário precisa ser diferente do atual.");
                 return;
             }
 
             if (username.Invalid)
             {
-                AddNotification("Username", "Username is invalid");
+                AddNotification("Usuário", "Nome de usuário inválido.");
                 return;
             }
 

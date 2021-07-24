@@ -2,24 +2,24 @@
 
 namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_RenterPaymentStatus
+    public enum e_ReceiverPaymentStatus
     {
         [Description("Sem status")]
-        NONE = 0,
+        None = 0,
 
         [Description("Recusado")]
-        REJECTED = 1,
+        Rejected = 1,
 
         [Description("Aceito")]
-        ACCEPTED = 2
+        Accepted = 2
     }
 
-    public enum e_TenantPaymentStatus
+    public enum e_PayerPaymentStatus
     {
         [Description("Sem status")]
-        NONE = 0,
+        None = 0,
 
         [Description("Pagamento realizado")]
-        EXECUTED = 1
+        Executed = 1
     }
 }

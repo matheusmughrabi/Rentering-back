@@ -7,14 +7,11 @@ namespace Rentering.Contracts.Domain.Enums
         [Description("Criador")]
         Owner = 1,
 
-        [Description("Locador")]
-        Renter = 2,
+        [Description("Recebedor")]
+        Receiver = 2,
 
-        [Description("Locatário")]
-        Tenant = 3,
-
-        [Description("Fiador")]
-        Guarantor = 4,
+        [Description("Pagador")]
+        Payer = 3,
 
         [Description("Convidado")]
         Viewer = 5

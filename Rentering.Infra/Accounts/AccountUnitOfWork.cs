@@ -1,8 +1,6 @@
 ﻿using Rentering.Accounts.Domain.Data;
-using Rentering.Accounts.Domain.Data.CUDRepositories;
-using Rentering.Accounts.Domain.Data.QueryRepositories;
-using Rentering.Infra.Accounts.CUDRepositories;
-using Rentering.Infra.Accounts.QueryRepositories;
+using Rentering.Accounts.Domain.Data.Repositories;
+using Rentering.Infra.Accounts.Repositories;
 
 namespace Rentering.Infra.Accounts
 {

@@ -9,7 +9,7 @@
 //namespace Rentering.UnitTests.ContractContext.Entities
 //{
 //    [TestClass]
-//    public class EstateContractEntityTests
+//    public class ContractEntityTests
 //    {
 //        string contractName;
 //        AddressValueObject propertyAddress;
@@ -19,7 +19,7 @@
 //        DateTime contractStartDate;
 //        DateTime contractEndDate;
 
-//        public EstateContractEntityTests()
+//        public ContractEntityTests()
 //        {
 //            contractName = "Contract 1";
 //            propertyAddress = new AddressValueObject("Street 1", "Neighborhood 1", "City 1", "12345678", Contracts.Domain.Enums.e_BrazilStates.AC);
@@ -33,7 +33,7 @@
 //        [TestMethod]
 //        public void ShouldNotInviteParticipant_WhenContractIdIsZero()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
 //            contract.InviteParticipant(1, e_ParticipantRole.Renter);
 
@@ -44,7 +44,7 @@
 //        [TestMethod]
 //        public void ShouldNotInviteParticipant_WhenParticipantIsAlreadyInThisRole()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            var participant = new AccountContractsEntity(1, 1, e_ParticipantRole.Renter);
 //            var participants = new List<AccountContractsEntity>();
@@ -60,7 +60,7 @@
 //        [TestMethod]
 //        public void ShouldInviteParticipant_WithAcceptedStatus_WhenParticipantIsTheFirstInTheContract()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.InviteParticipant(1, e_ParticipantRole.Owner);
 
@@ -70,7 +70,7 @@
 //        [TestMethod]
 //        public void ShouldInviteParticipant_WithInvitedStatus_WhenParticipantIsNotTheFirstInTheContract()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.InviteParticipant(1, e_ParticipantRole.Owner);
 //            contract.InviteParticipant(2, e_ParticipantRole.Owner);
@@ -83,7 +83,7 @@
 //        {
 //            rentPrice = new PriceValueObject(-1500);
 
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
 //            Assert.AreEqual(false, contract.Valid);
 //        }
@@ -91,7 +91,7 @@
 //        [TestMethod]
 //        public void ShouldUpdateRentPrice_WhenPositiveRentPriceIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
 //            Assert.AreEqual(true, contract.Valid);
 //        }
@@ -99,7 +99,7 @@
 //        [TestMethod]
 //        public void ShouldNotCreatePaymentCycle_ContractIdIsSupplied()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate);
 
 //            contract.CreatePaymentCycle();
 
@@ -109,7 +109,7 @@
 //        [TestMethod]
 //        public void ShouldNotCreatePaymentCycle_WhenNegativeMonthSpanIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate.AddYears(2), contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 
@@ -120,7 +120,7 @@
 //        [TestMethod]
 //        public void ShouldCreatePaymentCycle_WhenContractIdIsPassedAndMonthSpanEqualOrGreaterThanOneIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 
@@ -131,7 +131,7 @@
 //        [TestMethod]
 //        public void ShouldNotExecutePayment_WhenPaymentThatIsNotRegisteredIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.ExecutePayment(DateTime.Now.AddYears(2));
@@ -142,20 +142,20 @@
 //        [TestMethod]
 //        public void ShouldExecutePayment_WhenRegisteredPaymentThatHasNotBeenExecutedYetIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.ExecutePayment(DateTime.Now);
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_TenantPaymentStatus.EXECUTED, payment.TenantPaymentStatus);
+//            Assert.AreEqual(e_PayerPaymentStatus.EXECUTED, payment.PayerPaymentStatus);
 //        }
 
 //        [TestMethod]
 //        public void ShouldNotAcceptPayment_WhenPaymentThatIsNotRegisteredIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.AcceptPayment(DateTime.Now.AddYears(2));
@@ -166,20 +166,20 @@
 //        [TestMethod]
 //        public void ShouldAcceptPayment_WhenRegisteredPaymentThatHasNotBeenExecutedYetIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.AcceptPayment(DateTime.Now);
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_RenterPaymentStatus.ACCEPTED, payment.RenterPaymentStatus);
+//            Assert.AreEqual(e_ReceiverPaymentStatus.ACCEPTED, payment.ReceiverPaymentStatus);
 //        }
 
 //        [TestMethod]
 //        public void ShouldNotRejectPayment_WhenPaymentThatIsNotRegisteredIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.RejectPayment(DateTime.Now.AddYears(2));
@@ -190,14 +190,14 @@
 //        [TestMethod]
 //        public void ShouldRejectPayment_WhenRegisteredPaymentThatHasNotBeenExecutedYetIsPassed()
 //        {
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            contract.RejectPayment(DateTime.Now);
 
 //            var payment = contract.Payments.Where(p => p.Month.Year == DateTime.Now.Year && p.Month.Month == DateTime.Now.Month).FirstOrDefault();
 
-//            Assert.AreEqual(e_RenterPaymentStatus.REJECTED, payment.RenterPaymentStatus);
+//            Assert.AreEqual(e_ReceiverPaymentStatus.REJECTED, payment.ReceiverPaymentStatus);
 //        }
 
 //        [TestMethod]
@@ -205,7 +205,7 @@
 //        {
 //            rentDueDate = DateTime.Now.AddDays(-1);
 
-//            var contract = new EstateContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
+//            var contract = new ContractEntity(contractName, propertyAddress, propertyRegistrationNumber, rentPrice, rentDueDate, contractStartDate, contractEndDate, 1);
 
 //            contract.CreatePaymentCycle();
 //            var owedAmount = contract.CurrentOwedAmount();

@@ -13,5 +13,6 @@ namespace Rentering.Contracts.Application.Commands
         [JsonIgnore]
         public int AccountId { get; set; }
         public int ContractId { get; set; }
+        public int AccountContractId { get; set; }
     }
 }
