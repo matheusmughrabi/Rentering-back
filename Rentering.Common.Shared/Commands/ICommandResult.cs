@@ -1,9 +1,11 @@
-﻿namespace Rentering.Common.Shared.Commands
+﻿using System.Collections.Generic;
+
+namespace Rentering.Common.Shared.Commands
 {
     public interface ICommandResult
     {
         bool Success { get; set; }
-        string Message { get; set; }
+        List<CommandNotification> Notifications { get; set; }
         object Data { get; set; }
     }
 }

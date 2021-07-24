@@ -28,11 +28,11 @@ namespace Rentering.Infra.Contracts.Mappings
                 p.Ignore(u => u.Notifications);
             });
 
-            builder.Property(c => c.RenterPaymentStatus)
+            builder.Property(c => c.ReceiverPaymentStatus)
                 .IsRequired()
                 .HasColumnType("int");
 
-            builder.Property(c => c.TenantPaymentStatus)
+            builder.Property(c => c.PayerPaymentStatus)
                 .IsRequired()
                 .HasColumnType("int");
 

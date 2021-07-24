@@ -1,8 +1,9 @@
 ﻿using FluentValidator;
+using System;
 
 namespace Rentering.Common.Shared.Entities
 {
-    public abstract class Entity : Notifiable, IEntity
+    public abstract class Entity : Notifiable
     {
         public Entity(int? id = null)
         {
@@ -15,7 +16,7 @@ namespace Rentering.Common.Shared.Entities
         public virtual void AssignId(int id)
         {
             if (id <= 0)
-                AddNotification("Id", "Id must be greater than zero");
+                throw new Exception("O id precisa ser maior do que zero.");
 
             Id = id;
         }

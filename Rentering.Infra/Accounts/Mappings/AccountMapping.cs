@@ -10,6 +10,21 @@ namespace Rentering.Infra.Accounts.Mappings
         {
             builder.HasKey(c => c.Id);
 
+            builder.OwnsOne(c => c.Name, p =>
+            {
+                p.Property(u => u.FirstName)
+                    .IsRequired()
+                    .HasColumnName("FirstName")
+                    .HasColumnType("nvarchar(100)");
+
+                p.Property(u => u.LastName)
+                    .IsRequired()
+                    .HasColumnName("LastName")
+                    .HasColumnType("nvarchar(100)");
+
+                p.Ignore(u => u.Notifications);
+            });
+
             builder.OwnsOne(c => c.Email, p =>
             {
                 p.Property(u => u.Email)
