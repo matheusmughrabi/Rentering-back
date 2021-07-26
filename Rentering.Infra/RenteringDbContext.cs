@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Contracts.Domain.Entities;
+using Rentering.Corporation.Domain.Entities;
 using Rentering.Infra.Accounts.Mappings;
 using Rentering.Infra.Contracts.Mappings;
+using Rentering.Infra.Corporations.Mappings;
 
 namespace Rentering.Infra
 {
@@ -18,6 +20,9 @@ namespace Rentering.Infra
         public DbSet<ContractPaymentEntity> ContractPayment { get; set; }
         public DbSet<AccountContractsEntity> AccountContracts { get; set; }
 
+        public DbSet<CorporationEntity> Corporation { get; set; }
+        public DbSet<ParticipantEntity> Participant { get; set; }
+        public DbSet<MonthlyBalanceEntity> MonthlyBalance { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +30,11 @@ namespace Rentering.Infra
 
             modelBuilder.ApplyConfiguration(new ContractMapping());
             modelBuilder.ApplyConfiguration(new AccountContractsMapping());
-            modelBuilder.ApplyConfiguration(new ContractPaymentMapping());       
+            modelBuilder.ApplyConfiguration(new ContractPaymentMapping());
+
+            modelBuilder.ApplyConfiguration(new CorporationMapping());
+            modelBuilder.ApplyConfiguration(new ParticipantsMapping());
+            modelBuilder.ApplyConfiguration(new MonthlyBalanceMapping());
 
             base.OnModelCreating(modelBuilder);
         }

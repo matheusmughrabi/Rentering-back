@@ -5,9 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Contracts.Domain.Data;
+using Rentering.Corporation.Domain.Data;
 using Rentering.Infra;
 using Rentering.Infra.Accounts;
 using Rentering.Infra.Contracts;
+using Rentering.Infra.Corporations;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,6 +24,7 @@ namespace Rentering.WebAPI.Configuration
 
             services.AddScoped<IAccountUnitOfWork, AccountUnitOfWork>();
             services.AddScoped<IContractUnitOfWork, ContractUnitOfWork>();
+            services.AddScoped<ICorporationUnitOfWork, CorporationUnitOfWork>();
         }
 
         public static void RegisterSwagger(this IServiceCollection services)

@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Handlers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
     <ProjectReference Include="..\Rentering.Corporation.Domain\Rentering.Corporation.Domain.csproj" />
   </ItemGroup>

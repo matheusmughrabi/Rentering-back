@@ -44,6 +44,21 @@ namespace Rentering.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Corporation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "Date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Corporation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AccountContracts",
                 columns: table => new
                 {
@@ -88,6 +103,49 @@ namespace Rentering.Infra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Corporation_MonthlyBalance",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Month = table.Column<DateTime>(type: "Date", nullable: false),
+                    TotalProfit = table.Column<decimal>(type: "decimal(19,5)", nullable: false),
+                    CorporationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Corporation_MonthlyBalance", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Corporation_MonthlyBalance_Corporation_CorporationId",
+                        column: x => x.CorporationId,
+                        principalTable: "Corporation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Corporation_Participants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    CorporationId = table.Column<int>(type: "int", nullable: false),
+                    InvitationStatus = table.Column<int>(type: "int", nullable: false),
+                    SharedPercentage = table.Column<decimal>(type: "decimal(19,5)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Corporation_Participants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Corporation_Participants_Corporation_CorporationId",
+                        column: x => x.CorporationId,
+                        principalTable: "Corporation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AccountContracts_ContractId",
                 table: "AccountContracts",
@@ -97,6 +155,16 @@ namespace Rentering.Infra.Migrations
                 name: "IX_ContractPayments_ContractId",
                 table: "ContractPayments",
                 column: "ContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Corporation_MonthlyBalance_CorporationId",
+                table: "Corporation_MonthlyBalance",
+                column: "CorporationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Corporation_Participants_CorporationId",
+                table: "Corporation_Participants",
+                column: "CorporationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -111,7 +179,16 @@ namespace Rentering.Infra.Migrations
                 name: "ContractPayments");
 
             migrationBuilder.DropTable(
+                name: "Corporation_MonthlyBalance");
+
+            migrationBuilder.DropTable(
+                name: "Corporation_Participants");
+
+            migrationBuilder.DropTable(
                 name: "Contracts");
+
+            migrationBuilder.DropTable(
+                name: "Corporation");
         }
     }
 }

@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 </Project>
