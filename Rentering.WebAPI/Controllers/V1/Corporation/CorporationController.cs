@@ -28,6 +28,16 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         }
         #endregion
 
+        #region GetCorporationDetailed
+        [HttpGet]
+        [Route("Detailed/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetCorporationDetailed(int id)
+        {
+            return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetCorporationDetailed(GetCurrentUserId(), id));
+        }
+        #endregion
+
         #region CreateCorporation
         [HttpPost]
         [Route("create")]

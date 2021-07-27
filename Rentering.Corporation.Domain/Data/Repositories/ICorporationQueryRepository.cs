@@ -6,5 +6,6 @@ namespace Rentering.Corporation.Domain.Data.Repositories
     public interface ICorporationQueryRepository
     {
         IEnumerable<GetCorporationsQueryResult> GetCorporations(int accountId);
+        GetCorporationDetailedQueryResult GetCorporationDetailed(int accountId, int corporationId);
     }
 }
