@@ -7,7 +7,8 @@ using Rentering.Corporation.Domain.Entities;
 namespace Rentering.Corporation.Application.Handlers
 {
     public class CorporationHandlers : Notifiable,
-        IHandler<CreateCorporationCommand>
+        IHandler<CreateCorporationCommand>,
+        IHandler<InviteToCorporationCommand>
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
 
@@ -27,6 +28,38 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var result = new CommandResult(true, "Corporação criada com sucesso!", null, null);
+
+            return result;
+        }
+
+        public ICommandResult Handle(InviteToCorporationCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.ContractId);
+
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação pode convidar participantes");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.InviteParticipant(command.AccountId, command.SharedPercentage);
+
+            AddNotifications(corporationEntity.Notifications);
+
+            if (Invalid)
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Participante convidado com sucesso!", null, null);
 
             return result;
         }

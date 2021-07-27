@@ -7,5 +7,6 @@ namespace Rentering.Corporation.Domain.Data.Repositories
     {
         IEnumerable<GetCorporationsQueryResult> GetCorporations(int accountId);
         GetCorporationDetailedQueryResult GetCorporationDetailed(int accountId, int corporationId);
+        int GetAccountIdByEmail(string email);
     }
 }

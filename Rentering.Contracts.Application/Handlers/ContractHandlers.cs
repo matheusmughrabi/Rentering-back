@@ -79,8 +79,7 @@ namespace Rentering.Contracts.Application.Handlers
             {
                 AddNotification("Email", "Não foi encontrado um usuário com este email.");
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
-            }
-                
+            }              
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);

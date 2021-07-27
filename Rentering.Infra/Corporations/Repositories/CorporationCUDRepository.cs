@@ -1,5 +1,7 @@
-﻿using Rentering.Corporation.Domain.Data.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Rentering.Corporation.Domain.Data.Repositories;
 using Rentering.Corporation.Domain.Entities;
+using System.Linq;
 
 namespace Rentering.Infra.Corporations.Repositories
 {
@@ -19,6 +21,17 @@ namespace Rentering.Infra.Corporations.Repositories
 
             var addedContractEntity = _renteringDbContext.Corporation.Add(entity).Entity;
             return addedContractEntity;
+        }
+
+        public CorporationEntity GetCorporationForCUD(int id)
+        {
+            var corporationEntity = _renteringDbContext.Corporation
+                .Where(c => c.Id == id)
+                .Include(c => c.Participants)
+                .Include(c => c.MonthlyBalances)
+                .FirstOrDefault();
+
+            return corporationEntity;
         }
     }
 }

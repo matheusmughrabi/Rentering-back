@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rentering.Accounts.Domain.Entities;
 using Rentering.Contracts.Domain.Entities;
 
 namespace Rentering.Infra.Contracts.Mappings
@@ -25,6 +26,10 @@ namespace Rentering.Infra.Contracts.Mappings
             builder.Property(c => c.Status)
                 .IsRequired()
                 .HasColumnType("int");
+
+            builder.HasOne<AccountEntity>()
+               .WithMany()
+               .HasForeignKey(c => c.AccountId);
 
             builder.Ignore(c => c.Notifications);
 

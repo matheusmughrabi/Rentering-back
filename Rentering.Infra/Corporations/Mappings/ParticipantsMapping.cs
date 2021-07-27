@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rentering.Accounts.Domain.Entities;
 using Rentering.Corporation.Domain.Entities;
 
 namespace Rentering.Infra.Corporations.Mappings
@@ -25,6 +26,10 @@ namespace Rentering.Infra.Corporations.Mappings
             builder.Property(c => c.SharedPercentage)
                 .IsRequired()
                 .HasColumnType("decimal(19, 5)");
+
+            builder.HasOne<AccountEntity>()
+                .WithMany()
+                .HasForeignKey(c => c.AccountId);
 
             builder.Ignore(c => c.Notifications);
 
