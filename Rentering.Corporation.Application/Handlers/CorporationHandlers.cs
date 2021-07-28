@@ -12,7 +12,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<FinishCreationCommand>,
         IHandler<AcceptParticipationInCorporationCommand>,
         IHandler<RejectParticipationInCorporationCommand>,
-        IHandler<ActivateCorporationCommand>
+        IHandler<ActivateCorporationCommand>,
+        IHandler<AddMonthCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -187,6 +188,38 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var participant = new CommandResult(true, "Corporação ativada!", null, null);
+
+            return participant;
+        }
+        #endregion
+
+        #region AddMonth
+        public ICommandResult Handle(AddMonthCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada.");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação adicionar novo mês.");
+                return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.AddMonth(command.TotalProfit);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var participant = new CommandResult(true, "Novo mês adicionado!", null, null);
 
             return participant;
         }

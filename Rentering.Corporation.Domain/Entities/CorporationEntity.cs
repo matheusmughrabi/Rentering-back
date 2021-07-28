@@ -134,7 +134,7 @@ namespace Rentering.Corporation.Domain.Entities
                 .FirstOrDefault()
                 .AddMonths(1);
 
-            var monthAlreadyExists = _monthlyBalances.Any(c => c.Month == nextMonth);
+            var monthAlreadyExists = _monthlyBalances.Any(c => c.Month.ToShortDateString() == nextMonth.ToShortDateString());
 
             if (monthAlreadyExists)
             {
