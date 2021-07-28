@@ -31,6 +31,11 @@ namespace Rentering.Infra.Corporations.Mappings
                 .WithMany()
                 .HasForeignKey(c => c.AccountId);
 
+            builder.HasMany(c => c.ParticipantBalances)
+                .WithOne(u => u.Participant)
+                .HasForeignKey(p => p.ParticipantId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Ignore(c => c.Notifications);
 
             builder.ToTable("Corporation_Participants");

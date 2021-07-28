@@ -144,6 +144,11 @@ namespace Rentering.Corporation.Domain.Entities
 
             var monthlyBalance = new MonthlyBalanceEntity(nextMonth, totalProfit, this.Id);
 
+            foreach (var participant in _participants)
+            {
+                monthlyBalance.AddParticipantBalance(participant);
+            }
+
             _monthlyBalances.Add(monthlyBalance);
         }
 

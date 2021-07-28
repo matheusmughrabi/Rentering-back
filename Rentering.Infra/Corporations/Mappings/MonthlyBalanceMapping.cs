@@ -22,6 +22,11 @@ namespace Rentering.Infra.Corporations.Mappings
                 .IsRequired()
                 .HasColumnType("int");
 
+            builder.HasMany(c => c.ParticipantBalances)
+                .WithOne(u => u.MonthlyBalance)
+                .HasForeignKey(p => p.MonthlyBalanceId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Ignore(c => c.Notifications);
 
             builder.ToTable("Corporation_MonthlyBalance");

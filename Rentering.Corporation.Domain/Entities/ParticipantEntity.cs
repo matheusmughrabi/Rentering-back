@@ -1,10 +1,13 @@
 ﻿using Rentering.Common.Shared.Entities;
 using Rentering.Corporation.Domain.Enums;
+using System.Collections.Generic;
 
 namespace Rentering.Corporation.Domain.Entities
 {
     public class ParticipantEntity : Entity
     {
+        private List<ParticipantBalanceEntity> _participantBalances;
+
         public ParticipantEntity(int accountId, int corporationId, decimal sharedPercentage)
         {
             AccountId = accountId;
@@ -18,6 +21,7 @@ namespace Rentering.Corporation.Domain.Entities
         public virtual CorporationEntity Corporation { get; private set; }
         public e_InvitationStatus InvitationStatus { get; private set; }
         public decimal SharedPercentage { get; private set; }
+        public IReadOnlyCollection<ParticipantBalanceEntity> ParticipantBalances => _participantBalances.ToArray();
 
         public void AcceptToParticipate()
         {

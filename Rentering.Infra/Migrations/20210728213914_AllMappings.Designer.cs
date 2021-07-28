@@ -10,8 +10,8 @@ using Rentering.Infra;
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    [Migration("20210728154135_CorporationStatus")]
-    partial class CorporationStatus
+    [Migration("20210728213914_AllMappings")]
+    partial class AllMappings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,6 +164,31 @@ namespace Rentering.Infra.Migrations
                     b.HasIndex("CorporationId");
 
                     b.ToTable("Corporation_MonthlyBalance");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantBalanceEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(19,5)");
+
+                    b.Property<int>("MonthlyBalanceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthlyBalanceId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("Corporation_ParticipantBalance");
                 });
 
             modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
@@ -376,6 +401,25 @@ namespace Rentering.Infra.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantBalanceEntity", b =>
+                {
+                    b.HasOne("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", "MonthlyBalance")
+                        .WithMany("ParticipantBalances")
+                        .HasForeignKey("MonthlyBalanceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rentering.Corporation.Domain.Entities.ParticipantEntity", "Participant")
+                        .WithMany("ParticipantBalances")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MonthlyBalance");
+
+                    b.Navigation("Participant");
+                });
+
             modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
                 {
                     b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
@@ -405,6 +449,16 @@ namespace Rentering.Infra.Migrations
                     b.Navigation("MonthlyBalances");
 
                     b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
+                {
+                    b.Navigation("ParticipantBalances");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
+                {
+                    b.Navigation("ParticipantBalances");
                 });
 #pragma warning restore 612, 618
         }
