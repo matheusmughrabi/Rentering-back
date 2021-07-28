@@ -26,5 +26,12 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
     {
         public DateTime Month { get; set; }
         public decimal TotalProfit { get; set; }
+        public List<ParticipantBalance> ParticipantBalances { get; set; }
+    }
+
+    public class ParticipantBalance
+    {
+        public string ParticipantName { get; set; }
+        public decimal Balance { get; set; }
     }
 }

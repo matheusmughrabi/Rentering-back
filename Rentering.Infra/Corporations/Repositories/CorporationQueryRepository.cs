@@ -72,7 +72,16 @@ namespace Rentering.Infra.Corporations.Repositories
                         .Select(u => new MonthlyBalance()
                         {
                             Month = u.Month,
-                            TotalProfit = u.TotalProfit
+                            TotalProfit = u.TotalProfit,
+                            ParticipantBalances = u.ParticipantBalances.Select(p => new ParticipantBalance()
+                            {
+                                ParticipantName = _renteringDbContext.Account
+                                    .AsNoTracking()
+                                    .Where(m => m.Id == p.Participant.AccountId)
+                                    .Select(s => s.Name.ToString())
+                                    .FirstOrDefault(),
+                                Balance = p.Balance
+                            }).ToList()
                         }).ToList()
                })
                .FirstOrDefault();
