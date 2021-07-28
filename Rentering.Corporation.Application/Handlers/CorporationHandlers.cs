@@ -8,7 +8,9 @@ namespace Rentering.Corporation.Application.Handlers
 {
     public class CorporationHandlers : Notifiable,
         IHandler<CreateCorporationCommand>,
-        IHandler<InviteToCorporationCommand>
+        IHandler<InviteToCorporationCommand>,
+        IHandler<AcceptParticipationInCorporationCommand>,
+        IHandler<RejectParticipationInCorporationCommand>
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
 
@@ -17,6 +19,7 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork = corporationUnitOfWork;
         }
 
+        #region CreateCorporation
         public ICommandResult Handle(CreateCorporationCommand command)
         {
             var corporationEntity = new CorporationEntity(command.Name, command.CurrentUserId);
@@ -31,14 +34,22 @@ namespace Rentering.Corporation.Application.Handlers
 
             return result;
         }
+        #endregion
 
+        #region InviteToCorporation
         public ICommandResult Handle(InviteToCorporationCommand command)
         {
             var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.ContractId);
-
             if (corporationEntity == null)
             {
                 AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var newParticipantAccountId = _corporationUnitOfWork.CorporationQueryRepository.GetAccountIdByEmail(command.Email);
+            if (newParticipantAccountId == 0)
+            {
+                AddNotification("Email", "Não foi encontrado um usuário com este email.");
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
@@ -50,7 +61,7 @@ namespace Rentering.Corporation.Application.Handlers
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            corporationEntity.InviteParticipant(command.AccountId, command.SharedPercentage);
+            corporationEntity.InviteParticipant(newParticipantAccountId, command.SharedPercentage);
 
             AddNotifications(corporationEntity.Notifications);
 
@@ -63,5 +74,56 @@ namespace Rentering.Corporation.Application.Handlers
 
             return result;
         }
+        #endregion
+
+        #region AcceptParticipation
+        public ICommandResult Handle(AcceptParticipationInCorporationCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.AcceptToParticipate(command.ParticipantId);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var participant = new CommandResult(true, "Você aceitou participar da corporação com sucesso!", null, null);
+
+            return participant;
+        }
+        #endregion
+
+        #region RejectParticipation
+        public ICommandResult Handle(RejectParticipationInCorporationCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.RejectToParticipate(command.ParticipantId);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var participant = new CommandResult(true, "Você aceitou participar da corporação com sucesso!", null, null);
+
+            return participant;
+        }
+        #endregion
     }
 }

@@ -30,11 +30,21 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         #region GetCorporationDetailed
         [HttpGet]
-        [Route("Detailed/{id}")]
+        [Route("detailed/{id}")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCorporationDetailed(int id)
         {
             return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetCorporationDetailed(GetCurrentUserId(), id));
+        }
+        #endregion
+
+        #region GetInvitations
+        [HttpGet]
+        [Route("invitations")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetInvitations(int id)
+        {
+            return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetInvitations(GetCurrentUserId()));
         }
         #endregion
 
@@ -69,5 +79,41 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region AcceptParticipation
+        [HttpPut]
+        [Route("participation/accept")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AcceptParticipation([FromBody] AcceptParticipationInCorporationCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
+        #region RejectParticipation
+        [HttpPut]
+        [Route("participation/reject")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RejectParticipation([FromBody] RejectParticipationInCorporationCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }
+
+// Trocar invite para receber email e não id OK
+// Criar convites pendentes
+// Criar aceitar ou recusar convite

@@ -27,7 +27,7 @@ namespace Rentering.Infra.Corporations.Mappings
                 .HasForeignKey(p => p.CorporationId);
 
             builder.HasMany(c => c.Participants)
-                .WithOne()
+                .WithOne(u => u.Corporation)
                 .HasForeignKey(p => p.CorporationId);
 
             builder.Ignore(c => c.Notifications);

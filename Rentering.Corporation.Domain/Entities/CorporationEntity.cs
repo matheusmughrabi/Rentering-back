@@ -50,6 +50,26 @@ namespace Rentering.Corporation.Domain.Entities
             _participants.Add(participant);
         }
 
+        public void AcceptToParticipate(int participantId)
+        {
+            var participant = _participants.Where(c => c.Id == participantId).FirstOrDefault();
+
+            if (participant == null)
+                AddNotification("Participante", "O participante informado não faz parte desta corporação.");
+
+            participant.AcceptToParticipate();
+        }
+
+        public void RejectToParticipate(int participantId)
+        {
+            var participant = _participants.Where(c => c.Id == participantId).FirstOrDefault();
+
+            if (participant == null)
+                AddNotification("Participante", "O participante informado não faz parte desta corporação.");
+
+            participant.RejectToParticipate();
+        }
+
         public void AddMonth(decimal totalProfit)
         {
             var nextMonth = _monthlyBalances.OrderByDescending(c => c.Month)

@@ -2,6 +2,7 @@
 using Rentering.Common.Shared.Enums;
 using Rentering.Corporation.Domain.Data.Repositories;
 using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
+using Rentering.Corporation.Domain.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,7 +43,7 @@ namespace Rentering.Infra.Corporations.Repositories
                .AsNoTracking()
                .Include(i => i.Participants)
                .Include(i => i.MonthlyBalances)
-               .Where(c => c.Participants.Any(u => u.AccountId == accountId) || c.AdminId == accountId)
+               .Where(c => c.Id == corporationId)
                .Select(p => new GetCorporationDetailedQueryResult()
                {
                    Id = p.Id,
@@ -74,6 +75,28 @@ namespace Rentering.Infra.Corporations.Repositories
                         }).ToList()
                })
                .FirstOrDefault();
+
+            return result;
+        }
+
+        public IEnumerable<GetInvitationsQueryResult> GetInvitations(int accountId)
+        {
+            var result = _renteringDbContext.Participant
+               .AsNoTracking()
+               .Where(c => c.AccountId == accountId && c.InvitationStatus == e_InvitationStatus.Invited)
+               .Include(c => c.Corporation)
+               .Select(p => new GetInvitationsQueryResult()
+               {
+                   ParticipantId = p.Id,
+                   CorporationId = p.CorporationId,
+                   Name = p.Corporation.Name,
+                   Admin = _renteringDbContext.Account
+                        .AsNoTracking()
+                        .Where(c => c.Id == p.Corporation.AdminId)
+                        .Select(u => u.Name.ToString())
+                        .FirstOrDefault()
+               })
+               .ToList();
 
             return result;
         }
