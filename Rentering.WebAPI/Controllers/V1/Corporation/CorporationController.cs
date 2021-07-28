@@ -127,6 +127,22 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region ActivateCorporation
+        [HttpPut]
+        [Route("activate")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult ActivateCorporation([FromBody] ActivateCorporationCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }
 
@@ -134,6 +150,6 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Criar convites pendentes OK
 // Criar aceitar ou recusar convite OK
 
-// Criar status da corporação (Inativo, Ativo) -> O status da corporação só poderá ser ativado quando todos os participantes aceitarem participar
+// Criar status da corporação (Inativo, Ativo) ON GOING
 // Criar possibilidade de adicionar mês -> Só pode adicionar mês quando a corporação estiver ativa
 // Uma vez que o contrato estiver com status Ativo, nenhum novo participante poderá entrar ou sair

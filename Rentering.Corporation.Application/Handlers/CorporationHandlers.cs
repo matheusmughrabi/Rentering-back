@@ -11,7 +11,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<InviteToCorporationCommand>,
         IHandler<FinishCreationCommand>,
         IHandler<AcceptParticipationInCorporationCommand>,
-        IHandler<RejectParticipationInCorporationCommand>
+        IHandler<RejectParticipationInCorporationCommand>,
+        IHandler<ActivateCorporationCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -154,6 +155,38 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var participant = new CommandResult(true, "Você aceitou participar da corporação com sucesso!", null, null);
+
+            return participant;
+        }
+        #endregion
+
+        #region ActivateCorporation
+        public ICommandResult Handle(ActivateCorporationCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação ativá-la");
+                return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.ActivateCorporation();
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var participant = new CommandResult(true, "Corporação ativada!", null, null);
 
             return participant;
         }

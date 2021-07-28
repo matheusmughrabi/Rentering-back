@@ -44,7 +44,7 @@ namespace Rentering.Corporation.Domain.Entities
         public void InviteParticipant(int accountId, decimal sharedPercentage)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
-            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível convidar novo participante, pois o estado atual da corporação é{Status.ToDescriptionString()}.");
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível convidar novo participante, pois o estado atual da corporação é {Status.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -65,7 +65,7 @@ namespace Rentering.Corporation.Domain.Entities
         public void FinishCreation()
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
-            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível finalizar a criação da corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível finalizar a criação da corporação, pois o estado atual é {Status.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -76,7 +76,7 @@ namespace Rentering.Corporation.Domain.Entities
         public void AcceptToParticipate(int participantId)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
-            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível aceitar participação na corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível aceitar participação na corporação, pois o estado atual é {Status.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -87,12 +87,17 @@ namespace Rentering.Corporation.Domain.Entities
                 AddNotification("Participante", "O participante informado não faz parte desta corporação.");
 
             participant.AcceptToParticipate();
+
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited || c.InvitationStatus == e_InvitationStatus.Rejected);
+
+            if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
+                Status = e_CorporationStatus.ReadyForActivation;
         }
 
         public void RejectToParticipate(int participantId)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
-            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível recusar participação na corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível recusar participação na corporação, pois o estado atual é {Status.ToDescriptionString()}.");
 
             if (isAllowed == false)
                 return;
@@ -103,6 +108,17 @@ namespace Rentering.Corporation.Domain.Entities
                 AddNotification("Participante", "O participante informado não faz parte desta corporação.");
 
             participant.RejectToParticipate();
+        }
+
+        public void ActivateCorporation()
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.ReadyForActivation };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível ativar a corporação, pois o estado atual é {Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
+            Status = e_CorporationStatus.Active;
         }
 
         public void AddMonth(decimal totalProfit)
