@@ -1,5 +1,7 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Entities;
+using Rentering.Common.Shared.Enums;
+using Rentering.Corporation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,10 @@ namespace Rentering.Corporation.Domain.Entities
             AdminId = adminId;
 
             if (id == null)
+            {
                 CreateDate = DateTime.Now;
+                Status = e_CorporationStatus.InProgress;
+            }               
 
             _participants = new List<ParticipantEntity>();
             _monthlyBalances = new List<MonthlyBalanceEntity>();
@@ -32,11 +37,18 @@ namespace Rentering.Corporation.Domain.Entities
         public string Name { get; private set; }
         public int AdminId { get; private set; }
         public DateTime CreateDate { get; private set; }
+        public e_CorporationStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantEntity> Participants => _participants.ToArray();
         public IReadOnlyCollection<MonthlyBalanceEntity> MonthlyBalances => _monthlyBalances.ToArray();
 
         public void InviteParticipant(int accountId, decimal sharedPercentage)
         {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível convidar novo participante, pois o estado atual da corporação é{Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
             var participantAlreadyInvited = Participants.Any(c => c.AccountId == accountId);
 
             if (participantAlreadyInvited)
@@ -50,8 +62,25 @@ namespace Rentering.Corporation.Domain.Entities
             _participants.Add(participant);
         }
 
+        public void FinishCreation()
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível finalizar a criação da corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
+            Status = e_CorporationStatus.WaitingParticipants;
+        }
+
         public void AcceptToParticipate(int participantId)
         {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível aceitar participação na corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
             var participant = _participants.Where(c => c.Id == participantId).FirstOrDefault();
 
             if (participant == null)
@@ -62,6 +91,12 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void RejectToParticipate(int participantId)
         {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível recusar participação na corporação, pois o estado atual é{Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
             var participant = _participants.Where(c => c.Id == participantId).FirstOrDefault();
 
             if (participant == null)
@@ -72,6 +107,12 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void AddMonth(decimal totalProfit)
         {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescriptionString()}.");
+
+            if (isAllowed == false)
+                return;
+
             var nextMonth = _monthlyBalances.OrderByDescending(c => c.Month)
                 .Select(p => p.Month)
                 .FirstOrDefault()
@@ -97,6 +138,19 @@ namespace Rentering.Corporation.Domain.Entities
                 .HasMinLen(Name, 3, "Nome do contrato", "O nome do contrato precisa ter no mínimo 3 letras.")
                 .HasMaxLen(Name, 15, "Nome do contrato", "O nome do contrato precisa ter no máximo 15 letras.")
             );
+        }
+
+        private bool IsProcessAllowed(e_CorporationStatus[] allowedStatuses, string message)
+        {
+            var isAllowed = true;
+
+            if (allowedStatuses.Contains(Status) == false)
+            {
+                AddNotification("Ação negada", message);
+                isAllowed = false;
+            }
+
+            return isAllowed;
         }
     }
 }

@@ -80,6 +80,22 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         }
         #endregion
 
+        #region FinishCreation
+        [HttpPut]
+        [Route("finish-creation")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult FinishCreation([FromBody] FinishCreationCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
         #region AcceptParticipation
         [HttpPut]
         [Route("participation/accept")]
@@ -115,5 +131,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 }
 
 // Trocar invite para receber email e não id OK
-// Criar convites pendentes
-// Criar aceitar ou recusar convite
+// Criar convites pendentes OK
+// Criar aceitar ou recusar convite OK
+
+// Criar status da corporação (Inativo, Ativo) -> O status da corporação só poderá ser ativado quando todos os participantes aceitarem participar
+// Criar possibilidade de adicionar mês -> Só pode adicionar mês quando a corporação estiver ativa
+// Uma vez que o contrato estiver com status Ativo, nenhum novo participante poderá entrar ou sair

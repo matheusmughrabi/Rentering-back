@@ -22,6 +22,10 @@ namespace Rentering.Infra.Corporations.Mappings
                 .IsRequired()
                 .HasColumnType("Date");
 
+            builder.Property(c => c.Status)
+                .IsRequired()
+                .HasColumnType("int");
+
             builder.HasMany(c => c.MonthlyBalances)
                 .WithOne()
                 .HasForeignKey(p => p.CorporationId);

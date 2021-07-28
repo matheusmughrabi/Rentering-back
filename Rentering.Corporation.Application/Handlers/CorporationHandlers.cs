@@ -9,8 +9,10 @@ namespace Rentering.Corporation.Application.Handlers
     public class CorporationHandlers : Notifiable,
         IHandler<CreateCorporationCommand>,
         IHandler<InviteToCorporationCommand>,
+        IHandler<FinishCreationCommand>,
         IHandler<AcceptParticipationInCorporationCommand>,
         IHandler<RejectParticipationInCorporationCommand>
+        
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
 
@@ -46,18 +48,17 @@ namespace Rentering.Corporation.Application.Handlers
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação pode convidar participantes");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
             var newParticipantAccountId = _corporationUnitOfWork.CorporationQueryRepository.GetAccountIdByEmail(command.Email);
             if (newParticipantAccountId == 0)
             {
                 AddNotification("Email", "Não foi encontrado um usuário com este email.");
-                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
-            }
-
-            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
-
-            if (isCurrentUserAdmin == false)
-            {
-                AddNotification("Autorização negada", "Apenas o administrador da corporação pode convidar participantes");
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
@@ -71,6 +72,38 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var result = new CommandResult(true, "Participante convidado com sucesso!", null, null);
+
+            return result;
+        }
+        #endregion
+
+        #region FinishCreation
+        public ICommandResult Handle(FinishCreationCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação pode convidar participantes");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.FinishCreation();
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Você finalizou a etapa de criação da corporação!", null, null);
 
             return result;
         }

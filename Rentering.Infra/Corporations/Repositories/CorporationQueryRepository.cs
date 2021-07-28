@@ -50,10 +50,11 @@ namespace Rentering.Infra.Corporations.Repositories
                    Name = p.Name,
                    Admin = _renteringDbContext.Account
                                .AsNoTracking()
-                               .Where(u => u.Id == accountId)
+                               .Where(u => u.Id == p.AdminId)
                                .Select(s => s.Name.ToString())
                                .FirstOrDefault(),
                    CreateDate = p.CreateDate,
+                   Status = p.Status.ToDescriptionString(),
 
                    Participants = p.Participants
                         .Select(u => new Participant()
@@ -83,7 +84,7 @@ namespace Rentering.Infra.Corporations.Repositories
         {
             var result = _renteringDbContext.Participant
                .AsNoTracking()
-               .Where(c => c.AccountId == accountId && c.InvitationStatus == e_InvitationStatus.Invited)
+               .Where(c => c.AccountId == accountId && c.InvitationStatus == e_InvitationStatus.Invited && c.Corporation.Status == e_CorporationStatus.WaitingParticipants)
                .Include(c => c.Corporation)
                .Select(p => new GetInvitationsQueryResult()
                {
