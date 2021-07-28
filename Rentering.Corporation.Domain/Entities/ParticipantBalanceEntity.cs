@@ -33,7 +33,7 @@ namespace Rentering.Corporation.Domain.Entities
 
         private void CalculateBalance()
         {
-            Balance = Participant.SharedPercentage * MonthlyBalance.TotalProfit; 
+            Balance = (Participant.SharedPercentage/100) * MonthlyBalance.TotalProfit; 
         }
     }
 }

@@ -169,7 +169,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Criar status da corporação OK
 // Criar possibilidade de adicionar mês -> Só pode adicionar mês quando a corporação estiver ativa OK
 // Uma vez que o contrato estiver com status Ativo, nenhum novo participante poderá entrar ou sair OK
-// Criar cálculo de quanto cada participante irá receber e retornar na resposta para detalhes detalhes da corporação
+// Implementar ParticipantBalance OK
 // Criar condições para mostrar ou não os botões
 // Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
 // Melhorar telas
