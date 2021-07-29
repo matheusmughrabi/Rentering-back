@@ -26,9 +26,6 @@ namespace Rentering.Infra.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Account");
@@ -225,6 +222,25 @@ namespace Rentering.Infra.Migrations
 
             modelBuilder.Entity("Rentering.Accounts.Domain.Entities.AccountEntity", b =>
                 {
+                    b.OwnsOne("Rentering.Accounts.Domain.SafeEnums.RoleType", "Role", b1 =>
+                        {
+                            b1.Property<int>("AccountEntityId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("int")
+                                .HasColumnName("Role");
+
+                            b1.HasKey("AccountEntityId");
+
+                            b1.ToTable("Account");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountEntityId");
+                        });
+
                     b.OwnsOne("Rentering.Accounts.Domain.ValueObjects.EmailValueObject", "Email", b1 =>
                         {
                             b1.Property<int>("AccountEntityId")
@@ -317,6 +333,9 @@ namespace Rentering.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Password")
+                        .IsRequired();
+
+                    b.Navigation("Role")
                         .IsRequired();
 
                     b.Navigation("Username")

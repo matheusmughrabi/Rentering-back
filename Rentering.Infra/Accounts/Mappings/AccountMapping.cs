@@ -55,9 +55,13 @@ namespace Rentering.Infra.Accounts.Mappings
                 cm.Ignore(u => u.Notifications);
             });
 
-            builder.Property(c => c.Role)
-                .IsRequired()
-                .HasColumnType("int");
+            builder.OwnsOne(c => c.Role, p =>
+            {
+                p.Property(u => u.Value)
+                    .IsRequired()
+                    .HasColumnName("Role")
+                    .HasColumnType("int");
+            });
 
             builder.Ignore(c => c.Notifications);
 

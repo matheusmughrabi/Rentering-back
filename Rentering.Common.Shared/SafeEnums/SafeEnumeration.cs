@@ -7,8 +7,8 @@ namespace Rentering.Common.Shared.SafeEnums
 {
     public abstract class SafeEnumeration : IComparable
     {
-        private readonly int _value;
-        private readonly string _displayName;
+        protected readonly int _value;
+        protected readonly string _displayName;
 
         protected SafeEnumeration()
         {
@@ -27,6 +27,11 @@ namespace Rentering.Common.Shared.SafeEnums
         public override string ToString()
         {
             return DisplayName;
+        }
+
+        public string ToValueString()
+        {
+            return Value.ToString();
         }
 
         public static IEnumerable<T> GetAll<T>() where T : SafeEnumeration, new()
@@ -84,7 +89,7 @@ namespace Rentering.Common.Shared.SafeEnums
             return matchingItem;
         }
 
-        private static T parse<T, K>(K value, string description, Func<T, bool> predicate) where T : SafeEnumeration, new()
+        protected static T parse<T, K>(K value, string description, Func<T, bool> predicate) where T : SafeEnumeration, new()
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
 
