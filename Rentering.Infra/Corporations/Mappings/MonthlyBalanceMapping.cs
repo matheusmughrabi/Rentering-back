@@ -27,6 +27,10 @@ namespace Rentering.Infra.Corporations.Mappings
                 .HasForeignKey(p => p.MonthlyBalanceId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Property(c => c.Status)
+                .IsRequired()
+                .HasColumnType("int");
+
             builder.Ignore(c => c.Notifications);
 
             builder.ToTable("Corporation_MonthlyBalance");

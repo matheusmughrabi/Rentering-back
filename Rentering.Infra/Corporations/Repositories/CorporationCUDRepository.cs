@@ -29,6 +29,7 @@ namespace Rentering.Infra.Corporations.Repositories
                 .Where(c => c.Id == id)
                 .Include(c => c.Participants)
                 .Include(c => c.MonthlyBalances)
+                .ThenInclude(c => c.ParticipantBalances)
                 .FirstOrDefault();
 
             return corporationEntity;

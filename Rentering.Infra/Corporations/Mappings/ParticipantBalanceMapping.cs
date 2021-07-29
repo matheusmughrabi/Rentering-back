@@ -22,6 +22,10 @@ namespace Rentering.Infra.Corporations.Mappings
                 .IsRequired()
                 .HasColumnType("decimal(19, 5)");
 
+            builder.Property(c => c.Status)
+                .IsRequired()
+                .HasColumnType("int");
+
             builder.Ignore(c => c.Notifications);
 
             builder.ToTable("Corporation_ParticipantBalance");

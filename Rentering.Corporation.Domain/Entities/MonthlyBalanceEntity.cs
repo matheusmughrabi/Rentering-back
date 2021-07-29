@@ -1,6 +1,8 @@
 ﻿using Rentering.Common.Shared.Entities;
+using Rentering.Corporation.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rentering.Corporation.Domain.Entities
 {
@@ -20,6 +22,7 @@ namespace Rentering.Corporation.Domain.Entities
         public DateTime Month { get; private set; }
         public decimal TotalProfit { get; private set; }
         public int CorporationId { get; private set; }
+        public e_MonthlyBalanceStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantBalanceEntity> ParticipantBalances => _participantBalances.ToArray();
 
         public void AddParticipantBalance(ParticipantEntity participant)
@@ -27,6 +30,30 @@ namespace Rentering.Corporation.Domain.Entities
             var participantBalance = new ParticipantBalanceEntity(participant, this);
 
             _participantBalances.Add(participantBalance);
+        }
+
+        public void Accept(int accountId)
+        {
+            if (Status == e_MonthlyBalanceStatus.Finished)
+            {
+                AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
+                return;
+            }
+
+            var participantBalance = _participantBalances.Where(c => c.Participant.AccountId == accountId).FirstOrDefault();
+
+            if (participantBalance == null)
+            {
+                AddNotification("Balance", "Participant balance não foi encontrado.");
+                return;
+            }
+
+            participantBalance.AcceptToParticipate();
+
+            bool allParticipantsAccepted = _participantBalances.Any(c => c.Status == e_ParticipantBalanceStatus.Pending || c.Status == e_ParticipantBalanceStatus.Rejected) == false;
+
+            if (allParticipantsAccepted)
+                Status = e_MonthlyBalanceStatus.Finished;
         }
     }
 }

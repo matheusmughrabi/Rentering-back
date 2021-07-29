@@ -71,6 +71,7 @@ namespace Rentering.Infra.Corporations.Repositories
                    MonthlyBalances = p.MonthlyBalances
                         .Select(u => new MonthlyBalance()
                         {
+                            Id = u.Id,
                             Month = u.Month,
                             TotalProfit = u.TotalProfit,
                             ParticipantBalances = u.ParticipantBalances.Select(p => new ParticipantBalance()

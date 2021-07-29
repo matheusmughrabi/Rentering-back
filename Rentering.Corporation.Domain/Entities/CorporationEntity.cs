@@ -152,6 +152,19 @@ namespace Rentering.Corporation.Domain.Entities
             _monthlyBalances.Add(monthlyBalance);
         }
 
+        public void AcceptParticipantBalance(int monthlyBalanceId, int accountId)
+        {
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.Accept(accountId);
+        }
+
         private void ApplyValidations()
         {
             AddNotifications(new ValidationContract()

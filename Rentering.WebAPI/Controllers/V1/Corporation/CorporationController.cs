@@ -159,6 +159,22 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region AcceptBalance
+        [HttpPut]
+        [Route("balance/accept")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AcceptBalance([FromBody] AcceptBalanceCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }
 
@@ -170,6 +186,11 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Criar possibilidade de adicionar mês -> Só pode adicionar mês quando a corporação estiver ativa OK
 // Uma vez que o contrato estiver com status Ativo, nenhum novo participante poderá entrar ou sair OK
 // Implementar ParticipantBalance OK
+// Implementar status de cada ParticipantBalance (pendente, aceito, recusado), implementar também comentários do ParticipantBalance
+// Uma vez que todos os participantBalance de um mês forem aceitos o status do mês será colocado como Concluído (pendente, concluído, recusado) e será impossível alterar os dados
+
 // Criar condições para mostrar ou não os botões
 // Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
 // Melhorar telas
+// Refatorar back
+// Refatorar front

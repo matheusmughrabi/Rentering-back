@@ -24,6 +24,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
 
     public class MonthlyBalance
     {
+        public int Id { get; set; }
         public DateTime Month { get; set; }
         public decimal TotalProfit { get; set; }
         public List<ParticipantBalance> ParticipantBalances { get; set; }
