@@ -54,7 +54,11 @@ namespace Rentering.Infra.Corporations.Repositories
                                .Select(s => s.Name.ToString())
                                .FirstOrDefault(),
                    CreateDate = p.CreateDate,
-                   Status = p.Status.ToDescriptionString(),
+                   Status = new EnumResult<e_CorporationStatus>() 
+                   {
+                       Value = p.Status,
+                       Description = p.Status.ToDescription()
+                   },
 
                    Participants = p.Participants
                         .Select(u => new Participant()
@@ -64,7 +68,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                     .Where(m => m.Id == u.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                            InvitationStatus = u.InvitationStatus.ToDescriptionString(),
+                            InvitationStatus = u.InvitationStatus.ToDescription(),
                             SharedPercentage = u.SharedPercentage
                         }).ToList(),
 

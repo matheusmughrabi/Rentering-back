@@ -18,3 +18,4 @@ namespace Rentering.WebAPI.Security.Models
         public string Token { get; private set; }
     }
 }
+

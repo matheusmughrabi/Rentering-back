@@ -28,10 +28,10 @@ namespace Rentering.Infra.Contracts.Repositories
                 {
                     Id = c.Id,
                     CurrentUserRole = c.Participants.Where(c => c.AccountId == accountId)
-                        .Select(p => p.ParticipantRole.ToDescriptionString())
+                        .Select(p => p.ParticipantRole.ToDescription())
                         .FirstOrDefault(),
                     ContractName = c.ContractName,
-                    ContractState = c.ContractState.ToDescriptionString(),
+                    ContractState = c.ContractState.ToDescription(),
                     RentPrice = c.RentPrice.Price,
                     RentDueDate = c.RentDueDate,
                     ContractStartDate = c.ContractStartDate,
@@ -46,8 +46,8 @@ namespace Rentering.Infra.Contracts.Repositories
                                     .Where(u => u.Id == p.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                            Status = p.Status.ToDescriptionString(),
-                            ParticipantRole = p.ParticipantRole.ToDescriptionString()
+                            Status = p.Status.ToDescription(),
+                            ParticipantRole = p.ParticipantRole.ToDescription()
                         })
                             .ToList(),
 
@@ -56,8 +56,8 @@ namespace Rentering.Infra.Contracts.Repositories
                         {
                             Month = c.Month,
                             RentPrice = c.RentPrice.Price,
-                            ReceiverPaymentStatus = c.ReceiverPaymentStatus.ToDescriptionString(),
-                            PayerPaymentStatus = c.PayerPaymentStatus.ToDescriptionString()
+                            ReceiverPaymentStatus = c.ReceiverPaymentStatus.ToDescription(),
+                            PayerPaymentStatus = c.PayerPaymentStatus.ToDescription()
                         })
                             .ToList()
                 }).FirstOrDefault();
@@ -78,8 +78,8 @@ namespace Rentering.Infra.Contracts.Repositories
             {
                 Id = c.Id,
                 ContractName = c.ContractName,
-                ContractState = c.ContractState.ToDescriptionString(),
-                ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole.ToDescriptionString(),
+                ContractState = c.ContractState.ToDescription(),
+                ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole.ToDescription(),
                 RentPrice = c.RentPrice.Price,
                 RentDueDate = c.RentDueDate,
                 ContractStartDate = c.ContractStartDate,
@@ -121,8 +121,8 @@ namespace Rentering.Infra.Contracts.Repositories
                     ContractId = p.ContractId,
                     ContractName = p.Contract.ContractName,
                     ContractOwner = "Matheus Campanini Mughrabi Mockado",
-                    ContractState = p.Contract.ContractState.ToDescriptionString(),
-                    ParticipantRole = p.ParticipantRole.ToDescriptionString(),
+                    ContractState = p.Contract.ContractState.ToDescription(),
+                    ParticipantRole = p.ParticipantRole.ToDescription(),
                     RentPrice = p.Contract.RentPrice.Price,
                     RentDueDate = p.Contract.RentDueDate,
                     ContractStartDate = p.Contract.ContractStartDate,
