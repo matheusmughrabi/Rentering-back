@@ -1,4 +1,4 @@
-using Rentering.Accounts.Domain.SafeEnums;
+using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Entities;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +16,7 @@ namespace Rentering.Accounts.Domain.Entities
             EmailValueObject email, 
             UsernameValueObject username,
             PasswordValueObject password = null,
-            RoleType role = null, 
+            e_Role? role = null, 
             int? id = null) : base(id)
         {
             Name = name;
@@ -25,9 +25,9 @@ namespace Rentering.Accounts.Domain.Entities
             Password = password;
 
             if (role != null)
-                Role = role;
+                Role = (e_Role)role;
             else
-                Role = RoleType.RegularUser;
+                Role = e_Role.RegularUser;
         }
 
         [Required]
@@ -38,8 +38,7 @@ namespace Rentering.Accounts.Domain.Entities
         public UsernameValueObject Username { get; private set; }
         [Required]
         public PasswordValueObject Password { get; private set; }
-        [Required]
-        public RoleType Role { get; private set; }
+        public e_Role Role { get; private set; }
         public string Token { get; private set; }
 
         public void ChangeEmail(EmailValueObject email)

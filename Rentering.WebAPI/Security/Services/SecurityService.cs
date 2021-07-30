@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Rentering.Accounts.Domain.Entities;
-using Rentering.Accounts.Domain.SafeEnums;
+using Rentering.Common.Shared.Enums;
 using Rentering.WebAPI.Security.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,7 +21,7 @@ namespace Rentering.WebAPI.Security.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, account.Id.ToString()),
-                    new Claim(ClaimTypes.Role, RoleType.FromValue<RoleType>(account.Role.Value).ToString())
+                    new Claim(ClaimTypes.Role, account.Role.ToDescription())
                 }),
 
                 Expires = DateTime.Now.AddHours(7),

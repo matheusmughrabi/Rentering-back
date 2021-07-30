@@ -189,6 +189,11 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Implementar status de cada ParticipantBalance (pendente, aceito, recusado), implementar também comentários do ParticipantBalance
 // Uma vez que todos os participantBalance de um mês forem aceitos o status do mês será colocado como Concluído (pendente, concluído, recusado) e será impossível alterar os dados
 
+// Refatoração
+// 1 - Utilizar enum result em todo o back end e implementar validador de enum
+// 2 - Utilizar enum result no front end
+// 3 - Separar models em request e result
+
 // Criar condições para mostrar ou não os botões
 // Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
 // Melhorar telas

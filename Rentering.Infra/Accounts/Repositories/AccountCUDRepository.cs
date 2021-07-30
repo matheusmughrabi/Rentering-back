@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.Domain.Data.Repositories;
 using Rentering.Accounts.Domain.Entities;
-using Rentering.Accounts.Domain.SafeEnums;
 using System.Linq;
 
 namespace Rentering.Infra.Accounts.Repositories
