@@ -10,6 +10,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public int Id { get; set; }
         public string Name { get; set; }
         public string Admin { get; set; }
+        public bool IsCurrentUserAdmin { get; set; }
         public DateTime CreateDate { get; set; }
         public EnumResult<e_CorporationStatus> Status { get; set; }
         public List<Participant> Participants { get; set; }

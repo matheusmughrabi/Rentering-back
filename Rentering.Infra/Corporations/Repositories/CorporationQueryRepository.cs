@@ -37,7 +37,7 @@ namespace Rentering.Infra.Corporations.Repositories
             return result;
         }
 
-        public GetCorporationDetailedQueryResult GetCorporationDetailed(int accountId, int corporationId)
+        public GetCorporationDetailedQueryResult GetCorporationDetailed(int currentUserId, int corporationId)
         {
             var result = _renteringDbContext.Corporation
                .AsNoTracking()
@@ -53,6 +53,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                .Where(u => u.Id == p.AdminId)
                                .Select(s => s.Name.ToString())
                                .FirstOrDefault(),
+                   IsCurrentUserAdmin = currentUserId == p.AdminId,
                    CreateDate = p.CreateDate,
                    Status = new EnumResult<e_CorporationStatus>() 
                    {
