@@ -190,12 +190,12 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Uma vez que todos os participantBalance de um mês forem aceitos o status do mês será colocado como Concluído (pendente, concluído, recusado) e será impossível alterar os dados
 
 // Refatoração
-// 1 - Utilizar enum result em todo o back end e implementar validador de enum
-// 2 - Utilizar enum result no front end
-// 3 - Separar models em request e result
+// 1 - Utilizar enum result em todo o back end e implementar validador de enum OK
+// 2 - Utilizar enum result no front end OK
+// 3 - Separar models em request e result OK
 
-// Criar condições para mostrar ou não os botões
+// Criar condições para mostrar ou não os botões OK
 // Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
 // Melhorar telas
-// Refatorar back
-// Refatorar front
+// Criar componentes no angular
+// Criar módulos

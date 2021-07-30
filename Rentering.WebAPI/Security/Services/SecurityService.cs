@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Rentering.Accounts.Domain.Entities;
-using Rentering.Common.Shared.Enums;
 using Rentering.WebAPI.Security.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
