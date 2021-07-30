@@ -139,6 +139,8 @@ namespace Rentering.Infra.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdminId");
+
                     b.ToTable("Corporation");
                 });
 
@@ -394,6 +396,15 @@ namespace Rentering.Infra.Migrations
                         });
 
                     b.Navigation("RentPrice")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.CorporationEntity", b =>
+                {
+                    b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

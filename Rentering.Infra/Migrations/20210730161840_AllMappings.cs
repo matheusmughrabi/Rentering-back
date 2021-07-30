@@ -57,6 +57,11 @@ namespace Rentering.Infra.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Corporation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Corporation_Account_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Account",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -118,7 +123,8 @@ namespace Rentering.Infra.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Month = table.Column<DateTime>(type: "Date", nullable: false),
                     TotalProfit = table.Column<decimal>(type: "decimal(19,5)", nullable: false),
-                    CorporationId = table.Column<int>(type: "int", nullable: false)
+                    CorporationId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -167,7 +173,8 @@ namespace Rentering.Infra.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParticipantId = table.Column<int>(type: "int", nullable: false),
                     MonthlyBalanceId = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(19,5)", nullable: false)
+                    Balance = table.Column<decimal>(type: "decimal(19,5)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,6 +205,11 @@ namespace Rentering.Infra.Migrations
                 name: "IX_ContractPayments_ContractId",
                 table: "ContractPayments",
                 column: "ContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Corporation_AdminId",
+                table: "Corporation",
+                column: "AdminId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Corporation_MonthlyBalance_CorporationId",
@@ -246,10 +258,10 @@ namespace Rentering.Infra.Migrations
                 name: "Corporation_Participants");
 
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "Corporation");
 
             migrationBuilder.DropTable(
-                name: "Corporation");
+                name: "Account");
         }
     }
 }

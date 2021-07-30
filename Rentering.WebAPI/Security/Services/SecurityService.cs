@@ -21,7 +21,7 @@ namespace Rentering.WebAPI.Security.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, account.Id.ToString()),
-                    new Claim(ClaimTypes.Role, account.Role.ToDescription())
+                    new Claim(ClaimTypes.Role, account.Role.ToString())
                 }),
 
                 Expires = DateTime.Now.AddHours(7),

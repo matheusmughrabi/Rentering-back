@@ -19,7 +19,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
     public class Participant
     {
         public string FullName { get; set; }
-        public string InvitationStatus { get; set; }
+        public EnumResult<e_InvitationStatus> InvitationStatus { get; set; }
         public decimal SharedPercentage { get; set; }
     }
 

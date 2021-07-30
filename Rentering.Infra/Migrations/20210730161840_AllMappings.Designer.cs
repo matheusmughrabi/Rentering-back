@@ -10,8 +10,8 @@ using Rentering.Infra;
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    [Migration("20210729003636_Statuses")]
-    partial class Statuses
+    [Migration("20210730161840_AllMappings")]
+    partial class AllMappings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,8 @@ namespace Rentering.Infra.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Role");
 
                     b.HasKey("Id");
 
@@ -139,6 +140,8 @@ namespace Rentering.Infra.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Corporation");
                 });
@@ -395,6 +398,15 @@ namespace Rentering.Infra.Migrations
                         });
 
                     b.Navigation("RentPrice")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.CorporationEntity", b =>
+                {
+                    b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

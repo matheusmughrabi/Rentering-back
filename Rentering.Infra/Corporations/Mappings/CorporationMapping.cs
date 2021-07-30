@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rentering.Accounts.Domain.Entities;
 using Rentering.Corporation.Domain.Entities;
 
 namespace Rentering.Infra.Corporations.Mappings
@@ -14,9 +15,10 @@ namespace Rentering.Infra.Corporations.Mappings
                 .IsRequired()
                 .HasColumnType("nvarchar(100)");
 
-            builder.Property(c => c.AdminId)
-                .IsRequired()
-                .HasColumnType("int");
+            builder.HasOne<AccountEntity>()
+                .WithMany()
+                .HasForeignKey(c => c.AdminId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(c => c.CreateDate)
                 .IsRequired()
