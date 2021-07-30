@@ -5,6 +5,7 @@ using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Contracts.Application.Handlers
@@ -274,6 +275,7 @@ namespace Rentering.Contracts.Application.Handlers
             contractEntity.AcceptToParticipate(command.AccountContractId);
 
             AddNotifications(contractEntity);
+            contractEntity.Participants.ToList().ForEach(c => AddNotifications(c.Notifications));
 
             if (Invalid)
                 return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);

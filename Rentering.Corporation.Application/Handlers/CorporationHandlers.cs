@@ -3,6 +3,7 @@ using Rentering.Common.Shared.Commands;
 using Rentering.Corporation.Application.Commands;
 using Rentering.Corporation.Domain.Data;
 using Rentering.Corporation.Domain.Entities;
+using System.Linq;
 
 namespace Rentering.Corporation.Application.Handlers
 {
@@ -238,7 +239,7 @@ namespace Rentering.Corporation.Application.Handlers
             }
 
             corporationEntity.AcceptParticipantBalance(command.MonthlyBalanceId, command.CurrentUserId);
-
+            
             AddNotifications(corporationEntity);
 
             if (Invalid)

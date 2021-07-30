@@ -10,11 +10,16 @@ namespace Rentering.Corporation.Domain.Entities
     {
         private List<ParticipantBalanceEntity> _participantBalances;
 
+        protected MonthlyBalanceEntity()
+        {
+        }
+
         public MonthlyBalanceEntity(DateTime month, decimal totalProfit, int corporationId)
         {
             Month = month;
             TotalProfit = totalProfit;
             CorporationId = corporationId;
+            Status = e_MonthlyBalanceStatus.Pending;
 
             _participantBalances = new List<ParticipantBalanceEntity>();
         }
@@ -49,6 +54,7 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             participantBalance.AcceptToParticipate();
+            AddNotifications(participantBalance.Notifications);
 
             bool allParticipantsAccepted = _participantBalances.Any(c => c.Status == e_ParticipantBalanceStatus.Pending || c.Status == e_ParticipantBalanceStatus.Rejected) == false;
 

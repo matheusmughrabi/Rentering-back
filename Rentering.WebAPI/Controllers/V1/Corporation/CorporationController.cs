@@ -194,6 +194,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // 2 - Utilizar enum result no front end OK
 // 3 - Separar models em request e result OK
 
+// Enviar total profit correto ao criar novo mês
+
+
 // Criar condições para mostrar ou não os botões OK
 // Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
 // Melhorar telas

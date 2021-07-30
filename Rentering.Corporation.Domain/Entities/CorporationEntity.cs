@@ -87,6 +87,7 @@ namespace Rentering.Corporation.Domain.Entities
                 AddNotification("Participante", "O participante informado não faz parte desta corporação.");
 
             participant.AcceptToParticipate();
+            //AddNotifications(participant.Notifications);
 
             bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited || c.InvitationStatus == e_InvitationStatus.Rejected);
 
@@ -163,6 +164,7 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             monthlyBalance.Accept(accountId);
+            AddNotifications(monthlyBalance.Notifications);
         }
 
         private void ApplyValidations()
