@@ -60,6 +60,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
             var result = handler.Handle(command);
 
             return Ok(result);
+
             
         }
         #endregion
@@ -216,7 +217,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
 
 // Criar condições para mostrar ou não os botões OK
-// Criar componentes no angular
+// Criar componentes no angular OK
 // Acertar validação de commands tanto no back como no front
 // Deletar telas não utilizadas
 // Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
