@@ -175,6 +175,22 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region RejectBalance
+        [HttpPut]
+        [Route("balance/reject")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RejectBalance([FromBody] RejectBalanceCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }
 
@@ -194,11 +210,12 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // 2 - Utilizar enum result no front end OK
 // 3 - Separar models em request e result OK
 
-// Enviar total profit correto ao criar novo mês
-
+// Enviar total profit correto ao criar novo mês OK
+// Participante recusou participação, deseja prosseguir com o contrato sem a participação dele?
 
 // Criar condições para mostrar ou não os botões OK
-// Melhorar responsividade das telas -> Ícone de carregando e redirecionamentos corretos
+// Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
 // Melhorar telas
 // Criar componentes no angular
+// Acertar validação de commands tanto no back como no front
 // Criar módulos

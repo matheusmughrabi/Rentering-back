@@ -33,7 +33,7 @@ namespace Rentering.Corporation.Domain.Entities
         public decimal Balance { get; private set; }
         public e_ParticipantBalanceStatus Status { get; set; }
 
-        public void AcceptToParticipate()
+        public void AcceptBalance()
         {
             if (Status == e_ParticipantBalanceStatus.Accepted)
             {
@@ -44,7 +44,7 @@ namespace Rentering.Corporation.Domain.Entities
             Status = e_ParticipantBalanceStatus.Accepted;
         }
 
-        public void RejectToParticipate()
+        public void RejectBalance()
         {
             if (Status == e_ParticipantBalanceStatus.Rejected)
             {

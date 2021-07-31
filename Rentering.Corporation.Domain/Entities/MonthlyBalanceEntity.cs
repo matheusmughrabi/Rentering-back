@@ -53,13 +53,33 @@ namespace Rentering.Corporation.Domain.Entities
                 return;
             }
 
-            participantBalance.AcceptToParticipate();
+            participantBalance.AcceptBalance();
             AddNotifications(participantBalance.Notifications);
 
             bool allParticipantsAccepted = _participantBalances.Any(c => c.Status == e_ParticipantBalanceStatus.Pending || c.Status == e_ParticipantBalanceStatus.Rejected) == false;
 
             if (allParticipantsAccepted)
                 Status = e_MonthlyBalanceStatus.Finished;
+        }
+
+        public void Reject(int accountId)
+        {
+            if (Status == e_MonthlyBalanceStatus.Finished)
+            {
+                AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
+                return;
+            }
+
+            var participantBalance = _participantBalances.Where(c => c.Participant.AccountId == accountId).FirstOrDefault();
+
+            if (participantBalance == null)
+            {
+                AddNotification("Balance", "Participant balance não foi encontrado.");
+                return;
+            }
+
+            participantBalance.RejectBalance();
+            AddNotifications(participantBalance.Notifications);
         }
     }
 }

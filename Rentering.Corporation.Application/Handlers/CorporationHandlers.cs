@@ -15,7 +15,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<RejectParticipationInCorporationCommand>,
         IHandler<ActivateCorporationCommand>,
         IHandler<AddMonthCommand>,
-        IHandler<AcceptBalanceCommand>
+        IHandler<AcceptBalanceCommand>,
+        IHandler<RejectBalanceCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -248,6 +249,32 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var result = new CommandResult(true, "Mês aceito com sucesso!", null, null);
+
+            return result;
+        }
+        #endregion
+
+        #region RejectBalance
+        public ICommandResult Handle(RejectBalanceCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada.");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.RejectParticipantBalance(command.MonthlyBalanceId, command.CurrentUserId);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Mês contestado com sucesso!", null, null);
 
             return result;
         }

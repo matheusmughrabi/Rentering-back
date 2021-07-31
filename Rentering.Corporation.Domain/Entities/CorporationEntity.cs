@@ -87,7 +87,7 @@ namespace Rentering.Corporation.Domain.Entities
                 AddNotification("Participante", "O participante informado não faz parte desta corporação.");
 
             participant.AcceptToParticipate();
-            //AddNotifications(participant.Notifications);
+            AddNotifications(participant.Notifications);
 
             bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited || c.InvitationStatus == e_InvitationStatus.Rejected);
 
@@ -109,6 +109,7 @@ namespace Rentering.Corporation.Domain.Entities
                 AddNotification("Participante", "O participante informado não faz parte desta corporação.");
 
             participant.RejectToParticipate();
+            AddNotifications(participant.Notifications);
         }
 
         public void ActivateCorporation()
@@ -164,6 +165,20 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             monthlyBalance.Accept(accountId);
+            AddNotifications(monthlyBalance.Notifications);
+        }
+
+        public void RejectParticipantBalance(int monthlyBalanceId, int accountId)
+        {
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.Reject(accountId);
             AddNotifications(monthlyBalance.Notifications);
         }
 
