@@ -46,7 +46,7 @@ namespace Rentering.Corporation.Application.Handlers
         #region InviteToCorporation
         public ICommandResult Handle(InviteToCorporationCommand command)
         {
-            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.ContractId);
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
             if (corporationEntity == null)
             {
                 AddNotification("Corporação", "Corporação não foi encontrada");

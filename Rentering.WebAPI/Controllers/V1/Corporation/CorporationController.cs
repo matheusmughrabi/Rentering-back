@@ -211,11 +211,25 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // 3 - Separar models em request e result OK
 
 // Enviar total profit correto ao criar novo mês OK
-// Participante recusou participação, deseja prosseguir com o contrato sem a participação dele?
+// Contestar mês OK
+// O que deve acontecer ao contestar mês? -> Deverá ser possível aceitar se o usuário quiser OK
+
 
 // Criar condições para mostrar ou não os botões OK
-// Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
-// Melhorar telas
 // Criar componentes no angular
 // Acertar validação de commands tanto no back como no front
+// Deletar telas não utilizadas
+// Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
+// Melhorar telas
 // Criar módulos
+
+
+// CORREÇÕES
+// Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
+// Corrigir quando não existir participante
+
+
+// Próximas features
+// 1- Descrição em participant balance
+// 2 - Registrar cada lucro individual do mês e só então fechar o mês
+// 3 - Criar página home
