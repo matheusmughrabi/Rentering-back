@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class GetCurrentOwedAmountCommand : ICommand
+    public class GetCurrentOwedAmountCommand : Command
     {
         public GetCurrentOwedAmountCommand(int contractId)
         {

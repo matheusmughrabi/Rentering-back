@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class RejectToParticipateCommand : ICommand
+    public class RejectToParticipateCommand : Command
     {
         [JsonIgnore]
         public int AccountId { get; set; }

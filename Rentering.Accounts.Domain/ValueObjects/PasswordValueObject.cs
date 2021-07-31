@@ -17,8 +17,8 @@ namespace Rentering.Accounts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(Password, 3, "Password", "Password must have at least 3 letters")
-                .HasMaxLen(Password, 40, "Password", "Password must have less than 40 letters")
+                .HasMinLen(Password, 3, "Senha", "A senha precisa ter ao menos 3 letras")
+                .HasMaxLen(Password, 40, "Senha", "A senha precisa ter menos do que 40 letras")
             );
         }
 
@@ -29,9 +29,9 @@ namespace Rentering.Accounts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(Password, 3, "Password", "Password must have at least 3 letters")
-                .HasMaxLen(Password, 40, "Password", "Password must have less than 40 letters")
-                .IsTrue(CheckIfPasswordsMatch(), "Password", "Passwords don't match")
+                .HasMinLen(Password, 3, "Senha", "A senha precisa ter ao menos 3 letras")
+                .HasMaxLen(Password, 40, "Senha", "A senha precisa ter menos do que 40 letras")
+                .IsTrue(CheckIfPasswordsMatch(), "Senha", "As senhas não conferem")
             );
         }
 

@@ -15,8 +15,8 @@ namespace Rentering.Accounts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(Username, 3, "Username", "Username must have at least 3 letters")
-                .HasMaxLen(Username, 40, "Username", "Username must have less than 40 letters")
+                .HasMinLen(Username, 3, "Usuário", "O nome de usuário precisa ter ao menos 3 letras")
+                .HasMaxLen(Username, 40, "Usuário", "O nome de usuário precisa ter menos do que 40 letras")
             );
         }
 

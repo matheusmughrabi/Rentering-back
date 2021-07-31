@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class CreateContractCommand : ICommand
+    public class CreateContractCommand : Command
     {
         public CreateContractCommand(
             string contractName,
