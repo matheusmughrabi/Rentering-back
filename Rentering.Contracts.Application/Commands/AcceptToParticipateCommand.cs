@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class AcceptToParticipateCommand : ICommand
+    public class AcceptToParticipateCommand : Command
     {
         public AcceptToParticipateCommand(int contractId)
         {

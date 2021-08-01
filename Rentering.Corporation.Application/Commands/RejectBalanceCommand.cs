@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Corporation.Application.Commands
 {
-    public class RejectBalanceCommand : ICommand
+    public class RejectBalanceCommand : Command
     {
         [JsonIgnore]
         public int CurrentUserId { get; set; }

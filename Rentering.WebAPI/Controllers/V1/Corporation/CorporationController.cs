@@ -54,6 +54,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult Create([FromBody] CreateCorporationCommand command)
         {
+            if (command.Invalid)               
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
             command.CurrentUserId = GetCurrentUserId();
 
             var handler = new CorporationHandlers(_corporationUnitOfWork);
@@ -71,6 +74,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult InviteParticipant([FromBody] InviteToCorporationCommand command)
         {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
             command.CurrentUserId = GetCurrentUserId();
 
             var handler = new CorporationHandlers(_corporationUnitOfWork);
@@ -151,6 +157,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult AddMonth([FromBody] AddMonthCommand command)
         {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
             command.CurrentUserId = GetCurrentUserId();
 
             var handler = new CorporationHandlers(_corporationUnitOfWork);
@@ -218,8 +227,8 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
 // Criar condições para mostrar ou não os botões OK
 // Criar componentes no angular OK
-// Acertar validação de commands tanto no back como no front
-// Deletar telas não utilizadas
+// Acertar validação de commands tanto no back como no front OK
+// Deletar telas não utilizadas OK
 // Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
 // Melhorar telas
 // Criar módulos
