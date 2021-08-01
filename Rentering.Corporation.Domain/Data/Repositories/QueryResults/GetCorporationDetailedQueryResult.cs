@@ -30,6 +30,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public DateTime Month { get; set; }
         public decimal TotalProfit { get; set; }
         public EnumResult<e_MonthlyBalanceStatus> Status { get; set; }
+        public EnumResult<e_ParticipantBalanceStatus> CurrentUserBalanceStatus { get; set; }
         public List<ParticipantBalance> ParticipantBalances { get; set; }
     }
 

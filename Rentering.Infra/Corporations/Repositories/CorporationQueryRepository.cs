@@ -83,11 +83,22 @@ namespace Rentering.Infra.Corporations.Repositories
                             Id = u.Id,
                             Month = u.Month,
                             TotalProfit = u.TotalProfit,
+
                             Status = new EnumResult<e_MonthlyBalanceStatus>() 
                             {
                                 Value = u.Status,
                                 Description = u.Status.ToDescription()
                             },
+
+                            CurrentUserBalanceStatus = u.ParticipantBalances
+                                .Where(c => c.Participant.AccountId == currentUserId)
+                                .Select(p => new EnumResult<e_ParticipantBalanceStatus>()
+                                {
+                                    Value = p.Status,
+                                    Description = p.Status.ToDescription()
+                                })
+                                .FirstOrDefault(),
+
                             ParticipantBalances = u.ParticipantBalances.Select(p => new ParticipantBalance()
                             {
                                 ParticipantName = _renteringDbContext.Account

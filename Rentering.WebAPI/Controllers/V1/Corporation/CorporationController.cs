@@ -229,7 +229,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Criar componentes no angular OK
 // Acertar validação de commands tanto no back como no front OK
 // Deletar telas não utilizadas OK
-// Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
+// Melhorar responsividade das telas -> Ícone de carregando OK, reload data OK,  redirecionamentos corretos OK e botão de aceitar mês
 // Melhorar telas
 // Criar módulos
 
@@ -238,8 +238,11 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
 // Corrigir quando não existir participante
 
+// REFATORAÇÕES
+// 1 - Reload data -> Retornar os dados novos logo após put ao invés de consultar o BD novamente
+// 2 - BaseService -> ComposeHeaders
 
-// Próximas features
+// PRÓXIMAS FEATURES
 // 1- Descrição em participant balance
 // 2 - Registrar cada lucro individual do mês e só então fechar o mês
 // 3 - Criar página home
