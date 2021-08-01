@@ -227,8 +227,8 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
 // Criar condições para mostrar ou não os botões OK
 // Criar componentes no angular OK
-// Acertar validação de commands tanto no back como no front
-// Deletar telas não utilizadas
+// Acertar validação de commands tanto no back como no front OK
+// Deletar telas não utilizadas OK
 // Melhorar responsividade das telas -> Ícone de carregando, redirecionamentos corretos e botão de aceitar mês
 // Melhorar telas
 // Criar módulos
