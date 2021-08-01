@@ -6,8 +6,11 @@ namespace Rentering.Corporation.Application.Commands
 {
     public class AddMonthCommand : Command
     {
-        public AddMonthCommand()
+        public AddMonthCommand(int corporationId, decimal totalProfit)
         {
+            CorporationId = corporationId;
+            TotalProfit = totalProfit;
+
             FailFastValidations();
         }
 
