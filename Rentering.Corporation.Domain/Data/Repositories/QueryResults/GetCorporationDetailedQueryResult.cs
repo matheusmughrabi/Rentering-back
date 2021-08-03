@@ -1,11 +1,12 @@
 ﻿using Rentering.Common.Shared.Enums;
+using Rentering.Common.Shared.QueryResults;
 using Rentering.Corporation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 
 namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
 {
-    public class GetCorporationDetailedQueryResult
+    public class GetCorporationDetailedQueryResult : IDataResult
     {
         public int Id { get; set; }
         public string Name { get; set; }

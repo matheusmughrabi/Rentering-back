@@ -21,7 +21,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         #region GetCorporations
         [HttpGet]
         [Route("")]
-        [Authorize(Roles = "RegularUser,Admin")]
+        //[Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCorporations()
         {
             return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetCorporations(GetCurrentUserId()));
@@ -31,7 +31,7 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         #region GetCorporationDetailed
         [HttpGet]
         [Route("detailed/{id}")]
-        [Authorize(Roles = "RegularUser,Admin")]
+        //[Authorize(Roles = "RegularUser,Admin")]
         public IActionResult GetCorporationDetailed(int id)
         {
             return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetCorporationDetailed(GetCurrentUserId(), id));

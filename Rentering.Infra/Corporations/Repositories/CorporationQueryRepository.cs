@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Enums;
+using Rentering.Common.Shared.QueryResults;
 using Rentering.Corporation.Domain.Data.Repositories;
 using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
 using Rentering.Corporation.Domain.Enums;
@@ -17,9 +18,9 @@ namespace Rentering.Infra.Corporations.Repositories
             _renteringDbContext = renteringDbContext;
         }
 
-        public IEnumerable<GetCorporationsQueryResult> GetCorporations(int accountId)
+        public PaginatedQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId, int page = 1, int recordsPerPage = 10)
         {
-            var result = _renteringDbContext.Corporation
+            var query = _renteringDbContext.Corporation
                 .AsNoTracking()
                 .Where(c => c.Participants.Any(u => u.AccountId == accountId) || c.AdminId == accountId)
                 .Select(p => new GetCorporationsQueryResult()
@@ -31,15 +32,24 @@ namespace Rentering.Infra.Corporations.Repositories
                                 .Where(u => u.Id == accountId)
                                 .Select(s => s.Name.ToString())
                                 .FirstOrDefault()
-                })
-                .ToList();
+                });
 
-            return result;
+            var paginationResult = new PaginationResult(page, recordsPerPage, query.Count());
+
+            var skip = recordsPerPage * (page - 1);
+            query = query.Skip(skip)
+                .Take(recordsPerPage);
+
+            var dataResult = query.ToList();
+
+            var queryResult = new PaginatedQueryResult<GetCorporationsQueryResult>(dataResult, paginationResult);
+
+            return queryResult;
         }
 
-        public GetCorporationDetailedQueryResult GetCorporationDetailed(int currentUserId, int corporationId)
+        public SingleQueryResult<GetCorporationDetailedQueryResult> GetCorporationDetailed(int currentUserId, int corporationId)
         {
-            var result = _renteringDbContext.Corporation
+            var dataResult = _renteringDbContext.Corporation
                .AsNoTracking()
                .Include(i => i.Participants)
                .Include(i => i.MonthlyBalances)
@@ -117,7 +127,9 @@ namespace Rentering.Infra.Corporations.Repositories
                })
                .FirstOrDefault();
 
-            return result;
+            var queryResult = new SingleQueryResult<GetCorporationDetailedQueryResult>(dataResult);
+
+            return queryResult;
         }
 
         public IEnumerable<GetInvitationsQueryResult> GetInvitations(int accountId)
