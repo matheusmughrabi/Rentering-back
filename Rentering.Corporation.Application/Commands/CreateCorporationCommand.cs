@@ -7,6 +7,7 @@ namespace Rentering.Corporation.Application.Commands
     public class CreateCorporationCommand : Command
     {
         public CreateCorporationCommand(string name)
+        
         {
             Name = name;
             FailFastValidations();

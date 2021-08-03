@@ -222,9 +222,9 @@ namespace Rentering.Corporation.Application.Handlers
 
             _corporationUnitOfWork.Save();
 
-            var participant = new CommandResult(true, "Novo mês adicionado!", null, null);
+            var result = new CommandResult(true, "Novo mês adicionado!", null, null);
 
-            return participant;
+            return result;
         }
         #endregion
 
