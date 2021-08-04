@@ -241,6 +241,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele? OK
 // Corrigir quando não existir participante OK
 
+// TESTES E CORREÇÔES ADICIONAIS
+
+
 // MELHORIAS GERAIS
 // 1 - Reload data -> Retornar os dados novos logo após put ao invés de consultar o BD novamente
 // 2 - RefreshToken

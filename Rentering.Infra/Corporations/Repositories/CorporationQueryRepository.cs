@@ -29,7 +29,7 @@ namespace Rentering.Infra.Corporations.Repositories
                     Name = p.Name,
                     Admin = _renteringDbContext.Account
                                 .AsNoTracking()
-                                .Where(u => u.Id == accountId)
+                                .Where(u => u.Id == p.AdminId)
                                 .Select(s => s.Name.ToString())
                                 .FirstOrDefault()
                 }).ToList();
