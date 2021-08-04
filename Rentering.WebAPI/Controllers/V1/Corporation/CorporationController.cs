@@ -232,17 +232,20 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Melhorar responsividade das telas -> Ícone de carregando OK, reload data OK,  redirecionamentos corretos OK e botão de aceitar mês OK
 // BaseService -> ComposeHeaders OK
 // Melhorar telas -> Minhas corporações OK
-// Padronizar retornos QueryResults para o front
-// Criar módulos Angular
+// Padronizar retornos QueryResults para o front OK
+// Criar módulos Angular ADIADO
 
 // CORREÇÕES
-// RefreshToken
-// HasValidToken
-// Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
-// Corrigir quando não existir participante
+// Enviar mês a ser adicionado OK
+// *ngIf não existem corporações ainda OK
+// Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele? OK
+// Corrigir quando não existir participante OK
 
-// MELHORIAS
+// MELHORIAS GERAIS
 // 1 - Reload data -> Retornar os dados novos logo após put ao invés de consultar o BD novamente
+// 2 - RefreshToken
+// 3 - HasValidToken
+// 4 - Loading login mal-sucedido
 
 // PRÓXIMAS FEATURES
 // 1 - Descrição em participant balance
