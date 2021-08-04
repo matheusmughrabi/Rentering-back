@@ -231,9 +231,9 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Deletar telas não utilizadas OK
 // Melhorar responsividade das telas -> Ícone de carregando OK, reload data OK,  redirecionamentos corretos OK e botão de aceitar mês OK
 // BaseService -> ComposeHeaders OK
-// Melhorar telas -> Minhas corporações
-
-// Criar módulos
+// Melhorar telas -> Minhas corporações OK
+// Padronizar retornos QueryResults para o front
+// Criar módulos Angular
 
 // CORREÇÕES
 // Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
