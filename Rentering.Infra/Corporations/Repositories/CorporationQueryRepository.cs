@@ -124,9 +124,9 @@ namespace Rentering.Infra.Corporations.Repositories
             return queryResult;
         }
 
-        public IEnumerable<GetInvitationsQueryResult> GetInvitations(int accountId)
+        public ListQueryResult<GetInvitationsQueryResult> GetInvitations(int accountId)
         {
-            var result = _renteringDbContext.Participant
+            var dataResult = _renteringDbContext.Participant
                .AsNoTracking()
                .Where(c => c.AccountId == accountId && c.InvitationStatus == e_InvitationStatus.Invited && c.Corporation.Status == e_CorporationStatus.WaitingParticipants)
                .Include(c => c.Corporation)
@@ -143,7 +143,9 @@ namespace Rentering.Infra.Corporations.Repositories
                })
                .ToList();
 
-            return result;
+            var queryResult = new ListQueryResult<GetInvitationsQueryResult>(dataResult);
+
+            return queryResult;
         }
 
         public int GetAccountIdByEmail(string email)
