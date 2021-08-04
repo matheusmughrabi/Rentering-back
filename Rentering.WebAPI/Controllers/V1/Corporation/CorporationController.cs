@@ -231,14 +231,15 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Deletar telas não utilizadas OK
 // Melhorar responsividade das telas -> Ícone de carregando OK, reload data OK,  redirecionamentos corretos OK e botão de aceitar mês OK
 // BaseService -> ComposeHeaders OK
-// Melhorar telas
-// Criar módulos
+// Melhorar telas -> Minhas corporações OK
+// Padronizar retornos QueryResults para o front
+// Criar módulos Angular
 
 // CORREÇÕES
 // Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
 // Corrigir quando não existir participante
 
-// REFATORAÇÕES
+// MELHORIAS
 // 1 - Reload data -> Retornar os dados novos logo após put ao invés de consultar o BD novamente
 
 // PRÓXIMAS FEATURES

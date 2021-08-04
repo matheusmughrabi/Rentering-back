@@ -1,13 +1,13 @@
-﻿using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
-using System.Collections.Generic;
+﻿using Rentering.Common.Shared.QueryResults;
+using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
 
 namespace Rentering.Corporation.Domain.Data.Repositories
 {
     public interface ICorporationQueryRepository
     {
-        IEnumerable<GetCorporationsQueryResult> GetCorporations(int accountId);
-        GetCorporationDetailedQueryResult GetCorporationDetailed(int accountId, int corporationId);
-        IEnumerable<GetInvitationsQueryResult> GetInvitations(int accountId);
+        ListQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId);
+        SingleQueryResult<GetCorporationDetailedQueryResult> GetCorporationDetailed(int accountId, int corporationId);
+        ListQueryResult<GetInvitationsQueryResult> GetInvitations(int accountId);
         int GetAccountIdByEmail(string email);
     }
 }
