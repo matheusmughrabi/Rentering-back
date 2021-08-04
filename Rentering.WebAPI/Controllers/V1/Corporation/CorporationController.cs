@@ -236,6 +236,8 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 // Criar módulos Angular
 
 // CORREÇÕES
+// RefreshToken
+// HasValidToken
 // Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele?
 // Corrigir quando não existir participante
 
