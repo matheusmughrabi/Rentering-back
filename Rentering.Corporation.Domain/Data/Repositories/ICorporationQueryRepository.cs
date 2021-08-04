@@ -6,7 +6,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories
 {
     public interface ICorporationQueryRepository
     {
-        PaginatedQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId, int page = 1, int recordsPerPage = 10);
+        ListQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId);
         SingleQueryResult<GetCorporationDetailedQueryResult> GetCorporationDetailed(int accountId, int corporationId);
         IEnumerable<GetInvitationsQueryResult> GetInvitations(int accountId);
         int GetAccountIdByEmail(string email);

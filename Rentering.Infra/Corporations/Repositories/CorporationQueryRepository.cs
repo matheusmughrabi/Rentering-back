@@ -18,9 +18,9 @@ namespace Rentering.Infra.Corporations.Repositories
             _renteringDbContext = renteringDbContext;
         }
 
-        public PaginatedQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId, int page = 1, int recordsPerPage = 10)
+        public ListQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId)
         {
-            var query = _renteringDbContext.Corporation
+            var dataResult = _renteringDbContext.Corporation
                 .AsNoTracking()
                 .Where(c => c.Participants.Any(u => u.AccountId == accountId) || c.AdminId == accountId)
                 .Select(p => new GetCorporationsQueryResult()
@@ -32,17 +32,9 @@ namespace Rentering.Infra.Corporations.Repositories
                                 .Where(u => u.Id == accountId)
                                 .Select(s => s.Name.ToString())
                                 .FirstOrDefault()
-                });
+                }).ToList();
 
-            var paginationResult = new PaginationResult(page, recordsPerPage, query.Count());
-
-            var skip = recordsPerPage * (page - 1);
-            query = query.Skip(skip)
-                .Take(recordsPerPage);
-
-            var dataResult = query.ToList();
-
-            var queryResult = new PaginatedQueryResult<GetCorporationsQueryResult>(dataResult, paginationResult);
+            var queryResult = new ListQueryResult<GetCorporationsQueryResult>(dataResult);
 
             return queryResult;
         }
