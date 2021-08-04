@@ -1,14 +1,16 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Commands;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Rentering.Corporation.Application.Commands
 {
     public class AddMonthCommand : Command
     {
-        public AddMonthCommand(int corporationId, decimal totalProfit)
+        public AddMonthCommand(int corporationId, DateTime month, decimal totalProfit)
         {
             CorporationId = corporationId;
+            Month = month;
             TotalProfit = totalProfit;
 
             FailFastValidations();
@@ -17,6 +19,7 @@ namespace Rentering.Corporation.Application.Commands
         [JsonIgnore]
         public int CurrentUserId { get; set; }
         public int CorporationId { get; set; }
+        public DateTime Month { get; set; }
         public decimal TotalProfit { get; set; }
 
         public override void FailFastValidations()
