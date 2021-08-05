@@ -17,7 +17,7 @@ namespace Rentering.Accounts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .IsEmail(Email, "Email", "Invalid Email Address")
+                .IsEmail(Email, "Email", "Email inválido")
             );
         }
 

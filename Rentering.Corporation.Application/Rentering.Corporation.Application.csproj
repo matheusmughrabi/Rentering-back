@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
+    <ProjectReference Include="..\Rentering.Corporation.Domain\Rentering.Corporation.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

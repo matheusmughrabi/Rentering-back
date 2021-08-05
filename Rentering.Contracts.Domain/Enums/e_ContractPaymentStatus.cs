@@ -1,15 +1,25 @@
-﻿namespace Rentering.Contracts.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_RenterPaymentStatus
+    public enum e_ReceiverPaymentStatus
     {
-        NONE = 0,
-        REJECTED = 1,
-        ACCEPTED = 2
+        [Description("Sem status")]
+        None = 0,
+
+        [Description("Recusado")]
+        Rejected = 1,
+
+        [Description("Aceito")]
+        Accepted = 2
     }
 
-    public enum e_TenantPaymentStatus
+    public enum e_PayerPaymentStatus
     {
-        NONE = 0,
-        EXECUTED = 1
+        [Description("Sem status")]
+        None = 0,
+
+        [Description("Pagamento realizado")]
+        Executed = 1
     }
 }

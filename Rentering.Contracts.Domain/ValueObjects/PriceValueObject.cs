@@ -15,7 +15,7 @@ namespace Rentering.Contracts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .IsGreaterThan(Price, 0M, "Price", "Price must be greater than zero")
+                .IsGreaterThan(Price, 0M, "Preço", "O preço precisar ser maior do que zero")
             );
         }
 

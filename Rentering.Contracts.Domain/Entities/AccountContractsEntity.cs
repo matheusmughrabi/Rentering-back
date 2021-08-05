@@ -23,12 +23,12 @@ namespace Rentering.Contracts.Domain.Entities
             if (status != null)
                 Status = (e_ParticipantStatus)status;
             else
-                Status = e_ParticipantStatus.Invited;
+                Status = e_ParticipantStatus.Pending;
         }
 
         public int AccountId { get; private set; }
         public int ContractId { get; private set; }
-        public virtual EstateContractEntity EstateContract { get; private set; }
+        public virtual ContractEntity Contract { get; private set; }
         public e_ParticipantRole ParticipantRole { get; private set; }
         public e_ParticipantStatus Status { get; private set; }
 
@@ -36,13 +36,13 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (Status == e_ParticipantStatus.Rejected)
             {
-                AddNotification("Status", "You have already rejected to participate in this contract");
+                AddNotification("Status", "Não é possível aceitar a participação no contrato, pois você já recusou participar.");
                 return;
             }
 
             if (Status == e_ParticipantStatus.Accepted)
             {
-                AddNotification("Status", "You have already accepted to participate in this contract");
+                AddNotification("Status", "Não é possível aceitar novamente a participação no contrato.");
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace Rentering.Contracts.Domain.Entities
         {
             if (Status == e_ParticipantStatus.Rejected)
             {
-                AddNotification("Status", "You have already rejected to participate in this contract");
+                AddNotification("Status", "Não é possível recusar novamente a participação no contrato.");
                 return;
             }
 

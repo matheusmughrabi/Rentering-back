@@ -1,9 +1,16 @@
-﻿namespace Rentering.Contracts.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace Rentering.Contracts.Domain.Enums
 {
     public enum e_ParticipantStatus
     {
-        Invited = 1,
+        [Description("Pendente")]
+        Pending = 1,
+
+        [Description("Aceito")]
         Accepted = 2,
+
+        [Description("Recusado")]
         Rejected = 3
     }
 }
