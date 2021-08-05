@@ -23,10 +23,7 @@ namespace Rentering.Corporation.Domain.Entities
             AdminId = adminId;
 
             if (id == null)
-            {
-                CreateDate = DateTime.Now;
-                Status = e_CorporationStatus.InProgress;
-            }               
+                Status = e_CorporationStatus.InProgress;       
 
             _participants = new List<ParticipantEntity>();
             _monthlyBalances = new List<MonthlyBalanceEntity>();
@@ -36,7 +33,6 @@ namespace Rentering.Corporation.Domain.Entities
 
         public string Name { get; private set; }
         public int AdminId { get; private set; }
-        public DateTime CreateDate { get; private set; }
         public e_CorporationStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantEntity> Participants => _participants.ToArray();
         public IReadOnlyCollection<MonthlyBalanceEntity> MonthlyBalances => _monthlyBalances.ToArray();
