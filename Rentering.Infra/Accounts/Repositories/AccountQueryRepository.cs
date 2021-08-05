@@ -16,19 +16,19 @@ namespace Rentering.Infra.Accounts.Repositories
 
         public GetAccountQueryResult GetAccountById(int id)
         {
-            var accountRetrieved = _renteringDbContext.Account
+            var accountEntity = _renteringDbContext.Account
                  .AsNoTracking()
                  .Where(c => c.Id == id)
                  .Select(c => new { c.Email.Email, c.Username.Username })
                  .FirstOrDefault();
 
-            if (accountRetrieved == null)
+            if (accountEntity == null)
                 return null;
 
             var accountQueryResult = new GetAccountQueryResult()
             {
-                Email = accountRetrieved.Email,
-                Username = accountRetrieved.Username
+                Email = accountEntity.Email,
+                Username = accountEntity.Username
             };
 
             return accountQueryResult;

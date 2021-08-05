@@ -6,7 +6,7 @@ namespace Rentering.Common.Shared.Enums
 {
     public static class EnumExtensions
     {
-        public static string ToDescriptionString(this Enum value)
+        public static string ToDescription(this Enum value)
         {
             FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
             if (fieldInfo == null) return null;

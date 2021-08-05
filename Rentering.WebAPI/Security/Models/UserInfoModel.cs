@@ -4,28 +4,18 @@ namespace Rentering.WebAPI.Security.Models
 {
     public class UserInfoModel
     {
-        public UserInfoModel(int id, string username, string token, e_Roles roles)
+        public UserInfoModel(int id, string username, string token, e_Role role)
         {
             Id = id;
             Username = username;
             Token = token;
-
-            switch (roles)
-            {
-                case e_Roles.RegularUser:
-                    Role = "RegularUser";
-                    break;
-                case e_Roles.Admin:
-                    Role = "Admin";
-                    break;
-                default:
-                    break;
-            }
+            Role = role;
         }
 
         public int Id { get; private set; }
         public string Username { get; private set; }
-        public string Role { get; set; }
+        public e_Role Role { get; set; }
         public string Token { get; private set; }
     }
 }
+

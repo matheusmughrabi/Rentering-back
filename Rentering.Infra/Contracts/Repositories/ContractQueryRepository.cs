@@ -28,10 +28,18 @@ namespace Rentering.Infra.Contracts.Repositories
                 {
                     Id = c.Id,
                     CurrentUserRole = c.Participants.Where(c => c.AccountId == accountId)
-                        .Select(p => p.ParticipantRole.ToDescriptionString())
+                        .Select(p => new EnumResult<e_ParticipantRole>() 
+                        {
+                            Value = p.ParticipantRole,
+                            Description = p.ParticipantRole.ToDescription()
+                        })
                         .FirstOrDefault(),
                     ContractName = c.ContractName,
-                    ContractState = c.ContractState.ToDescriptionString(),
+                    ContractState = new EnumResult<e_ContractState>() 
+                    { 
+                        Value = c.ContractState,
+                        Description = c.ContractState.ToDescription()
+                    },
                     RentPrice = c.RentPrice.Price,
                     RentDueDate = c.RentDueDate,
                     ContractStartDate = c.ContractStartDate,
@@ -46,8 +54,16 @@ namespace Rentering.Infra.Contracts.Repositories
                                     .Where(u => u.Id == p.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                            Status = p.Status.ToDescriptionString(),
-                            ParticipantRole = p.ParticipantRole.ToDescriptionString()
+                            Status = new EnumResult<e_ParticipantStatus>() 
+                            {
+                                Value = p.Status,
+                                Description = p.Status.ToDescription()
+                            },
+                            ParticipantRole = new EnumResult<e_ParticipantRole>() 
+                            {
+                                Value = p.ParticipantRole,
+                                Description = p.ParticipantRole.ToDescription()
+                            },
                         })
                             .ToList(),
 
@@ -56,10 +72,17 @@ namespace Rentering.Infra.Contracts.Repositories
                         {
                             Month = c.Month,
                             RentPrice = c.RentPrice.Price,
-                            ReceiverPaymentStatus = c.ReceiverPaymentStatus.ToDescriptionString(),
-                            PayerPaymentStatus = c.PayerPaymentStatus.ToDescriptionString()
-                        })
-                            .ToList()
+                            ReceiverPaymentStatus = new EnumResult<e_ReceiverPaymentStatus>() 
+                            {
+                                Value = c.ReceiverPaymentStatus,
+                                Description = c.ReceiverPaymentStatus.ToDescription()
+                            },
+                            PayerPaymentStatus = new EnumResult<e_PayerPaymentStatus>() 
+                            { 
+                                Value = c.PayerPaymentStatus,
+                                Description = c.PayerPaymentStatus.ToDescription()
+                            }
+                        }).ToList()
                 }).FirstOrDefault();
 
             return contractDetailed;
@@ -78,8 +101,16 @@ namespace Rentering.Infra.Contracts.Repositories
             {
                 Id = c.Id,
                 ContractName = c.ContractName,
-                ContractState = c.ContractState.ToDescriptionString(),
-                ParticipantRole = c.Participants.FirstOrDefault().ParticipantRole.ToDescriptionString(),
+                ContractState = new EnumResult<e_ContractState>() 
+                {
+                    Value = c.ContractState,
+                    Description = c.ContractState.ToDescription()
+                },
+                ParticipantRole = new EnumResult<e_ParticipantRole>() 
+                {
+                    Value = c.Participants.FirstOrDefault().ParticipantRole,
+                    Description = c.Participants.FirstOrDefault().ParticipantRole.ToDescription()
+                }, 
                 RentPrice = c.RentPrice.Price,
                 RentDueDate = c.RentDueDate,
                 ContractStartDate = c.ContractStartDate,
@@ -102,8 +133,16 @@ namespace Rentering.Infra.Contracts.Repositories
                 ContractId = c.ContractId,
                 Month = c.Month,
                 RentPrice = c.RentPrice.Price,
-                ReceiverPaymentStatus = c.ReceiverPaymentStatus,
-                PayerPaymentStatus = c.PayerPaymentStatus
+                ReceiverPaymentStatus = new EnumResult<e_ReceiverPaymentStatus>() 
+                {
+                    Value = c.ReceiverPaymentStatus,
+                    Description = c.ReceiverPaymentStatus.ToDescription()
+                },
+                PayerPaymentStatus = new EnumResult<e_PayerPaymentStatus>() 
+                {
+                    Value = c.PayerPaymentStatus,
+                    Description = c.PayerPaymentStatus.ToDescription()
+                },
             }));
 
             return paymentsOfContractQueryResults;
@@ -121,8 +160,12 @@ namespace Rentering.Infra.Contracts.Repositories
                     ContractId = p.ContractId,
                     ContractName = p.Contract.ContractName,
                     ContractOwner = "Matheus Campanini Mughrabi Mockado",
-                    ContractState = p.Contract.ContractState.ToDescriptionString(),
-                    ParticipantRole = p.ParticipantRole.ToDescriptionString(),
+                    ContractState = new EnumResult<e_ContractState>() 
+                    {
+                        Value = p.Contract.ContractState,
+                        Description = p.Contract.ContractState.ToDescription()
+                    },
+                    ParticipantRole = p.ParticipantRole.ToDescription(),
                     RentPrice = p.Contract.RentPrice.Price,
                     RentDueDate = p.Contract.RentDueDate,
                     ContractStartDate = p.Contract.ContractStartDate,

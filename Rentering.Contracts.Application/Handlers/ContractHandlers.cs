@@ -5,6 +5,7 @@ using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Contracts.Application.Handlers
@@ -79,8 +80,7 @@ namespace Rentering.Contracts.Application.Handlers
             {
                 AddNotification("Email", "Não foi encontrado um usuário com este email.");
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
-            }
-                
+            }              
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
                 .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
@@ -275,6 +275,7 @@ namespace Rentering.Contracts.Application.Handlers
             contractEntity.AcceptToParticipate(command.AccountContractId);
 
             AddNotifications(contractEntity);
+            contractEntity.Participants.ToList().ForEach(c => AddNotifications(c.Notifications));
 
             if (Invalid)
                 return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);

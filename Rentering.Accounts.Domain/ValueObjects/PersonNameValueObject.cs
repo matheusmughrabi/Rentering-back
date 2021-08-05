@@ -16,8 +16,8 @@ namespace Rentering.Accounts.Domain.ValueObjects
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .HasMinLen(FirstName, 3, "FirstName", "O primeiro nome deve conter no mínimo uma letra")
-                .HasMinLen(LastName, 3, "LastName", "O sobrenome deve conter no mínimo uma letra")
+                .HasMinLen(FirstName, 3, "Primeiro nome", "O primeiro nome deve conter no mínimo uma letra")
+                .HasMinLen(LastName, 3, "Sobrenome", "O sobrenome deve conter no mínimo uma letra")
             );
         }
 

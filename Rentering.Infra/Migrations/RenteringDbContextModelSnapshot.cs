@@ -27,7 +27,8 @@ namespace Rentering.Infra.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Role");
 
                     b.HasKey("Id");
 
@@ -54,6 +55,8 @@ namespace Rentering.Infra.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("ContractId");
 
@@ -112,6 +115,115 @@ namespace Rentering.Infra.Migrations
                     b.HasIndex("ContractId");
 
                     b.ToTable("ContractPayments");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.CorporationEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.ToTable("Corporation");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CorporationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("Date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalProfit")
+                        .HasColumnType("decimal(19,5)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CorporationId");
+
+                    b.ToTable("Corporation_MonthlyBalance");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantBalanceEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(19,5)");
+
+                    b.Property<int>("MonthlyBalanceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthlyBalanceId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("Corporation_ParticipantBalance");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CorporationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvitationStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SharedPercentage")
+                        .HasColumnType("decimal(19,5)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CorporationId");
+
+                    b.ToTable("Corporation_Participants");
                 });
 
             modelBuilder.Entity("Rentering.Accounts.Domain.Entities.AccountEntity", b =>
@@ -216,6 +328,12 @@ namespace Rentering.Infra.Migrations
 
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.AccountContractsEntity", b =>
                 {
+                    b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Rentering.Contracts.Domain.Entities.ContractEntity", "Contract")
                         .WithMany("Participants")
                         .HasForeignKey("ContractId")
@@ -281,11 +399,82 @@ namespace Rentering.Infra.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.CorporationEntity", b =>
+                {
+                    b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
+                {
+                    b.HasOne("Rentering.Corporation.Domain.Entities.CorporationEntity", null)
+                        .WithMany("MonthlyBalances")
+                        .HasForeignKey("CorporationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantBalanceEntity", b =>
+                {
+                    b.HasOne("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", "MonthlyBalance")
+                        .WithMany("ParticipantBalances")
+                        .HasForeignKey("MonthlyBalanceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rentering.Corporation.Domain.Entities.ParticipantEntity", "Participant")
+                        .WithMany("ParticipantBalances")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MonthlyBalance");
+
+                    b.Navigation("Participant");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
+                {
+                    b.HasOne("Rentering.Accounts.Domain.Entities.AccountEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rentering.Corporation.Domain.Entities.CorporationEntity", "Corporation")
+                        .WithMany("Participants")
+                        .HasForeignKey("CorporationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Corporation");
+                });
+
             modelBuilder.Entity("Rentering.Contracts.Domain.Entities.ContractEntity", b =>
                 {
                     b.Navigation("Participants");
 
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.CorporationEntity", b =>
+                {
+                    b.Navigation("MonthlyBalances");
+
+                    b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
+                {
+                    b.Navigation("ParticipantBalances");
+                });
+
+            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.ParticipantEntity", b =>
+                {
+                    b.Navigation("ParticipantBalances");
                 });
 #pragma warning restore 612, 618
         }

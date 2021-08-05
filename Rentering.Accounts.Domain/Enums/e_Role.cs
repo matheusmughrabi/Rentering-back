@@ -1,10 +1,10 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Rentering.Accounts.Domain.Enums
 {
-    public enum e_Roles
+    public enum e_Role
     {
-        [Description("Usu�rio comum")]
+        [Description("Usuário comum")]
         RegularUser = 1,
         [Description("Administrador")]
         Admin = 2

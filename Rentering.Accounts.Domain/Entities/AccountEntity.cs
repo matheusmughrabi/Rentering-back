@@ -15,8 +15,8 @@ namespace Rentering.Accounts.Domain.Entities
             PersonNameValueObject name,
             EmailValueObject email, 
             UsernameValueObject username,
-            PasswordValueObject password = null, 
-            e_Roles? role = null, 
+            PasswordValueObject password = null,
+            e_Role? role = null, 
             int? id = null) : base(id)
         {
             Name = name;
@@ -25,9 +25,9 @@ namespace Rentering.Accounts.Domain.Entities
             Password = password;
 
             if (role != null)
-                Role = (e_Roles)role;
+                Role = (e_Role)role;
             else
-                Role = e_Roles.RegularUser;
+                Role = e_Role.RegularUser;
         }
 
         [Required]
@@ -38,7 +38,7 @@ namespace Rentering.Accounts.Domain.Entities
         public UsernameValueObject Username { get; private set; }
         [Required]
         public PasswordValueObject Password { get; private set; }
-        public e_Roles Role { get; private set; }
+        public e_Role Role { get; private set; }
         public string Token { get; private set; }
 
         public void ChangeEmail(EmailValueObject email)

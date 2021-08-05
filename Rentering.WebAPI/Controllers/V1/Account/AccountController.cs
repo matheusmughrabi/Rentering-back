@@ -36,18 +36,21 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         #region Register
         [HttpPost]
         [Route("Register")]
-        public IActionResult Register([FromBody] RegisterCommand accountCommand)
+        public IActionResult Register([FromBody] RegisterCommand command)
         {
             if (User.Identity.IsAuthenticated)
                 return Unauthorized("Faça logout antes de criar uma nova conta.");
 
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
             var handler = new AccountHandlers(_accountUnitOfWork);
-            var result = handler.Handle(accountCommand);
+            var result = handler.Handle(command);
 
             if (result.Success == false)
                 return Ok(result);
 
-            var userInfo = PerformLogin(accountCommand.Username, accountCommand.Password);
+            var userInfo = PerformLogin(command.Username, command.Password);
 
             var response = new CommandResult(true, "Usuário criado com sucesso!", null, userInfo);
 
@@ -59,9 +62,12 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
-        public IActionResult Login([FromBody] LoginAccountCommand loginCommand)
+        public IActionResult Login([FromBody] LoginAccountCommand command)
         {
-            var userInfo = PerformLogin(loginCommand.Username, loginCommand.Password);
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            var userInfo = PerformLogin(command.Username, command.Password);
 
             if (userInfo == null)
             {

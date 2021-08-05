@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Rentering.Contracts.Application.Commands
 {
-    public class RejectPaymentCommand : ICommand
+    public class RejectPaymentCommand : Command
     {
         public RejectPaymentCommand(int contractId, DateTime month)
         {
