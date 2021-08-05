@@ -98,7 +98,7 @@ namespace Rentering.Corporation.Domain.Entities
             participant.AcceptToParticipate();
             AddNotifications(participant.Notifications);
 
-            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited || c.InvitationStatus == e_InvitationStatus.Rejected);
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited);
 
             if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
                 Status = e_CorporationStatus.ReadyForActivation;
@@ -157,7 +157,7 @@ namespace Rentering.Corporation.Domain.Entities
 
             var monthlyBalance = new MonthlyBalanceEntity(month, totalProfit, this.Id);
 
-            foreach (var participant in _participants)
+            foreach (var participant in _participants.Where(c => c.InvitationStatus == e_InvitationStatus.Accepted))
             {
                 monthlyBalance.AddParticipantBalance(participant);
             }
