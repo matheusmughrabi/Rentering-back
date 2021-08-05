@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
+using Rentering.Accounts.Domain.Entities;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Security.Models;
 using Rentering.WebAPI.Security.Services;
-using System.Collections.Generic;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
 {
@@ -103,7 +104,10 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         {
             var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(username);
 
-            if (accountEntity == null || accountEntity.Password.Password != password)
+            var passwordHasher = new PasswordHasher<AccountEntity>();
+            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(accountEntity, accountEntity.Password, password);
+
+            if (accountEntity == null || passwordVerificationResult != PasswordVerificationResult.Success)
                 return null;
 
             var userInfo = new SecurityService().GenerateToken(accountEntity);

@@ -15,7 +15,7 @@ namespace Rentering.Accounts.Domain.Entities
             PersonNameValueObject name,
             EmailValueObject email, 
             UsernameValueObject username,
-            PasswordValueObject password = null,
+            string password = null,
             e_Role? role = null, 
             int? id = null) : base(id)
         {
@@ -36,8 +36,7 @@ namespace Rentering.Accounts.Domain.Entities
         public EmailValueObject Email { get; private set; }
         [Required]
         public UsernameValueObject Username { get; private set; }
-        [Required]
-        public PasswordValueObject Password { get; private set; }
+        public string Password { get; set; }
         public e_Role Role { get; private set; }
         public string Token { get; private set; }
 
