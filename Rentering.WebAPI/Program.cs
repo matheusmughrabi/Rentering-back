@@ -48,11 +48,11 @@ namespace Rentering.WebAPI
 
 /* CRONOGRAMA
     -> Quinta-feira 05/08/2021
-      - Criar campo CreateDate em Entity
-      - Implementar hash de password
-      - Refresh token
-      - Estudar se no front é possível verificar se o token é válido ou não
-      - Definir se vale a pena utilizar Asp Net Identity
+      - Criar campo CreateDate em Entity OK
+      - Implementar hash de password OK
+      - Refresh token OK
+      - Estudar se no front é possível verificar se o token é válido ou não OK
+      - Definir se vale a pena utilizar Asp Net Identity OK
 
     -> Sexta-feira 06/08/2021
       - Ordenar mês do mais novo para o mais antigo

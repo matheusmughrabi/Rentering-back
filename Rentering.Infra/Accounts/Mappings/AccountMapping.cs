@@ -45,15 +45,10 @@ namespace Rentering.Infra.Accounts.Mappings
                 p.Ignore(u => u.Notifications);
             });
 
-            builder.OwnsOne(c => c.Password, cm =>
-            {
-                cm.Property(u => u.Password)
-                    .IsRequired()
-                    .HasColumnName("Password")
-                    .HasColumnType("nvarchar(100)");
-
-                cm.Ignore(u => u.Notifications);
-            });
+            builder.Property(c => c.Password)
+                 .IsRequired()
+                 .HasColumnName("Password")
+                 .HasColumnType("nvarchar(100)");
 
             builder.Property(c => c.Role)
                 .IsRequired()

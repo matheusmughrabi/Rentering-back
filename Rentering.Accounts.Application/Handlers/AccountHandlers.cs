@@ -1,4 +1,5 @@
 ﻿using FluentValidator;
+using Microsoft.AspNetCore.Identity;
 using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
@@ -22,8 +23,12 @@ namespace Rentering.Accounts.Application.Handlers
             var name = new PersonNameValueObject(command.FirstName, command.LastName);
             var email = new EmailValueObject(command.Email);
             var username = new UsernameValueObject(command.Username);
-            var password = new PasswordValueObject(command.Password, command.ConfirmPassword);
-            var accountEntity = new AccountEntity(name, email, username, password);
+
+            var accountEntity = new AccountEntity(name, email, username, command.Password);
+
+            var passwordHasher = new PasswordHasher<AccountEntity>();
+            string hashedPassword = passwordHasher.HashPassword(accountEntity, command.Password);
+            accountEntity.Password = hashedPassword;
 
             if (_accountsUnitOfWork.AccountCUDRepository.EmailExists(command.Email))
                 AddNotification("Email", "Este email já está registrado");
@@ -34,7 +39,6 @@ namespace Rentering.Accounts.Application.Handlers
             AddNotifications(name.Notifications);
             AddNotifications(email.Notifications);
             AddNotifications(username.Notifications);
-            AddNotifications(password.Notifications);
             AddNotifications(accountEntity.Notifications);
 
             if (Invalid)
