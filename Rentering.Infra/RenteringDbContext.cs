@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Accounts.Domain.Entities;
+using Rentering.Common.Shared.Entities;
 using Rentering.Contracts.Domain.Entities;
 using Rentering.Corporation.Domain.Entities;
 using Rentering.Infra.Accounts.Mappings;
 using Rentering.Infra.Contracts.Mappings;
 using Rentering.Infra.Corporations.Mappings;
+using System;
+using System.Linq;
 
 namespace Rentering.Infra
 {
@@ -38,6 +41,21 @@ namespace Rentering.Infra
             modelBuilder.ApplyConfiguration(new ParticipantBalanceMapping());
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            var selectedEntityList = ChangeTracker.Entries()
+                                    .Where(x => x.Entity is Entity &&
+                                    (x.State == EntityState.Added));
+
+            foreach (var entity in selectedEntityList)
+            {
+
+                ((Entity)entity.Entity).CreateDate = DateTime.Now;
+            }
+
+            return base.SaveChanges();
         }
     }
 }
