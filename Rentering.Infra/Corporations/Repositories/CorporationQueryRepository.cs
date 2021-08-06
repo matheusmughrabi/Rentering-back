@@ -31,7 +31,8 @@ namespace Rentering.Infra.Corporations.Repositories
                                 .AsNoTracking()
                                 .Where(u => u.Id == p.AdminId)
                                 .Select(s => s.Name.ToString())
-                                .FirstOrDefault()
+                                .FirstOrDefault(),
+                    CreateDate = p.CreateDate
                 }).ToList();
 
             var queryResult = new ListQueryResult<GetCorporationsQueryResult>(dataResult);
