@@ -121,7 +121,18 @@ namespace Rentering.Corporation.Domain.Entities
 
             var hasParticipant = _participants.Any(p => p.InvitationStatus != e_InvitationStatus.Rejected);
             if (hasParticipant == false)
+            {
                 Status = e_CorporationStatus.InProgress;
+                return;
+            }
+
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited);
+
+            if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
+            {
+                Status = e_CorporationStatus.ReadyForActivation;
+                return;
+            }
         }
 
         public void ActivateCorporation()
@@ -133,6 +144,12 @@ namespace Rentering.Corporation.Domain.Entities
                 return;
 
             Status = e_CorporationStatus.Active;
+
+            foreach (var participant in _participants.ToList())
+            {
+                if (participant.InvitationStatus == e_InvitationStatus.Rejected)
+                    _participants.Remove(participant);
+            }
         }
 
         public void AddMonth(DateTime month, decimal totalProfit)
