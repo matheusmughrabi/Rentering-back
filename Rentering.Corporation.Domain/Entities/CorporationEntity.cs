@@ -152,7 +152,7 @@ namespace Rentering.Corporation.Domain.Entities
             }
         }
 
-        public void AddMonth(DateTime startDate, DateTime endDate, decimal totalProfit)
+        public void AddMonth(DateTime startDate, DateTime endDate)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
@@ -160,15 +160,7 @@ namespace Rentering.Corporation.Domain.Entities
             if (isAllowed == false)
                 return;
 
-            //var monthAlreadyExists = _monthlyBalances.Any(c => c.Month.ToShortDateString() == month.ToShortDateString());
-
-            //if (monthAlreadyExists)
-            //{
-            //    AddNotification("Perfil", $"Este mês já foi adicionado a esta corporação.");
-            //    return;
-            //}
-
-            var monthlyBalance = new MonthlyBalanceEntity(startDate, endDate, totalProfit, this.Id);
+            var monthlyBalance = new MonthlyBalanceEntity(startDate, endDate, this.Id);
 
             foreach (var participant in _participants.Where(c => c.InvitationStatus == e_InvitationStatus.Accepted))
             {
@@ -176,6 +168,26 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             _monthlyBalances.Add(monthlyBalance);
+        }
+
+        public void RegisterIncomeInMonth(int monthlyBalanceId, string title, string description, decimal value)
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.RegisterIncome(title, description, value);
+            AddNotifications(monthlyBalance.Notifications);
         }
 
         public void AcceptParticipantBalance(int monthlyBalanceId, int accountId)

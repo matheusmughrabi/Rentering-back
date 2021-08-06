@@ -12,9 +12,9 @@ namespace Rentering.Corporation.Application.Commands
             CorporationId = corporationId;
             StartDate = startDate;
             EndDate = endDate;
-            TotalProfit = totalProfit;
+            //TotalProfit = totalProfit;
 
-            FailFastValidations();
+            //FailFastValidations();
         }
 
         [JsonIgnore]
@@ -22,14 +22,13 @@ namespace Rentering.Corporation.Application.Commands
         public int CorporationId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public decimal TotalProfit { get; set; }
 
-        public override void FailFastValidations()
-        {
-            AddNotifications(new ValidationContract()
-                 .Requires()
-                 .IsGreaterThan(TotalProfit, 0M, "Preço", "O preço precisar ser maior do que zero")
-             );
-        }
+        //public override void FailFastValidations()
+        //{
+        //    AddNotifications(new ValidationContract()
+        //         .Requires()
+        //         .IsGreaterThan(TotalProfit, 0M, "Preço", "O preço precisar ser maior do que zero")
+        //     );
+        //}
     }
 }

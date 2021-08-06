@@ -17,7 +17,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<AddMonthCommand>,
         IHandler<AcceptBalanceCommand>,
         IHandler<RejectBalanceCommand>,
-        IHandler<AddParticipantDescriptionToMonthCommand>
+        IHandler<AddParticipantDescriptionToMonthCommand>,
+        IHandler<RegisterIncomeCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -214,7 +215,39 @@ namespace Rentering.Corporation.Application.Handlers
                 return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            corporationEntity.AddMonth(command.StartDate, command.EndDate, command.TotalProfit);
+            corporationEntity.AddMonth(command.StartDate, command.EndDate);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Novo mês adicionado!", null, null);
+
+            return result;
+        }
+        #endregion
+
+        #region RegisterIncome
+        public ICommandResult Handle(RegisterIncomeCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada.");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação adicionar novo mês.");
+                return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.RegisterIncomeInMonth(command.MontlyBalanceId, command.Title, command.Description, command.Value);
 
             AddNotifications(corporationEntity);
 

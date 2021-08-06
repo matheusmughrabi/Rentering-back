@@ -39,6 +39,7 @@ namespace Rentering.Infra
             modelBuilder.ApplyConfiguration(new ParticipantsMapping());
             modelBuilder.ApplyConfiguration(new MonthlyBalanceMapping());
             modelBuilder.ApplyConfiguration(new ParticipantBalanceMapping());
+            modelBuilder.ApplyConfiguration(new IncomeMapping());
 
             base.OnModelCreating(modelBuilder);
         }
