@@ -28,7 +28,8 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
     public class MonthlyBalance
     {
         public int Id { get; set; }
-        public DateTime Month { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public decimal TotalProfit { get; set; }
         public EnumResult<e_MonthlyBalanceStatus> Status { get; set; }
         public EnumResult<e_ParticipantBalanceStatus> CurrentUserBalanceStatus { get; set; }
@@ -40,5 +41,6 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public string ParticipantName { get; set; }
         public decimal Balance { get; set; }
         public EnumResult<e_ParticipantBalanceStatus> Status { get; set; }
+        public string Description { get; set; }
     }
 }

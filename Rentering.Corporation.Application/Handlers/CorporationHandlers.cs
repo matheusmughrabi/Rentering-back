@@ -16,7 +16,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<ActivateCorporationCommand>,
         IHandler<AddMonthCommand>,
         IHandler<AcceptBalanceCommand>,
-        IHandler<RejectBalanceCommand>
+        IHandler<RejectBalanceCommand>,
+        IHandler<AddParticipantDescriptionToMonthCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -213,7 +214,7 @@ namespace Rentering.Corporation.Application.Handlers
                 return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            corporationEntity.AddMonth(command.Month, command.TotalProfit);
+            corporationEntity.AddMonth(command.StartDate, command.EndDate, command.TotalProfit);
 
             AddNotifications(corporationEntity);
 
@@ -275,6 +276,32 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var result = new CommandResult(true, "Mês contestado com sucesso!", null, null);
+
+            return result;
+        }
+        #endregion
+
+        #region AddParticipantDescriptionToMonth
+        public ICommandResult Handle(AddParticipantDescriptionToMonthCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada.");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.AddParticipantDescriptionToMonth(command.MonthlyBalanceId, command.CurrentUserId, command.Description);
+
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Comentário adicionado", null, null);
 
             return result;
         }

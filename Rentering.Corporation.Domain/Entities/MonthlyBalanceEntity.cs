@@ -14,9 +14,10 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public MonthlyBalanceEntity(DateTime month, decimal totalProfit, int corporationId)
+        public MonthlyBalanceEntity(DateTime startDate, DateTime endDate, decimal totalProfit, int corporationId)
         {
-            Month = month;
+            StartDate = startDate;
+            EndDate = endDate;
             TotalProfit = totalProfit;
             CorporationId = corporationId;
             Status = e_MonthlyBalanceStatus.Pending;
@@ -24,7 +25,8 @@ namespace Rentering.Corporation.Domain.Entities
             _participantBalances = new List<ParticipantBalanceEntity>();
         }
 
-        public DateTime Month { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
         public decimal TotalProfit { get; private set; }
         public int CorporationId { get; private set; }
         public e_MonthlyBalanceStatus Status { get; private set; }
@@ -79,6 +81,20 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             participantBalance.RejectBalance();
+            AddNotifications(participantBalance.Notifications);
+        }
+
+        public void AddDescription(int accountId, string description)
+        {
+            var participantBalance = _participantBalances.Where(c => c.Participant.AccountId == accountId).FirstOrDefault();
+
+            if (participantBalance == null)
+            {
+                AddNotification("Balance", "Participant balance não foi encontrado.");
+                return;
+            }
+
+            participantBalance.AddDescription(description);
             AddNotifications(participantBalance.Notifications);
         }
     }

@@ -7,10 +7,11 @@ namespace Rentering.Corporation.Application.Commands
 {
     public class AddMonthCommand : Command
     {
-        public AddMonthCommand(int corporationId, DateTime month, decimal totalProfit)
+        public AddMonthCommand(int corporationId, DateTime startDate, DateTime endDate, decimal totalProfit)
         {
             CorporationId = corporationId;
-            Month = month;
+            StartDate = startDate;
+            EndDate = endDate;
             TotalProfit = totalProfit;
 
             FailFastValidations();
@@ -19,7 +20,8 @@ namespace Rentering.Corporation.Application.Commands
         [JsonIgnore]
         public int CurrentUserId { get; set; }
         public int CorporationId { get; set; }
-        public DateTime Month { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public decimal TotalProfit { get; set; }
 
         public override void FailFastValidations()
