@@ -81,5 +81,19 @@ namespace Rentering.Corporation.Domain.Entities
             participantBalance.RejectBalance();
             AddNotifications(participantBalance.Notifications);
         }
+
+        public void AddDescription(int accountId, string description)
+        {
+            var participantBalance = _participantBalances.Where(c => c.Participant.AccountId == accountId).FirstOrDefault();
+
+            if (participantBalance == null)
+            {
+                AddNotification("Balance", "Participant balance não foi encontrado.");
+                return;
+            }
+
+            participantBalance.AddDescription(description);
+            AddNotifications(participantBalance.Notifications);
+        }
     }
 }

@@ -115,6 +115,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                     Value = p.Status,
                                     Description = p.Status.ToDescription()
                                 },
+                                Description = p.Description
                             }).ToList()
                         }).ToList()
                })

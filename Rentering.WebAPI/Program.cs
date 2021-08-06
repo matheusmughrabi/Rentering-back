@@ -57,7 +57,7 @@ namespace Rentering.WebAPI
     -> Sexta-feira 06/08/2021
       - Ordenar mês do mais novo para o mais antigo OK
       - Ordenar corporações da mais nova para a mais antiga OK
-      - Descrição em participant balance
+      - Descrição em participant balance ON GOING
       - Ao ativar corporação, é preciso remover os participantes que tiverem recusado participação
       - Analisar possível troca de mês para período
 

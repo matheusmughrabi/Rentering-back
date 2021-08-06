@@ -201,5 +201,21 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region AddParticipantDescriptionToMonth
+        [HttpPut]
+        [Route("participant-balance/description")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AddParticipantDescriptionToMonth([FromBody] AddParticipantDescriptionToMonthCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }

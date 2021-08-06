@@ -23,6 +23,7 @@ namespace Rentering.Corporation.Domain.Entities
             ParticipantId = participant.Id;
             MonthlyBalanceId = monthlyBalance.Id;
             Status = e_ParticipantBalanceStatus.Pending;
+            Description = string.Empty;
             CalculateBalance();
         }
 
@@ -31,6 +32,7 @@ namespace Rentering.Corporation.Domain.Entities
         public int MonthlyBalanceId { get; private set; }
         public virtual MonthlyBalanceEntity MonthlyBalance { get; private set; }
         public decimal Balance { get; private set; }
+        public string Description { get; private set; }
         public e_ParticipantBalanceStatus Status { get; set; }
 
         public void AcceptBalance()
@@ -53,6 +55,11 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             Status = e_ParticipantBalanceStatus.Rejected;
+        }
+
+        public void AddDescription(string description)
+        {
+            Description = description;
         }
 
         private void CalculateBalance()
