@@ -190,6 +190,26 @@ namespace Rentering.Corporation.Domain.Entities
             AddNotifications(monthlyBalance.Notifications);
         }
 
+        public void CloseSpecifiedMonth(int monthlyBalanceId)
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.CloseMonth();
+            AddNotifications(monthlyBalance.Notifications);
+        }
+
         public void AcceptParticipantBalance(int monthlyBalanceId, int accountId)
         {
             var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();

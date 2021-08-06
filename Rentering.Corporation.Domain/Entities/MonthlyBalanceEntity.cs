@@ -54,6 +54,17 @@ namespace Rentering.Corporation.Domain.Entities
             }
         }
 
+        public void CloseMonth()
+        {
+            if (Status != e_MonthlyBalanceStatus.OnGoing)
+            {
+                AddNotification("Status", "Impossível realizar esta ação, pois o mês não está em andamento");
+                return;
+            }
+
+            Status = e_MonthlyBalanceStatus.Pending;
+        }
+
         public void AddParticipantBalance(ParticipantEntity participant)
         {
             var participantBalance = new ParticipantBalanceEntity(participant, this);
@@ -66,6 +77,12 @@ namespace Rentering.Corporation.Domain.Entities
             if (Status == e_MonthlyBalanceStatus.Finished)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
+                return;
+            }
+
+            if (Status == e_MonthlyBalanceStatus.OnGoing)
+            {
+                AddNotification("Status", "Impossível realizar esta ação, pois o mês ainda está em andamento.");
                 return;
             }
 
@@ -91,6 +108,12 @@ namespace Rentering.Corporation.Domain.Entities
             if (Status == e_MonthlyBalanceStatus.Finished)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
+                return;
+            }
+
+            if (Status == e_MonthlyBalanceStatus.OnGoing)
+            {
+                AddNotification("Status", "Impossível realizar esta ação, pois o mês ainda está em andamento.");
                 return;
             }
 

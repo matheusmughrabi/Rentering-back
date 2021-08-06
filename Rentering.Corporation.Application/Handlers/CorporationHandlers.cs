@@ -18,7 +18,8 @@ namespace Rentering.Corporation.Application.Handlers
         IHandler<AcceptBalanceCommand>,
         IHandler<RejectBalanceCommand>,
         IHandler<AddParticipantDescriptionToMonthCommand>,
-        IHandler<RegisterIncomeCommand>
+        IHandler<RegisterIncomeCommand>,
+        IHandler<CloseMonthCommand>
         
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
@@ -257,6 +258,37 @@ namespace Rentering.Corporation.Application.Handlers
             _corporationUnitOfWork.Save();
 
             var result = new CommandResult(true, "Nova renda adicionada!", null, null);
+
+            return result;
+        }
+        #endregion
+
+        #region CloseMonth
+        public ICommandResult Handle(CloseMonthCommand command)
+        {
+            var corporationEntity = _corporationUnitOfWork.CorporationCUDRepository.GetCorporationForCUD(command.CorporationId);
+            if (corporationEntity == null)
+            {
+                AddNotification("Corporação", "Corporação não foi encontrada.");
+                return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
+            if (isCurrentUserAdmin == false)
+            {
+                AddNotification("Autorização negada", "Apenas o administrador da corporação fazer o fechamento do mês.");
+                return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            corporationEntity.CloseSpecifiedMonth(command.MonthlyBalanceId);
+            AddNotifications(corporationEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
+
+            _corporationUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Fechamento de mês realizado!", null, null);
 
             return result;
         }
