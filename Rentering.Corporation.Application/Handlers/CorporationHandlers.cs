@@ -214,7 +214,7 @@ namespace Rentering.Corporation.Application.Handlers
                 return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            corporationEntity.AddMonth(command.Month, command.TotalProfit);
+            corporationEntity.AddMonth(command.StartDate, command.EndDate, command.TotalProfit);
 
             AddNotifications(corporationEntity);
 

@@ -84,7 +84,8 @@ namespace Rentering.Infra.Corporations.Repositories
                         .Select(u => new MonthlyBalance()
                         {
                             Id = u.Id,
-                            Month = u.Month,
+                            StartDate = u.StartDate,
+                            EndDate = u.EndDate,
                             TotalProfit = u.TotalProfit,
 
                             Status = new EnumResult<e_MonthlyBalanceStatus>() 

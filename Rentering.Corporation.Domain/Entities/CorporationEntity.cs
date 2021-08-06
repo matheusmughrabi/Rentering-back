@@ -152,7 +152,7 @@ namespace Rentering.Corporation.Domain.Entities
             }
         }
 
-        public void AddMonth(DateTime month, decimal totalProfit)
+        public void AddMonth(DateTime startDate, DateTime endDate, decimal totalProfit)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
@@ -160,15 +160,15 @@ namespace Rentering.Corporation.Domain.Entities
             if (isAllowed == false)
                 return;
 
-            var monthAlreadyExists = _monthlyBalances.Any(c => c.Month.ToShortDateString() == month.ToShortDateString());
+            //var monthAlreadyExists = _monthlyBalances.Any(c => c.Month.ToShortDateString() == month.ToShortDateString());
 
-            if (monthAlreadyExists)
-            {
-                AddNotification("Perfil", $"Este mês já foi adicionado a esta corporação.");
-                return;
-            }
+            //if (monthAlreadyExists)
+            //{
+            //    AddNotification("Perfil", $"Este mês já foi adicionado a esta corporação.");
+            //    return;
+            //}
 
-            var monthlyBalance = new MonthlyBalanceEntity(month, totalProfit, this.Id);
+            var monthlyBalance = new MonthlyBalanceEntity(startDate, endDate, totalProfit, this.Id);
 
             foreach (var participant in _participants.Where(c => c.InvitationStatus == e_InvitationStatus.Accepted))
             {

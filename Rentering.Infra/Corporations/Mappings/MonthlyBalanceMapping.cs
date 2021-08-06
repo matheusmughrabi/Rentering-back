@@ -10,9 +10,13 @@ namespace Rentering.Infra.Corporations.Mappings
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Month)
+            builder.Property(c => c.StartDate)
                 .IsRequired()
-                .HasColumnType("Date");
+                .HasColumnType("date");
+
+            builder.Property(c => c.EndDate)
+                .IsRequired()
+                .HasColumnType("date");
 
             builder.Property(c => c.TotalProfit)
                 .IsRequired()
