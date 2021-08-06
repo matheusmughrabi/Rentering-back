@@ -171,8 +171,8 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         #endregion
 
         #region RegisterIncome
-        [HttpPost]
-        [Route("period/income/register")]
+        [HttpPut]
+        [Route("register-income")]
         [Authorize(Roles = "RegularUser,Admin")]
         public IActionResult RegisterIncome([FromBody] RegisterIncomeCommand command)
         {

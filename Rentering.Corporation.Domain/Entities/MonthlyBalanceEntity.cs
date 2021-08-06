@@ -23,6 +23,7 @@ namespace Rentering.Corporation.Domain.Entities
             Status = e_MonthlyBalanceStatus.OnGoing;
 
             _participantBalances = new List<ParticipantBalanceEntity>();
+            _incomes = new List<IncomeEntity>();
         }
 
         public DateTime StartDate { get; private set; }
@@ -45,11 +46,12 @@ namespace Rentering.Corporation.Domain.Entities
             AddNotifications(income.Notifications);
 
             if (income.Valid)
+            {
                 _incomes.Add(income);
+                TotalProfit += value;
 
-            TotalProfit += value;
-
-            RecalculateParticipantsBalances();
+                RecalculateParticipantsBalances();
+            }
         }
 
         public void AddParticipantBalance(ParticipantEntity participant)

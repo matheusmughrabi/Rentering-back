@@ -9,7 +9,7 @@ namespace Rentering.Corporation.Application.Commands
         public RegisterIncomeCommand(int corporationId, int monthlyBalanceId, string title, string description, decimal value)
         {
             CorporationId = corporationId;
-            MontlyBalanceId = monthlyBalanceId;
+            MonthlyBalanceId = monthlyBalanceId;
             Title = title;
             Description = description;
             Value = value;
@@ -20,7 +20,7 @@ namespace Rentering.Corporation.Application.Commands
         [JsonIgnore]
         public int CurrentUserId { get; set; }
         public int CorporationId { get; set; }
-        public int MontlyBalanceId { get; set; }
+        public int MonthlyBalanceId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Value { get; set; }
