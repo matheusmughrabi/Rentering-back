@@ -1,4 +1,5 @@
 ﻿using Rentering.Common.Shared.QueryResults;
+using System;
 
 namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
 {
@@ -7,5 +8,6 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public int Id { get; set; }
         public string Name { get; set; }
         public string Admin { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }
