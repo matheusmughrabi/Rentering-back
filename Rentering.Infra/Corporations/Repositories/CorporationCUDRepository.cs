@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Corporation.Domain.Data.Repositories;
 using Rentering.Corporation.Domain.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Infra.Corporations.Repositories
@@ -28,8 +29,8 @@ namespace Rentering.Infra.Corporations.Repositories
             var corporationEntity = _renteringDbContext.Corporation
                 .Where(c => c.Id == id)
                 .Include(c => c.Participants)
-                .Include(c => c.MonthlyBalances)
-                .ThenInclude(c => c.ParticipantBalances)
+                .Include(c => c.MonthlyBalances).ThenInclude(c => c.ParticipantBalances)
+                .Include(c => c.MonthlyBalances).ThenInclude(c => c.Incomes)
                 .FirstOrDefault();
 
             return corporationEntity;

@@ -170,6 +170,44 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         }
         #endregion
 
+        #region RegisterIncome
+        [HttpPut]
+        [Route("register-income")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RegisterIncome([FromBody] RegisterIncomeCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
+        #region CloseMonth
+        [HttpPut]
+        [Route("close-month")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CloseMonth([FromBody] CloseMonthCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
         #region AcceptBalance
         [HttpPut]
         [Route("balance/accept")]
