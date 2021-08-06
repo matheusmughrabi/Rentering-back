@@ -243,7 +243,7 @@ namespace Rentering.Corporation.Application.Handlers
             var isCurrentUserAdmin = corporationEntity.AdminId == command.CurrentUserId;
             if (isCurrentUserAdmin == false)
             {
-                AddNotification("Autorização negada", "Apenas o administrador da corporação adicionar novo mês.");
+                AddNotification("Autorização negada", "Apenas o administrador da corporação adicionar nova renda.");
                 return new CommandResult(false, "Erro ao ativar corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 
@@ -256,7 +256,7 @@ namespace Rentering.Corporation.Application.Handlers
 
             _corporationUnitOfWork.Save();
 
-            var result = new CommandResult(true, "Novo mês adicionado!", null, null);
+            var result = new CommandResult(true, "Nova renda adicionada!", null, null);
 
             return result;
         }
