@@ -62,7 +62,8 @@ namespace Rentering.WebAPI
       - Analisar possível troca de mês para período OK
 
     -> Sábado 07/08/2021
-      - Registrar cada lucro individual do mês e só então fechar o mês
+      - Registrar cada lucro individual do mês e só então fechar o mês OK
+      - Melhorar visualização da corporação
       - Criar plano de pagamento e plano free
 
     -> Domingo 08/08/2021
@@ -74,7 +75,8 @@ namespace Rentering.WebAPI
       - Refatorar front principalmente com componentização
 
     -> Terça-feira 10/08/2021
-      - Smoke teste e melhorias
+      - Smoke-test e melhorias
+      - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado
  */
 
 

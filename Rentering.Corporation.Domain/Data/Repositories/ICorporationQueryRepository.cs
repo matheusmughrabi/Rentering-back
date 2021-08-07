@@ -8,6 +8,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories
         ListQueryResult<GetCorporationsQueryResult> GetCorporations(int accountId);
         SingleQueryResult<GetCorporationDetailedQueryResult> GetCorporationDetailed(int accountId, int corporationId);
         ListQueryResult<GetInvitationsQueryResult> GetInvitations(int accountId);
+        SingleQueryResult<GetPeriodDetailedQueryResult> GetPeriodDetailed(int monthlyBalanceId);
         int GetAccountIdByEmail(string email);
     }
 }

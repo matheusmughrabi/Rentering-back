@@ -38,6 +38,16 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         }
         #endregion
 
+        #region GetPeriodDetailed
+        [HttpGet]
+        [Route("period/detailed/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetPeriodDetailed(int id)
+        {
+            return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetPeriodDetailed(id));
+        }
+        #endregion
+
         #region GetInvitations
         [HttpGet]
         [Route("invitations")]

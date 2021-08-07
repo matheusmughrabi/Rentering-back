@@ -151,6 +151,41 @@ namespace Rentering.Infra.Corporations.Repositories
             return queryResult;
         }
 
+        public SingleQueryResult<GetPeriodDetailedQueryResult> GetPeriodDetailed(int monthlyBalanceId)
+        {
+            var dataResult = _renteringDbContext.MonthlyBalance
+                .AsNoTracking()
+                .Where(c => c.Id == monthlyBalanceId)
+                .Select(p => new GetPeriodDetailedQueryResult()
+                {
+                    Id = p.Id,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    TotalProfit = p.TotalProfit,
+
+                    Incomes = p.Incomes.Select(u => new GetPeriodIncome() 
+                    {
+                        Title = u.Title,
+                        Description = u.Description,
+                        Value = u.Value
+                    }).ToList(),
+
+                    ParticipantBalances = p.ParticipantBalances.Select(u => new GetPeriodParticipantBalance()
+                    {
+                        FullName = _renteringDbContext.Account
+                                    .AsNoTracking()
+                                    .Where(m => m.Id == u.Participant.AccountId)
+                                    .Select(s => s.Name.ToString())
+                                    .FirstOrDefault(),
+                        Balance = u.Balance
+                    }).ToList()
+                }).FirstOrDefault();
+
+            var queryResult = new SingleQueryResult<GetPeriodDetailedQueryResult>(dataResult);
+
+            return queryResult;
+        }
+
         public int GetAccountIdByEmail(string email)
         {
             var accountId = _renteringDbContext.Account
