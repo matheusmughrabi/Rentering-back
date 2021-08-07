@@ -63,8 +63,8 @@ namespace Rentering.WebAPI
 
     -> Sábado 07/08/2021
       - Registrar cada lucro individual do mês e só então fechar o mês OK
-      - Melhorar visualização da corporação
-      - Criar plano de pagamento e plano free
+      - Melhorar visualização da corporação OK
+      - Criar plano de pagamento e plano free ON GOING
 
     -> Domingo 08/08/2021
       - Criar página Home
