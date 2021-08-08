@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Accounts.Application.Commands.Accounts;
+using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
@@ -96,11 +96,11 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         }
         #endregion
 
-        #region ChangeLicense
+        #region PayLicense
         [HttpPut]
-        [Route("change-license")]
+        [Route("pay-license")]
         [Authorize(Roles = "RegularUser,Admin")]
-        public IActionResult ChangeLicense([FromBody] ChangeLicenseCommand command)
+        public IActionResult PayLicense([FromBody] PayLicenseCommand command)
         {
             if (command.Invalid)
                 return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));

@@ -41,6 +41,7 @@ namespace Rentering.Infra.Accounts.Repositories
         {
             var licenseDetails = new GetLicenseDetailsQueryResult()
             {
+                Id = 12,
                 License = new EnumResult<e_License>()
                 {
                     Description = e_License.Pro.ToDescription(),
