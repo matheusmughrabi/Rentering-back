@@ -79,4 +79,6 @@ namespace Rentering.WebAPI
       - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado
  */
 
+// PRÓXIMA SPRINT -> Principal objetivo é refatoração do back e front e também correção de possíveis bugs
+
 

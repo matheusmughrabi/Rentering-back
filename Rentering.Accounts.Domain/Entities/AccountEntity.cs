@@ -43,6 +43,17 @@ namespace Rentering.Accounts.Domain.Entities
         public string Token { get; private set; }
         public e_License License { get; set; }
 
+        public void ChangeLicense(e_License license)
+        {
+            if (License == license)
+            {
+                AddNotification("Licença", "A nova licença precisa ser diferente da atual.");
+                return;
+            }
+
+            License = license;
+        }
+
         public void ChangeEmail(EmailValueObject email)
         {
             if (email.ToString() == Email.ToString())
