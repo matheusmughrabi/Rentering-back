@@ -64,17 +64,14 @@ namespace Rentering.WebAPI
     -> Sábado 07/08/2021
       - Registrar cada lucro individual do mês e só então fechar o mês OK
       - Melhorar visualização da corporação OK
-      - Criar plano de pagamento e plano free ON GOING
+      - Criar plano de pagamento e plano free OK
+      - Criar telas de perfil
 
     -> Domingo 08/08/2021
       - Criar página Home
       - Loading login mal-sucedido
 
     -> Segunda-feira 09/08/2021
-      - Refatoração do back utilizando o mesmo esquema de Corporations (algumas adaptações no front)
-      - Refatorar front principalmente com componentização
-
-    -> Terça-feira 10/08/2021
       - Smoke-test e melhorias
       - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado
  */
