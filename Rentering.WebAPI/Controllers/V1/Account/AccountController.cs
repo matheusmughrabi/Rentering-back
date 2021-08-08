@@ -84,6 +84,24 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         }
         #endregion
 
+        #region ChangeLicense
+        [HttpPut]
+        [Route("change-license")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult ChangeLicense([FromBody] ChangeLicenseCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new AccountHandlers(_accountUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+        }
+        #endregion
+
         #region Delete
         [HttpDelete]
         [Route("Delete")]

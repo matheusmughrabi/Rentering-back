@@ -3,13 +3,15 @@ using Microsoft.AspNetCore.Identity;
 using Rentering.Accounts.Application.Commands.Accounts;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
+using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
 
 namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
-        IHandler<RegisterCommand>
+        IHandler<RegisterCommand>,
+        IHandler<ChangeLicenseCommand>
     {
         private readonly IAccountUnitOfWork _accountsUnitOfWork;
 
@@ -55,6 +57,29 @@ namespace Rentering.Accounts.Application.Handlers
             });
 
             return createdUser;
+        }
+
+        public ICommandResult Handle(ChangeLicenseCommand command)
+        {
+            var accountEntity = _accountsUnitOfWork.AccountCUDRepository.GetAccountForCUD(command.CurrentUserId);
+            if (accountEntity == null)
+            {
+                AddNotification("Conta", "Conta não foi encontrada");
+                return new CommandResult(false, "Problema ao trocar licença.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            accountEntity.ChangeLicense((e_License)command.License);
+
+            AddNotifications(accountEntity);
+
+            if (Invalid)
+                return new CommandResult(false, "Problema ao trocar licença.", Notifications.ConvertCommandNotifications(), null);
+
+            _accountsUnitOfWork.Save();
+
+            var result = new CommandResult(true, "Participante convidado com sucesso!", null, null);
+
+            return result;
         }
     }
 }
