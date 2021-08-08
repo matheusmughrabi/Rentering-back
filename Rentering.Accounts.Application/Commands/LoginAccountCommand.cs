@@ -1,7 +1,7 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Commands;
 
-namespace Rentering.Accounts.Application.Commands.Accounts
+namespace Rentering.Accounts.Application.Commands
 {
     public class LoginAccountCommand : Command
     {

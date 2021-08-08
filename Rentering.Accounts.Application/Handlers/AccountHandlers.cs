@@ -1,6 +1,6 @@
 ﻿using FluentValidator;
 using Microsoft.AspNetCore.Identity;
-using Rentering.Accounts.Application.Commands.Accounts;
+using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Enums;
@@ -11,7 +11,7 @@ namespace Rentering.Accounts.Application.Handlers
 {
     public class AccountHandlers : Notifiable,
         IHandler<RegisterCommand>,
-        IHandler<ChangeLicenseCommand>
+        IHandler<PayLicenseCommand>
     {
         private readonly IAccountUnitOfWork _accountsUnitOfWork;
 
@@ -59,7 +59,7 @@ namespace Rentering.Accounts.Application.Handlers
             return createdUser;
         }
 
-        public ICommandResult Handle(ChangeLicenseCommand command)
+        public ICommandResult Handle(PayLicenseCommand command)
         {
             var accountEntity = _accountsUnitOfWork.AccountCUDRepository.GetAccountForCUD(command.CurrentUserId);
             if (accountEntity == null)
@@ -77,7 +77,7 @@ namespace Rentering.Accounts.Application.Handlers
 
             _accountsUnitOfWork.Save();
 
-            var result = new CommandResult(true, "Participante convidado com sucesso!", null, null);
+            var result = new CommandResult(true, "Licença adquirida com sucesso!", null, null);
 
             return result;
         }
