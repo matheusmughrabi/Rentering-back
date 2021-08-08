@@ -34,6 +34,18 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         }
         #endregion
 
+        #region GetLicenseDetails
+        [HttpGet]
+        [Route("license-details/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetLicenseDetails(int id)
+        {
+            var result = _accountUnitOfWork.AccountQueryRepository.GetLicenseDetails(id);
+
+            return Ok(result);
+        }
+        #endregion
+
         #region Register
         [HttpPost]
         [Route("Register")]
