@@ -2,6 +2,7 @@
 using Rentering.Accounts.Domain.Data.Repositories;
 using Rentering.Accounts.Domain.Data.Repositories.QueryResults;
 using Rentering.Accounts.Domain.Enums;
+using Rentering.Accounts.Domain.StaticResources;
 using Rentering.Common.Shared.Enums;
 using Rentering.Common.Shared.QueryResults;
 using System.Linq;
@@ -37,20 +38,20 @@ namespace Rentering.Infra.Accounts.Repositories
             return accountQueryResult;
         }
 
-        public SingleQueryResult<GetLicenseDetailsQueryResult> GetLicenseDetails(int licenseId)
+        public SingleQueryResult<GetLicenseDetailsQueryResult> GetLicenseDetails(int licenseCode)
         {
-            var licenseDetails = new GetLicenseDetailsQueryResult()
-            {
-                Id = 12,
-                License = new EnumResult<e_License>()
+            var license = Licenses.LicensesList
+                .Where(c => c.Code == licenseCode)
+                .Select(p => new GetLicenseDetailsQueryResult() 
                 {
-                    Description = e_License.Pro.ToDescription(),
-                    Value = e_License.Pro
-                },
-                Price = 199.99M
-            };
+                    Code = p.Code,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price
+                })
+                .FirstOrDefault();
 
-            var queryResult = new SingleQueryResult<GetLicenseDetailsQueryResult>(licenseDetails);
+            var queryResult = new SingleQueryResult<GetLicenseDetailsQueryResult>(license);
 
             return queryResult;
         }

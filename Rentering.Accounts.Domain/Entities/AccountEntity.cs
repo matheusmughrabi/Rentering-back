@@ -24,7 +24,7 @@ namespace Rentering.Accounts.Domain.Entities
             Email = email;
             Username = username;
             Password = password;
-            License = e_License.Free;
+            LicenseCode = 1;
 
             if (role != null)
                 Role = (e_Role)role;
@@ -41,17 +41,17 @@ namespace Rentering.Accounts.Domain.Entities
         public string Password { get; set; }
         public e_Role Role { get; private set; }
         public string Token { get; private set; }
-        public e_License License { get; set; }
+        public int LicenseCode { get; set; }
 
-        public void ChangeLicense(e_License license)
+        public void ChangeLicense(int licenseCode)
         {
-            if (License == license)
+            if (LicenseCode == licenseCode)
             {
                 AddNotification("Licença", "A nova licença precisa ser diferente da atual.");
                 return;
             }
 
-            License = license;
+            LicenseCode = licenseCode;
         }
 
         public void ChangeEmail(EmailValueObject email)

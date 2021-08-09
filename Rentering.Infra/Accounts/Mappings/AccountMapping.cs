@@ -55,9 +55,9 @@ namespace Rentering.Infra.Accounts.Mappings
                 .HasColumnName("Role")
                 .HasColumnType("int");
 
-            builder.Property(c => c.License)
+            builder.Property(c => c.LicenseCode)
                 .IsRequired()
-                .HasColumnName("License")
+                .HasColumnName("LicenseCode")
                 .HasColumnType("int");
 
             builder.Ignore(c => c.Notifications);

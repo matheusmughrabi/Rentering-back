@@ -64,14 +64,21 @@ namespace Rentering.WebAPI
     -> Sábado 07/08/2021
       - Registrar cada lucro individual do mês e só então fechar o mês OK
       - Melhorar visualização da corporação OK
-      - Criar plano de pagamento e plano free OK
-      - Criar telas de perfil
+      - Criar plano de pagamento e plano free OK     
 
     -> Domingo 08/08/2021
+      - Criar telas de perfil OK
+      
+    -> Segunda-feira 09/08/2021
+      - Modelar corretamente parte de pagamento e fazer o planejamento das tasks relacionadas
+        1 - Criar LicenseEntity (Id, Name, Description, Price)
+        2 - Associar contas a uma licensa
+        3 - Atualizar endpoint de criação de uma corporação
+        4 - Atualizar front
+
+    -> Terça-feira 10/08/2021
       - Criar página Home
       - Loading login mal-sucedido
-
-    -> Segunda-feira 09/08/2021
       - Smoke-test e melhorias
       - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado
  */

@@ -68,7 +68,7 @@ namespace Rentering.Accounts.Application.Handlers
                 return new CommandResult(false, "Problema ao trocar licença.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            accountEntity.ChangeLicense((e_License)command.License);
+            accountEntity.ChangeLicense(command.License);
 
             AddNotifications(accountEntity);
 

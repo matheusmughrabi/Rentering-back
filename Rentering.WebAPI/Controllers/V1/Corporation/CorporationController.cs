@@ -74,17 +74,17 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
             command.CurrentUserId = GetCurrentUserId();
 
-            var license = _context.Account.AsNoTracking().Where(c => c.Id == command.CurrentUserId).Select(p => p.License).FirstOrDefault();
+            var license = _context.Account.AsNoTracking().Where(c => c.Id == command.CurrentUserId).Select(p => p.LicenseCode).FirstOrDefault();
             var numberOfCorporations = _context.Corporation.AsNoTracking().Where(c => c.AdminId == command.CurrentUserId).Count();
 
-            if (license == Accounts.Domain.Enums.e_License.Free && numberOfCorporations >= 2)
+            if (license == 1 && numberOfCorporations >= 2)
             {
                 var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
                 resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
                 return Ok(resultLicense);
             }
 
-            if (license == Accounts.Domain.Enums.e_License.Standard && numberOfCorporations >= 5)
+            if (license == 2 && numberOfCorporations >= 5)
             {
                 var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
                 resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa padrão", "Licensa padrão");
