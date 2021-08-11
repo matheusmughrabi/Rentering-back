@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentering.Infra;
 
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    partial class RenteringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210806143008_Participant-Description")]
+    partial class ParticipantDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,6 @@ namespace Rentering.Infra.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LicenseCode")
-                        .HasColumnType("int")
-                        .HasColumnName("LicenseCode");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -165,37 +163,6 @@ namespace Rentering.Infra.Migrations
                     b.ToTable("Corporation");
                 });
 
-            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.IncomeEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("MonthlyBalanceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(19,5)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonthlyBalanceId");
-
-                    b.ToTable("Corporation_Incomes");
-                });
-
             modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -209,11 +176,8 @@ namespace Rentering.Infra.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("Date");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -453,17 +417,6 @@ namespace Rentering.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rentering.Corporation.Domain.Entities.IncomeEntity", b =>
-                {
-                    b.HasOne("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", "MonthlyBalance")
-                        .WithMany("Incomes")
-                        .HasForeignKey("MonthlyBalanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MonthlyBalance");
-                });
-
             modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
                 {
                     b.HasOne("Rentering.Corporation.Domain.Entities.CorporationEntity", null)
@@ -525,8 +478,6 @@ namespace Rentering.Infra.Migrations
 
             modelBuilder.Entity("Rentering.Corporation.Domain.Entities.MonthlyBalanceEntity", b =>
                 {
-                    b.Navigation("Incomes");
-
                     b.Navigation("ParticipantBalances");
                 });
 

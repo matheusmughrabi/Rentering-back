@@ -23,10 +23,7 @@ namespace Rentering.Corporation.Domain.Entities
             AdminId = adminId;
 
             if (id == null)
-            {
-                CreateDate = DateTime.Now;
-                Status = e_CorporationStatus.InProgress;
-            }               
+                Status = e_CorporationStatus.InProgress;       
 
             _participants = new List<ParticipantEntity>();
             _monthlyBalances = new List<MonthlyBalanceEntity>();
@@ -36,7 +33,6 @@ namespace Rentering.Corporation.Domain.Entities
 
         public string Name { get; private set; }
         public int AdminId { get; private set; }
-        public DateTime CreateDate { get; private set; }
         public e_CorporationStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantEntity> Participants => _participants.ToArray();
         public IReadOnlyCollection<MonthlyBalanceEntity> MonthlyBalances => _monthlyBalances.ToArray();
@@ -125,7 +121,18 @@ namespace Rentering.Corporation.Domain.Entities
 
             var hasParticipant = _participants.Any(p => p.InvitationStatus != e_InvitationStatus.Rejected);
             if (hasParticipant == false)
+            {
                 Status = e_CorporationStatus.InProgress;
+                return;
+            }
+
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited);
+
+            if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
+            {
+                Status = e_CorporationStatus.ReadyForActivation;
+                return;
+            }
         }
 
         public void ActivateCorporation()
@@ -137,9 +144,15 @@ namespace Rentering.Corporation.Domain.Entities
                 return;
 
             Status = e_CorporationStatus.Active;
+
+            foreach (var participant in _participants.ToList())
+            {
+                if (participant.InvitationStatus == e_InvitationStatus.Rejected)
+                    _participants.Remove(participant);
+            }
         }
 
-        public void AddMonth(DateTime month, decimal totalProfit)
+        public void AddMonth(DateTime startDate, DateTime endDate)
         {
             e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
@@ -147,15 +160,7 @@ namespace Rentering.Corporation.Domain.Entities
             if (isAllowed == false)
                 return;
 
-            var monthAlreadyExists = _monthlyBalances.Any(c => c.Month.ToShortDateString() == month.ToShortDateString());
-
-            if (monthAlreadyExists)
-            {
-                AddNotification("Perfil", $"Este mês já foi adicionado a esta corporação.");
-                return;
-            }
-
-            var monthlyBalance = new MonthlyBalanceEntity(month, totalProfit, this.Id);
+            var monthlyBalance = new MonthlyBalanceEntity(startDate, endDate, this.Id);
 
             foreach (var participant in _participants.Where(c => c.InvitationStatus == e_InvitationStatus.Accepted))
             {
@@ -163,6 +168,46 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             _monthlyBalances.Add(monthlyBalance);
+        }
+
+        public void RegisterIncomeInMonth(int monthlyBalanceId, string title, string description, decimal value)
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.RegisterIncome(title, description, value);
+            AddNotifications(monthlyBalance.Notifications);
+        }
+
+        public void CloseSpecifiedMonth(int monthlyBalanceId)
+        {
+            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
+
+            if (isAllowed == false)
+                return;
+
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.CloseMonth();
+            AddNotifications(monthlyBalance.Notifications);
         }
 
         public void AcceptParticipantBalance(int monthlyBalanceId, int accountId)
@@ -190,6 +235,20 @@ namespace Rentering.Corporation.Domain.Entities
             }
 
             monthlyBalance.Reject(accountId);
+            AddNotifications(monthlyBalance.Notifications);
+        }
+
+        public void AddParticipantDescriptionToMonth(int monthlyBalanceId, int accountId, string description)
+        {
+            var monthlyBalance = _monthlyBalances.Where(c => c.Id == monthlyBalanceId).FirstOrDefault();
+
+            if (monthlyBalance == null)
+            {
+                AddNotification("Mês", $"O mês informado não percente a esta corporação.");
+                return;
+            }
+
+            monthlyBalance.AddDescription(accountId, description);
             AddNotifications(monthlyBalance.Notifications);
         }
 

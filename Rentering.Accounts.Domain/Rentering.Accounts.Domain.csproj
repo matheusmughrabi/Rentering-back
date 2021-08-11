@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Entities\AccountEntity.cs~RF2b00099e.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Rentering.Common.Shared\Rentering.Common.Shared.csproj" />
   </ItemGroup>
 

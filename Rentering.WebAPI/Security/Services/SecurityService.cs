@@ -23,7 +23,7 @@ namespace Rentering.WebAPI.Security.Services
                     new Claim(ClaimTypes.Role, account.Role.ToString())
                 }),
 
-                Expires = DateTime.Now.AddHours(7),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
