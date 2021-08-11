@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Rentering.Accounts.Application.Commands.Accounts;
+using Rentering.Accounts.Application.Commands;
 using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
+using Rentering.Accounts.Domain.Entities;
 using Rentering.Common.Shared.Commands;
 using Rentering.WebAPI.Security.Models;
 using Rentering.WebAPI.Security.Services;
-using System.Collections.Generic;
 
 namespace Rentering.WebAPI.Controllers.V1.Account
 {
@@ -30,6 +31,18 @@ namespace Rentering.WebAPI.Controllers.V1.Account
             var accountQueryResult = _accountUnitOfWork.AccountQueryRepository.GetAccountById(GetCurrentUserId());
 
             return Ok(accountQueryResult);
+        }
+        #endregion
+
+        #region GetLicenseDetails
+        [HttpGet]
+        [Route("license-details/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetLicenseDetails(int id)
+        {
+            var result = _accountUnitOfWork.AccountQueryRepository.GetLicenseDetails(id);
+
+            return Ok(result);
         }
         #endregion
 
@@ -83,6 +96,24 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         }
         #endregion
 
+        #region PayLicense
+        [HttpPut]
+        [Route("pay-license")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult PayLicense([FromBody] PayLicenseCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new AccountHandlers(_accountUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+        }
+        #endregion
+
         #region Delete
         [HttpDelete]
         [Route("Delete")]
@@ -103,7 +134,10 @@ namespace Rentering.WebAPI.Controllers.V1.Account
         {
             var accountEntity = _accountUnitOfWork.AccountCUDRepository.GetAccountForLogin(username);
 
-            if (accountEntity == null || accountEntity.Password.Password != password)
+            var passwordHasher = new PasswordHasher<AccountEntity>();
+            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(accountEntity, accountEntity.Password, password);
+
+            if (accountEntity == null || passwordVerificationResult != PasswordVerificationResult.Success)
                 return null;
 
             var userInfo = new SecurityService().GenerateToken(accountEntity);

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentering.Infra;
 
 namespace Rentering.Infra.Migrations
 {
     [DbContext(typeof(RenteringDbContext))]
-    partial class RenteringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210807214820_License")]
+    partial class License
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,9 @@ namespace Rentering.Infra.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LicenseCode")
+                    b.Property<int>("License")
                         .HasColumnType("int")
-                        .HasColumnName("LicenseCode");
+                        .HasColumnName("License");
 
                     b.Property<string>("Password")
                         .IsRequired()

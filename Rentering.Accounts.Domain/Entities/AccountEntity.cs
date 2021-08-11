@@ -1,6 +1,7 @@
 using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Rentering.Accounts.Domain.Entities
@@ -15,7 +16,7 @@ namespace Rentering.Accounts.Domain.Entities
             PersonNameValueObject name,
             EmailValueObject email, 
             UsernameValueObject username,
-            PasswordValueObject password = null,
+            string password = null,
             e_Role? role = null, 
             int? id = null) : base(id)
         {
@@ -23,6 +24,7 @@ namespace Rentering.Accounts.Domain.Entities
             Email = email;
             Username = username;
             Password = password;
+            LicenseCode = 1;
 
             if (role != null)
                 Role = (e_Role)role;
@@ -36,10 +38,21 @@ namespace Rentering.Accounts.Domain.Entities
         public EmailValueObject Email { get; private set; }
         [Required]
         public UsernameValueObject Username { get; private set; }
-        [Required]
-        public PasswordValueObject Password { get; private set; }
+        public string Password { get; set; }
         public e_Role Role { get; private set; }
         public string Token { get; private set; }
+        public int LicenseCode { get; set; }
+
+        public void ChangeLicense(int licenseCode)
+        {
+            if (LicenseCode == licenseCode)
+            {
+                AddNotification("Licença", "A nova licença precisa ser diferente da atual.");
+                return;
+            }
+
+            LicenseCode = licenseCode;
+        }
 
         public void ChangeEmail(EmailValueObject email)
         {

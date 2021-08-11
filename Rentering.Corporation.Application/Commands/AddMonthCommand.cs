@@ -7,27 +7,17 @@ namespace Rentering.Corporation.Application.Commands
 {
     public class AddMonthCommand : Command
     {
-        public AddMonthCommand(int corporationId, DateTime month, decimal totalProfit)
+        public AddMonthCommand(int corporationId, DateTime startDate, DateTime endDate)
         {
             CorporationId = corporationId;
-            Month = month;
-            TotalProfit = totalProfit;
-
-            FailFastValidations();
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         [JsonIgnore]
         public int CurrentUserId { get; set; }
         public int CorporationId { get; set; }
-        public DateTime Month { get; set; }
-        public decimal TotalProfit { get; set; }
-
-        public override void FailFastValidations()
-        {
-            AddNotifications(new ValidationContract()
-                 .Requires()
-                 .IsGreaterThan(TotalProfit, 0M, "Preço", "O preço precisar ser maior do que zero")
-             );
-        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

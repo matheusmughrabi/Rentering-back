@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Commands;
 using Rentering.Corporation.Application.Commands;
 using Rentering.Corporation.Application.Handlers;
 using Rentering.Corporation.Domain.Data;
+using Rentering.Infra;
+using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.V1.Corporation
 {
@@ -12,10 +15,12 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
     public class CorporationController : RenteringBaseController
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
+        private readonly RenteringDbContext _context;
 
-        public CorporationController(ICorporationUnitOfWork corporationUnitOfWork)
+        public CorporationController(ICorporationUnitOfWork corporationUnitOfWork, RenteringDbContext context)
         {
             _corporationUnitOfWork = corporationUnitOfWork;
+            _context = context;
         }
 
         #region GetCorporations
@@ -35,6 +40,16 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         public IActionResult GetCorporationDetailed(int id)
         {
             return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetCorporationDetailed(GetCurrentUserId(), id));
+        }
+        #endregion
+
+        #region GetPeriodDetailed
+        [HttpGet]
+        [Route("period/detailed/{id}")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult GetPeriodDetailed(int id)
+        {
+            return Ok(_corporationUnitOfWork.CorporationQueryRepository.GetPeriodDetailed(id));
         }
         #endregion
 
@@ -58,6 +73,23 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
                 return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
 
             command.CurrentUserId = GetCurrentUserId();
+
+            var license = _context.Account.AsNoTracking().Where(c => c.Id == command.CurrentUserId).Select(p => p.LicenseCode).FirstOrDefault();
+            var numberOfCorporations = _context.Corporation.AsNoTracking().Where(c => c.AdminId == command.CurrentUserId).Count();
+
+            if (license == 1 && numberOfCorporations >= 2)
+            {
+                var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
+                resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
+                return Ok(resultLicense);
+            }
+
+            if (license == 2 && numberOfCorporations >= 5)
+            {
+                var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
+                resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa padrão", "Licensa padrão");
+                return Ok(resultLicense);
+            }
 
             var handler = new CorporationHandlers(_corporationUnitOfWork);
             var result = handler.Handle(command);
@@ -170,6 +202,44 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
         }
         #endregion
 
+        #region RegisterIncome
+        [HttpPut]
+        [Route("register-income")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult RegisterIncome([FromBody] RegisterIncomeCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
+        #region CloseMonth
+        [HttpPut]
+        [Route("close-month")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult CloseMonth([FromBody] CloseMonthCommand command)
+        {
+            if (command.Invalid)
+                return Ok(new CommandResult(false, "Corrija os problemas abaixo!", command.Notifications.ConvertCommandNotifications(), null));
+
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
+
         #region AcceptBalance
         [HttpPut]
         [Route("balance/accept")]
@@ -201,56 +271,21 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
         }
         #endregion
+
+        #region AddParticipantDescriptionToMonth
+        [HttpPut]
+        [Route("participant-balance/description")]
+        [Authorize(Roles = "RegularUser,Admin")]
+        public IActionResult AddParticipantDescriptionToMonth([FromBody] AddParticipantDescriptionToMonthCommand command)
+        {
+            command.CurrentUserId = GetCurrentUserId();
+
+            var handler = new CorporationHandlers(_corporationUnitOfWork);
+            var result = handler.Handle(command);
+
+            return Ok(result);
+
+        }
+        #endregion
     }
 }
-
-// Trocar invite para receber email e não id OK
-// Criar convites pendentes OK
-// Criar aceitar ou recusar convite OK
-
-// Criar status da corporação OK
-// Criar possibilidade de adicionar mês -> Só pode adicionar mês quando a corporação estiver ativa OK
-// Uma vez que o contrato estiver com status Ativo, nenhum novo participante poderá entrar ou sair OK
-// Implementar ParticipantBalance OK
-// Implementar status de cada ParticipantBalance (pendente, aceito, recusado), implementar também comentários do ParticipantBalance
-// Uma vez que todos os participantBalance de um mês forem aceitos o status do mês será colocado como Concluído (pendente, concluído, recusado) e será impossível alterar os dados
-
-// Refatoração
-// 1 - Utilizar enum result em todo o back end e implementar validador de enum OK
-// 2 - Utilizar enum result no front end OK
-// 3 - Separar models em request e result OK
-
-// Enviar total profit correto ao criar novo mês OK
-// Contestar mês OK
-// O que deve acontecer ao contestar mês? -> Deverá ser possível aceitar se o usuário quiser OK
-
-
-// Criar condições para mostrar ou não os botões OK
-// Criar componentes no angular OK
-// Acertar validação de commands tanto no back como no front OK
-// Deletar telas não utilizadas OK
-// Melhorar responsividade das telas -> Ícone de carregando OK, reload data OK,  redirecionamentos corretos OK e botão de aceitar mês OK
-// BaseService -> ComposeHeaders OK
-// Melhorar telas -> Minhas corporações OK
-// Padronizar retornos QueryResults para o front OK
-// Criar módulos Angular ADIADO
-
-// CORREÇÕES
-// Enviar mês a ser adicionado OK
-// *ngIf não existem corporações ainda OK
-// Participante recusou participação, você deseja prosseguir com o contrato sem a participação dele? OK
-// Corrigir quando não existir participante OK
-
-// TESTES E CORREÇÔES ADICIONAIS
-
-
-// MELHORIAS GERAIS
-// 1 - Reload data -> Retornar os dados novos logo após put ao invés de consultar o BD novamente
-// 2 - RefreshToken
-// 3 - HasValidToken
-// 4 - Loading login mal-sucedido
-
-// PRÓXIMAS FEATURES
-// 1 - Descrição em participant balance
-// 2 - Registrar cada lucro individual do mês e só então fechar o mês
-// 3 - Criar página home

@@ -31,7 +31,8 @@ namespace Rentering.Infra.Corporations.Repositories
                                 .AsNoTracking()
                                 .Where(u => u.Id == p.AdminId)
                                 .Select(s => s.Name.ToString())
-                                .FirstOrDefault()
+                                .FirstOrDefault(),
+                    CreateDate = p.CreateDate
                 }).ToList();
 
             var queryResult = new ListQueryResult<GetCorporationsQueryResult>(dataResult);
@@ -83,7 +84,8 @@ namespace Rentering.Infra.Corporations.Repositories
                         .Select(u => new MonthlyBalance()
                         {
                             Id = u.Id,
-                            Month = u.Month,
+                            StartDate = u.StartDate,
+                            EndDate = u.EndDate,
                             TotalProfit = u.TotalProfit,
 
                             Status = new EnumResult<e_MonthlyBalanceStatus>() 
@@ -114,6 +116,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                     Value = p.Status,
                                     Description = p.Status.ToDescription()
                                 },
+                                Description = p.Description
                             }).ToList()
                         }).ToList()
                })
@@ -144,6 +147,41 @@ namespace Rentering.Infra.Corporations.Repositories
                .ToList();
 
             var queryResult = new ListQueryResult<GetInvitationsQueryResult>(dataResult);
+
+            return queryResult;
+        }
+
+        public SingleQueryResult<GetPeriodDetailedQueryResult> GetPeriodDetailed(int monthlyBalanceId)
+        {
+            var dataResult = _renteringDbContext.MonthlyBalance
+                .AsNoTracking()
+                .Where(c => c.Id == monthlyBalanceId)
+                .Select(p => new GetPeriodDetailedQueryResult()
+                {
+                    Id = p.Id,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    TotalProfit = p.TotalProfit,
+
+                    Incomes = p.Incomes.Select(u => new GetPeriodIncome() 
+                    {
+                        Title = u.Title,
+                        Description = u.Description,
+                        Value = u.Value
+                    }).ToList(),
+
+                    ParticipantBalances = p.ParticipantBalances.Select(u => new GetPeriodParticipantBalance()
+                    {
+                        FullName = _renteringDbContext.Account
+                                    .AsNoTracking()
+                                    .Where(m => m.Id == u.Participant.AccountId)
+                                    .Select(s => s.Name.ToString())
+                                    .FirstOrDefault(),
+                        Balance = u.Balance
+                    }).ToList()
+                }).FirstOrDefault();
+
+            var queryResult = new SingleQueryResult<GetPeriodDetailedQueryResult>(dataResult);
 
             return queryResult;
         }

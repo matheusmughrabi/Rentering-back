@@ -10,9 +10,13 @@ namespace Rentering.Infra.Corporations.Mappings
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Month)
+            builder.Property(c => c.StartDate)
                 .IsRequired()
-                .HasColumnType("Date");
+                .HasColumnType("date");
+
+            builder.Property(c => c.EndDate)
+                .IsRequired()
+                .HasColumnType("date");
 
             builder.Property(c => c.TotalProfit)
                 .IsRequired()
@@ -26,6 +30,10 @@ namespace Rentering.Infra.Corporations.Mappings
                 .WithOne(u => u.MonthlyBalance)
                 .HasForeignKey(p => p.MonthlyBalanceId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(c => c.Incomes)
+                .WithOne(u => u.MonthlyBalance)
+                .HasForeignKey(p => p.MonthlyBalanceId);
 
             builder.Property(c => c.Status)
                 .IsRequired()

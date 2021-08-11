@@ -12,6 +12,7 @@ namespace Rentering.Common.Shared.Entities
         }
 
         public int Id { get; private set; }
+        public DateTime CreateDate { get; set; }
 
         public virtual void AssignId(int id)
         {
