@@ -5,10 +5,6 @@ namespace Rentering.Common.Shared.Commands
 {
     public class CommandNotification
     {
-        public CommandNotification()
-        {
-        }
-
         public CommandNotification(string title, string message)
         {
             Title = title;

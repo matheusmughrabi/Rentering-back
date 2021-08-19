@@ -19,70 +19,33 @@ namespace Rentering.WebAPI
     }
 }
 
-/* PRÓXIMA SPRINT - PLANEJAMENTO GERAL
-    -> Geral
-      1 - Criar plano de pagamento e plano free  OK 
-      2 - Criar página home OK
-      3 - Campo CreateDate em Entity OK
+/* Pontos de correção
+    -> Common.Shared
+      - Deletar SafeEnums OK
+      - Deletar construtores desnecessários OK
+      - Corrigir classe ICommand OK
+      - CreateDate private? ADIADO
+      - Query results estrutura de pastas OK
 
-    -> Accounts
-      1 - Implementar hash de password OK
-      2 - Refresh token OK
-      3 - Estudar se no front é possível verificar se o token é válido ou não OK
-      4 - Definir se vale a pena utilizar Asp Net Identity OK
+   -> Corporation
+     - Corrigir nomes dos enums para ENome
+     - Verificar construtores de cada entity
 
-    -> Contracts
-      1 - Refatoração do back utilizando o mesmo esquema de Corporations (algumas adaptações no front)
+   -> Accounts
+     - Corrigir nomes dos enums para ENome
 
-    -> Corporations
-      1 - Registrar cada lucro individual do mês e só então fechar o mês OK
-      2 - Descrição em participant balance OK
-      3 - Ao ativar corporação, é preciso remover os participantes que tiverem recusado participação OK
-      4 - Analisar possível troca de mês para período OK
-      5 - Ordenar corporações da mais nova para a mais antiga OK
-      6 - Ordenar mês do mais novo para o mais antigo OK
-
-    -> Correções
-      1 - Loading login mal-sucedido OK
+   -> Contracts
+     - Corrigir nomes dos enums para ENome
  */
 
-/* CRONOGRAMA
-    -> Quinta-feira 05/08/2021
-      - Criar campo CreateDate em Entity OK
-      - Implementar hash de password OK
-      - Refresh token OK
-      - Estudar se no front é possível verificar se o token é válido ou não OK
-      - Definir se vale a pena utilizar Asp Net Identity OK
 
-    -> Sexta-feira 06/08/2021
-      - Ordenar mês do mais novo para o mais antigo OK
-      - Ordenar corporações da mais nova para a mais antiga OK
-      - Descrição em participant balance OK
-      - Ao ativar corporação, é preciso remover os participantes que tiverem recusado participação OK
-      - Analisar possível troca de mês para período OK
-
-    -> Sábado 07/08/2021
-      - Registrar cada lucro individual do mês e só então fechar o mês OK
-      - Melhorar visualização da corporação OK
-      - Criar plano de pagamento e plano free OK     
-
-    -> Domingo 08/08/2021
-      - Criar telas de perfil OK
-      
-    -> Segunda-feira 09/08/2021
-      - Modelar corretamente parte de pagamento e fazer o planejamento das tasks relacionadas
-        1 - Criar LicenseEntity (Id, Name, Description, Price)
-        2 - Associar contas a uma licensa
-        3 - Atualizar endpoint de criação de uma corporação
-        4 - Atualizar front
-
-    -> Terça-feira 10/08/2021
-      - Criar página Home
-      - Loading login mal-sucedido
-      - Smoke-test e melhorias
-      - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado
+/* PRÓXIMA SPRINT -> 
+    - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado 
+    - Smoke-test e melhorias
+    - Criar página Home 
+    - Loading login mal-sucedido 
  */
 
-// PRÓXIMA SPRINT -> Principal objetivo é refatoração do back e front e também correção de possíveis bugs
+
 
 

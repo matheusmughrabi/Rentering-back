@@ -1,4 +1,4 @@
-﻿using Rentering.Common.Shared.QueryResults;
+﻿using Rentering.Common.Shared.Data.QueryResults;
 using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
 
 namespace Rentering.Corporation.Domain.Data.Repositories

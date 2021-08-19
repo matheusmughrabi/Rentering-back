@@ -1,4 +1,6 @@
-﻿namespace Rentering.Common.Shared.QueryResults
+﻿using Rentering.Common.Shared.Data.Interfaces;
+
+namespace Rentering.Common.Shared.Data.QueryResults
 {
     public class SingleQueryResult<TData> : IQueryResult where TData : IDataResult
     {

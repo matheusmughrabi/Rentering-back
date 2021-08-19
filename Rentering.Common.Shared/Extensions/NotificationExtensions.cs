@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Rentering.Common.Shared.Commands;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Rentering.Common.Shared.Commands
+namespace Rentering.Common.Shared.Extensions
 {
     public static class NotificationExtensions
     {

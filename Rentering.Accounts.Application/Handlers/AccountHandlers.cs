@@ -6,6 +6,7 @@ using Rentering.Accounts.Domain.Entities;
 using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.ValueObjects;
 using Rentering.Common.Shared.Commands;
+using Rentering.Common.Shared.Extensions;
 
 namespace Rentering.Accounts.Application.Handlers
 {

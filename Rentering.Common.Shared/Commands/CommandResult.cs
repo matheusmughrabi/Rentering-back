@@ -4,11 +4,6 @@ namespace Rentering.Common.Shared.Commands
 {
     public class CommandResult : ICommandResult
     {
-        public CommandResult()
-        {
-            Notifications = new List<CommandNotification>();
-        }
-
         public CommandResult(bool success, string message, List<CommandNotification> notifications, object data) 
         {
             Success = success;
