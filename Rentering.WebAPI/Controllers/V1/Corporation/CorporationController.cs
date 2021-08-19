@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Commands;
+using Rentering.Common.Shared.Extensions;
 using Rentering.Corporation.Application.Commands;
 using Rentering.Corporation.Application.Handlers;
 using Rentering.Corporation.Domain.Data;

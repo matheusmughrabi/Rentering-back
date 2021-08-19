@@ -3,8 +3,8 @@ using Rentering.Accounts.Domain.Data.Repositories;
 using Rentering.Accounts.Domain.Data.Repositories.QueryResults;
 using Rentering.Accounts.Domain.Enums;
 using Rentering.Accounts.Domain.StaticResources;
+using Rentering.Common.Shared.Data.QueryResults;
 using Rentering.Common.Shared.Enums;
-using Rentering.Common.Shared.QueryResults;
 using System.Linq;
 
 namespace Rentering.Infra.Accounts.Repositories

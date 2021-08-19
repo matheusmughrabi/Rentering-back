@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Rentering.Common.Shared.Data.Interfaces;
+using System.Collections.Generic;
 
-namespace Rentering.Common.Shared.QueryResults
+namespace Rentering.Common.Shared.Data.QueryResults
 {
     public class ListQueryResult<TData> : IQueryResult where TData : IDataResult
     {

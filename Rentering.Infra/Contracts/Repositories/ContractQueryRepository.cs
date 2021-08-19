@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Enums;
+using Rentering.Common.Shared.Extensions;
 using Rentering.Contracts.Domain.Data.Repositories;
 using Rentering.Contracts.Domain.Data.Repositories.QueryResults;
 using Rentering.Contracts.Domain.Enums;

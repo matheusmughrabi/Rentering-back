@@ -1,5 +1,5 @@
-﻿using Rentering.Common.Shared.Enums;
-using Rentering.Common.Shared.QueryResults;
+﻿using Rentering.Common.Shared.Data.Interfaces;
+using Rentering.Common.Shared.Enums;
 using Rentering.Corporation.Domain.Enums;
 using System;
 using System.Collections.Generic;

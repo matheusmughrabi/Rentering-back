@@ -1,5 +1,5 @@
 ﻿using Rentering.Accounts.Domain.Data.Repositories.QueryResults;
-using Rentering.Common.Shared.QueryResults;
+using Rentering.Common.Shared.Data.QueryResults;
 
 namespace Rentering.Accounts.Domain.Data.Repositories
 {

@@ -1,4 +1,4 @@
-﻿using Rentering.Common.Shared.QueryResults;
+﻿using Rentering.Common.Shared.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 

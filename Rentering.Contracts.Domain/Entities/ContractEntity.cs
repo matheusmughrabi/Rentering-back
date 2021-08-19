@@ -1,6 +1,5 @@
 ﻿using FluentValidator.Validation;
 using Rentering.Common.Shared.Entities;
-using Rentering.Common.Shared.Enums;
 using Rentering.Common.Shared.Extensions;
 using Rentering.Contracts.Domain.Enums;
 using Rentering.Contracts.Domain.ValueObjects;

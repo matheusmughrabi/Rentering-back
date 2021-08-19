@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Rentering.Common.Shared.Enums
+namespace Rentering.Common.Shared.Extensions
 {
     public static class EnumExtensions
     {

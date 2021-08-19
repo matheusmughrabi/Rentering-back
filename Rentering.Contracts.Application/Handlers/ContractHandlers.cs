@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using Rentering.Common.Shared.Commands;
+using Rentering.Common.Shared.Extensions;
 using Rentering.Contracts.Application.Commands;
 using Rentering.Contracts.Domain.Data;
 using Rentering.Contracts.Domain.Entities;

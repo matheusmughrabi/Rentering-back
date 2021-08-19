@@ -6,6 +6,7 @@ using Rentering.Accounts.Application.Handlers;
 using Rentering.Accounts.Domain.Data;
 using Rentering.Accounts.Domain.Entities;
 using Rentering.Common.Shared.Commands;
+using Rentering.Common.Shared.Extensions;
 using Rentering.WebAPI.Security.Models;
 using Rentering.WebAPI.Security.Services;
 
