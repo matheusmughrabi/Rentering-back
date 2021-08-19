@@ -2,7 +2,7 @@
 
 namespace Rentering.Corporation.Domain.Enums
 {
-    public enum e_CorporationStatus
+    public enum ECorporationStatus
     {
         [Description("Processo de criação em andamento")]
         InProgress = 1,

@@ -2,7 +2,7 @@
 
 namespace Rentering.Accounts.Domain.Enums
 {
-    public enum e_Role
+    public enum ERole
     {
         [Description("Usuário comum")]
         RegularUser = 1,

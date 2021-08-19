@@ -23,7 +23,7 @@ namespace Rentering.Corporation.Domain.Entities
             AdminId = adminId;
 
             if (id == null)
-                Status = e_CorporationStatus.InProgress;       
+                Status = ECorporationStatus.InProgress;       
 
             _participants = new List<ParticipantEntity>();
             _monthlyBalances = new List<MonthlyBalanceEntity>();
@@ -33,13 +33,13 @@ namespace Rentering.Corporation.Domain.Entities
 
         public string Name { get; private set; }
         public int AdminId { get; private set; }
-        public e_CorporationStatus Status { get; private set; }
+        public ECorporationStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantEntity> Participants => _participants.ToArray();
         public IReadOnlyCollection<MonthlyBalanceEntity> MonthlyBalances => _monthlyBalances.ToArray();
 
         public void InviteParticipant(int accountId, decimal sharedPercentage)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.InProgress };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível convidar novo participante, pois o estado atual da corporação é {Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -60,7 +60,7 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void FinishCreation()
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.InProgress };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.InProgress };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível finalizar a criação da corporação, pois o estado atual é {Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -72,12 +72,12 @@ namespace Rentering.Corporation.Domain.Entities
                 return;
             }
 
-            Status = e_CorporationStatus.WaitingParticipants;
+            Status = ECorporationStatus.WaitingParticipants;
         }
 
         public void AcceptToParticipate(int participantId)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.WaitingParticipants };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível aceitar participação na corporação, pois o estado atual é {Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -94,15 +94,15 @@ namespace Rentering.Corporation.Domain.Entities
             participant.AcceptToParticipate();
             AddNotifications(participant.Notifications);
 
-            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited);
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == EInvitationStatus.Invited);
 
-            if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
-                Status = e_CorporationStatus.ReadyForActivation;
+            if (Status == ECorporationStatus.WaitingParticipants && pendingInvitations == false)
+                Status = ECorporationStatus.ReadyForActivation;
         }
 
         public void RejectToParticipate(int participantId)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.WaitingParticipants };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.WaitingParticipants };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível recusar participação na corporação, pois o estado atual é {Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -119,42 +119,42 @@ namespace Rentering.Corporation.Domain.Entities
             participant.RejectToParticipate();
             AddNotifications(participant.Notifications);
 
-            var hasParticipant = _participants.Any(p => p.InvitationStatus != e_InvitationStatus.Rejected);
+            var hasParticipant = _participants.Any(p => p.InvitationStatus != EInvitationStatus.Rejected);
             if (hasParticipant == false)
             {
-                Status = e_CorporationStatus.InProgress;
+                Status = ECorporationStatus.InProgress;
                 return;
             }
 
-            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == e_InvitationStatus.Invited);
+            bool pendingInvitations = _participants.Any(c => c.InvitationStatus == EInvitationStatus.Invited);
 
-            if (Status == e_CorporationStatus.WaitingParticipants && pendingInvitations == false)
+            if (Status == ECorporationStatus.WaitingParticipants && pendingInvitations == false)
             {
-                Status = e_CorporationStatus.ReadyForActivation;
+                Status = ECorporationStatus.ReadyForActivation;
                 return;
             }
         }
 
         public void ActivateCorporation()
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.ReadyForActivation };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.ReadyForActivation };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível ativar a corporação, pois o estado atual é {Status.ToDescription()}.");
 
             if (isAllowed == false)
                 return;
 
-            Status = e_CorporationStatus.Active;
+            Status = ECorporationStatus.Active;
 
             foreach (var participant in _participants.ToList())
             {
-                if (participant.InvitationStatus == e_InvitationStatus.Rejected)
+                if (participant.InvitationStatus == EInvitationStatus.Rejected)
                     _participants.Remove(participant);
             }
         }
 
         public void AddMonth(DateTime startDate, DateTime endDate)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -162,7 +162,7 @@ namespace Rentering.Corporation.Domain.Entities
 
             var monthlyBalance = new MonthlyBalanceEntity(startDate, endDate, this.Id);
 
-            foreach (var participant in _participants.Where(c => c.InvitationStatus == e_InvitationStatus.Accepted))
+            foreach (var participant in _participants.Where(c => c.InvitationStatus == EInvitationStatus.Accepted))
             {
                 monthlyBalance.AddParticipantBalance(participant);
             }
@@ -172,7 +172,7 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void RegisterIncomeInMonth(int monthlyBalanceId, string title, string description, decimal value)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -192,7 +192,7 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void CloseSpecifiedMonth(int monthlyBalanceId)
         {
-            e_CorporationStatus[] acceptedStates = { e_CorporationStatus.Active };
+            ECorporationStatus[] acceptedStates = { ECorporationStatus.Active };
             bool isAllowed = IsProcessAllowed(acceptedStates, $"Impossível adicionar mês, pois o estado atual da corporação é{Status.ToDescription()}.");
 
             if (isAllowed == false)
@@ -261,7 +261,7 @@ namespace Rentering.Corporation.Domain.Entities
             );
         }
 
-        private bool IsProcessAllowed(e_CorporationStatus[] allowedStatuses, string message)
+        private bool IsProcessAllowed(ECorporationStatus[] allowedStatuses, string message)
         {
             var isAllowed = true;
 

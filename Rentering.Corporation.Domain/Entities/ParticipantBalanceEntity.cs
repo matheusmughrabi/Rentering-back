@@ -22,7 +22,7 @@ namespace Rentering.Corporation.Domain.Entities
             MonthlyBalance = monthlyBalance;
             ParticipantId = participant.Id;
             MonthlyBalanceId = monthlyBalance.Id;
-            Status = e_ParticipantBalanceStatus.Pending;
+            Status = EParticipantBalanceStatus.Pending;
             Description = string.Empty;
             CalculateBalance();
         }
@@ -33,28 +33,28 @@ namespace Rentering.Corporation.Domain.Entities
         public virtual MonthlyBalanceEntity MonthlyBalance { get; private set; }
         public decimal Balance { get; private set; }
         public string Description { get; private set; }
-        public e_ParticipantBalanceStatus Status { get; set; }
+        public EParticipantBalanceStatus Status { get; set; }
 
         public void AcceptBalance()
         {
-            if (Status == e_ParticipantBalanceStatus.Accepted)
+            if (Status == EParticipantBalanceStatus.Accepted)
             {
                 AddNotification("Status", "Você já confirmou este mês.");
                 return;
             }
 
-            Status = e_ParticipantBalanceStatus.Accepted;
+            Status = EParticipantBalanceStatus.Accepted;
         }
 
         public void RejectBalance()
         {
-            if (Status == e_ParticipantBalanceStatus.Rejected)
+            if (Status == EParticipantBalanceStatus.Rejected)
             {
                 AddNotification("Status", "Você já recusou este mês.");
                 return;
             }
 
-            Status = e_ParticipantBalanceStatus.Rejected;
+            Status = EParticipantBalanceStatus.Rejected;
         }
 
         public void AddDescription(string description)

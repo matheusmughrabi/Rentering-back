@@ -10,7 +10,7 @@ namespace Rentering.Contracts.Domain.Data.Repositories.QueryResults
         public int ContractId { get; set; }
         public string ContractName { get; set; }
         public string ContractOwner { get; set; }
-        public EnumResult<e_ContractState> ContractState { get; set; }
+        public EnumResult<EContractState> ContractState { get; set; }
         public string ParticipantRole { get; set; }
         public decimal RentPrice { get; set; }
         public DateTime RentDueDate { get; set; }

@@ -41,7 +41,7 @@ namespace Rentering.Contracts.Application.Handlers
 
             var contractEntity = new ContractEntity(contractName, rentPrice, rentDueDate, contractStartDate, contractEndDate);
 
-            contractEntity?.InviteParticipant(command.AccountId, e_ParticipantRole.Owner);
+            contractEntity?.InviteParticipant(command.AccountId, EParticipantRole.Owner);
 
             if (_contractUnitOfWork.ContractCUDRepository.ContractNameExists(command.ContractName))
                 AddNotification("ContractName", "Este nome de contrato já existe. Por favor, tente um nome diferente.");
@@ -84,7 +84,7 @@ namespace Rentering.Contracts.Application.Handlers
             }              
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Owner && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
@@ -92,7 +92,7 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Erro ao convidar participante.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            contractEntity?.InviteParticipant(newParticipantAccountId, (e_ParticipantRole)command.ParticipantRole);
+            contractEntity?.InviteParticipant(newParticipantAccountId, (EParticipantRole)command.ParticipantRole);
 
             AddNotifications(contractEntity.Notifications);
 
@@ -122,7 +122,7 @@ namespace Rentering.Contracts.Application.Handlers
             }
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Owner && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
@@ -166,7 +166,7 @@ namespace Rentering.Contracts.Application.Handlers
             }
 
             var isCurrentUserTheContractPayer = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Payer && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Payer && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractPayer.Count() == 0)
             {
@@ -202,7 +202,7 @@ namespace Rentering.Contracts.Application.Handlers
             }
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Receiver && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
             {
@@ -238,7 +238,7 @@ namespace Rentering.Contracts.Application.Handlers
             }
 
             var isCurrentUserTheContractRenter = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Receiver && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Receiver && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractRenter.Count() == 0)
             {
@@ -324,7 +324,7 @@ namespace Rentering.Contracts.Application.Handlers
             }
 
             var isCurrentUserTheContractOwner = contractEntity.Participants
-                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == e_ParticipantRole.Owner && c.Status == e_ParticipantStatus.Accepted);
+                .Where(c => c.AccountId == command.CurrentUserId && c.ParticipantRole == EParticipantRole.Owner && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserTheContractOwner.Count() == 0)
             {
@@ -358,7 +358,7 @@ namespace Rentering.Contracts.Application.Handlers
                 return new CommandResult(false, "Corrija os erros abaixo.", Notifications.ConvertCommandNotifications(), null);
             }
 
-            var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == e_ParticipantStatus.Accepted);
+            var isCurrentUserParticipant = contractEntity.Participants.Any(c => c.AccountId == command.CurrentUserId && c.Status == EParticipantStatus.Accepted);
 
             if (isCurrentUserParticipant == false)
             {

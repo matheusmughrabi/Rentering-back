@@ -2,7 +2,7 @@
 
 namespace Rentering.Corporation.Domain.Enums
 {
-    public enum e_MonthlyBalanceStatus
+    public enum EMonthlyBalanceStatus
     {
         [Description("Em andamento")]
         OnGoing = 1,

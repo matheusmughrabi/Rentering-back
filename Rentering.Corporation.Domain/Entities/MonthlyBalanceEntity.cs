@@ -20,7 +20,7 @@ namespace Rentering.Corporation.Domain.Entities
             StartDate = startDate;
             EndDate = endDate;
             CorporationId = corporationId;
-            Status = e_MonthlyBalanceStatus.OnGoing;
+            Status = EMonthlyBalanceStatus.OnGoing;
 
             _participantBalances = new List<ParticipantBalanceEntity>();
             _incomes = new List<IncomeEntity>();
@@ -30,13 +30,13 @@ namespace Rentering.Corporation.Domain.Entities
         public DateTime EndDate { get; private set; }
         public decimal TotalProfit { get; private set; }
         public int CorporationId { get; private set; }
-        public e_MonthlyBalanceStatus Status { get; private set; }
+        public EMonthlyBalanceStatus Status { get; private set; }
         public IReadOnlyCollection<ParticipantBalanceEntity> ParticipantBalances => _participantBalances.ToArray();
         public IReadOnlyCollection<IncomeEntity> Incomes => _incomes.ToArray();
 
         public void RegisterIncome(string title, string description, decimal value)
         {
-            if (Status != e_MonthlyBalanceStatus.OnGoing)
+            if (Status != EMonthlyBalanceStatus.OnGoing)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês não está em andamento");
                 return;
@@ -56,13 +56,13 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void CloseMonth()
         {
-            if (Status != e_MonthlyBalanceStatus.OnGoing)
+            if (Status != EMonthlyBalanceStatus.OnGoing)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês não está em andamento");
                 return;
             }
 
-            Status = e_MonthlyBalanceStatus.Pending;
+            Status = EMonthlyBalanceStatus.Pending;
         }
 
         public void AddParticipantBalance(ParticipantEntity participant)
@@ -74,13 +74,13 @@ namespace Rentering.Corporation.Domain.Entities
 
         public void Accept(int accountId)
         {
-            if (Status == e_MonthlyBalanceStatus.Finished)
+            if (Status == EMonthlyBalanceStatus.Finished)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
                 return;
             }
 
-            if (Status == e_MonthlyBalanceStatus.OnGoing)
+            if (Status == EMonthlyBalanceStatus.OnGoing)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês ainda está em andamento.");
                 return;
@@ -97,21 +97,21 @@ namespace Rentering.Corporation.Domain.Entities
             participantBalance.AcceptBalance();
             AddNotifications(participantBalance.Notifications);
 
-            bool allParticipantsAccepted = _participantBalances.Any(c => c.Status == e_ParticipantBalanceStatus.Pending || c.Status == e_ParticipantBalanceStatus.Rejected) == false;
+            bool allParticipantsAccepted = _participantBalances.Any(c => c.Status == EParticipantBalanceStatus.Pending || c.Status == EParticipantBalanceStatus.Rejected) == false;
 
             if (allParticipantsAccepted)
-                Status = e_MonthlyBalanceStatus.Finished;
+                Status = EMonthlyBalanceStatus.Finished;
         }
 
         public void Reject(int accountId)
         {
-            if (Status == e_MonthlyBalanceStatus.Finished)
+            if (Status == EMonthlyBalanceStatus.Finished)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês já foi concluído");
                 return;
             }
 
-            if (Status == e_MonthlyBalanceStatus.OnGoing)
+            if (Status == EMonthlyBalanceStatus.OnGoing)
             {
                 AddNotification("Status", "Impossível realizar esta ação, pois o mês ainda está em andamento.");
                 return;

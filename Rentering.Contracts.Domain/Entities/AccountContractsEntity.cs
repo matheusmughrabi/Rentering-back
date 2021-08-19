@@ -12,8 +12,8 @@ namespace Rentering.Contracts.Domain.Entities
         public AccountContractsEntity(
             int accountId,
             int contractId,
-            e_ParticipantRole participantRole,
-            e_ParticipantStatus? status = null,
+            EParticipantRole participantRole,
+            EParticipantStatus? status = null,
             int? id = null) : base(id)
         {
             AccountId = accountId;
@@ -21,43 +21,43 @@ namespace Rentering.Contracts.Domain.Entities
             ParticipantRole = participantRole;
 
             if (status != null)
-                Status = (e_ParticipantStatus)status;
+                Status = (EParticipantStatus)status;
             else
-                Status = e_ParticipantStatus.Pending;
+                Status = EParticipantStatus.Pending;
         }
 
         public int AccountId { get; private set; }
         public int ContractId { get; private set; }
         public virtual ContractEntity Contract { get; private set; }
-        public e_ParticipantRole ParticipantRole { get; private set; }
-        public e_ParticipantStatus Status { get; private set; }
+        public EParticipantRole ParticipantRole { get; private set; }
+        public EParticipantStatus Status { get; private set; }
 
         public void AcceptToParticipate()
         {
-            if (Status == e_ParticipantStatus.Rejected)
+            if (Status == EParticipantStatus.Rejected)
             {
                 AddNotification("Status", "Não é possível aceitar a participação no contrato, pois você já recusou participar.");
                 return;
             }
 
-            if (Status == e_ParticipantStatus.Accepted)
+            if (Status == EParticipantStatus.Accepted)
             {
                 AddNotification("Status", "Não é possível aceitar novamente a participação no contrato.");
                 return;
             }
 
-            Status = e_ParticipantStatus.Accepted;
+            Status = EParticipantStatus.Accepted;
         }
 
         public void RejectToParticipate()
         {
-            if (Status == e_ParticipantStatus.Rejected)
+            if (Status == EParticipantStatus.Rejected)
             {
                 AddNotification("Status", "Não é possível recusar novamente a participação no contrato.");
                 return;
             }
 
-            Status = e_ParticipantStatus.Rejected;
+            Status = EParticipantStatus.Rejected;
         }
     }
 }

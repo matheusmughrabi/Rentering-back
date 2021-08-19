@@ -29,14 +29,14 @@ namespace Rentering.Infra.Contracts.Repositories
                 {
                     Id = c.Id,
                     CurrentUserRole = c.Participants.Where(c => c.AccountId == accountId)
-                        .Select(p => new EnumResult<e_ParticipantRole>() 
+                        .Select(p => new EnumResult<EParticipantRole>() 
                         {
                             Value = p.ParticipantRole,
                             Description = p.ParticipantRole.ToDescription()
                         })
                         .FirstOrDefault(),
                     ContractName = c.ContractName,
-                    ContractState = new EnumResult<e_ContractState>() 
+                    ContractState = new EnumResult<EContractState>() 
                     { 
                         Value = c.ContractState,
                         Description = c.ContractState.ToDescription()
@@ -55,12 +55,12 @@ namespace Rentering.Infra.Contracts.Repositories
                                     .Where(u => u.Id == p.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                            Status = new EnumResult<e_ParticipantStatus>() 
+                            Status = new EnumResult<EParticipantStatus>() 
                             {
                                 Value = p.Status,
                                 Description = p.Status.ToDescription()
                             },
-                            ParticipantRole = new EnumResult<e_ParticipantRole>() 
+                            ParticipantRole = new EnumResult<EParticipantRole>() 
                             {
                                 Value = p.ParticipantRole,
                                 Description = p.ParticipantRole.ToDescription()
@@ -73,12 +73,12 @@ namespace Rentering.Infra.Contracts.Repositories
                         {
                             Month = c.Month,
                             RentPrice = c.RentPrice.Price,
-                            ReceiverPaymentStatus = new EnumResult<e_ReceiverPaymentStatus>() 
+                            ReceiverPaymentStatus = new EnumResult<EReceiverPaymentStatus>() 
                             {
                                 Value = c.ReceiverPaymentStatus,
                                 Description = c.ReceiverPaymentStatus.ToDescription()
                             },
-                            PayerPaymentStatus = new EnumResult<e_PayerPaymentStatus>() 
+                            PayerPaymentStatus = new EnumResult<EPayerPaymentStatus>() 
                             { 
                                 Value = c.PayerPaymentStatus,
                                 Description = c.PayerPaymentStatus.ToDescription()
@@ -102,12 +102,12 @@ namespace Rentering.Infra.Contracts.Repositories
             {
                 Id = c.Id,
                 ContractName = c.ContractName,
-                ContractState = new EnumResult<e_ContractState>() 
+                ContractState = new EnumResult<EContractState>() 
                 {
                     Value = c.ContractState,
                     Description = c.ContractState.ToDescription()
                 },
-                ParticipantRole = new EnumResult<e_ParticipantRole>() 
+                ParticipantRole = new EnumResult<EParticipantRole>() 
                 {
                     Value = c.Participants.FirstOrDefault().ParticipantRole,
                     Description = c.Participants.FirstOrDefault().ParticipantRole.ToDescription()
@@ -134,12 +134,12 @@ namespace Rentering.Infra.Contracts.Repositories
                 ContractId = c.ContractId,
                 Month = c.Month,
                 RentPrice = c.RentPrice.Price,
-                ReceiverPaymentStatus = new EnumResult<e_ReceiverPaymentStatus>() 
+                ReceiverPaymentStatus = new EnumResult<EReceiverPaymentStatus>() 
                 {
                     Value = c.ReceiverPaymentStatus,
                     Description = c.ReceiverPaymentStatus.ToDescription()
                 },
-                PayerPaymentStatus = new EnumResult<e_PayerPaymentStatus>() 
+                PayerPaymentStatus = new EnumResult<EPayerPaymentStatus>() 
                 {
                     Value = c.PayerPaymentStatus,
                     Description = c.PayerPaymentStatus.ToDescription()
@@ -153,7 +153,7 @@ namespace Rentering.Infra.Contracts.Repositories
         {
             var result = _renteringDbContext.AccountContracts
                 .AsNoTracking()
-                .Where(c => c.AccountId == accountId && c.Status == e_ParticipantStatus.Pending)
+                .Where(c => c.AccountId == accountId && c.Status == EParticipantStatus.Pending)
                 .Include(c => c.Contract)
                 .Select(p => new GetPendingInvitationsQueryResult()
                 {
@@ -161,7 +161,7 @@ namespace Rentering.Infra.Contracts.Repositories
                     ContractId = p.ContractId,
                     ContractName = p.Contract.ContractName,
                     ContractOwner = "Matheus Campanini Mughrabi Mockado",
-                    ContractState = new EnumResult<e_ContractState>() 
+                    ContractState = new EnumResult<EContractState>() 
                     {
                         Value = p.Contract.ContractState,
                         Description = p.Contract.ContractState.ToDescription()

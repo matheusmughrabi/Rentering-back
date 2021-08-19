@@ -13,42 +13,42 @@ namespace Rentering.Corporation.Domain.Entities
             AccountId = accountId;
             CorporationId = corporationId;
             SharedPercentage = sharedPercentage;
-            InvitationStatus = e_InvitationStatus.Invited;
+            InvitationStatus = EInvitationStatus.Invited;
         }
 
         public int AccountId { get; private set; }
         public int CorporationId { get; private set; }
         public virtual CorporationEntity Corporation { get; private set; }
-        public e_InvitationStatus InvitationStatus { get; private set; }
+        public EInvitationStatus InvitationStatus { get; private set; }
         public decimal SharedPercentage { get; private set; }
         public IReadOnlyCollection<ParticipantBalanceEntity> ParticipantBalances => _participantBalances.ToArray();
 
         public void AcceptToParticipate()
         {
-            if (InvitationStatus == e_InvitationStatus.Rejected)
+            if (InvitationStatus == EInvitationStatus.Rejected)
             {
                 AddNotification("Status", "Você já recusou a participação nesta corporação!");
                 return;
             }
 
-            if (InvitationStatus == e_InvitationStatus.Accepted)
+            if (InvitationStatus == EInvitationStatus.Accepted)
             {
                 AddNotification("Status", "Você já aceitou a participação nesta corporação!");
                 return;
             }
 
-            InvitationStatus = e_InvitationStatus.Accepted;
+            InvitationStatus = EInvitationStatus.Accepted;
         }
 
         public void RejectToParticipate()
         {
-            if (InvitationStatus == e_InvitationStatus.Rejected)
+            if (InvitationStatus == EInvitationStatus.Rejected)
             {
                 AddNotification("Status", "Você já recusou a participação nesta corporação!");
                 return;
             }
 
-            InvitationStatus = e_InvitationStatus.Rejected;
+            InvitationStatus = EInvitationStatus.Rejected;
         }
     }
 }

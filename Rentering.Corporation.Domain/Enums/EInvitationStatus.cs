@@ -2,13 +2,13 @@
 
 namespace Rentering.Corporation.Domain.Enums
 {
-    public enum e_ParticipantBalanceStatus
+    public enum EInvitationStatus
     {
-        [Description("Aprovação pendente")]
-        Pending = 1,
+        [Description("Convidado")]
+        Invited = 1,
         [Description("Aceito")]
         Accepted = 2,
-        [Description("Contestado")]
+        [Description("Recusado")]
         Rejected = 3
     }
 }

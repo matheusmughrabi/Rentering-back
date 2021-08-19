@@ -2,7 +2,7 @@
 
 namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_ParticipantStatus
+    public enum EParticipantStatus
     {
         [Description("Pendente")]
         Pending = 1,

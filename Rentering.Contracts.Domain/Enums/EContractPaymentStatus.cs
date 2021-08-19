@@ -2,7 +2,7 @@
 
 namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_ReceiverPaymentStatus
+    public enum EReceiverPaymentStatus
     {
         [Description("Sem status")]
         None = 0,
@@ -14,7 +14,7 @@ namespace Rentering.Contracts.Domain.Enums
         Accepted = 2
     }
 
-    public enum e_PayerPaymentStatus
+    public enum EPayerPaymentStatus
     {
         [Description("Sem status")]
         None = 0,

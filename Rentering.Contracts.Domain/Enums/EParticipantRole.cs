@@ -2,7 +2,7 @@
 
 namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_ParticipantRole
+    public enum EParticipantRole
     {
         [Description("Criador")]
         Owner = 1,

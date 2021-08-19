@@ -2,7 +2,7 @@
 
 namespace Rentering.Contracts.Domain.Enums
 {
-    public enum e_ContractState
+    public enum EContractState
     {
         [Description("Número insuficiente de participantes")]
         NotEnoughParticipants = 1,

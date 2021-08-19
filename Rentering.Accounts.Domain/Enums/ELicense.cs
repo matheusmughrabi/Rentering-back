@@ -2,7 +2,7 @@
 
 namespace Rentering.Accounts.Domain.Enums
 {
-    public enum e_License
+    public enum ELicense
     {
         [Description("Plano gratuito")]
         Free = 1,

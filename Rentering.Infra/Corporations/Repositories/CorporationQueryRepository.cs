@@ -59,7 +59,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                .FirstOrDefault(),
                    IsCurrentUserAdmin = currentUserId == p.AdminId,
                    CreateDate = p.CreateDate,
-                   Status = new EnumResult<e_CorporationStatus>() 
+                   Status = new EnumResult<ECorporationStatus>() 
                    {
                        Value = p.Status,
                        Description = p.Status.ToDescription()
@@ -73,7 +73,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                     .Where(m => m.Id == u.AccountId)
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
-                            InvitationStatus = new EnumResult<e_InvitationStatus>()
+                            InvitationStatus = new EnumResult<EInvitationStatus>()
                             {
                                 Value = u.InvitationStatus,
                                 Description = u.InvitationStatus.ToDescription()
@@ -89,7 +89,7 @@ namespace Rentering.Infra.Corporations.Repositories
                             EndDate = u.EndDate,
                             TotalProfit = u.TotalProfit,
 
-                            Status = new EnumResult<e_MonthlyBalanceStatus>() 
+                            Status = new EnumResult<EMonthlyBalanceStatus>() 
                             {
                                 Value = u.Status,
                                 Description = u.Status.ToDescription()
@@ -97,7 +97,7 @@ namespace Rentering.Infra.Corporations.Repositories
 
                             CurrentUserBalanceStatus = u.ParticipantBalances
                                 .Where(c => c.Participant.AccountId == currentUserId)
-                                .Select(p => new EnumResult<e_ParticipantBalanceStatus>()
+                                .Select(p => new EnumResult<EParticipantBalanceStatus>()
                                 {
                                     Value = p.Status,
                                     Description = p.Status.ToDescription()
@@ -112,7 +112,7 @@ namespace Rentering.Infra.Corporations.Repositories
                                     .Select(s => s.Name.ToString())
                                     .FirstOrDefault(),
                                 Balance = p.Balance,
-                                Status = new EnumResult<e_ParticipantBalanceStatus>() 
+                                Status = new EnumResult<EParticipantBalanceStatus>() 
                                 {
                                     Value = p.Status,
                                     Description = p.Status.ToDescription()
@@ -132,7 +132,7 @@ namespace Rentering.Infra.Corporations.Repositories
         {
             var dataResult = _renteringDbContext.Participant
                .AsNoTracking()
-               .Where(c => c.AccountId == accountId && c.InvitationStatus == e_InvitationStatus.Invited && c.Corporation.Status == e_CorporationStatus.WaitingParticipants)
+               .Where(c => c.AccountId == accountId && c.InvitationStatus == EInvitationStatus.Invited && c.Corporation.Status == ECorporationStatus.WaitingParticipants)
                .Include(c => c.Corporation)
                .Select(p => new GetInvitationsQueryResult()
                {

@@ -17,7 +17,7 @@ namespace Rentering.Accounts.Domain.Entities
             EmailValueObject email, 
             UsernameValueObject username,
             string password = null,
-            e_Role? role = null, 
+            ERole? role = null, 
             int? id = null) : base(id)
         {
             Name = name;
@@ -27,9 +27,9 @@ namespace Rentering.Accounts.Domain.Entities
             LicenseCode = 1;
 
             if (role != null)
-                Role = (e_Role)role;
+                Role = (ERole)role;
             else
-                Role = e_Role.RegularUser;
+                Role = ERole.RegularUser;
         }
 
         [Required]
@@ -39,7 +39,7 @@ namespace Rentering.Accounts.Domain.Entities
         [Required]
         public UsernameValueObject Username { get; private set; }
         public string Password { get; set; }
-        public e_Role Role { get; private set; }
+        public ERole Role { get; private set; }
         public string Token { get; private set; }
         public int LicenseCode { get; set; }
 

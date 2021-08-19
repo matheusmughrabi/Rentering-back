@@ -13,7 +13,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public string Admin { get; set; }
         public bool IsCurrentUserAdmin { get; set; }
         public DateTime CreateDate { get; set; }
-        public EnumResult<e_CorporationStatus> Status { get; set; }
+        public EnumResult<ECorporationStatus> Status { get; set; }
         public List<Participant> Participants { get; set; }
         public List<MonthlyBalance> MonthlyBalances { get; set; }
     }
@@ -21,7 +21,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
     public class Participant
     {
         public string FullName { get; set; }
-        public EnumResult<e_InvitationStatus> InvitationStatus { get; set; }
+        public EnumResult<EInvitationStatus> InvitationStatus { get; set; }
         public decimal SharedPercentage { get; set; }
     }
 
@@ -31,8 +31,8 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalProfit { get; set; }
-        public EnumResult<e_MonthlyBalanceStatus> Status { get; set; }
-        public EnumResult<e_ParticipantBalanceStatus> CurrentUserBalanceStatus { get; set; }
+        public EnumResult<EMonthlyBalanceStatus> Status { get; set; }
+        public EnumResult<EParticipantBalanceStatus> CurrentUserBalanceStatus { get; set; }
         public List<ParticipantBalance> ParticipantBalances { get; set; }
     }
 
@@ -40,7 +40,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories.QueryResults
     {
         public string ParticipantName { get; set; }
         public decimal Balance { get; set; }
-        public EnumResult<e_ParticipantBalanceStatus> Status { get; set; }
+        public EnumResult<EParticipantBalanceStatus> Status { get; set; }
         public string Description { get; set; }
     }
 }
