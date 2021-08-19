@@ -28,14 +28,14 @@ namespace Rentering.WebAPI
       - Query results estrutura de pastas OK
 
    -> Corporation
-     - Corrigir nomes dos enums para ENome
-     - Verificar construtores de cada entity
+     - Corrigir nomes dos enums para ENome OK
+     - Verificar construtores de cada entity OK
 
    -> Accounts
-     - Corrigir nomes dos enums para ENome
+     - Corrigir nomes dos enums para ENome OK
 
    -> Contracts
-     - Corrigir nomes dos enums para ENome
+     - Corrigir nomes dos enums para ENome OK
  */
 
 

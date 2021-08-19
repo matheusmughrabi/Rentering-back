@@ -8,12 +8,19 @@ namespace Rentering.Corporation.Domain.Entities
     {
         private List<ParticipantBalanceEntity> _participantBalances;
 
+        protected ParticipantEntity()
+        {
+
+        }   
+
         public ParticipantEntity(int accountId, int corporationId, decimal sharedPercentage)
         {
             AccountId = accountId;
             CorporationId = corporationId;
             SharedPercentage = sharedPercentage;
             InvitationStatus = EInvitationStatus.Invited;
+
+            _participantBalances = new List<ParticipantBalanceEntity>();
         }
 
         public int AccountId { get; private set; }

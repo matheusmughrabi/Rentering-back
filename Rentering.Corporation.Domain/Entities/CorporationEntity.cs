@@ -17,13 +17,11 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public CorporationEntity(string name, int adminId, int? id = null) : base(id)
+        public CorporationEntity(string name, int adminId)
         {
             Name = name;
             AdminId = adminId;
-
-            if (id == null)
-                Status = ECorporationStatus.InProgress;       
+            Status = ECorporationStatus.InProgress;       
 
             _participants = new List<ParticipantEntity>();
             _monthlyBalances = new List<MonthlyBalanceEntity>();
