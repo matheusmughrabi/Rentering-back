@@ -37,13 +37,13 @@ namespace Rentering.Corporation.Application.Handlers
 
             if (license == 1 && numberOfCorporations >= 2)
             {
-                AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
+                AddNotification("Você atingiu o limite de corporações para a licensa gratuita", "Licensa gratuita");
                 return new CommandResult(false, "Impossível criar nova corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 
             if (license == 2 && numberOfCorporations >= 5)
             {
-                AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
+                AddNotification("Você atingiu o limite de corporações para a licensa padrão", "Licensa padrão");
                 return new CommandResult(false, "Impossível criar nova corporação.", Notifications.ConvertCommandNotifications(), null);
             }
 

@@ -30,6 +30,8 @@ namespace Rentering.WebAPI
    -> Corporation
      - Corrigir nomes dos enums para ENome OK
      - Verificar construtores de cada entity OK
+     - Endpoints OK
+     - Unit Tests
 
    -> Accounts
      - Corrigir nomes dos enums para ENome OK
