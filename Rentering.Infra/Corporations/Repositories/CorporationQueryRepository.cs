@@ -5,7 +5,6 @@ using Rentering.Common.Shared.Extensions;
 using Rentering.Corporation.Domain.Data.Repositories;
 using Rentering.Corporation.Domain.Data.Repositories.QueryResults;
 using Rentering.Corporation.Domain.Enums;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Rentering.Infra.Corporations.Repositories
@@ -196,6 +195,27 @@ namespace Rentering.Infra.Corporations.Repositories
                 .FirstOrDefault();
 
             return accountId;
+        }
+
+        public int GetCurrentUserLicense(int currentUserId)
+        {
+            var license = _renteringDbContext.Account
+                .AsNoTracking()
+                .Where(c => c.Id == currentUserId)
+                .Select(p => p.LicenseCode)
+                .FirstOrDefault();
+
+            return license;
+        }
+
+        public int GetCurrentUserNumberOfCorporations(int currentUserId)
+        {
+            var numberOfCorporations = _renteringDbContext.Corporation
+                .AsNoTracking()
+                .Where(c => c.AdminId == currentUserId)
+                .Count();
+
+            return numberOfCorporations;
         }
     }
 }

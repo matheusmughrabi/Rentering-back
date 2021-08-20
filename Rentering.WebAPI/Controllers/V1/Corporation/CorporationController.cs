@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Rentering.Common.Shared.Commands;
 using Rentering.Common.Shared.Extensions;
 using Rentering.Corporation.Application.Commands;
 using Rentering.Corporation.Application.Handlers;
 using Rentering.Corporation.Domain.Data;
-using Rentering.Infra;
-using System.Linq;
 
 namespace Rentering.WebAPI.Controllers.V1.Corporation
 {
@@ -16,12 +13,10 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
     public class CorporationController : RenteringBaseController
     {
         private readonly ICorporationUnitOfWork _corporationUnitOfWork;
-        private readonly RenteringDbContext _context;
 
-        public CorporationController(ICorporationUnitOfWork corporationUnitOfWork, RenteringDbContext context)
+        public CorporationController(ICorporationUnitOfWork corporationUnitOfWork)
         {
             _corporationUnitOfWork = corporationUnitOfWork;
-            _context = context;
         }
 
         #region GetCorporations
@@ -75,29 +70,10 @@ namespace Rentering.WebAPI.Controllers.V1.Corporation
 
             command.CurrentUserId = GetCurrentUserId();
 
-            var license = _context.Account.AsNoTracking().Where(c => c.Id == command.CurrentUserId).Select(p => p.LicenseCode).FirstOrDefault();
-            var numberOfCorporations = _context.Corporation.AsNoTracking().Where(c => c.AdminId == command.CurrentUserId).Count();
-
-            if (license == 1 && numberOfCorporations >= 2)
-            {
-                var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
-                resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
-                return Ok(resultLicense);
-            }
-
-            if (license == 2 && numberOfCorporations >= 5)
-            {
-                var resultLicense = new CommandResult(false, "Impossível criar nova corporação", null, null);
-                resultLicense.AddNotification("Você atingiu o limite de contratos para a licensa padrão", "Licensa padrão");
-                return Ok(resultLicense);
-            }
-
             var handler = new CorporationHandlers(_corporationUnitOfWork);
             var result = handler.Handle(command);
 
             return Ok(result);
-
-            
         }
         #endregion
 

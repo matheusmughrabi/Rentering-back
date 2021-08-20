@@ -10,5 +10,7 @@ namespace Rentering.Corporation.Domain.Data.Repositories
         ListQueryResult<GetInvitationsQueryResult> GetInvitations(int accountId);
         SingleQueryResult<GetPeriodDetailedQueryResult> GetPeriodDetailed(int monthlyBalanceId);
         int GetAccountIdByEmail(string email);
+        int GetCurrentUserLicense(int currentUserId);
+        int GetCurrentUserNumberOfCorporations(int currentUserId);
     }
 }

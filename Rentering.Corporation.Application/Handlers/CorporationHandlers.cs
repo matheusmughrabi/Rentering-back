@@ -4,7 +4,6 @@ using Rentering.Common.Shared.Extensions;
 using Rentering.Corporation.Application.Commands;
 using Rentering.Corporation.Domain.Data;
 using Rentering.Corporation.Domain.Entities;
-using System.Linq;
 
 namespace Rentering.Corporation.Application.Handlers
 {
@@ -33,6 +32,21 @@ namespace Rentering.Corporation.Application.Handlers
         #region CreateCorporation
         public ICommandResult Handle(CreateCorporationCommand command)
         {
+            var license = _corporationUnitOfWork.CorporationQueryRepository.GetCurrentUserLicense(command.CurrentUserId); ;
+            var numberOfCorporations = _corporationUnitOfWork.CorporationQueryRepository.GetCurrentUserNumberOfCorporations(command.CurrentUserId);
+
+            if (license == 1 && numberOfCorporations >= 2)
+            {
+                AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
+                return new CommandResult(false, "Impossível criar nova corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
+            if (license == 2 && numberOfCorporations >= 5)
+            {
+                AddNotification("Você atingiu o limite de contratos para a licensa gratuita", "Licensa gratuita");
+                return new CommandResult(false, "Impossível criar nova corporação.", Notifications.ConvertCommandNotifications(), null);
+            }
+
             var corporationEntity = new CorporationEntity(command.Name, command.CurrentUserId);
 
             if (Invalid)
