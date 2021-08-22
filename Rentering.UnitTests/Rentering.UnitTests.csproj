@@ -17,6 +17,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Rentering.Accounts.Domain\Rentering.Accounts.Domain.csproj" />
     <ProjectReference Include="..\Rentering.Contracts.Domain\Rentering.Contracts.Domain.csproj" />
+    <ProjectReference Include="..\Rentering.Corporation.Domain\Rentering.Corporation.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Corporations\Handlers\" />
   </ItemGroup>
 
 </Project>

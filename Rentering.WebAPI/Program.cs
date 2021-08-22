@@ -35,13 +35,22 @@ namespace Rentering.WebAPI
 
    -> Accounts
      - Corrigir nomes dos enums para ENome OK
+     - Verificar construtores de cada entity
+     - Endpoints
+     - Query repositories
+     - Unit Tests
 
    -> Contracts
      - Corrigir nomes dos enums para ENome OK
+     - Verificar construtores de cada entity
+     - Query repositories
+     - Endpoints
+     - Unit Tests
  */
 
 
 /* PRÓXIMA SPRINT -> 
+    - Criar descrição no front na parte de trocar de licensa de maneira que indique que é apenas um pagamento fictício
     - HttpGets precisam de validação para saber se o usuário tem acesso ao dado solicitado 
     - Smoke-test e melhorias
     - Criar página Home 
