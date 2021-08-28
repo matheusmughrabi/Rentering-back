@@ -10,7 +10,7 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public ParticipantBalanceEntity(ParticipantEntity participant, MonthlyBalanceEntity monthlyBalance)
+        public ParticipantBalanceEntity(ParticipantEntity participant, MonthlyBalanceEntity monthlyBalance, int? id = null) : base(id)
         {
             if (participant == null)
                 throw new Exception("Participant não pode ser nulo");

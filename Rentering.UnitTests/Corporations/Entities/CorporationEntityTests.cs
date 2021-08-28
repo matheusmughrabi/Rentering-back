@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rentering.Corporation.Domain.Entities;
+using System;
 
 namespace Rentering.UnitTests.Corporations.Entities
 {
@@ -75,7 +76,43 @@ namespace Rentering.UnitTests.Corporations.Entities
             corporation.InviteParticipant(11, 60);
             corporation.AcceptToParticipate(1);
 
-            Assert.AreEqual(true, corporation.Valid);
+            Assert.AreEqual(false, corporation.Valid);
         }
+
+        [TestMethod]
+        public void ShouldNotActivateCorporation_WhenCorporationIsNotReadyForActivation()
+        {
+            var corporation = new CorporationEntity("corporation 1", 1);
+            corporation.ActivateCorporation();
+
+            Assert.AreEqual(false, corporation.Valid);
+        }
+
+        //[TestMethod]
+        //public void ShouldActivateCorporation()
+        //{
+        //    var corporation = new CorporationEntity("corporation 1", 1);
+        //    corporation.ActivateCorporation();
+
+        //    Assert.AreEqual(false, corporation.Valid);
+        //}
+
+        [TestMethod]
+        public void ShouldNotAddMonth_WhenCorporationIsNotActive()
+        {
+            var corporation = new CorporationEntity("corporation 1", 1);
+            corporation.AddMonth(DateTime.Now, DateTime.Now.AddMonths(2));
+
+            Assert.AreEqual(false, corporation.Valid);
+        }
+
+        //[TestMethod]
+        //public void ShouldAddMonth()
+        //{
+        //    var corporation = new CorporationEntity("corporation 1", 1);
+        //    corporation.AddMonth(DateTime.Now, DateTime.Now.AddMonths(2));
+
+        //    Assert.AreEqual(false, corporation.Valid);
+        //}
     }
 }

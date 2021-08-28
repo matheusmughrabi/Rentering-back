@@ -17,7 +17,7 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public CorporationEntity(string name, int adminId)
+        public CorporationEntity(string name, int adminId, int? id = null) : base(id)
         {
             Name = name;
             AdminId = adminId;

@@ -15,7 +15,7 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public MonthlyBalanceEntity(DateTime startDate, DateTime endDate, int corporationId)
+        public MonthlyBalanceEntity(DateTime startDate, DateTime endDate, int corporationId, int? id = null) : base(id)
         {
             StartDate = startDate;
             EndDate = endDate;

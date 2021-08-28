@@ -13,7 +13,7 @@ namespace Rentering.Corporation.Domain.Entities
 
         }   
 
-        public ParticipantEntity(int accountId, int corporationId, decimal sharedPercentage)
+        public ParticipantEntity(int accountId, int corporationId, decimal sharedPercentage, int? id = null) : base(id)
         {
             AccountId = accountId;
             CorporationId = corporationId;

@@ -9,7 +9,7 @@ namespace Rentering.Corporation.Domain.Entities
         {
         }
 
-        public IncomeEntity(string title, string description, decimal value, int monthlyBalanceId)
+        public IncomeEntity(string title, string description, decimal value, int monthlyBalanceId, int? id = null) : base(id)
         {
             Title = title;
             Description = description;
